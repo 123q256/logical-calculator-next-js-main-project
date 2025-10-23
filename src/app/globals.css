@@ -1,0 +1,1656 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+} */
+
+.css-4nlqs {
+  font-size: 13.4px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  padding: 2px;
+  color: rgb(255, 64, 89);
+}
+
+.input_form input[type="text"],
+.input_form input[type="date"],
+.input_form input[type="number"],
+.input_form input[type="password"],
+.input_form input[type="time"],
+.input_form input[type="datetime-local"],
+.input_form select {
+  width: 100%;
+  height: 45px;
+  padding: 8px 16px;
+  border-radius: 12px !important;
+  border: 1px solid #2845f5;
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: white !important;
+  color: #4a5568;
+}
+.converter_input input[type="text"],
+.converter_input input[type="number"],
+.converter_input select {
+  width: 100%;
+  height: 45px;
+  padding: 8px 16px;
+  border-radius: 12px !important;
+  border: 1px solid #2845f5;
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: white !important;
+  color: #4a5568;
+}
+
+.pace_border {
+  border-bottom: 3px solid #2845f5;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #2845f5;
+  }
+}
+
+/* Laplace Transform Calculator */
+#exampleLoadBtn {
+  animation: blink 1s infinite;
+  border: 2px solid transparent; /* Default border transparent */
+  background: #1670a712;
+  padding: 7px 10px;
+  border-radius: 100px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #000000;
+}
+#exampleLoadBtn svg {
+  transform: rotate(180deg);
+}
+
+.pace_tab.active {
+  border-bottom: 3px solid blue;
+  background-color: #2845f5 !important;
+  color: white !important;
+  padding: 2px 10px;
+  z-index: 2;
+}
+textarea {
+  width: 100%;
+  padding: 8px 16px;
+  border-radius: 12px !important;
+  border: 1px solid #2845f5;
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: white !important;
+  color: #4a5568; /* Tailwind's text-gray-800 */
+}
+
+.text-green {
+  color: #119154 !important;
+}
+.bg-gradient {
+  background-color: #2845f5 !important;
+}
+.input:focus {
+  border-radius: 12px !important;
+  border: 1px solid #2845f5 !important;
+  /* box-shadow: 0 0 0 2px #38a169;  */
+  outline: none !important;
+}
+
+/* .input_search:focus {
+  border-radius: 12px !important;
+  border: 1px solid #2845F5 !important;
+  box-shadow: 0 0 0 1px #2845F5; 
+  outline: none !important;
+} */
+.menu_css {
+  border: 2px solid #dee1e5;
+  border-radius: 20px;
+  padding: 10px 30px;
+}
+@media (max-width: 1046px) and (min-width: 1023px) {
+  .menu_css {
+    padding: 10px 10px;
+  }
+}
+
+.bordercalculator {
+  border: 10px solid gainsboro;
+}
+.set_resultbox {
+  border: 10px solid gainsboro;
+}
+.result_select_dropdown {
+  border: 0px solid black !important;
+}
+
+.purple {
+  background-color: rgb(147 51 234);
+  color: white;
+}
+
+.input_unit {
+  position: absolute;
+  right: 25px;
+  top: 56%;
+  transform: translateY(-50%);
+  color: #000;
+  font-size: 1rem;
+  pointer-events: none;
+}
+.select {
+  width: 100%;
+  height: 45px;
+  padding: 8px 16px !important;
+  border-radius: 12px !important;
+  border: 1px solid #2845f5 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: white;
+  color: #4a5568; /* Equivalent to text-gray-800 in Tailwind */
+}
+
+.label {
+  font-size: 0.875rem; /* Equivalent to text-sm in Tailwind */
+  padding-left: 0.5rem; /* Equivalent to px-2 in Tailwind */
+  padding-right: 0.5rem;
+  font-weight: 500; /* Equivalent to font-medium in Tailwind */
+  color: #4b5563; /* Equivalent to text-gray-700 in Tailwind */
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+.border-bb {
+  border: 1px solid #d2d4d8 !important;
+}
+.autosearch-activeclass {
+  background-color: #1670a712;
+}
+/* advance css  */
+.search_bars_div {
+  border: 1px solid #d2d4d8 !important;
+}
+
+.border-bb {
+  border: 1px solid #d2d4d8 !important;
+}
+.borderab {
+  border-bottom: 1px solid #ccc !important;
+}
+.searchbarhome {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  min-height: 43px !important;
+}
+
+.overlay-img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+#upload-button {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+input[type="number"]:not(.browser-default):disabled {
+  color: #0000006b;
+}
+
+input[type="number"]:disabled {
+  cursor: not-allowed;
+}
+input:disabled {
+  background-color: #e0f2fe !important;
+}
+#upload-button:hover .overlay-img {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+.bg-sky {
+  background: #f6fafc;
+}
+.bordered {
+  border: 1px solid #d2d4d8;
+}
+.setborderadd table {
+  border: 1px solid #d2d4d8 !important;
+}
+.serachbarzindex {
+  z-index: 999999;
+}
+.customcode .katex-display {
+  all: unset;
+  text-align: center !important;
+  margin: 0 10px !important;
+  display: block !important;
+}
+
+/* .abc_cal div:hover {
+  background-color: #ffffff;
+} */
+
+@keyframes shiny-btn1 {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(50%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* .premium-btn::before {
+  position: absolute;
+  content: "";
+  display: inline-block;
+  top: 0;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: skewX(-45deg);
+  animation: shiny-btn1 2s ease-in-out infinite;
+  z-index: 1;
+} */
+
+/* .pr-btn {
+  position: relative;
+  overflow: hidden;
+} */
+
+/* .premium-btn {
+  position: relative;
+  z-index: 2; 
+} */
+
+.active {
+  background-color: #eef1ff !important;
+  border-radius: 8px;
+}
+
+.input_border {
+  box-shadow: none !important;
+  outline: none !important;
+  border: 1px solid rgb(40 69 245) !important;
+}
+
+.search_bars_div {
+  border: 1px solid #d2d4d8 !important;
+}
+.border-b {
+  border-bottom: 2px solid #ffffff !important;
+}
+
+.blog_detail h2,
+.blog_detail h1,
+.blog_detail h3,
+.blog_detail h4,
+.blog_detail h5 {
+  font-size: 22px !important;
+  font-weight: 700;
+  color: #2845f5;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  /* display: inline-block; 
+  border-bottom: 2px solid #2845f5;
+  padding-bottom: 4px;  */
+}
+
+.blog_detail p {
+  font-size: 18px !important;
+  line-height: 38px;
+  color: #000000;
+}
+
+.blog_detail ul li {
+  font-size: 18px !important;
+  margin-left: 20px;
+  line-height: 38px !important;
+  list-style: disc;
+  color: #000000;
+}
+.blog_detail ul {
+  padding-left: 13px;
+}
+
+.blog_detail a {
+  font-weight: 600;
+  color: #2845f5 !important;
+  line-height: 35px;
+}
+
+.input_form {
+  background-color: #f4f4f4;
+  box-shadow: 0 3px 6px #00000029;
+}
+
+.result_calculator {
+  background-color: #1670a712;
+  box-shadow: 0 3px 6px #00000029;
+}
+
+.border_table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+.border_table td,
+.border_table th {
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: left;
+}
+
+.border_table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.blog_detail table,
+.blog_detail td,
+.blog_detail th {
+  border: 1px solid #9f9d9d;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+}
+
+.blog_detail tr:hover {
+  background-color: #e0e0e0;
+  transition: background-color 0.3s ease;
+}
+
+.blog_detail table thead tr:first-child {
+  background-color: #2845f5;
+  color: white;
+  font-weight: 500 !important;
+}
+
+.blog_detail a {
+  color: #2845f5 !important;
+  text-decoration: underline;
+}
+.blog_detail {
+  padding: 5px;
+  overflow: auto;
+}
+
+.text-background {
+  background-color: rgba(0, 0, 255, 0.6);
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.header_b_border {
+  border: 1px solid;
+  border-image-source: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #e3e3e3 15%,
+    #e4e4e4 50.4%,
+    #e3e3e3 85%,
+    #ffffff 100%
+  );
+  border-image-slice: 1;
+}
+
+/* blog content css  */
+
+/* calculator details css  start */
+
+.content {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+}
+.katex-display {
+  width: 120px !important;
+}
+
+.content p {
+  margin: 10px 0 10px 0;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  line-height: 30px;
+}
+
+.content ul,
+.content ol {
+  padding-left: 20px;
+  margin-left: 20px;
+  padding-bottom: 12px;
+}
+
+.content ul li,
+.content ol li {
+  padding: 5px 0;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  line-height: 30px;
+}
+
+.content ul {
+  list-style-type: disc !important;
+}
+
+.content ol {
+  list-style-type: decimal !important;
+}
+
+.content h2 strong,
+.content h3 strong,
+.content h4 strong,
+.content h2 b,
+.content h3 b,
+.content h4 b {
+  color: #2845f5;
+}
+
+.content h2,
+.content h3,
+.content h4 {
+  font-size: 22px;
+  color: #2845f5;
+  margin: 10px 0 10px 0;
+}
+
+.content table,
+.content td,
+.content th {
+  border: 1px solid #9f9d9d;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.content tr:hover {
+  background-color: #e0e0e0;
+  transition: background-color 0.3s ease;
+}
+
+.content table thead tr:first-child {
+  background-color: #2845f5;
+  color: white;
+  font-weight: 500 !important;
+}
+
+.content a {
+  color: #2845f5 !important;
+  text-decoration: underline;
+}
+/* calculator details css  end */
+
+.tagsUnit {
+  background: #2845f5 !important;
+  color: #ffffff;
+}
+.hover_tags:hover {
+  background: #000000;
+  color: white;
+}
+
+.days_class_active {
+  background: #2845f5;
+  color: #fff;
+}
+
+/* css calculator  */
+/* days until calculator  */
+#current {
+  padding-right: 8px;
+}
+#current::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  font-size: 20px;
+}
+#next {
+  padding-right: 8px;
+}
+#next::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  font-size: 20px;
+}
+.toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0px;
+}
+.toggle-label {
+  display: flex;
+  align-items: center;
+  margin: 0 10px;
+}
+.toggle-switch {
+  position: relative;
+  width: 60px;
+  height: 30px;
+  margin-left: 10px;
+}
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 30px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 24px;
+  width: 24px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: #2845f5;
+}
+input:checked + .slider:before {
+  transform: translateX(30px);
+}
+/* Add time calculator  */
+
+.mera_table table thead tr {
+  margin-top: 10px !important;
+}
+.filled-in {
+  width: 15px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.time_table tbody tr .plus {
+  font-size: 30px;
+  margin-bottom: 12px !important;
+}
+.time_table tbody tr p {
+  font-size: 20px;
+  margin-bottom: 12px !important;
+}
+.mera_table table tr {
+  border-bottom: 0px !important;
+}
+.del_btn {
+  padding: 12px;
+}
+.add {
+  padding-right: 42px;
+}
+.add_btn {
+  border-radius: 10px !important;
+  float: right;
+}
+.khali_div td {
+  padding-top: 0px !important;
+  margin-top: 0px !important;
+}
+td ::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: var(--pClr) !important;
+}
+#remove {
+  cursor: pointer;
+}
+input[type="number"]:disabled {
+  cursor: not-allowed;
+}
+/* .result tr{
+  border-bottom: 2px solid #ddd !important
+} */
+.result tr:last-child {
+  border-bottom: none !important;
+}
+@media (max-width: 480px) {
+  .border_form {
+    padding: 10px !important;
+  }
+  .add {
+    margin-right: 0px !important;
+    margin-top: 10px !important;
+  }
+}
+table tr td {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+td {
+  padding: 15px 5px;
+  display: table-cell;
+  text-align: left;
+  vertical-align: middle;
+  border-radius: 2px;
+}
+.p_5 {
+  padding: 5px;
+}
+.overline {
+  text-decoration: overline 3px;
+}
+.overline:before {
+  content: "\221a";
+  display: inline-block;
+  font-size: 1.1em;
+  padding-right: 0.01rem;
+}
+.fraction {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.5rem 0.3rem 1.3rem;
+  font-size: 0.9em;
+}
+.fraction .num {
+  top: 0;
+  padding: 0 0.3rem;
+  display: block;
+  white-space: nowrap;
+  border-bottom: 1px solid #444;
+}
+.visually-hidden {
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+.fraction .den {
+  line-height: 15px;
+  padding: 0.5rem 0.3rem 0 0.3rem;
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+}
+/* ################################################################ */
+/* resitence */
+/* #################################################################### */
+
+.input-field .fas {
+  right: 33px;
+  font-size: 16px;
+}
+#converter,
+#t3,
+.hide_third,
+.hide_temp {
+  display: none;
+}
+#f_op table tr td {
+  padding: 5px;
+}
+#f_op table tr {
+  border-bottom: none;
+}
+.b_text {
+  color: #000;
+  border: 1px solid #ccc;
+  /*padding: 5px;*/
+}
+.w_text {
+  color: #fff;
+  border: 1px solid #ccc;
+  /*padding: 5px;*/
+}
+.black {
+  background-color: #000;
+}
+.brown {
+  background-color: #964b00;
+}
+.red {
+  background-color: #ff0000;
+}
+.orange {
+  background-color: #ffa500;
+}
+.yellow {
+  background-color: #ffff00;
+}
+.green {
+  background-color: #9acd32;
+}
+.blue {
+  background-color: #6495ed;
+}
+.violet {
+  background-color: #9400d3;
+}
+.grey {
+  background-color: #a0a0a0;
+}
+.white {
+  background-color: #fff;
+}
+.gold {
+  background-color: #cfb53b;
+}
+.silver {
+  background-color: #c0c0c0;
+}
+.over_flow {
+  overflow: auto;
+}
+.main_div {
+  position: relative;
+}
+.color_div {
+  display: inline-block;
+  position: absolute;
+  width: 15px;
+}
+.color1 {
+  left: 109px;
+  top: 0;
+  height: 101px;
+}
+.color2 {
+  top: 10px;
+  left: 160px;
+  height: 82px;
+}
+.color3 {
+  top: 10px;
+  left: 196px;
+  height: 82px;
+}
+.color4 {
+  top: 10px;
+  left: 230px;
+  height: 82px;
+}
+.color5 {
+  top: 10px;
+  left: 312px;
+  height: 82px;
+}
+.color6 {
+  top: 10px;
+  left: 370px;
+  height: 100px;
+}
+.div_center {
+  width: 60%;
+  margin: 0px auto;
+  position: relative;
+}
+@media (max-width: 610px) {
+  .div_center {
+    width: 100%;
+  }
+}
+
+/* Million Billion Lakh & Crore Converter */
+.people_also {
+  border: 1px solid #ddd;
+  padding: 5px 8px;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  font-size: 14px;
+  color: #000000a3;
+  border-radius: 5px;
+  background: #f8f8f8;
+}
+.people_also:hover {
+  background: #0081b0;
+  color: #fff;
+}
+/* Million Billion Lakh & Crore Converter */
+
+/* Square Root Calculator */
+.inp-set1 {
+  width: 120px;
+  float: left;
+  position: absolute;
+  left: -140px;
+  bottom: 14px;
+}
+.sqr {
+  font-size: 3em;
+  position: absolute;
+  left: -22px;
+  bottom: 0px;
+}
+.inp-set2 {
+  width: 58%;
+  border-top: 2px solid #000;
+  padding: 5px 0px 0px 5px;
+  margin-top: 18px;
+  float: right;
+  position: relative;
+}
+.inp-set {
+  width: 100% !important;
+}
+.t-set {
+  margin-top: 15px;
+}
+/* Square Root Calculator */
+
+@keyframes blink {
+  0%,
+  100% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #2845f5;
+  }
+}
+
+/* Laplace Transform Calculator */
+#exampleLoadBtn {
+  animation: blink 1s infinite;
+  border: 2px solid transparent; /* Default border transparent */
+  background: #1670a712;
+  padding: 7px 10px;
+  border-radius: 100px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #000000;
+}
+#exampleLoadBtn svg {
+  transform: rotate(180deg);
+}
+
+/* Laplace Transform Calculator */
+
+/* Inflection Point Calculator */
+
+.res_step ol {
+  list-style-type: decimal;
+  border-left: 1px solid #ff8080;
+  padding: 0 30px;
+}
+.res_step ol ol {
+  list-style-type: upper-alpha;
+  border-left: 1px solid #92d169;
+}
+.res_step ol ol ol {
+  list-style-type: upper-roman;
+  border-left: 1px solid #78bef0;
+}
+.res_step ol ol ol ol {
+  list-style-type: lower-alpha;
+  border-left: 1px solid #cc66c9;
+}
+.res_step ol ol ol ol ol {
+  list-style-type: lower-roman;
+  border-left: 1px solid #f2a279;
+}
+/* Inflection Point Calculator */
+
+/* Double Integral Calculator */
+
+.integral_input {
+  height: 30px;
+  background: var(--white);
+  padding-left: 5px;
+  border: 1px solid #d2d4d8;
+  border-radius: 5px;
+  color: var(--black);
+  font-size: 15px;
+  box-sizing: border-box;
+  width: 35px;
+  outline: 0;
+}
+.integ_symb {
+  font-size: 7rem;
+  line-height: normal;
+}
+.bracket_symbol {
+  font-size: 5rem;
+}
+@media (max-width: 480px) {
+  .integ_symb {
+    font-size: 4rem;
+  }
+  .bracket_symbol {
+    font-size: 3rem;
+  }
+  #lby,
+  #lbx {
+    margin-top: 5px !important;
+  }
+  #ubx,
+  #uby {
+    margin-bottom: 0px !important;
+  }
+}
+.topCancel {
+  top: 0px;
+  right: 0px;
+  background-color: red;
+  border-radius: 50%;
+}
+.topCancel:hover {
+  background-color: rgb(167, 74, 74);
+}
+.object-fit-contain {
+  object-fit: contain;
+}
+.gap-10 {
+  gap: 10px;
+}
+.cropBtn {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+}
+
+.croppie-container {
+  height: auto !important;
+}
+
+.icon_animation {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  height: 80px;
+}
+.icon_animation samp {
+  display: inline-block;
+  position: absolute;
+  left: 0; /* Adjusted to start from the left edge */
+  background: #eef1f5;
+  animation: icon_animation 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+  height: 8px;
+}
+.main_area .icon_sty:hover .icon_animation samp {
+  background: #fff;
+}
+
+.icon_animation samp:nth-child(1) {
+  top: 10px;
+  animation-delay: -0.24s;
+}
+.icon_animation samp:nth-child(2) {
+  top: 28px;
+  left: 0; /* Starts from the left edge */
+  animation-delay: -0.12s;
+}
+.icon_animation samp:nth-child(3) {
+  top: 47px;
+  animation-delay: 0s;
+}
+
+.icon_animation samp:nth-child(4) {
+  top: 66px; /* Adjusted for 4th element */
+  animation-delay: 0.12s; /* Slightly delayed */
+}
+.icon_animation samp:nth-child(5) {
+  top: 85px; /* Adjusted for 5th element */
+  animation-delay: 0.24s; /* Further delayed */
+}
+
+@keyframes icon_animation {
+  0% {
+    left: 0;
+    width: 0;
+  }
+  50%,
+  100% {
+    left: 0; /* Stays at the left edge */
+    width: 100%; /* Expands to full width */
+  }
+}
+
+#responseContainer {
+  line-height: 2;
+}
+.position-absolute {
+  position: absolute;
+}
+/* Double Integral Calculator */
+
+/* Diamond Problem Solver */
+
+.heading > p {
+  position: absolute;
+  left: 120px;
+  top: 0px;
+}
+
+.resh tbody tr,
+td {
+  border: none;
+}
+
+.swann tbody tr,
+td {
+  border: none;
+}
+
+.answer {
+  position: relative;
+  height: 100px;
+  /* this can be anything */
+  width: 100%;
+  /* ...but maintain 1:1 aspect ratio */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.answer::before,
+.answer::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 5px;
+  background-color: #000000;
+}
+
+.answer::before {
+  transform: rotate(45deg);
+}
+
+.answer::after {
+  transform: rotate(-45deg);
+}
+/* Diamond Problem Solver */
+
+.quadratic_fraction {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 0.9em;
+}
+.quadratic_fraction .num {
+  top: 0;
+  padding: 0 0.3rem;
+  display: block;
+  white-space: nowrap;
+  border-bottom: 1px solid black;
+}
+/* Long Multiplication Calculator */
+
+.result .tableAns tr td {
+  border: 1px solid #ddd;
+  padding: 10px 15px;
+}
+.bdr_btm {
+  border-bottom: 3px solid #000 !important;
+}
+.bdr_top {
+  border-top: 3px solid #000 !important;
+}
+
+/* Long Multiplication Calculator */
+
+/* Divisible Calculator */
+
+.result .tableAns tr td {
+  border: 1px solid #ddd;
+  padding: 10px 15px;
+}
+.bdr_btm {
+  border-bottom: 3px solid #000 !important;
+}
+.bdr_top {
+  border-top: 3px solid #000 !important;
+}
+.bdr_rht {
+  border-left: 3px solid #000 !important;
+}
+
+.result .tableAns tr td {
+  border: 1px solid #ddd;
+  padding: 10px 15px;
+}
+
+.bdr_btm {
+  border-bottom: 3px solid #000 !important;
+}
+
+.bdr_top {
+  border-top: 3px solid #000 !important;
+}
+
+.bdr_rht {
+  border-left: 3px solid #000 !important;
+}
+.divisible_calculator tr {
+  border: 1px solid black !important;
+}
+
+.divisible_calculator tr td {
+  border: 1px solid black !important;
+}
+
+/* Divisible Calculator */
+
+/* Order of Operations Calculator */
+.hitman {
+  display: block;
+}
+.dk {
+  margin-bottom: 40px;
+}
+.pp {
+  padding-left: 18px;
+}
+/* /Order of Operations Calculator */
+
+/* Venn Diagram Calculator */
+
+/* //venn Diagram 2 set */
+div.venn {
+  /* width: 32em; */
+  /* margin: 20px 0px 0px 120px; */
+  /* margin: auto; */
+  position: relative;
+  height: 18em;
+  /* background: whitesmoke; */
+}
+
+div.venn .circle {
+  border: 0.2em solid #333;
+  border-radius: 50%;
+  width: 20em;
+  height: 20em;
+  text-align: center;
+  position: absolute;
+}
+
+div.venn .circle p {
+  height: 15em;
+  width: 10em;
+  display: table-cell;
+  vertical-align: middle;
+  /* margin-top: 10%; */
+}
+
+div.venn .circle:nth-child(1) {
+  top: 0;
+  left: 0;
+  background-color: rgba(248, 158, 79, 0.25);
+  height: 78%;
+  width: 45%;
+  text-align: -webkit-center;
+}
+
+div.venn .circle:nth-child(2) {
+  top: 0;
+  left: 11em;
+  background-color: rgba(98, 192, 203, 0.25);
+  height: 78%;
+  width: 45%;
+}
+
+div.venn .circle:nth-child(2) p {
+  position: relative;
+  right: -3em;
+}
+
+div.venn .joined {
+  position: absolute;
+  top: 6em;
+  left: 10em;
+  width: 8em;
+}
+
+div.venn .joined p {
+  height: 10em;
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+  width: 4em;
+}
+
+div#res2 {
+  position: absolute;
+  bottom: 25px;
+  right: 73px;
+}
+div.a10 {
+  position: relative;
+  top: 25px;
+  right: 0px;
+}
+div.aonly {
+  position: absolute;
+  bottom: 55px;
+  left: 45%;
+}
+div.b20 {
+  position: relative;
+  top: 25px;
+  right: 0px;
+}
+div.bonly {
+  position: absolute;
+  bottom: 55px;
+  left: 45%;
+}
+#Infographic {
+  position: relative;
+  width: 25em;
+  margin: 0.5em auto;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  /* background-color: #fff; */
+  height: 20em;
+  margin: auto;
+  margin-top: 90px;
+}
+div.a_only {
+  position: absolute;
+  top: 55px;
+  right: 80px;
+}
+div.b_only {
+  position: absolute;
+  top: 55px;
+  right: 80px;
+}
+div.c_only {
+  position: absolute;
+  top: 90px;
+  right: 80px;
+}
+div#j12 {
+  position: absolute;
+  top: -5px;
+  left: 60px;
+}
+div#j70 {
+  position: absolute;
+  top: 85px;
+  left: -37px;
+}
+div#j60 {
+  position: absolute;
+  top: 85px;
+  right: -30px;
+}
+div#j80 {
+  position: absolute;
+  top: 10px;
+  right: 73px;
+}
+div#j13 {
+  position: absolute;
+  top: -6px;
+  left: -20px;
+}
+div#j23 {
+  position: absolute;
+  top: -7px;
+  left: 70px;
+}
+div.a21 {
+  position: absolute;
+  top: -55px;
+  /* left:70px */
+  left: 160px;
+}
+div.o2 {
+  position: absolute;
+  top: -10px;
+  /* left:20px */
+  left: 235px;
+}
+div.b22 {
+  position: absolute;
+  top: -55px;
+  /* left:70px */
+  right: 140px;
+}
+div.c13 {
+  position: absolute;
+  bottom: -60px;
+  right: 75px;
+}
+div.d10 {
+  position: absolute;
+  bottom: -60px;
+  right: -30px;
+}
+
+#Infographic span {
+  display: none;
+}
+
+.circle {
+  border: 0.2em solid #000;
+  border-radius: 50%;
+  width: 10em;
+  height: 10em;
+  text-align: center;
+  vertical-align: center;
+  position: absolute;
+}
+.circle p {
+  height: 25em;
+  width: 15em;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+#c1 {
+  top: 0;
+  left: 90px;
+  background-color: rgba(255, 0, 0, 0.25);
+}
+
+#c2 {
+  top: 0;
+  left: 12em;
+  background-color: rgba(0, 255, 0, 0.25);
+}
+
+#c2 p {
+  padding-left: 10em;
+}
+
+#c3 {
+  top: 5em;
+  left: 8.5em;
+  background-color: rgba(0, 0, 255, 0.25);
+}
+
+#c3 p {
+  width: 25em;
+  height: 15em;
+  padding-top: 10em;
+}
+
+.joined {
+  position: absolute;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+#j12 {
+  top: 5em;
+  left: 15em;
+  width: 10em;
+  height: 7em;
+  padding-top: 3em;
+}
+
+#j13 {
+  top: 17em;
+  left: 10em;
+  width: 7em;
+  height: 5em;
+  padding-top: 2.5em;
+}
+
+#j23 {
+  top: 17em;
+  left: 23em;
+  width: 7em;
+  height: 5em;
+  padding-top: 2.5em;
+}
+
+#all {
+  top: 15em;
+  left: 15em;
+  width: 10em;
+  height: 5em;
+  padding-top: 1em;
+}
+@media (max-width: 375px) {
+  div.venn {
+    height: 65%;
+    margin: 10px 0px;
+  }
+  #Infographic {
+    width: 15em;
+    margin: 90px 0px 0px -70px;
+  }
+  /* .circle {
+        width: 9em;
+        height: 9em;
+      } */
+}
+@media (max-width: 320px) {
+  div.venn {
+    margin: 10px 0px;
+  }
+  #Infographic {
+    width: 15em;
+    margin: 90px 0px 0px -105px;
+  }
+  /* .circle {
+        width: 9em;
+        height: 9em;
+      } */
+}
+@media (max-width: 375px) {
+  .uclass {
+    margin: 0px !important;
+  }
+  div.venn {
+    margin: 10px 0px;
+  }
+  div.venn .joined {
+    position: absolute;
+    top: 2.5em;
+    left: 4em;
+    width: 20vw;
+  }
+  div#res2 {
+    position: absolute;
+    bottom: 90px;
+    right: 130px;
+  }
+  div.b20 {
+    position: relative;
+    top: 5px;
+    left: 11px;
+  }
+  div.aonly {
+    position: absolute;
+    bottom: 10px;
+    left: 27%;
+  }
+  div.bonly {
+    position: absolute;
+    bottom: 10px;
+    left: 45%;
+  }
+  div.venn .circle:nth-child(2) {
+    top: 0;
+    left: 25vw;
+    height: 7em;
+    width: 30vw;
+  }
+
+  div.venn .circle:nth-child(1) {
+    position: relative;
+    height: 7em;
+    width: 30vw;
+    left: 5vw;
+  }
+  div#res2 {
+    position: absolute;
+    bottom: -10px;
+    right: 15px;
+  }
+}
+
+@media (max-width: 330px) {
+  div.venn {
+    margin: 10px 0px;
+  }
+  div.venn .joined {
+    position: absolute;
+    top: 2.5em;
+    left: 4em;
+    width: 20vw;
+  }
+  div.b20 {
+    position: relative;
+    top: 5px;
+    left: 11px;
+  }
+  div.aonly {
+    position: absolute;
+    bottom: 10px;
+    left: 27%;
+  }
+  div.bonly {
+    position: absolute;
+    bottom: 10px;
+    left: 45%;
+  }
+  div.venn .circle:nth-child(2) {
+    top: 0;
+    left: 25vw;
+    height: 7em;
+    width: 35vw;
+  }
+
+  div.venn .circle:nth-child(1) {
+    position: relative;
+    height: 7em;
+    width: 35vw;
+    left: 5vw;
+  }
+  @media (max-width: 480px) {
+    div.venn {
+      margin: 10px 0px;
+    }
+    #Infographic {
+      width: 15em;
+      margin: 90px 0px 0px -30px;
+    }
+    div.b22 {
+      position: absolute;
+      top: -55px;
+      /* left:70px */
+      right: -40px;
+    }
+  }
+}
+
+/* Venn Diagram Calculator */
+
+.integral_input {
+  height: 30px;
+  background: var(--white);
+  padding-left: 5px;
+  border: 1px solid #d2d4d8;
+  border-radius: 5px;
+  color: var(--black);
+  font-size: 15px;
+  width: 46px !important;
+  outline: 0;
+}
+.integ_symb {
+  font-size: 5rem;
+  line-height: normal;
+}
+
+.bg_blue_g {
+  background-image: linear-gradient(to left, #012432, #02598c);
+}
+.orange_color {
+  color: #cc6e29;
+}
+
+.light-orange {
+  background: #ffe0b2;
+}
+.week_height {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 71.59px;
+  line-height: 50px;
+}
+.border-white {
+  border: 1px solid #fff;
+}
+
+.lighter-blue {
+  background: #e1f5fe;
+}
+.trim_height {
+  height: 215px;
+}
+.light-lime {
+  background: #f0f4c3;
+}
+.green_color {
+  color: #5f6d24;
+}
+.lime {
+  background: #e6ee9c;
+}
+
+.green_color {
+  color: #5f6d24;
+}
+.light-blue {
+  background: #b3e5fc;
+}
+
+.converter_border {
+  border-bottom: 1px solid #d2d4d8;
+}
+.unit-select option {
+  padding: 7px;
+  border-bottom: 1px solid #d2d4d8;
+  color: #000000;
+}

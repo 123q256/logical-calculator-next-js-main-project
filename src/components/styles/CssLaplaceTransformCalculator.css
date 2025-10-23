@@ -1,0 +1,17 @@
+
+  /* Laplace Transform Calculator */
+  #exampleLoadBtn {
+    animation: blink 1s infinite;
+    border: 2px solid transparent; /* Default border transparent */
+    background: #1670a712;
+    padding: 7px 10px;
+    border-radius: 100px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #000000;
+  }
+#exampleLoadBtn svg{
+transform: rotate(180deg);
+}
+
+  /* Laplace Transform Calculator */

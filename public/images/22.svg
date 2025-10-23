@@ -1,0 +1,27 @@
+<svg id="Layer_x0020_1" xmlns="http://www.w3.org/2000/svg" width="330" height="330" viewBox="0 0 330 330">
+  <rect id="Rectangle_8" data-name="Rectangle 8" width="165" height="165" transform="translate(2 1)" fill="#ccc"/>
+  <path id="Path_9" data-name="Path 9" d="M164,164,70,98c-13,20-21,43-21,66Z" fill="#32a0e2" fill-rule="evenodd" opacity="0.3"/>
+  <g id="Group_40" data-name="Group 40">
+    <path id="Path_10" data-name="Path 10" d="M51,156A109.4,109.4,0,0,1,71,98" fill="none" stroke="#32a0e2" stroke-width="3.301" fill-rule="evenodd"/>
+    <g id="Group_25" data-name="Group 25">
+      <path id="Path_11" data-name="Path 11" d="M51,152v-4h1v4Zm-1,13-6-15,15,1Z" fill="#32a0e2"/>
+    </g>
+  </g>
+  <g id="Group_41" data-name="Group 41">
+    <path id="Path_8" data-name="Path 8" d="M65,83a128.675,128.675,0,0,1,57-41,131.858,131.858,0,0,1,168,80c5,13,7,28,7,42" fill="none" stroke="#004e7d" stroke-width="3.301" fill-rule="evenodd"/>
+    <g id="Group_26" data-name="Group 26">
+      <path id="Path_13" data-name="Path 13" d="M68,78l2-3,1,1-2,3ZM60,89l3-15,11,9Z" fill="#004e7d"/>
+    </g>
+  </g>
+  <text id="II" transform="translate(45 66)" font-size="55.9" font-family="ArialMT, Arial"><tspan x="0" y="0">II</tspan></text>
+  <text id="reference" transform="translate(33 204)" fill="#32a0e2" font-size="25.62" font-family="ArialMT, Arial"><tspan x="0" y="0">reference</tspan></text>
+  <text id="angle" transform="translate(56 233)" fill="#32a0e2" font-size="25.62" font-family="ArialMT, Arial"><tspan x="0" y="0">angle</tspan></text>
+  <g id="Group_28" data-name="Group 28">
+    <path id="Path_14" data-name="Path 14" d="M165,0l7,14H158Zm0,330V14h1V330Z"/>
+  </g>
+  <g id="Group_29" data-name="Group 29">
+    <path id="Path_15" data-name="Path 15" d="M317,165H0v-1H317Zm13,0-14,7V157Z"/>
+  </g>
+  <line id="Line_10" data-name="Line 10" x1="139" y1="100" transform="translate(26 65)" fill="none" stroke="#000" stroke-width="1.321"/>
+  <text id="angle-2" data-name="angle" transform="translate(240 41)" fill="#004e7d" font-size="25.62" font-family="ArialMT, Arial"><tspan x="0" y="0">angle</tspan></text>
+</svg>

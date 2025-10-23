@@ -1,0 +1,129 @@
+
+
+    /* resitence */
+
+
+        .input-field .fas{right: 33px;font-size: 16px;}
+    #converter,#t3,.hide_third,.hide_temp{
+      display: none;
+    }
+    #f_op table tr td{
+      padding: 5px;
+    }
+    #f_op table tr{
+      border-bottom: none;
+    }
+    .b_text{
+      color: #000;
+      border: 1px solid #ccc;
+      /*padding: 5px;*/
+    }
+    .w_text{
+      color: #fff;
+      border: 1px solid #ccc;
+      /*padding: 5px;*/
+    }
+    .black{
+      background-color: #000;
+    }
+    .brown{
+      background-color: #964b00;
+    }
+    .red{
+      background-color: #ff0000;
+    }
+    .orange{
+      background-color: #ffa500;
+    }
+    .yellow{
+      background-color: #ffff00;
+    }
+    .green{
+      background-color: #9acd32;
+    }
+    .blue{
+      background-color: #6495ed;
+    }
+    .violet{
+      background-color: #9400d3;
+    }
+    .grey{
+      background-color: #a0a0a0;
+    }
+    .white{
+      background-color: #fff;
+    }
+    .gold{
+      background-color: #cfb53b;
+    }
+    .silver{
+      background-color: #c0c0c0;
+    }
+    .over_flow{
+      overflow: auto;
+    }
+    .main_div{
+      position: relative;
+    }
+    .color_div{
+      display: inline-block;
+      position: absolute;
+      width: 15px;
+    } 
+    .color1{
+      left: 109px;
+      top: 0;
+      /*width: 15px;*/
+      height: 101px;
+      /*background-color: red;*/
+    }
+    .color2{
+      /*position: absolute;*/
+      top: 10px;
+      left: 160px;
+      /*width: 15px;*/
+      height: 82px;
+      /*background-color: green;*/
+    }
+    .color3{
+      /*position: absolute;*/
+      top: 10px;
+      left: 196px;
+      /*width: 15px;*/
+      height: 82px;
+      /*background-color: yellow;*/
+    }
+    .color4{
+      /*position: absolute;*/
+      top: 10px;
+      left: 230px;
+      /*width: 15px;*/
+      height: 82px;
+      /*background-color: blue;*/
+    }
+    .color5{
+      /*position: absolute;*/
+      top: 10px;
+      left: 312px;
+      /*width: 15px;*/
+      height: 82px;
+      /*background-color: brown;*/
+    }
+    .color6{
+      /*position: absolute;*/
+      top: 10px;
+      left: 370px;
+      /*width: 15px;*/
+      height: 100px;
+      /*background-color: pink;*/
+    }
+    .div_center{
+      width: 60%;
+      margin: 0px auto;
+      position: relative;
+    }
+    @media (max-width: 610px){
+      .div_center{
+        width: 100%;
+      }
+    }

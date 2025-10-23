@@ -1,0 +1,197 @@
+
+/* fat body css */
+
+.click_me:hover {
+  background-image: linear-gradient(45deg, #99ea48, #99ea48) !important;
+}
+
+.blue {
+  background: #1565c0;
+}
+.teal {
+  background: #006c61;
+}
+.green {
+  background: #00c853;
+}
+.yellow {
+  background: #fbc02d;
+}
+.red {
+  background: #ff1744;
+}
+.scale-up {
+  transform: scale(1.1);
+}
+@media (max-width: 767px) {
+  .scale-up {
+    transform: scale(1.05);
+  }
+}
+.radius-top {
+  border-radius: 10px 10px 0px 0px;
+}
+.font-s-34 {
+  font-size: 34px;
+}
+.hover_div {
+  transition: transform 0.2s;
+}
+.col-12 {
+  width: 100%;
+}
+.new_table {
+  width: 100%;
+  max-width: 100%;
+  table-layout: fixed; /* Ensures proper distribution of columns */
+}
+
+.font_w {
+  font-weight: bold;
+}
+
+.active_tr {
+  background-image: linear-gradient(45deg, #156ba1d0, #57b4eb) !important;
+}
+.active_tr td {
+  color: white !important;
+}
+.click_me:hover {
+  background-image: linear-gradient(45deg, #99ea48, #99ea48) !important;
+}
+
+.line-height {
+  line-height: 28px;
+}
+.gap-2 {
+  gap: 15px;
+}
+.new_table .click_me:nth-child(odd) {
+  background-color: #1670a712;
+  /* color: #fff; */
+}
+.radius-top {
+  border-radius: 10px 10px 0px 0px;
+}
+.font-s-34 {
+  font-size: 34px;
+}
+.hover_div {
+  transition: transform 0.2s;
+}
+
+.col-12 {
+  width: 100%;
+}
+.new_table {
+  width: 100%;
+  max-width: 100%;
+  table-layout: fixed;
+}
+
+.font_w {
+  font-weight: bold;
+}
+
+.content tbody tr:hover td p {
+  color: white !important;
+}
+
+.text-light-green {
+  color: #84d23c;
+}
+
+/* Apply borders to tbody cells */
+.top-table tbody tr:first-child {
+  border-top: 8px solid white; /* Adds a visual gap */
+}
+.spacer-row td {
+  height: 8px;
+  border: none;
+}
+
+.top-table td {
+  border: 1px solid #d4d4d4;
+}
+
+.table-wrapper {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.statistics td {
+  font-size: 14px;
+}
+
+.br-top {
+  border-radius: 10px 10px 0px 0px;
+}
+
+.first_c {
+  color: #0d47a1;
+  font-weight: bold;
+}
+
+.second_c {
+  color: #00897b;
+  font-weight: bold;
+}
+
+.third_c {
+  color: #00c853;
+  font-weight: bold;
+}
+
+.fourth_c {
+  color: #ab9326;
+  font-weight: bold;
+}
+
+.fifth_c {
+  color: #ff1744;
+  font-weight: bold;
+}
+
+.border-b {
+  border-bottom: 2px solid #f2f2f2;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  margin: auto;
+  padding: 10px;
+  width: 1000px;
+  max-width: 100%;
+  border-radius: 20px;
+}
+
+#method_info_modal .modal-content {
+  width: 400px;
+}
+
+#image_modal .modal-content {
+  width: 300px;
+}
+
+.m-t-35 {
+  margin-top: 35px;
+}
+
+.f-w-600 {
+  font-weight: 600;
+}
+
+/* fat body css */

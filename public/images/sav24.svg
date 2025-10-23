@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 129.6 99.4" style="enable-background:new 0 0 129.6 99.4;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill-rule:evenodd;clip-rule:evenodd;fill:#0072B7;stroke:#000000;stroke-width:1.4155;stroke-miterlimit:1.1324;}
+	.st1{fill:none;stroke:#000000;stroke-width:0.5662;stroke-miterlimit:1.1324;stroke-dasharray:5.6621,2.8311;}
+	.st2{fill:#FFFFFF;}
+	.st3{font-family:'ArialMT';}
+	.st4{font-size:23.9698px;}
+	.st5{fill-rule:evenodd;clip-rule:evenodd;fill:#003849;stroke:#000000;stroke-width:0.5662;stroke-miterlimit:1.1324;}
+	.st6{font-family:'Cambria';}
+	.st7{font-size:17.9773px;}
+</style>
+<g id="Layer_x0020_1">
+	<polygon class="st0" points="1,98.5 22.5,1.1 100,41.9 128.4,98.5 	"/>
+	<line class="st1" x1="1" y1="98.5" x2="100" y2="41.9"/>
+	<line class="st1" x1="22.5" y1="1.1" x2="128.4" y2="98.5"/>
+	<text transform="matrix(1 0 0 1 10.2969 84.6475)" class="st2 st3 st4">e</text>
+	<text transform="matrix(1 0 0 1 32.9453 38.2188)" class="st2 st3 st4">f</text>
+	<path class="st5" d="M79.7,53.5L57.3,66.2c-1.1-4-1.7-8.2-1.7-12.7c0-6.5,1.4-12.7,4-18.4L79.7,53.5z"/>
+	<text transform="matrix(1 0 0 1 58.9902 57.4697)" class="st2 st6 st7">α</text>
+</g>
+</svg>

@@ -1,0 +1,98 @@
+    .icon_animation {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        height: 80px;
+    }
+    .icon_animation samp {
+        display: inline-block;
+        position: absolute;
+        left: 0; /* Adjusted to start from the left edge */
+        background: #EEF1F5;
+        animation: icon_animation 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+        height: 8px;
+    }
+    .main_area .icon_sty:hover .icon_animation samp {
+        background: #fff;
+    }
+
+    .icon_animation samp:nth-child(1) {
+        top: 10px;
+        animation-delay: -0.24s;
+    }
+    .icon_animation samp:nth-child(2) {
+        top: 28px;
+        left: 0; /* Starts from the left edge */
+        animation-delay: -0.12s;
+    }
+    .icon_animation samp:nth-child(3) {
+        top: 47px;
+        animation-delay: 0s;
+    }
+
+    .icon_animation samp:nth-child(4) {
+        top: 66px; /* Adjusted for 4th element */
+        animation-delay: 0.12s; /* Slightly delayed */
+    }
+    .icon_animation samp:nth-child(5) {
+        top: 85px; /* Adjusted for 5th element */
+        animation-delay: 0.24s; /* Further delayed */
+    }
+
+    @keyframes icon_animation {
+        0% {
+            left: 0;
+            width: 0;
+        }
+        50%, 100% {
+            left: 0; /* Stays at the left edge */
+            width: 100%; /* Expands to full width */
+        }
+    }
+
+    #responseContainer{
+        line-height: 2
+    }
+
+    #responseContainer ol,#responseContainer ul{
+        padding-left: 20px
+    }
+
+    .mere_li p, .mere_li li:not(:has(p)){
+        font-size: 17px;
+        letter-spacing: .5px;
+        line-height: 1.5;
+        color: #000000;
+    }
+
+    .mere_li p:not(:first-child),.mere_li ol p,.mere_li ul p, .mere_li li:not(:has(p)) {
+        margin-top: 12px;
+    }
+
+    #responseContainer h3,#responseContainer h2{
+        font-size: 22px;
+        font-weight: 600 !important;
+        margin-top: 12px;
+        letter-spacing: .5px;
+        line-height: 1.5;
+        color: #000000;
+    }
+
+    @keyframes blink {
+    0%, 100% {
+      border-color: transparent;
+    }
+    50% {
+      border-color: #99EA48;
+    }
+  }
+
+  #exampleLoadBtn {
+    animation: blink 1s infinite;
+    border: 2px solid transparent; /* Default border transparent */
+    background: #1670a712;
+    padding: 10x 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #000000;
+  }

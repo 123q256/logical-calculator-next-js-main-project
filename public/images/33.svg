@@ -1,0 +1,27 @@
+<svg id="Layer_x0020_1" xmlns="http://www.w3.org/2000/svg" width="390" height="390" viewBox="0 0 390 390">
+  <rect id="Rectangle_9" data-name="Rectangle 9" width="194" height="194" transform="translate(1 195)" fill="#ccc"/>
+  <path id="Path_16" data-name="Path 16" d="M195,196,84,274c-16-23-25-50-25-78Z" fill="#32a0e2" fill-rule="evenodd" opacity="0.3"/>
+  <g id="Group_30" data-name="Group 30">
+    <path id="Path_18" data-name="Path 18" d="M195,0l9,17H187Zm0,390V16h1V390Z"/>
+  </g>
+  <g id="Group_39" data-name="Group 39">
+    <path id="Path_19" data-name="Path 19" d="M80,265c-14-21-21-45-22-70" fill="none" stroke="#32a0e2" stroke-width="3.902" fill-rule="evenodd"/>
+    <g id="Group_31" data-name="Group 31">
+      <path id="Path_20" data-name="Path 20" d="M77,260l-3-3,1-1,3,4Zm9,14L70,264l14-9Z" fill="#32a0e2"/>
+    </g>
+  </g>
+  <g id="Group_42" data-name="Group 42">
+    <path id="Path_17" data-name="Path 17" d="M65,277a162.2,162.2,0,0,1-23-83c1-85,71-154,157-154,84,1,153,69,153,154" fill="none" stroke="#004e7d" stroke-width="3.902" fill-rule="evenodd"/>
+    <g id="Group_32" data-name="Group 32">
+      <path id="Path_21" data-name="Path 21" d="M61,270l-2-4,1-1,2,5Zm9,14L54,274l15-9Z" fill="#004e7d"/>
+    </g>
+  </g>
+  <text id="III" transform="translate(34 370)" font-size="66.07" font-family="ArialMT, Arial"><tspan x="0" y="0">III</tspan></text>
+  <text id="reference" transform="translate(63 151)" fill="#32a0e2" font-size="30.28" font-family="ArialMT, Arial"><tspan x="0" y="0">reference</tspan></text>
+  <text id="angle" transform="translate(90 185)" fill="#32a0e2" font-size="30.28" font-family="ArialMT, Arial"><tspan x="0" y="0">angle</tspan></text>
+  <line id="Line_11" data-name="Line 11" y1="118" x2="165" transform="translate(30 195)" fill="none" stroke="#000" stroke-width="1.561"/>
+  <text id="angle-2" data-name="angle" transform="translate(283 50)" fill="#004e7d" font-size="30.28" font-family="ArialMT, Arial"><tspan x="0" y="0">angle</tspan></text>
+  <g id="Group_33" data-name="Group 33">
+    <path id="Path_22" data-name="Path 22" d="M374,196H0v-2H374Zm16-1-17,9V187Z"/>
+  </g>
+</svg>

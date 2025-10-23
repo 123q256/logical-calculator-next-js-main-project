@@ -1,0 +1,10 @@
+ <svg width="14" height="13" viewBox="0 0 14 13" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 12.2012H14V13.0004H0V12.2012Z" stroke="currentColor" />
+                    <path d="M4.78321 12.6012H4.10731V6.24649H2.37267V12.6012H1.69678V5.44727H4.78321V12.6012Z"
+                        stroke="currentColor" />
+                    <path d="M8.71826 12.6013H8.04237V4.18985H6.31009V12.6013H5.63184V3.39062H8.71826V12.6013Z"
+                        stroke="currentColor" />
+                    <path d="M12.7026 12.6004H12.0267V0.799226H10.2921V12.6004H9.61621V0H12.7026V12.6004Z"
+                        stroke="currentColor" />
+                </svg>

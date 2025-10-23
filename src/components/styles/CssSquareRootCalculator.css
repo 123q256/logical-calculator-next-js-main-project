@@ -1,0 +1,30 @@
+
+/* Square Root Calculator */
+        .inp-set1{
+    width:120px;
+    float:left;
+    position:absolute;
+    left:-140px;
+    bottom:14px
+	}
+	.sqr{
+    font-size:3em;
+    position:absolute;
+    left:-22px;
+    bottom:0px
+  }
+	.inp-set2{
+    width:58%;
+    border-top:2px solid #000;
+    padding:5px 0px 0px 5px;
+    margin-top:18px;
+		float:right;
+    position:relative
+  }
+  .inp-set{
+  	width:100% !important
+  }
+  .t-set{
+  	margin-top:15px
+  } 
+  /* Square Root Calculator */

@@ -1,0 +1,23 @@
+
+/* Heat Index Calculator */
+
+ .rc {
+      background-color: #fd0100;
+  }
+  .result .tablesx tr td {
+      border: 1px solid #ddd;
+      padding: 5px;
+  }
+  .nela {
+      background-color: #e0e9f9;
+  }
+  .kc {
+      background-color: #fadf52;
+  }
+  .oc {
+      background-color: #eb8d0f;
+  }
+  .kkc {
+      background-color: #fdfc86;
+  }
+/* Heat Index Calculator */

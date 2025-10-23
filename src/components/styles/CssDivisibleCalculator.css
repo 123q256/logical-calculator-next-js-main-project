@@ -1,0 +1,42 @@
+
+/* Divisible Calculator */
+
+   .result .tableAns tr td{ 
+      border: 1px solid #ddd;
+      padding: 10px 15px 
+  }
+  .bdr_btm{
+      border-bottom: 3px solid #000 !important;
+  }
+  .bdr_top{
+      border-top: 3px solid #000 !important;
+  }
+  .bdr_rht{
+      border-left: 3px solid #000 !important;
+  }
+
+    .result .tableAns tr td {
+      border: 1px solid #ddd;
+      padding: 10px 15px
+  }
+
+  .bdr_btm {
+      border-bottom: 3px solid #000 !important;
+  }
+
+  .bdr_top {
+      border-top: 3px solid #000 !important;
+  }
+
+  .bdr_rht {
+      border-left: 3px solid #000 !important;
+  }
+  .divisible_calculator tr{
+    border: 1px solid black!important;
+  }
+  
+  .divisible_calculator tr td{
+    border: 1px solid black!important;
+  }
+  
+  /* Divisible Calculator */

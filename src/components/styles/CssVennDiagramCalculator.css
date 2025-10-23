@@ -1,0 +1,405 @@
+
+      /* Venn Diagram Calculator */
+
+        /* //venn Diagram 2 set */
+    div.venn {
+      /* width: 32em; */
+      /* margin: 20px 0px 0px 120px; */
+      /* margin: auto; */
+      position: relative;
+      height: 18em;
+      /* background: whitesmoke; */
+    }
+  
+    div.venn .circle {
+      border: .2em solid #333;
+      border-radius: 50%;
+      width: 20em;
+      height: 20em;
+      text-align: center;
+      position: absolute;
+    }
+  
+    div.venn .circle p {
+      height: 15em;
+      width: 10em;
+      display: table-cell;
+      vertical-align: middle;
+      /* margin-top: 10%; */
+    }
+  
+    div.venn .circle:nth-child(1) {
+      top: 0;
+      left: 0;
+      background-color: rgba(4248, 158, 79, 0.25);
+      height: 78%;
+      width: 45%;
+      text-align: -webkit-center;
+    }
+  
+    div.venn .circle:nth-child(2) {
+      top: 0;
+      left: 11em;
+      background-color: rgba(98, 192, 203, 0.25);
+      height: 78%;
+      width: 45%;
+  
+    }
+  
+    div.venn .circle:nth-child(2) p {
+      position: relative;
+      right: -3em;
+    }
+  
+    div.venn .joined {
+      position: absolute;
+      top: 6em;
+      left: 10em;
+      width: 8em;
+    }
+  
+    div.venn .joined p {
+      height: 10em;
+      text-align: center;
+      vertical-align: middle;
+      display: table-cell;
+      width: 4em;
+    }
+  
+    div#res2 {
+    position: absolute;
+    bottom: 25px;
+    right:73px
+    }
+    div.a10 {
+    position: relative;
+    top:25px;
+    right: 0px;
+    }
+    div.aonly {
+    position: absolute;
+    bottom:55px;
+    left: 45%;
+    }
+    div.b20 {
+    position: relative;
+    top:25px;
+    right: 0px;
+    }
+    div.bonly {
+    position: absolute;
+    bottom:55px;
+    left: 45%;
+    }
+    #Infographic {
+      position: relative;
+      width: 25em;
+      margin: .5em auto;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: bold;
+      /* background-color: #fff; */
+      height: 20em;
+      margin: auto;
+      margin-top:90px;
+    }
+    div.a_only {
+    position: absolute;
+    top: 55px;
+    right: 80px;
+    }
+    div.b_only {
+    position: absolute;
+    top: 55px;
+    right: 80px;
+    }
+    div.c_only {
+    position: absolute;
+    top: 90px;
+    right: 80px;
+    }
+    div#j12 {
+    position: absolute;
+    top: -5px;
+    left: 60px;
+    }
+    div#j70 {
+    position: absolute;
+    top: 85px;
+    left: -37px
+    }
+    div#j60 {
+    position: absolute;
+    top: 85px;
+    right:-30px
+    }
+    div#j80 {
+    position: absolute;
+    top: 10px;
+    right:73px
+    }
+    div#j13 {
+    position: absolute;
+    top: -6px;
+    left:-20px
+    }
+    div#j23 {
+    position: absolute;
+    top: -7px;
+    left:70px
+    }
+    div.a21 {
+    position: absolute;
+    top: -55px;
+    /* left:70px */
+    left:160px
+    }
+    div.o2 {
+    position: absolute;
+    top: -10px;
+    /* left:20px */
+    left:235px
+    }
+    div.b22 {
+    position: absolute;
+    top: -55px;
+    /* left:70px */
+    right:140px
+    }
+    div.c13 {
+    position: absolute;
+    bottom: -60px;
+    right: 75px;
+    }
+    div.d10 {
+    position: absolute;
+    bottom: -60px;
+    right: -30px;
+    }
+  
+  
+    #Infographic span {
+      display: none;
+    }
+  
+    .circle {
+      border: .2em solid #000;
+      border-radius: 50%;
+      width: 10em;
+      height: 10em;
+      text-align: center;
+      vertical-align: center;
+      position: absolute;
+    }
+    .circle p {
+      height: 25em;
+      width: 15em;
+      display: table-cell;
+      vertical-align: middle;
+    }
+  
+    #c1 {
+      top: 0;
+      left: 90px;
+      background-color: rgba(255, 0, 0, .25);
+    }
+  
+    #c2 {
+      top: 0;
+      left: 12em;
+      background-color: rgba(0, 255, 0, .25);
+    }
+  
+    #c2 p {
+      padding-left: 10em;
+    }
+  
+    #c3 {
+      top: 5em;
+      left: 8.5em;
+      background-color: rgba(0, 0, 255, .25);
+    }
+  
+    #c3 p {
+      width: 25em;
+      height: 15em;
+      padding-top: 10em;
+    }
+  
+    .joined {
+      position: absolute;
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+    }
+  
+    #j12 {
+      top: 5em;
+      left: 15em;
+      width: 10em;
+      height: 7em;
+      padding-top: 3em;
+    }
+  
+    #j13 {
+      top: 17em;
+      left: 10em;
+      width: 7em;
+      height: 5em;
+      padding-top: 2.5em;
+    }
+  
+    #j23 {
+      top: 17em;
+      left: 23em;
+      width: 7em;
+      height: 5em;
+      padding-top: 2.5em;
+    }
+  
+    #all {
+      top: 15em;
+      left: 15em;
+      width: 10em;
+      height: 5em;
+      padding-top: 1em;
+    }
+    @media (max-width: 375px) {
+      div.venn{
+          height: 65%;
+          margin: 10px 0px;
+      }
+      #Infographic {
+      width: 15em;
+      margin: 90px 0px 0px -70px;
+      }
+      /* .circle {
+        width: 9em;
+        height: 9em;
+      } */
+    }
+    @media (max-width: 320px) {
+      div.venn{
+          margin: 10px 0px;
+      }
+      #Infographic {
+      width: 15em;
+      margin: 90px 0px 0px -105px;
+      }
+      /* .circle {
+        width: 9em;
+        height: 9em;
+      } */
+    }
+    @media (max-width: 375px) {
+      .uclass{
+          margin: 0px !important;
+      }
+      div.venn{
+          margin: 10px 0px;
+      }
+      div.venn .joined {
+          position: absolute;
+          top: 2.5em;
+          left: 4em;
+          width: 20vw;
+      }
+      div#res2 {
+      position: absolute;
+      bottom: 90px;
+      right: 130px;
+      }
+      div.b20 {
+      position: relative;
+      top: 5px;
+      left: 11px;
+      }
+        div.aonly {
+        position: absolute;
+        bottom: 10px;
+        left: 27%;
+      }
+      div.bonly {
+        position: absolute;
+        bottom: 10px;
+        left: 45%;
+      }
+      div.venn .circle:nth-child(2) {
+        top: 0;
+        left: 25vw;
+        height: 7em;
+        width: 30vw;
+      }
+  
+      div.venn .circle:nth-child(1) {
+        position: relative;
+        height: 7em;
+        width: 30vw;
+        left: 5vw;
+      }
+      div#res2 {
+        position: absolute;
+        bottom: -10px;
+        right: 15px;
+      }
+     
+  }
+   
+  @media (max-width: 330px) {
+      div.venn{
+          margin: 10px 0px;
+      }
+      div.venn .joined {
+        position: absolute;
+        top: 2.5em;
+        left: 4em;
+        width: 20vw;
+      }
+      div.b20 {
+      position: relative;
+      top: 5px;
+      left: 11px;
+    }
+      div.aonly {
+      position: absolute;
+      bottom: 10px;
+      left: 27%;
+    }
+    div.bonly {
+      position: absolute;
+      bottom: 10px;
+      left: 45%;
+    }
+    div.venn .circle:nth-child(2) {
+      top: 0;
+      left: 25vw;
+      height: 7em;
+      width: 35vw;
+    }
+  
+    div.venn .circle:nth-child(1) {
+      position: relative;
+      height: 7em;
+      width: 35vw;
+      left: 5vw;
+    }
+    @media (max-width: 480px) {
+      div.venn{
+          margin: 10px 0px;
+      }
+      #Infographic {
+      width: 15em;
+      margin: 90px 0px 0px -30px;
+      }
+      div.b22 {
+      position: absolute;
+        top: -55px;
+        /* left:70px */
+        right:-40px
+      }
+    }
+     
+  }
+
+
+
+  /* Venn Diagram Calculator */

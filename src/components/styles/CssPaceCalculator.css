@@ -1,0 +1,67 @@
+
+/* pace calculator */
+
+.pace_border::after {
+  content: "";
+  background: var(--white);
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  border-radius: 20px;
+  border: 1px solid #d0cfcf;
+}
+.pace_tab.active {
+  border-bottom: 3px solid blue;
+  z-index: 2;
+}
+.pace_tab.active::after {
+  content: "";
+  background: blue;
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  bottom: -6px;
+  right: 46%;
+  transform: rotate(45deg);
+  z-index: 2;
+}
+.pacetabs {
+  position: absolute;
+  top: -36px;
+  left: 4%;
+}
+@media (max-width: 991px) {
+  .pacetabs {
+    left: 0;
+  }
+}
+.table-p-2 tr td {
+  padding: 2px !important;
+}
+input[type="number"]:disabled,
+input[type="text"]:disabled {
+  cursor: not-allowed;
+}
+.roll_val_9,
+.roll_val_8,
+.roll_val_7,
+.coin_val_7,
+.coin_val_8,
+.coin_val_9 {
+  display: none;
+}
+.border-0 {
+  border: 0;
+}
+@media (max-width: 991px) {
+  .border-md-b {
+    border-bottom: 2px solid white;
+  }
+}
+@media (max-width: 575px) {
+  .radius-sm-10 {
+    border-radius: 10px;
+  }
+}
+/* pace calculator */

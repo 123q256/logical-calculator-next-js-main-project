@@ -1,0 +1,148 @@
+
+/* add time */
+.mera_table table thead tr {
+  margin-top: 10px !important;
+}
+.filled-in {
+  width: 15px;
+  height: auto;
+  margin-right: 10px;
+}
+/* [type="checkbox"] + span:not(.lever) {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+} */
+
+input[type="number"]:not(.browser-default):disabled {
+  color: rgba(0, 0, 0, 0.42);
+}
+.time_table tbody tr .plus {
+  font-size: 30px;
+  margin-bottom: 12px !important;
+}
+.time_table tbody tr p {
+  font-size: 20px;
+  margin-bottom: 12px !important;
+}
+.mera_table table tr {
+  border-bottom: 0px !important;
+}
+.del_btn {
+  padding: 12px;
+}
+.add {
+  padding-right: 42px;
+}
+.add_btn {
+  border-radius: 10px !important;
+  float: right;
+}
+.khali_div td {
+  padding-top: 0px !important;
+  margin-top: 0px !important;
+}
+td ::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: var(--pClr) !important;
+}
+#remove {
+  cursor: pointer;
+}
+input[type="number"]:disabled {
+  cursor: not-allowed;
+}
+/* .result tr {
+  border-bottom: 2px solid #ddd !important;
+} */
+.result tr:last-child {
+  border-bottom: none !important;
+}
+@media (max-width: 480px) {
+  .border_form {
+    padding: 10px !important;
+  }
+  .add {
+    margin-right: 0px !important;
+    margin-top: 10px !important;
+  }
+}
+table tr td {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  /* border: 1px solid black!important; */
+}
+td {
+  padding: 15px 5px;
+  display: table-cell;
+  text-align: left;
+  vertical-align: middle;
+  border-radius: 2px;
+}
+.p_5 {
+  padding: 5px;
+}
+
+.fraction {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.5rem 0.3rem 1.3rem;
+  font-size: 0.9em;
+}
+.fraction .num {
+  top: 0;
+  padding: 0 0.3rem;
+  display: block;
+  white-space: nowrap;
+  border-bottom: 1px solid #444;
+}
+.visually-hidden {
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+.fraction .den {
+  line-height: 15px;
+  padding: 0.5rem 0.3rem 0 0.3rem;
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.clr_0 th,
+.clr_0 td {
+  color: #dac600;
+}
+.clr_1 th,
+.clr_1 td {
+  color: #c0627a;
+}
+.clr_2 th,
+.clr_2 td {
+  color: #62d616;
+}
+.clr_3 th,
+.clr_3 td {
+  color: #328210;
+}
+.clr_4 th,
+.clr_4 td {
+  color: #292828;
+}
+.bggreen_implantation_calculator thead {
+  background: #99ea48 !important;
+}
+.dihybrid-cross-calculator {
+  width: 100% !important;
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1"
+	 id="svg38" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 128.8 80.1"
+	 style="enable-background:new 0 0 128.8 80.1;" xml:space="preserve">
+<style type="text/css">
+	.st0{font-family:'MyriadPro-Regular';}
+	.st1{font-size:23.9926px;}
+	
+		.st2{fill-rule:evenodd;clip-rule:evenodd;fill:#FFEBD6;stroke:#000000;stroke-width:0.5527;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st3{font-family:'Cambria';}
+	.st4{font-size:12px;}
+	.st5{fill:none;stroke:#1E5B80;stroke-width:1.5277;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	
+		.st6{fill-rule:evenodd;clip-rule:evenodd;stroke:#000000;stroke-width:0.5527;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st7{fill:none;stroke:#000000;stroke-width:1.5;stroke-miterlimit:10;}
+</style>
+<sodipodi:namedview  bordercolor="#666666" borderopacity="1" gridtolerance="10" guidetolerance="10" id="namedview40" inkscape:current-layer="Layer_x0020_1" inkscape:cx="175.11806" inkscape:cy="142.75693" inkscape:pageopacity="0" inkscape:pageshadow="2" inkscape:window-height="1017" inkscape:window-maximized="1" inkscape:window-width="1920" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:zoom="2.0215707" objecttolerance="10" pagecolor="#ffffff" showgrid="false">
+	</sodipodi:namedview>
+<g id="Layer_x0020_1" transform="translate(141.16699,-776.38026)">
+	<text id="text35" transform="matrix(1 0 0 1 -48.7656 856.5238)" class="st0 st1">r</text>
+	
+		<path id="path851-1" sodipodi:cx="413.14496" sodipodi:cy="1330.8014" sodipodi:end="0" sodipodi:rx="162.85562" sodipodi:ry="158.28772" sodipodi:start="3.1415927" sodipodi:type="arc" class="st2" d="
+		M-95.7,840.8c0-10.2,8.5-18.4,18.9-18.4l0,0c10.4,0,18.9,8.2,18.9,18.4l0,0h-18.9H-95.7z"/>
+	<text id="text33" transform="matrix(1 0 0 1 -87.6113 837.6854)" class="st3 st4">180°</text>
+	
+		<path id="path851" sodipodi:cx="413.14496" sodipodi:cy="1330.8014" sodipodi:end="0" sodipodi:rx="547.8429" sodipodi:ry="547.8429" sodipodi:start="3.1415927" sodipodi:type="arc" class="st5" d="
+		M-140.4,840.8c0-35.1,28.5-63.6,63.6-63.6s63.6,28.5,63.6,63.6h-63.6H-140.4z"/>
+	<circle id="path885" class="st6" cx="-76.8" cy="840.8" r="0.7"/>
+	<path id="path889" inkscape:connector-curvature="0" class="st7" d="M-76.8,840.8h62.8"/>
+</g>
+</svg>

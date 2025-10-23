@@ -1,0 +1,98 @@
+
+
+/* Pregnancy Calculator */
+    .calender_val{
+            position: absolute;
+            top: 17px;
+            left: 11.5px
+        }
+        .inner_line{
+            position: absolute;
+            bottom: 3px;
+            height: 4px;
+            background: #fff;
+        }
+        .r_line,.r_line2,.r_line3{
+            position: absolute;
+            bottom: 3px;
+            height: 4px;
+            background: #1670a7;
+            width: 0px;
+            height: 7px;
+            border-radius: 10px
+        }
+        .r_line{
+            width: 10px;
+        }
+        .p_line{
+            width: 100%;
+            height: 50px;
+            position: relative;
+            margin-top: -20px;
+            z-index: 0;
+        }
+        .res_img,.res_img1,.res_img2{
+            position: relative;
+            left: 0px;
+            top: 12px;
+            width: 23%;
+            height: 100%;
+        }
+        .p_res_img,.p_res_img1,.p_res_img2{
+            position: absolute;
+            z-index: 3333;
+            left: -12px;
+        }
+        .p_res_img1,.p_res_img2{
+            display: none;
+        }
+        .trim_height{
+            height: 215px;
+        }
+        .week_height{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 71.59px;
+            line-height: 50px;
+        }
+        .orange_color{
+            color: #000000;
+        }
+        .green_color{
+            color: #ffffff;
+        }
+        .orange{
+            background: #FFCC80
+        }
+        .light-orange{
+            background: #ffffff
+        }
+        .lime{
+            background: #3b4c28
+        }
+        .light-lime{
+            background: #3b4c28
+        }
+        .light-blue{
+            background: #2e9080
+        }
+        .lighter-blue{
+            background: #2e9080
+        }
+        .bg_blue_g{
+            background-image: linear-gradient(to left,#012432,#02598c)
+        }
+        .grey{
+            background: #eee
+        }
+        .color_gray{
+            color: #666666
+        }
+        .bg-dark-blue {
+        background: #094365;
+    }
+    .text-white {
+    color: white!important;
+    }
+    /* Pregnancy Calculator */

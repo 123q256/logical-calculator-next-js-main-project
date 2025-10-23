@@ -1,0 +1,27 @@
+<svg id="Layer_x0020_1" xmlns="http://www.w3.org/2000/svg" width="330" height="330" viewBox="0 0 330 330">
+  <rect id="Rectangle_10" data-name="Rectangle 10" width="163" height="163" transform="translate(166 165)" fill="#ccc"/>
+  <path id="Path_23" data-name="Path 23" d="M167,164l94,66a116.715,116.715,0,0,0,20-66Z" fill="#32a0e2" fill-rule="evenodd" opacity="0.3"/>
+  <g id="Group_34" data-name="Group 34">
+    <path id="Path_25" data-name="Path 25" d="M317,165H0v-1H317Zm13,0-14,7V157Z"/>
+  </g>
+  <g id="Group_35" data-name="Group 35">
+    <path id="Path_26" data-name="Path 26" d="M165,0l7,14H158Zm0,330V14h1V330Z"/>
+  </g>
+  <g id="Group_43" data-name="Group 43">
+    <path id="Path_27" data-name="Path 27" d="M282,173c-2,18-7,35-17,51-1,2-3,4-4,7" fill="none" stroke="#32a0e2" stroke-width="3.301" fill-rule="evenodd"/>
+    <g id="Group_36" data-name="Group 36">
+      <path id="Path_28" data-name="Path 28" d="M281,178v4h-1v-4Zm0-13,7,14H274Z" fill="#32a0e2"/>
+    </g>
+  </g>
+  <g id="Group_44" data-name="Group 44">
+    <path id="Path_24" data-name="Path 24" d="M270,245a119.714,119.714,0,0,1-60,44c-68,25-143-11-167-79C18,142,54,67,122,42a131.858,131.858,0,0,1,168,80c5,13,7,28,7,42" fill="none" stroke="#004e7d" stroke-width="3.301" fill-rule="evenodd"/>
+    <g id="Group_37" data-name="Group 37">
+      <path id="Path_29" data-name="Path 29" d="M266,251l-2,4-1-1,2-4Zm7-12-2,16-12-7Z" fill="#004e7d"/>
+    </g>
+  </g>
+  <text id="IV" transform="translate(259 313)" font-size="55.9" font-family="ArialMT, Arial"><tspan x="0" y="0">IV</tspan></text>
+  <text id="reference" transform="translate(176 126)" fill="#32a0e2" font-size="25.62" font-family="ArialMT, Arial"><tspan x="0" y="0">reference</tspan></text>
+  <text id="angle" transform="translate(199 155)" fill="#32a0e2" font-size="25.62" font-family="ArialMT, Arial"><tspan x="0" y="0">angle</tspan></text>
+  <line id="Line_12" data-name="Line 12" x2="139" y2="96" transform="translate(166 165)" fill="none" stroke="#000" stroke-width="1.321"/>
+  <text id="angle-2" data-name="angle" transform="translate(240 41)" fill="#004e7d" font-size="25.62" font-family="ArialMT, Arial"><tspan x="0" y="0">angle</tspan></text>
+</svg>

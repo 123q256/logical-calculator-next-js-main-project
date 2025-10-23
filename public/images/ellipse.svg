@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 128.6 75.4" style="enable-background:new 0 0 128.6 75.4;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#1E5B80;stroke-width:1.4172;stroke-miterlimit:10;}
+	.st1{fill:none;stroke:#000000;stroke-width:0.5669;stroke-miterlimit:10;}
+	.st2{font-family:'MyriadPro-Regular';}
+	.st3{font-size:23.9987px;}
+</style>
+<g id="Layer_x0020_1">
+	<ellipse class="st0" cx="64.3" cy="37.7" rx="63.6" ry="37"/>
+	<line class="st1" x1="0.7" y1="37.7" x2="127.9" y2="37.7"/>
+	<line class="st1" x1="64.4" y1="0.9" x2="64.4" y2="74.7"/>
+	<g>
+		<path d="M55.9,0.9L59,7.1h-6.2L55.9,0.9z M55.6,32V6.8h0.6V32H55.6z M55.9,37.8l-3.1-6.2H59L55.9,37.8z"/>
+	</g>
+	<g>
+		<path d="M0.7,46.2l6.2-3.1v6.2L0.7,46.2z M58.5,46.5H6.5v-0.6h51.9V46.5z M64.3,46.2l-6.2,3.1v-6.2L64.3,46.2z"/>
+	</g>
+	<text transform="matrix(1 0 0 1 31.1816 66.877)" class="st2 st3">b</text>
+	<text transform="matrix(1 0 0 1 40.5059 25.8052)" class="st2 st3">a</text>
+</g>
+</svg>

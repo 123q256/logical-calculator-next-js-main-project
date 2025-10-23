@@ -1,0 +1,79 @@
+
+/* Calorie Deficit Calculator */
+
+       @media (max-width: 520px) {
+        .calculator-box{
+            padding-right: 0rem;
+            padding-left: 0rem;
+        }
+        .border-end-cus{
+           border-bottom: 1px solid gainsboro; 
+        }
+    }
+    @media (min-width: 520px) {
+        .border-end-cus{
+           border-right: 1px solid gainsboro; 
+        }
+    }
+    .calo{
+        font-size: 10px;
+    }
+	.loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		transition: 0.5s;
+        position: absolute;
+		top: 0;
+		width: 95.5%;
+		height: 100%
+	}
+    .text-orange{
+        color: #ff4500c4;
+    }
+	.loading::after {
+		content: "";
+		width: 37.6px;
+		height: 37.6px;
+		border: 8px solid #bbdbfc;
+		border-top-color: #99EA48;
+		border-radius: 50%;
+		animation: loading 1s linear infinite
+	}
+	@keyframes loading {
+		to {
+			transform: rotate(1turn)
+		}
+	}
+	/* .load_content {
+		transition: 0.5s;
+		opacity: 0
+	} */
+	.active_tr{
+        background-image: linear-gradient(45deg, #99EA48, #57b4eb) !important;
+	}
+    .active_tr td{
+		color: white !important;
+	}
+	.click_me:hover{
+        background-image: linear-gradient(45deg, #99EA48, #57b4eb);
+        /* color: white !important; */
+	}
+    .click_me:hover td{
+        color: white !important;
+	}
+    .line-height{
+        line-height: 28px;
+    }
+    .gap-2{
+        gap: 15px;
+    }
+    tbody .click_me:nth-child(even) {
+        background-color: #1670a712;
+        /* color: #fff; */
+    }
+    .radius-top{
+        border-radius: 10px 10px 0px 0px;
+
+    }
+/* Calorie Deficit Calculator */
