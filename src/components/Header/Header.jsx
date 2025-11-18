@@ -479,12 +479,12 @@ const Header = () => {
             >
               Search
             </button>
-            <a
+            {/* <a
               href="/login"
               className="bg-transparent border border-black items-center font-[700] hover:border-[#2845F5] text-[#000] hover:bg-[#2845F5] hover:text-white duration-200 text-[14px] rounded-[25px] px-4 py-3"
             >
               Sign In
-            </a>
+            </a> */}
           </div>
         </div>
       <div className="header_b_border" />

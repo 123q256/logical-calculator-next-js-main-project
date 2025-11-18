@@ -201,7 +201,7 @@ const MobileNav = ({ onClose, isOpen, dropdownRef }) => {
           ))}
 
           {/* Sign In */}
-          <li>
+          {/* <li>
             <a
               href="/login"
               onClick={onClose}
@@ -224,10 +224,10 @@ const MobileNav = ({ onClose, isOpen, dropdownRef }) => {
               </svg>
               <span className="flex-1 ms-3 whitespace-nowrap">Sign In</span>
             </a>
-          </li>
+          </li> */}
 
           {/* Sign Up */}
-          <li>
+          {/* <li>
             <a
               href="/signup"
               onClick={onClose}
@@ -246,7 +246,7 @@ const MobileNav = ({ onClose, isOpen, dropdownRef }) => {
               </svg>
               <span className="flex-1 ms-3 whitespace-nowrap">Sign Up</span>
             </a>
-          </li>
+          </li> */}
         </ul>
       </div>
     </div>

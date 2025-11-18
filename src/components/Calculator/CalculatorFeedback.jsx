@@ -188,7 +188,7 @@ const CalculatorFeedback = ({ page, device, calName, likes, dislikes }) => {
               </svg>
             </button>
             {/* Modal Title */}
-            <hp className="text-xl font-bold text-center mb-4">
+            <div className="text-xl font-bold text-center mb-4">
               Share your Result
               <p />
               <p className="text-center text-xl mb-6 font-medium text-gray-800" />
@@ -294,7 +294,7 @@ const CalculatorFeedback = ({ page, device, calName, likes, dislikes }) => {
                   <img src="/images_app/copy.svg" alt="" />
                 </button>
               </div>
-            </hp>
+            </div>
           </div>
         </div>
       )}

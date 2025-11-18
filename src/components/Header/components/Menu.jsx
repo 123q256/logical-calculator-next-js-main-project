@@ -91,7 +91,7 @@ const Menu = ({ setShowTools, showTools, toggleTools }) => {
       </li>
 
       {/* TOOLS */}
-      <li className="hidden lg:block relative">
+      {/* <li className="hidden lg:block relative">
         <button
           ref={buttonRef}
           onClick={(e) => {
@@ -124,7 +124,7 @@ const Menu = ({ setShowTools, showTools, toggleTools }) => {
             />
           </svg>
         </button>
-      </li>
+      </li> */}
 
       {/* CATEGORIES */}
       <li className="relative">
@@ -232,24 +232,24 @@ const Menu = ({ setShowTools, showTools, toggleTools }) => {
       </li>
 
       {/* SIGN UP (Mobile Only) */}
-      <li className="lg:hidden block mt-2">
+      {/* <li className="lg:hidden block mt-2">
         <a
           href="/register"
           className="block text-center px-4 py-2 text-white bg-[#1A1A1A] hover:bg-[#2845F5] rounded-md"
         >
           Sign Up
         </a>
-      </li>
+      </li> */}
 
       {/* SIGN IN (Mobile Only) */}
-      <li className="lg:hidden block mt-2">
+      {/* <li className="lg:hidden block mt-2">
         <a
           href="/login"
           className="block text-center px-4 py-2 border border-black text-black hover:text-white hover:bg-[#2845F5] hover:border-[#2845F5] rounded-md"
         >
           Sign In
         </a>
-      </li>
+      </li> */}
     </ul>
   );
 };
