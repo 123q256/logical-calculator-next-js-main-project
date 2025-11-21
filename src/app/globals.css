@@ -323,7 +323,7 @@ input:disabled {
 
 /* Overall Container */
 .blog_detail {
-  padding: 20px;
+  padding: 1px 10px;
   overflow: auto;
   font-family: "Inter", sans-serif;
   color: #222;
@@ -338,7 +338,7 @@ input:disabled {
 .blog_detail h5 {
   font-weight: 700;
   color: #2845f5;
-  margin-top: 25px;
+  margin-top: 1px;
   margin-bottom: 15px;
   line-height: 1.3;
 }
@@ -536,7 +536,7 @@ input:disabled {
 .content h4 {
   font-weight: 700;
   color: #2845f5;
-  margin: 25px 0 10px 0;
+  margin: 1px 0 10px 0;
   line-height: 1.3;
 }
 
