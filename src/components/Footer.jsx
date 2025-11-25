@@ -168,9 +168,9 @@ const Footer = () => {
         <hr className="my-6 w-full border-white lg:my-8" />
         <div className="sm:flex sm:items-center sm:justify-center">
           <span className="text-[16px] text-[#AEAEAE] sm:text-center">
-            © 2025{" "}
+             © {new Date().getFullYear()}{" "}
             <a href="/" className="hover:underline">
-              Calculator Logical
+              &nbsp; Calculator Logical
             </a>
             . All Rights Reserved.
           </span>
