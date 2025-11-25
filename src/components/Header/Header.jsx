@@ -290,6 +290,34 @@ const Header = () => {
   const showNext = () => {
     setStartIndex(Math.min(startIndex + visible, categories.length - visible));
   };
+
+  // Search btn fixed
+  const [isFixed, setIsFixed] = useState(false);
+  const SCROLL_THRESHOLD = 300; // px
+  const MOBILE_BREAKPOINT = 768; // px
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerWidth > MOBILE_BREAKPOINT) {
+        setIsFixed(window.scrollY > SCROLL_THRESHOLD);
+      } else {
+        setIsFixed(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleScroll);
+
+    // Initial check
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
+  // Search btn fixed
+
   return (
     <>
       <nav className="bg-white">
@@ -475,7 +503,14 @@ const Header = () => {
               onClick={() => {
                 setIsSearchOpen(true);
               }}
-              className="open-modal premium-btn11 bg-[#1A1A1A]  text-[#fff] hover:bg-[#2845F5] hover:text-white duration-200 font-[600] text-[14px] rounded-[25px] px-4 py-3 cursor-pointer"
+              className={`open-modal premium-btn11 cursor-pointer
+          bg-[#1A1A1A] text-[#fff] hover:bg-[#2845F5] hover:text-white duration-200 
+          font-[600] text-[14px] rounded-[25px] px-4 py-3
+          ${
+            isFixed
+              ? "fixed top-[15px] right-[15px] bottom-auto z-50"
+              : "relative"
+          }`}
             >
               Search
             </button>
@@ -487,7 +522,7 @@ const Header = () => {
             </a> */}
           </div>
         </div>
-      <div className="header_b_border" />
+        <div className="header_b_border" />
         {isSearchOpen && (
           <SearchBar
             onClose={() => setIsSearchOpen(false)}

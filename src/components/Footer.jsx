@@ -170,7 +170,7 @@ const Footer = () => {
           <span className="text-[16px] text-[#AEAEAE] sm:text-center">
              © {new Date().getFullYear()}{" "}
             <a href="/" className="hover:underline">
-              &nbsp; Calculator Logical
+               Calculator Logical
             </a>
             . All Rights Reserved.
           </span>
