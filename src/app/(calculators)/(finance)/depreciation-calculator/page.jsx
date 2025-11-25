@@ -280,7 +280,7 @@ const DepreciationCalculator = () => {
                   id="imperial"
                 >
                   <a
-                    href="/calculator/depreciation-calculator"
+                    href="/depreciation-calculator"
                     className="text-decoration-none col-4 py-2  cursor-pointer radius-5 test11"
                   >
                     {" "}
@@ -294,7 +294,7 @@ const DepreciationCalculator = () => {
                   id="metric"
                 >
                   <a
-                    href="/calculator/car-depreciation-calculator"
+                    href="/car-depreciation-calculator"
                     className="text-decoration-none col-4 py-2  cursor-pointer radius-5 test12"
                   >
                     {" "}
@@ -308,7 +308,7 @@ const DepreciationCalculator = () => {
                   id="metric"
                 >
                   <a
-                    href="/calculator/property-depreciation-calculator"
+                    href="/property-depreciation-calculator"
                     className="text-decoration-none col-4 py-2 cursor-pointer radius-5 test13"
                   >
                     {" "}
