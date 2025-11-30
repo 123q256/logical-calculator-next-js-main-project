@@ -1274,7 +1274,7 @@ const WeightLossCalculator = () => {
                             {data?.payload?.tech_lang_keys[132]}
                           </strong>
                         </p>
-                        <div className="bg-[#ffffff] rounded-[10px] pb-2">
+                        {/* <div className="bg-[#ffffff] rounded-[10px] pb-2">
                           <div
                             style={{
                               width: "100%",
@@ -1284,7 +1284,7 @@ const WeightLossCalculator = () => {
                           >
                             <Line data={datachart} options={options} />
                           </div>
-                        </div>
+                        </div> */}
                       </div>
 
                       <div className="col-12 mt-3">
