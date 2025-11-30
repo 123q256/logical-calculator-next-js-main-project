@@ -80,6 +80,9 @@
 .pace_border {
   border-bottom: 3px solid #2845f5;
 }
+.border_black {
+  border-bottom: 1px solid #000000;
+}
 
 @keyframes blink {
   0%,
@@ -204,7 +207,7 @@ textarea {
 .border-bb {
   border: 1px solid #d2d4d8 !important;
 }
-.borderbblack{
+.borderbblack {
   border-bottom: 1px solid #d2d4d8 !important;
 }
 .autosearch-activeclass {
@@ -405,8 +408,6 @@ input:disabled {
   padding: 6px 0;
 }
 
-
-
 /* Anchor Links */
 .blog_detail a {
   font-weight: 600;
@@ -464,7 +465,6 @@ input:disabled {
   font-weight: bold;
 }
 
-
 .text-background {
   background-color: rgba(0, 0, 255, 0.6);
   padding: 10px 20px;
@@ -485,7 +485,6 @@ input:disabled {
   );
   border-image-slice: 1;
 }
-
 
 /* calculator details css  start */
 /* MAIN CONTENT WRAPPER */
@@ -531,8 +530,6 @@ input:disabled {
   padding: 6px 0;
 }
 
-
-
 .content ul li {
   padding: 6px 0;
   font-size: 18px;
@@ -543,7 +540,6 @@ input:disabled {
 .content ul {
   list-style-type: disc !important;
 }
-
 
 /* HEADINGS */
 .content h2,

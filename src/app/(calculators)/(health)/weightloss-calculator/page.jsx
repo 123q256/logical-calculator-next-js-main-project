@@ -626,7 +626,7 @@ const WeightLossCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-4"
+                        className="absolute cursor-pointer text-sm underline right-6 top-5"
                         onClick={toggleDropdown}
                       >
                         {formData.tech_unit_h} ▾
@@ -1076,7 +1076,7 @@ const WeightLossCalculator = () => {
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
-                      <div className="bordered bg-sky rounded-lg p-4 flex flex-col justify-between">
+                      <div className="bordered bg-white rounded-lg p-4 flex flex-col justify-between">
                         <div>
                           <p>
                             <strong className="text-blue border-b border-blue-500 text-lg">
@@ -1115,7 +1115,7 @@ const WeightLossCalculator = () => {
                         </div>
                       </div>
 
-                      <div className="bordered bg-sky rounded-lg p-4 flex flex-col justify-between">
+                      <div className="bordered bg-white rounded-lg p-4 flex flex-col justify-between">
                         <div>
                           <p>
                             <strong className="text-blue border-b border-blue-500 text-lg">
@@ -1161,14 +1161,14 @@ const WeightLossCalculator = () => {
 
                   <div className="col-12 bg-light-blue result md:p-3 mt-3">
                     <div className="w-full ">
-                      <div className="bg-sky bordered rounded-lg px-3 py-2  overflow-auto mt-3">
+                      <div className="bg-white bordered rounded-lg px-3 py-2  overflow-auto mt-3">
                         <table className="w-full" cellSpacing="0">
                           <tbody>
                             <tr>
-                              <td className="border-bottom py-2">
+                              <td className="border_black py-2">
                                 Maintain weight
                               </td>
-                              <td className="border-bottom py-2 text-end">
+                              <td className="border_black py-2 text-end">
                                 <strong className="font-s-18">
                                   {Number(result?.tech_Calories)}
                                 </strong>
@@ -1177,13 +1177,13 @@ const WeightLossCalculator = () => {
                             </tr>
 
                             <tr>
-                              <td className="border-bottom py-2">
+                              <td className="border_black py-2">
                                 Mild Weight Loss
                                 {result?.tech_submit === "lbs"
                                   ? "( 0.5 lb/week )"
                                   : "( 0.25 kg/week )"}
                               </td>
-                              <td className="border-bottom py-2 text-end">
+                              <td className="border_black py-2 text-end">
                                 {(() => {
                                   const calorieReduction =
                                     result?.tech_submit === "lbs"
@@ -1207,13 +1207,13 @@ const WeightLossCalculator = () => {
                             </tr>
 
                             <tr>
-                              <td className="border-bottom py-2">
+                              <td className="border_black py-2">
                                 Weight Loss
                                 {result?.tech_submit === "lbs"
                                   ? "( 1 lb/week )"
                                   : "( 0.5 kg/week )"}
                               </td>
-                              <td className="border-bottom py-2 text-end">
+                              <td className="border_black py-2 text-end">
                                 {(() => {
                                   const calorieReduction =
                                     result?.tech_submit === "lbs"
@@ -1294,7 +1294,7 @@ const WeightLossCalculator = () => {
                           </strong>
                         </p>
 
-                        <div className="bg-sky bordered rounded-lg p-3 mt-2">
+                        <div className="bg-white bordered rounded-lg p-3 mt-2">
                           <div className="row align-items-center">
                             <p className="col-md-6">
                               <strong className="text-blue">
@@ -1303,7 +1303,7 @@ const WeightLossCalculator = () => {
                             </p>
 
                             <div className="col-md-6">
-                              <div className="col-md-9 ms-auto">
+                              <div className="col-md-9 ms-auto result_custom_inputs mt-2">
                                 <select
                                   name="time_duration"
                                   id="time_duration"
@@ -1386,7 +1386,7 @@ const WeightLossCalculator = () => {
 
                                           return (
                                             <tr key={index}>
-                                              <td className="col-span-10 border-b border-e py-3 pe-3 flex items-center">
+                                              <td style={{ display: "flex" }} className="col-span-10 border_black  py-3 pe-3 flex items-center">
                                                 <img
                                                   src={`/images/res_icons/${imageName}.svg`}
                                                   alt={`${firstPart} icon`}
@@ -1494,13 +1494,13 @@ const WeightLossCalculator = () => {
 
                     <div className="overflow-auto bg-blue-50 border border-blue-200 rounded-xl shadow-sm">
                       <table className="min-w-full text-left text-sm text-gray-700">
-                        <thead className="bg-blue-100 text-blue-800 font-semibold">
+                        <thead className="bg-[#2845F5] text-[#fff] font-semibold">
                           <tr>
                             <th className="py-3 px-4">Activity Level</th>
                             <th className="py-3 px-4">Weight Lost / Week</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-blue-100">
+                        <tbody className="divide-y bg-white">
                           {[
                             ["No sport/exercise", result?.tech_activity_first],
                             [

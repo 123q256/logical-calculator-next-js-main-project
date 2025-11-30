@@ -890,7 +890,7 @@ export const searchallcalculators = {
   852: ["UF GPA Calculator", "uf-gpa-calculator", "Math"],
   853: ["Weeks Between Dates Calculator", "weeks-between-dates-calculator", "Math"],
   854: ["Time Card Advance Calculator", "time-card-advance-calculator", "Math"],
-  855: ["zakat calculator", "zakat-calculator", "Math"],
+  855: ["zakat calculator", "zakat-calculator", "Finance"],
   856: ["Gay Lussac's Law Calculator", "gay-lussacs-law-calculator", "Math"],
   857: ["Mmol to Mg/dl Calculator", "mmol-l-to-mg-dl-calculator", "Math"],
   858: ["Scale Factor Calculator", "scale-calculator", "Math"],
