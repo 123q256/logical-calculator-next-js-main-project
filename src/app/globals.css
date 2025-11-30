@@ -51,6 +51,18 @@
   background-color: white !important;
   color: #4a5568;
 }
+.result_custom_inputs input[type="text"],
+.result_custom_inputs input[type="number"],
+.result_custom_inputs select {
+  height: 45px;
+  padding: 8px 16px;
+  border-radius: 12px !important;
+  border: 1px solid #2845f5;
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: white !important;
+  color: #4a5568;
+}
 .converter_input input[type="text"],
 .converter_input input[type="number"],
 .converter_input select {
@@ -191,6 +203,9 @@ textarea {
 }
 .border-bb {
   border: 1px solid #d2d4d8 !important;
+}
+.borderbblack{
+  border-bottom: 1px solid #d2d4d8 !important;
 }
 .autosearch-activeclass {
   background-color: #1670a712;

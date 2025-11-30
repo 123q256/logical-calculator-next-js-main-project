@@ -5,67 +5,60 @@ import { usePathname } from "next/navigation";
 
 import {
   useGetSingleCalculatorDetailsMutation,
-  useMidpointCalculatorMutation,
+  useBaseCalculatorMutation,
 } from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
 import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeedback";
 import Calculator from "../../Calculator";
-import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
+import { getUserCurrency } from "../../../../components/Calculator/GetCurrency";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
+
 const BaseCalculator = () => {
-  // data get
   const pathname = usePathname();
-  const parts = pathname.split("/").filter(Boolean); // remove empty strings
-
+  const parts = pathname.split("/").filter(Boolean);
+  
   let url = "";
-
   if (parts.length === 1) {
-    // sirf ek part
-    url = parts[0]; // "age-calculator"
+    url = parts[0];
   } else {
-    // do ya zyada parts
-    url = parts[0] + "/" + parts[1]; // "de/age-calculator"
+    url = parts[0] + "/" + parts[1];
   }
+
   const [getSingleCalculatorDetails, { data, error, isLoading }] =
     useGetSingleCalculatorDetailsMutation();
+
+  const [
+    calculateBaseCalculator,
+    { isLoading: calculationLoading, isError, error: calculateError },
+  ] = useBaseCalculatorMutation();
+
   const handleFetchDetails = async () => {
     try {
-      // Call the mutation with the `tech_calculator_link`
       await getSingleCalculatorDetails({ tech_calculator_link: url });
     } catch (err) {
       console.error("Error fetching calculator details:", err);
     }
   };
+
   useEffect(() => {
     handleFetchDetails();
   }, [url]);
-  // data get
-
-  // RTK mutation hook   // data get
-  const [
-    calculateEbitCalculator,
-    { isLoading: roundToTheNearestLoading, isError, error: calculateLoveError },
-  ] = useMidpointCalculatorMutation();
-  // data get
 
   const [formData, setFormData] = useState({
-    tech_tool: "calculator",
-    tech_bnr_third: "101",
-    tech_select_base: "12",
-    tech_to_number: "2",
-    tech_bnr_frs: "54f",
-    tech_bnr_slc: "add",
-    tech_bnr_sec: "54f",
+    select_base: "2",
+    first_number: "101",
+    operation: "+",
+    second_number: "101",
   });
 
   const [result, setResult] = useState(null);
   const [formError, setFormError] = useState("");
+  const [isCalculating, setIsCalculating] = useState(false);
 
-  const options = [
-    { value: "1", name: "1" },
+  const baseOptions = [
     { value: "2", name: "2 (Binary)" },
     { value: "3", name: "3" },
     { value: "4", name: "4" },
@@ -103,28 +96,46 @@ const BaseCalculator = () => {
     { value: "36", name: "36" },
   ];
 
-  // Get allowed characters for input validation based on number base
+  const operationOptions = [
+    { value: "+", name: "+" },
+    { value: "-", name: "-" },
+    { value: "×", name: "×" },
+    { value: "÷", name: "÷" },
+    { value: "mod", name: "mod" },
+  ];
+
+  // Get default value based on base
+  const getDefaultValueForBase = (base) => {
+    const baseNum = parseInt(base, 10);
+    if (baseNum >= 2 && baseNum <= 7) {
+      return "101";
+    } else if (baseNum === 8 || baseNum === 9) {
+      return "123";
+    } else if (baseNum === 10) {
+      return "23";
+    } else {
+      return "54f";
+    }
+  };
+
   const getAllowedCharsForBase = (base) => {
     const baseNum = parseInt(base, 10);
     const chars = [];
 
-    // Add digits 0-9
     for (let i = 0; i < Math.min(baseNum, 10); i++) {
-      chars.push(String.fromCharCode(48 + i)); // 48 is ASCII for '0'
+      chars.push(String.fromCharCode(48 + i));
     }
 
-    // Add letters A-Z for bases > 10
     if (baseNum > 10) {
       for (let i = 10; i < baseNum; i++) {
-        chars.push(String.fromCharCode(65 + (i - 10))); // 65 is ASCII for 'A'
-        chars.push(String.fromCharCode(97 + (i - 10))); // 97 is ASCII for 'a'
+        chars.push(String.fromCharCode(65 + (i - 10)));
+        chars.push(String.fromCharCode(97 + (i - 10)));
       }
     }
 
     return chars;
   };
 
-  // Validate input based on selected base
   const validateInput = (value, base) => {
     if (!value) return true;
 
@@ -142,31 +153,88 @@ const BaseCalculator = () => {
     return true;
   };
 
-  // Handle keypress events for input validation
-  const handleKeyPress = (e, inputType) => {
-    const base =
-      inputType === "third"
-        ? formData.tech_to_number
-        : formData.tech_select_base;
-    const allowedChars = getAllowedCharsForBase(base);
-    const char = e.key.toUpperCase();
+  const handleKeyPress = (e) => {
+    const base = formData.select_base;
+    let allowedKeys = [];
 
-    // Allow backspace, delete, arrow keys, etc.
-    if (
-      e.key === "Backspace" ||
-      e.key === "Delete" ||
-      e.key === "ArrowLeft" ||
-      e.key === "ArrowRight" ||
-      e.key === "Tab"
-    ) {
-      return;
+    // ASCII code mapping based on base
+    if (base === "2") {
+      allowedKeys = [48, 49, 8]; // 0, 1, backspace
+    } else if (base === "3") {
+      allowedKeys = [48, 49, 8, 50]; // 0-2
+    } else if (base === "4") {
+      allowedKeys = [48, 49, 8, 50, 51]; // 0-3
+    } else if (base === "5") {
+      allowedKeys = [48, 49, 8, 50, 51, 52]; // 0-4
+    } else if (base === "6") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53]; // 0-5
+    } else if (base === "7") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54]; // 0-6
+    } else if (base === "8") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55]; // 0-7
+    } else if (base === "9") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56]; // 0-8
+    } else if (base === "10") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57]; // 0-9
+    } else if (base === "11") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 97]; // 0-9, A
+    } else if (base === "12") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 97, 98]; // 0-9, A-B
+    } else if (base === "13") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 97, 98, 99]; // 0-9, A-C
+    } else if (base === "14") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 97, 98, 99, 100]; // 0-9, A-D
+    } else if (base === "15") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 97, 98, 99, 100, 101]; // 0-9, A-E
+    } else if (base === "16") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 97, 98, 99, 100, 101, 102]; // 0-9, A-F
+    } else if (base === "17") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 97, 98, 99, 100, 101, 102, 103];
+    } else if (base === "18") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 97, 98, 99, 100, 101, 102, 103, 104];
+    } else if (base === "19") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 97, 98, 99, 100, 101, 102, 103, 104, 105];
+    } else if (base === "20") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106];
+    } else if (base === "21") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107];
+    } else if (base === "22") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108];
+    } else if (base === "23") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109];
+    } else if (base === "24") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110];
+    } else if (base === "25") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111];
+    } else if (base === "26") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112];
+    } else if (base === "27") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113];
+    } else if (base === "28") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114];
+    } else if (base === "29") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115];
+    } else if (base === "30") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116];
+    } else if (base === "31") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117];
+    } else if (base === "32") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118];
+    } else if (base === "33") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119];
+    } else if (base === "34") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120];
+    } else if (base === "35") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121];
+    } else if (base === "36") {
+      allowedKeys = [48, 49, 8, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122];
     }
 
-    // Check if the character is allowed for this base
-    if (
-      !allowedChars.includes(char) &&
-      !allowedChars.includes(char.toLowerCase())
-    ) {
+    // Get the character code from the event
+    const charCode = e.which || e.keyCode;
+
+    // Check if the key is allowed
+    if (!allowedKeys.includes(charCode)) {
       e.preventDefault();
     }
   };
@@ -174,183 +242,70 @@ const BaseCalculator = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Validate input for number fields
-    if (name === "tech_bnr_frs" || name === "tech_bnr_sec") {
-      if (!validateInput(value, formData.tech_select_base)) {
-        return; // Don't update if invalid
-      }
-    } else if (name === "tech_bnr_third") {
-      if (!validateInput(value, formData.tech_to_number)) {
-        return; // Don't update if invalid
-      }
+    // If base is changed, update default values for inputs
+    if (name === "select_base") {
+      const defaultValue = getDefaultValueForBase(value);
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+        first_number: defaultValue,
+        second_number: defaultValue,
+      }));
+    } else {
+      setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
-
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    
     setResult(null);
     setFormError("");
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async () => {
+  setFormError("");
+  setIsCalculating(true);
 
-    if (!formData.tech_bnr_frs || !formData.tech_bnr_sec) {
-      setFormError("Please fill in both numbers.");
+  try {
+    const response = await calculateBaseCalculator(formData).unwrap();
+
+    // SUCCESS CASE
+    if (response?.status === "success" && response?.payload?.status !== "error") {
+      setResult(response.payload.payload);
+      toast.success("Calculation completed successfully!");
       return;
     }
 
-    // Validate inputs
-    if (!validateInput(formData.tech_bnr_frs, formData.tech_select_base)) {
-      setFormError(
-        `Invalid characters for base ${formData.tech_select_base} in first number.`
-      );
-      return;
-    }
+    // NESTED API ERROR CASE
+    const apiError = response?.payload?.error || "Failed to calculate. Please try again.";
+    setFormError(apiError);
+    toast.error(apiError);
 
-    if (!validateInput(formData.tech_bnr_sec, formData.tech_select_base)) {
-      setFormError(
-        `Invalid characters for base ${formData.tech_select_base} in second number.`
-      );
-      return;
-    }
+  } catch (err) {
+    console.error("Calculation error:", err);
 
-    setFormError("");
-    setIsLoading(true);
+    // CATCH ERROR HANDLING
+    const errorMessage =
+      err?.data?.payload?.error ||
+      err?.payload?.error ||
+      err?.message ||
+      "An error occurred during calculation.";
 
-    // Simulate API call delay
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-  };
+    setFormError(errorMessage);
+    toast.error(errorMessage);
+
+  } finally {
+    setIsCalculating(false);
+  }
+};
+
 
   const handleReset = () => {
     setFormData({
-      tech_tool: "calculator",
-      tech_bnr_third: "101",
-      tech_select_base: "12",
-      tech_to_number: "2",
-      tech_bnr_frs: "54f",
-      tech_bnr_slc: "add",
-      tech_bnr_sec: "54f",
+      select_base: "2",
+      first_number: "101",
+      operation: "+",
+      second_number: "101",
     });
     setResult(null);
     setFormError("");
-  };
-
-  // Custom function to convert number from one base to another
-  const convertBase = (num, fromBase, toBase) => {
-    // First convert to decimal (base 10)
-    const decimal = parseInt(num, fromBase);
-    if (isNaN(decimal)) return "Error";
-
-    // Then convert from decimal to target base
-    if (toBase === 10) return decimal.toString();
-    return decimal.toString(toBase).toUpperCase();
-  };
-
-  // Custom arithmetic functions for different bases
-  const performOperation = (num1, num2, operation, base) => {
-    try {
-      // Convert both numbers to decimal for calculation
-      const decimal1 = parseInt(num1, base);
-      const decimal2 = parseInt(num2, base);
-
-      if (isNaN(decimal1) || isNaN(decimal2)) {
-        return "Error: Invalid input";
-      }
-
-      let result;
-
-      switch (operation) {
-        case "add":
-          result = decimal1 + decimal2;
-          break;
-        case "sub":
-          result = decimal1 - decimal2;
-          break;
-        case "mul":
-          result = decimal1 * decimal2;
-          break;
-        case "divd":
-          if (decimal2 === 0) {
-            return "Cannot divide by zero";
-          }
-          result = Math.floor(decimal1 / decimal2); // Integer division
-          break;
-        case "mod":
-          if (decimal2 === 0) {
-            return "Cannot mod by zero";
-          }
-          result = decimal1 % decimal2;
-          break;
-        default:
-          result = 0;
-      }
-
-      return result;
-    } catch (error) {
-      return "Error: Invalid input";
-    }
-  };
-
-  // Calculate result
-  useEffect(() => {
-    try {
-      const inputBase = parseInt(formData.tech_select_base, 10) || 10;
-      const outputBase = parseInt(formData.tech_to_number, 10) || 10;
-      const op = formData.tech_bnr_slc;
-
-      if (!formData.tech_bnr_frs || !formData.tech_bnr_sec) {
-        setResult(null);
-        return;
-      }
-
-      // Perform calculation in decimal
-      const calcResult = performOperation(
-        formData.tech_bnr_frs,
-        formData.tech_bnr_sec,
-        op,
-        inputBase
-      );
-
-      if (typeof calcResult === "string") {
-        // Error message
-        setResult(calcResult);
-        return;
-      }
-
-      // Convert result to output base
-      const finalResult =
-        outputBase === 10
-          ? calcResult.toString()
-          : calcResult.toString(outputBase).toUpperCase();
-
-      setResult(finalResult);
-    } catch (error) {
-      setResult("Error: Invalid input");
-    }
-  }, [
-    formData.tech_select_base,
-    formData.tech_to_number,
-    formData.tech_bnr_slc,
-    formData.tech_bnr_frs,
-    formData.tech_bnr_sec,
-  ]);
-
-  const getOperationSymbol = (op) => {
-    switch (op) {
-      case "add":
-        return "+";
-      case "sub":
-        return "-";
-      case "mul":
-        return "×";
-      case "divd":
-        return "÷";
-      case "mod":
-        return "mod";
-      default:
-        return "+";
-    }
   };
 
   return (
@@ -366,208 +321,191 @@ const BaseCalculator = () => {
           },
           {
             name: data?.payload?.tech_calculator_title,
-            path: pathname, // This will use the current path dynamically
+            path: pathname,
           },
         ]}
       >
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
-          <div className=" mx-auto">
-            <form className="rounded-xl  p-8 mb-6" onSubmit={handleSubmit}>
-              {formError && (
-                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-                  {formError}
+          <form className="row" onSubmit={handleSubmit}>
+
+
+         <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
+            {formError && (
+              <p className="text-red-500 text-[16px] md:text-[18px] font-semibold w-full">
+                {formError}
+              </p>
+            )}
+
+            <div className="lg:w-[75%] md:w-[100%] w-full mx-auto overflow-auto">
+              <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
+                
+                <div className="col-span-12 ">
+                  <label htmlFor="select_base" className="text-sm font-medium ">
+                    Select Base:
+                  </label>
+                  <div className="w-full py-2">
+                    <select
+                      name="select_base"
+                      id="select_base"
+                      value={formData.select_base}
+                      onChange={handleChange}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      {baseOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
+
+                <div className="col-span-12 mt-2">
+                  <div className="grid grid-cols-12 gap-0 md:gap-4 lg:gap-4">
+                    <div className="md:col-span-5 col-span-12">
+                      <label htmlFor="first_number" className="text-sm font-medium ">
+                        First Number:
+                      </label>
+                      <div className="py-2">
+                        <input
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase"
+                          type="text"
+                          id="first_number"
+                          name="first_number"
+                          value={formData.first_number}
+                          onChange={handleChange}
+                          onKeyPress={handleKeyPress}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="md:col-span-2 col-span-12">
+                      <label htmlFor="operation" className="text-sm font-medium ">
+                        Operation:
+                      </label>
+                      <div className="w-full py-2">
+                        <select
+                          name="operation"
+                          id="operation"
+                          value={formData.operation}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                          {operationOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="md:col-span-5 col-span-12">
+                      <label htmlFor="second_number" className="text-sm font-medium ">
+                        Second Number:
+                      </label>
+                      <div className="py-2">
+                        <input
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase"
+                          type="text"
+                          id="second_number"
+                          name="second_number"
+                          value={formData.second_number}
+                          onChange={handleChange}
+                          onKeyPress={handleKeyPress}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="mb-6 mt-10 text-center space-x-2">
+              <Button type="submit" isLoading={isCalculating} onClick={handleSubmit}>
+                {data?.payload?.tech_lang_keys?.calculate || "Calculate"}
+              </Button>
+              {result && (
+                <ResetButton type="button" onClick={handleReset}>
+                  {data?.payload?.tech_lang_keys?.locale === "en"
+                    ? "RESET"
+                    : data?.payload?.tech_lang_keys?.reset || "RESET"}
+                </ResetButton>
               )}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div>
-                  <label
-                    htmlFor="tech_select_base"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
-                    Input Base (Numbers will be in this base):
-                  </label>
-                  <select
-                    className="w-full p-3 border border-gray-300 rounded-lg"
-                    name="tech_select_base"
-                    id="tech_select_base"
-                    value={formData.tech_select_base}
-                    onChange={handleChange}
-                  >
-                    {options.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.name}
-                      </option>
-                    ))}
-                  </select>
-                  <p className="text-lg text-gray-500 mt-1">
-                    Allowed chars:{" "}
-                    {getAllowedCharsForBase(formData.tech_select_base).join(
-                      ", "
-                    )}
-                  </p>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="tech_to_number"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
-                    Output Base (Result will be in this base):
-                  </label>
-                  <select
-                    className="w-full p-3 border border-gray-300 rounded-lg"
-                    name="tech_to_number"
-                    id="tech_to_number"
-                    value={formData.tech_to_number}
-                    onChange={handleChange}
-                  >
-                    {options.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-12 gap-4 items-end mb-8">
-                <div className="col-span-12 sm:col-span-5">
-                  <label
-                    htmlFor="tech_bnr_frs"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
-                    First Number:
-                  </label>
-                  <input
-                    type="text"
-                    name="tech_bnr_frs"
-                    id="tech_bnr_frs"
-                    className="w-full p-3 border border-gray-300 rounded-lg text-center text-lg"
-                    placeholder="Enter first number"
-                    value={formData.tech_bnr_frs}
-                    onChange={handleChange}
-                    onKeyDown={(e) => handleKeyPress(e, "first")}
-                  />
-                </div>
-
-                <div className="col-span-12 sm:col-span-2">
-                  <label
-                    htmlFor="tech_bnr_slc"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
-                    Operation:
-                  </label>
-                  <select
-                    className="w-full p-3 border border-gray-300 rounded-lg text-center text-lg"
-                    name="tech_bnr_slc"
-                    id="tech_bnr_slc"
-                    value={formData.tech_bnr_slc}
-                    onChange={handleChange}
-                  >
-                    <option value="add">+</option>
-                    <option value="sub">-</option>
-                    <option value="mul">×</option>
-                    <option value="divd">÷</option>
-                    <option value="mod">mod</option>
-                  </select>
-                </div>
-
-                <div className="col-span-12 sm:col-span-5">
-                  <label
-                    htmlFor="tech_bnr_sec"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
-                    Second Number:
-                  </label>
-                  <input
-                    type="text"
-                    name="tech_bnr_sec"
-                    id="tech_bnr_sec"
-                    className="w-full p-3 border border-gray-300 rounded-lg text-center text-lg"
-                    placeholder="Enter second number"
-                    value={formData.tech_bnr_sec}
-                    onChange={handleChange}
-                    onKeyDown={(e) => handleKeyPress(e, "second")}
-                  />
-                </div>
-              </div>
-              <div className="text-center space-x-4">
-                <Button
-                  type="submit"
-                  disabled={isLoading}
-                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200"
-                >
-                  {isLoading ? "Calculating..." : "Calculate"}
-                </Button>
-
-                {result && (
-                  <ResetButton
-                    type="button"
-                    onClick={handleReset}
-                    className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200"
-                  >
-                    Reset
-                  </ResetButton>
-                )}
-              </div>
-            </form>
-          </div>
+            </div>
         </div>
 
-        {isLoading && (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
-            <div className="animate-pulse">
-              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
-              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
+        {isCalculating && (
+          <div className="result_calculator rounded-lg shadow-md p-8">
+            <div className="animate-pulse space-y-4">
+              <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+              <div className="h-6 bg-gray-200 rounded w-1/2"></div>
+              <div className="h-6 bg-gray-200 rounded w-2/3"></div>
+              <div className="h-6 bg-gray-200 rounded w-1/3"></div>
             </div>
           </div>
         )}
 
-        {result && !isLoading && (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+        {result && !isCalculating && (
+          <div className="w-full mx-auto p-4 result_calculator rounded-lg  space-y-6">
             <div>
               <ResultActions lang={data?.payload?.tech_lang_keys} />
-              <div className="bg-white rounded-xl text-[18px] p-8 my-5">
-                <div className="text-center">
-                  <div className=" from-blue-50 to-indigo-50 rounded-lg p-6 mb-4">
-                    <div className="text-lg text-gray-600 mb-2">
-                      {formData.tech_bnr_frs}{" "}
-                      {getOperationSymbol(formData.tech_bnr_slc)}{" "}
-                      {formData.tech_bnr_sec}
-                      <span className="ml-2 text-lg">
-                        (Base {formData.tech_select_base})
-                      </span>
+              <div className=" rounded-xl text-lg p-2">
+                <div className="rounded-lg flex items-center justify-center">
+                  <div className="w-full mt-3">
+                    <div className="w-full">
+                      <div className="text-center">
+                        <p className="text-xl mb-2">
+                          <strong>{data?.payload?.tech_lang_keys?.result || "Result"}</strong>
+                        </p>
+                        <p className="text-4xl bg-white px-6 py-4 rounded-lg inline-block my-3">
+                          <strong className="">
+                            {result?.result?.in_given_base}
+                          </strong>
+                        </p>
+                        <p className="text-sm text-gray-600 mt-2">
+                          (Decimal: {result?.result?.in_decimal})
+                        </p>
+                      </div>
                     </div>
-
-                    <div
-                      className="text-3xl font-mono font-bold text-blue-600"
-                      id="main_answer"
-                    >
-                      {result}
-                    </div>
-
-                    <div className="text-lg text-gray-600 mt-2">
-                      Result in Base {formData.tech_to_number}
-                    </div>
-                  </div>
-
-                  <div className="text-lg text-gray-500 space-y-1">
-                    <p>
-                      Input Base: {formData.tech_select_base} - Allowed
-                      characters:{" "}
-                      {getAllowedCharsForBase(formData.tech_select_base).join(
-                        ", "
-                      )}
-                    </p>
-                    <p>Output Base: {formData.tech_to_number}</p>
                   </div>
                 </div>
+
+                <div className="bg-white rounded-lg p-6 mb-6 mt-6">
+                  <h3 className="text-lg font-semibold mb-4 text-gray-800">Input Information</h3>
+                  <div className="space-y-2 text-sm">
+                    <p>
+                      <strong>Base:</strong> {result?.input?.base} ({result?.input?.base_name})
+                    </p>
+                    <p>
+                      <strong>Expression:</strong> {result?.calculation?.expression}
+                    </p>
+                  </div>
+                </div>
+
+                {result?.step_by_step && (
+                  <div className="bg-white rounded-lg p-6">
+                    <h3 className="text-lg font-semibold mb-4 text-blue-800">
+                      Step-by-Step Solution
+                    </h3>
+                    <div className="space-y-3">
+                      {Object.entries(result.step_by_step).map(([key, value], index) => (
+                        <div key={key} className="flex items-start">
+                          <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">
+                            {index + 1}
+                          </span>
+                          <p className="text-sm text-gray-700 flex-1">{value}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         )}
+          </form>
+        {result && (
+              <CalculatorFeedback calName={data?.payload?.tech_calculator_title} />
+            )}
       </Calculator>
     </>
   );

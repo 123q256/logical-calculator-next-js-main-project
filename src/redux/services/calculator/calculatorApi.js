@@ -2422,3031 +2422,3099 @@ export const calculatorApi = createApi({
       }),
     }),
 
-    
-// Statistics
+    // Statistics
 
-  ProbabilityCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/probability-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  HypergeometricCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/hypergeometric-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  PoissonDistributionCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/poisson-distribution-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  BinomialDistributionCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/binomial-distribution-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  CoinFlipCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/coin-flip-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  EmpiricalProbabilityCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/empirical-probability-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  PHatCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/p-hat-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  EmpiricalRuleCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/empirical-rule-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  StemLeafPlotCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/stem-leaf-plot-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  BoxPlotCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/box-plot-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  ScatterPlotMaker: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/scatter-plot-maker`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  ResidualPlotCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/residual-plot-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  PieChartCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/pie-chart-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  CoefficientOfVariationCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/coefficient-of-variation-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  MeanMedianModeRangeCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/mean-median-mode-range-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  QuartileCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/quartile-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  GeometricMeanCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/geometric-mean-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  HarmonicMeanCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/harmonic-mean-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  LoveCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/love-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  InterquartileRangeCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/interquartile-range-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  MadCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/mad-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  StandardDeviationCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/standard-deviation-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  FiveNumberSummaryCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/5-five-number-summary-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  VarianceCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/variance-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  MidrangeCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/midrange-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  ChebyshevsTheoremCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/chebyshevs-theorem-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  CoefficientOfDeterminationCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/coefficient-of-determination-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  CorrelationCoefficientCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/correlation-coefficient-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  LinearRegressionCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/linear-regression-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  OutlierCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/outlier-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  QuadraticRegressionCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/quadratic-regression-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  CombinationCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/combination-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  PermutationCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/permutation-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  BinomialCoefficientCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/binomial-coefficient-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  ClassWidthCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/class-width-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  PertCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/pert-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  CovarianceCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/covariance-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  SumOfSquaresCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/sum-of-squares-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  PointEstimateCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/point-estimate-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  PercentileCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/percentile-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  RsdCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/rsd-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  PercentileRankCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/percentile-rank-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  ZScoreToPercentile: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/z-score-to-percentile`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  RawScoreCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/raw-score-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  PooledVarianceCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/pooled-variance-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  SseCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/sse-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  ResidualCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/residual-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  DecileCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/decile-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  SampleSizeCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/sample-size-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  ErrorPropagationCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/error-propagation-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  ZScoreCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/z-score-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  StandardErrorCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/standard-error-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  ConfidenceIntervalCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/confidence-interval-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  CentralLimitTheoremCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/central-limit-theorem-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  InvnormCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/invnorm-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  ProbabilityDensityFunctionCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/probability-density-function-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  NormalDistributionCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/normal-distribution-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  PredictionIntervalCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/prediction-interval-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  SampleDistributionCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/sample-distribution-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  ChiSquareCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/chi-square-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  AnovaCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/anova-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  PValueCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/p-value-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  DegreesOfFreedomCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/degrees-of-freedom-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  TestStatisticCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/test-statistic-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  EffectSizeCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/effect-size-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  ExpectedValueCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/expected-value-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  RelativeFrequencyCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/relative-frequency-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  ShannonDiversityIndexCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/shannon-diversity-index-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  AccuracyCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/accuracy-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-  RelativeRiskCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/relative-risk-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
-
-
-// Statistics
-
-
-
-  // Chemistry Calculators start
-
-  IdealGasLawCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/ideal-gas-law-calculator`,
-      method: "POST",
-      body: data,
+    ProbabilityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/probability-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  BoylesLawCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/boyles-law-calculator`,
-      method: "POST",
-      body: data,
+    HypergeometricCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/hypergeometric-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-  StpCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/stp-calculator`,
-      method: "POST",
-      body: data,
+    PoissonDistributionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/poisson-distribution-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  CharlesLawCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/charles-law-calculator`,
-      method: "POST",
-      body: data,
+    BinomialDistributionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/binomial-distribution-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-  CombinedGasLawCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/combined-gas-law-calculator`,
-      method: "POST",
-      body: data,
+    CoinFlipCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/coin-flip-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  VaporPressureCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/vapor-pressure-calculator`,
-      method: "POST",
-      body: data,
+    EmpiricalProbabilityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/empirical-probability-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  PartialPressureCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/partial-pressure-calculator`,
-      method: "POST",
-      body: data,
+    PHatCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/p-hat-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  GayLussacsLawCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/gay-lussacs-law-calculator`,
-      method: "POST",
-      body: data,
+    EmpiricalRuleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/empirical-rule-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-  PercentYieldCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/percent-yield-calculator`,
-      method: "POST",
-      body: data,
+    StemLeafPlotCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/stem-leaf-plot-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-  MolarMassCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/molar-mass-calculator`,
-      method: "POST",
-      body: data,
+    BoxPlotCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/box-plot-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  BondOrderCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/bond-order-calculator`,
-      method: "POST",
-      body: data,
+    ScatterPlotMaker: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/scatter-plot-maker`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-  TheoreticalYieldCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/theoretical-yield-calculator`,
-      method: "POST",
-      body: data,
+    ResidualPlotCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/residual-plot-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-  AtomicMassCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/atomic-mass-calculator`,
-      method: "POST",
-      body: data,
+    PieChartCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/pie-chart-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  LimitingReactantCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/limiting-reactant-calculator`,
-      method: "POST",
-      body: data,
+    CoefficientOfVariationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/coefficient-of-variation-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  EmpiricalFormulaCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/empirical-formula-calculator`,
-      method: "POST",
-      body: data,
+    MeanMedianModeRangeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/mean-median-mode-range-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  StoichiometryCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/stoichiometry-calculator`,
-      method: "POST",
-      body: data,
+    QuartileCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/quartile-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  MoleRatioCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/mole-ratio-calculator`,
-      method: "POST",
-      body: data,
+    GeometricMeanCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/geometric-mean-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  MoleFractionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/mole-fraction-calculator`,
-      method: "POST",
-      body: data,
+    HarmonicMeanCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/harmonic-mean-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  
-  MmollToMgDlCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/mmol-l-to-mg-dl-calculator`,
-      method: "POST",
-      body: data,
+    LoveCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/love-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  MolalityCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/molality-calculator`,
-      method: "POST",
-      body: data,
+    InterquartileRangeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/interquartile-range-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  MassPercentCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/mass-percent-calculator`,
-      method: "POST",
-      body: data,
+    MadCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/mad-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  SolutionDilutionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/solution-dilution-calculator`,
-      method: "POST",
-      body: data,
+    StandardDeviationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/standard-deviation-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  MolarityCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/molarity-calculator`,
-      method: "POST",
-      body: data,
+    FiveNumberSummaryCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/5-five-number-summary-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  MlToMolesCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/ml-to-moles-calculator`,
-      method: "POST",
-      body: data,
+    VarianceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/variance-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  PpmCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/ppm-calculator`,
-      method: "POST",
-      body: data,
+    MidrangeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/midrange-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  DilutionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/dilution-calculator`,
-      method: "POST",
-      body: data,
+    ChebyshevsTheoremCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/chebyshevs-theorem-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-  CalorimetryCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/calorimetry-calculator`,
-      method: "POST",
-      body: data,
+    CoefficientOfDeterminationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/coefficient-of-determination-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  EntropyCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/entropy-calculator`,
-      method: "POST",
-      body: data,
+    CorrelationCoefficientCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/correlation-coefficient-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  ActivationEnergyCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/activation-energy-calculator`,
-      method: "POST",
-      body: data,
+    LinearRegressionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/linear-regression-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  GibbsFreeEnergyCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/gibbs-free-energy-calculator`,
-      method: "POST",
-      body: data,
+    OutlierCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/outlier-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  TitrationCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/titration-calculator`,
-      method: "POST",
-      body: data,
+    QuadraticRegressionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/quadratic-regression-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  EquilibriumConstantCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/equilibrium-constant-calculator`,
-      method: "POST",
-      body: data,
+    CombinationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/combination-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  RedoxReactionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/redox-reaction-calculator`,
-      method: "POST",
-      body: data,
+    PermutationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/permutation-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  NernstEquationCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/nernst-equation-calculator`,
-      method: "POST",
-      body: data,
+    BinomialCoefficientCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/binomial-coefficient-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  PkaToPhCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/pka-to-ph-calculator`,
-      method: "POST",
-      body: data,
+    ClassWidthCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/class-width-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  PhCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/ph-calculator`,
-      method: "POST",
-      body: data,
+    PertCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/pert-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  ChemicalEquationBalancerCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/chemical-equation-balancer-calculator`,
-      method: "POST",
-      body: data,
+    CovarianceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/covariance-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  MoleCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/mole-calculator`,
-      method: "POST",
-      body: data,
+    SumOfSquaresCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/sum-of-squares-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-
-  GramsToMolesCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/grams-to-moles-calculator`,
-      method: "POST",
-      body: data,
+    PointEstimateCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/point-estimate-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-  
-  GramsToAtomsCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/grams-to-atoms-calculator`,
-      method: "POST",
-      body: data,
+    PercentileCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/percentile-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-    
-  MolecularFormulaCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/molecular-formula-calculator`,
-      method: "POST",
-      body: data,
+    RsdCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/rsd-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-  MolesToGramsCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/moles-to-grams-calculator`,
-      method: "POST",
-      body: data,
+    PercentileRankCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/percentile-rank-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  FormalChargeCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/formal-charge-calculator`,
-      method: "POST",
-      body: data,
+    ZScoreToPercentile: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/z-score-to-percentile`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  AtomsToMolesCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/atoms-to-moles-calculator`,
-      method: "POST",
-      body: data,
+    RawScoreCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/raw-score-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  ElectronConfigurationCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/electron-configuration-calculator`,
-      method: "POST",
-      body: data,
+    PooledVarianceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/pooled-variance-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  RateConstantCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/rate-constant-calculator`,
-      method: "POST",
-      body: data,
+    SseCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/sse-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  HalfLifeCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/half-life-calculator`,
-      method: "POST",
-      body: data,
+    ResidualCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/residual-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  CfuCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/cfu-calculator`,
-      method: "POST",
-      body: data,
+    DecileCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/decile-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-
-  AverageAtomicMassCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/average-atomic-mass-calculator`,
-      method: "POST",
-      body: data,
+    SampleSizeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/sample-size-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
+    ErrorPropagationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/error-propagation-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ZScoreCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/z-score-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    StandardErrorCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/standard-error-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ConfidenceIntervalCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/confidence-interval-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CentralLimitTheoremCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/central-limit-theorem-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    InvnormCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/invnorm-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ProbabilityDensityFunctionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/probability-density-function-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    NormalDistributionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/normal-distribution-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PredictionIntervalCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/prediction-interval-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SampleDistributionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/sample-distribution-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ChiSquareCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/chi-square-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AnovaCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/anova-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PValueCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/p-value-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DegreesOfFreedomCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/degrees-of-freedom-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TestStatisticCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/test-statistic-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    EffectSizeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/effect-size-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ExpectedValueCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/expected-value-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RelativeFrequencyCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/relative-frequency-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ShannonDiversityIndexCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/shannon-diversity-index-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AccuracyCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/accuracy-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RelativeRiskCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/relative-risk-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
 
-// END chemistry
+    // Statistics
 
+    // Chemistry Calculators start
 
+    IdealGasLawCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/ideal-gas-law-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
 
-   // Physics calculator
- OhmsLawCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/ohms-law-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- ElectricFieldCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/electric-field-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- VoltageDropCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/voltage-drop-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- ElectricityCostCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/electricity-cost-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- AmpHourCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/amp-hour-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- ParallelResistorCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/parallel-resistor-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- ResistanceCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/resistance-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- CapacitanceCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/capacitance-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- ElectricFluxCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/electric-flux-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- ElectricPotentialCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/electric-potential-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- AmpsToWattsCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/amps-to-watts-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- WattsToAmpsCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/watts-to-amps-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- Accelerationcalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/acceleration-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- AverageVelocityCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/average-velocity-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- InstantaneousVelocityCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/instantaneous-velocity-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- AngularVelocityCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/angular-velocity-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- DisplacementCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/displacement-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- InstantaneousRateOfChangeCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/instantaneous-rate-of-change-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- ProjectileMotionCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/projectile-motion-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- FreeFallCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/free-fall-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- SpeedDistanceTimeCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/speed-distance-time-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- TerminalVelocityCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/terminal-velocity-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- AngularAccelerationCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/angular-acceleration-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- TimeOfFlightCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/time-of-flight-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- AverageSpeedCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/average-speed-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- WaveSpeedCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/wave-speed-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- TimeDilationCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/time-dilation-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- SpeedOfSoundCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/speed-of-sound-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- PhotonEnergyCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/photon-energy-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- WavelengthCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/wavelength-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- IndexOfRefractionCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/index-of-refraction-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- SnellsLawCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/snells-law-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- WavePeriodCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/wave-period-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- RelativeRiskCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/relative-risk-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- AngleOfRefractionCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/angle-of-refraction-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- QuantumNumberCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/quantum-number-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- CrossProductCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/cross-product-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- DotProductCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/dot-product-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- VectorMagnitudeCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/vector-magnitude-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- DimensionalAnalysisCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/dimensional-analysis-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- UnitVectorCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/unit-vector-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- CenterOfMassCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/center-of-mass-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- VectorProjectionCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/vector-projection-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- GearRatioCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/gear-ratio-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- WattCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/watt-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- WattHourCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/watt-hour-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- DensityCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/density-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- SpecificHeatCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/specific-heat-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- WaterViscosityCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/water-viscosity-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- DewPointCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/dew-point-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- WetBulbCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/wet-bulb-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- FlowRateCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/flow-rate-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- HeatIndexCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/heat-index-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- reynoldsNumberCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/reynolds-number-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- BuoyancyCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/buoyancy-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- SpecificGravityCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/specific-gravity-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- KineticEnergyCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/kinetic-energy-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- TorqueCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/torque-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- HorsepowerCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/horsepower-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- MomentumCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/momentum-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- WorkCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/work-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- ForceCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/force-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- PotentialEnergyCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/potential-energy-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- PowerToWeightRatioCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/power-to-weight-ratio-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- FrictionCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/friction-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- CentripetalForceCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/centripetal-force-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- FrictionalForceCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/frictional-force-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- MechanicalEnergyCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/mechanical-energy-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- ChangeInMomentumCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/change-in-momentum-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- CcToHpCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/cc-to-hp-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- ImpulseCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/impulse-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- WhpToHpCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/whp-to-hp-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- ResultantForceCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/resultant-force-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- EnergyCostCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/energy-cost-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- NormalForceCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/normal-force-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- VelocityCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/velocity-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- KinematicsCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/kinematics-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- EnthalpyCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/enthalpy-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- SpringConstantCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/spring-constant-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- MomentOfInertiaCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/moment-of-inertia-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- ScaleCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/scale-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- TransformerCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/transformer-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- ConstantOfProportionalityCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/constant-of-proportionality-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- QuarterMileCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/quarter-mile-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- EscapeVelocityCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/escape-velocity-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- CoulombsLawCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/coulombs-law-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- GravityCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/gravity-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- SolarPanelCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/solar-panel-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- ArrowSpeedCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/arrow-speed-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- TensionCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/tension-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- AirDensityCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/air-density-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- BeamDeflectionCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/beam-deflection-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- WireSizeCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/wire-size-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- DbmToWatts: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/dbm-to-watts`,
-    method: "POST",
-    body: data,
-  }),
-}),
- AngleOfDeviationCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/angle-of-deviation-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- JouleCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/joule-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- EfficiencyCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/efficiency-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- VoltsToJoulesCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/volts-to-joules-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- FpeCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/fpe-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- RelativeHumidityCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/relative-humidity-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- FrictionLossCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/friction-loss-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- OrbitalPeriodCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/orbital-period-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- NewtonsLawOfCoolingCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/newtons-law-of-cooling-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- DcWireSizeCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/dc-wire-size-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
- DensityAltitudeCalculator: builder.mutation({
-  query: (data) => ({
-    url: `/calculators-lol/density-altitude-calculator`,
-    method: "POST",
-    body: data,
-  }),
-}),
+    BoylesLawCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/boyles-law-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    StpCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/stp-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
 
-      // Physics calculator
+    CharlesLawCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/charles-law-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CombinedGasLawCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/combined-gas-law-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
 
+    VaporPressureCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/vapor-pressure-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
 
+    PartialPressureCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/partial-pressure-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
 
-      
-      // Math calculator
+    GayLussacsLawCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/gay-lussacs-law-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PercentYieldCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/percent-yield-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MolarMassCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/molar-mass-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    BondOrderCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/bond-order-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TheoreticalYieldCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/theoretical-yield-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AtomicMassCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/atomic-mass-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    LimitingReactantCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/limiting-reactant-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    EmpiricalFormulaCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/empirical-formula-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    StoichiometryCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/stoichiometry-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    MoleRatioCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/mole-ratio-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    MoleFractionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/mole-fraction-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    MmollToMgDlCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/mmol-l-to-mg-dl-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    MolalityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/molality-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    MassPercentCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/mass-percent-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    SolutionDilutionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/solution-dilution-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    MolarityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/molarity-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    MlToMolesCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/ml-to-moles-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    PpmCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/ppm-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    DilutionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/dilution-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CalorimetryCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/calorimetry-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    EntropyCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/entropy-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    ActivationEnergyCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/activation-energy-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    GibbsFreeEnergyCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/gibbs-free-energy-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    TitrationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/titration-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    EquilibriumConstantCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/equilibrium-constant-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    RedoxReactionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/redox-reaction-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    NernstEquationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/nernst-equation-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    PkaToPhCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/pka-to-ph-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    PhCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/ph-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    ChemicalEquationBalancerCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/chemical-equation-balancer-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    MoleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/mole-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    GramsToMolesCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/grams-to-moles-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    GramsToAtomsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/grams-to-atoms-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    MolecularFormulaCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/molecular-formula-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MolesToGramsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/moles-to-grams-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    FormalChargeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/formal-charge-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    AtomsToMolesCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/atoms-to-moles-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    ElectronConfigurationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/electron-configuration-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    RateConstantCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/rate-constant-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    HalfLifeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/half-life-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    CfuCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/cfu-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    AverageAtomicMassCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/average-atomic-mass-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // END chemistry
+
+    // Physics calculator
+    OhmsLawCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/ohms-law-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ElectricFieldCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/electric-field-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    VoltageDropCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/voltage-drop-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ElectricityCostCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/electricity-cost-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AmpHourCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/amp-hour-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ParallelResistorCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/parallel-resistor-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ResistanceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/resistance-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CapacitanceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/capacitance-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ElectricFluxCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/electric-flux-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ElectricPotentialCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/electric-potential-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AmpsToWattsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/amps-to-watts-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    WattsToAmpsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/watts-to-amps-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    Accelerationcalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/acceleration-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AverageVelocityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/average-velocity-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    InstantaneousVelocityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/instantaneous-velocity-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AngularVelocityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/angular-velocity-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DisplacementCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/displacement-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    InstantaneousRateOfChangeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/instantaneous-rate-of-change-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ProjectileMotionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/projectile-motion-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FreeFallCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/free-fall-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SpeedDistanceTimeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/speed-distance-time-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TerminalVelocityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/terminal-velocity-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AngularAccelerationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/angular-acceleration-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TimeOfFlightCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/time-of-flight-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AverageSpeedCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/average-speed-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    WaveSpeedCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/wave-speed-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TimeDilationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/time-dilation-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SpeedOfSoundCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/speed-of-sound-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PhotonEnergyCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/photon-energy-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    WavelengthCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/wavelength-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    IndexOfRefractionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/index-of-refraction-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SnellsLawCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/snells-law-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    WavePeriodCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/wave-period-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RelativeRiskCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/relative-risk-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AngleOfRefractionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/angle-of-refraction-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    QuantumNumberCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/quantum-number-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CrossProductCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/cross-product-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DotProductCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/dot-product-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    VectorMagnitudeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/vector-magnitude-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DimensionalAnalysisCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/dimensional-analysis-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    UnitVectorCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/unit-vector-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CenterOfMassCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/center-of-mass-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    VectorProjectionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/vector-projection-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    GearRatioCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/gear-ratio-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    WattCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/watt-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    WattHourCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/watt-hour-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DensityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/density-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SpecificHeatCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/specific-heat-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    WaterViscosityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/water-viscosity-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DewPointCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/dew-point-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    WetBulbCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/wet-bulb-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FlowRateCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/flow-rate-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    HeatIndexCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/heat-index-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    reynoldsNumberCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/reynolds-number-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    BuoyancyCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/buoyancy-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SpecificGravityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/specific-gravity-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    KineticEnergyCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/kinetic-energy-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TorqueCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/torque-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    HorsepowerCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/horsepower-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MomentumCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/momentum-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    WorkCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/work-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ForceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/force-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PotentialEnergyCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/potential-energy-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PowerToWeightRatioCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/power-to-weight-ratio-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FrictionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/friction-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CentripetalForceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/centripetal-force-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FrictionalForceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/frictional-force-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MechanicalEnergyCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/mechanical-energy-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ChangeInMomentumCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/change-in-momentum-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CcToHpCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/cc-to-hp-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ImpulseCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/impulse-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    WhpToHpCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/whp-to-hp-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ResultantForceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/resultant-force-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    EnergyCostCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/energy-cost-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    NormalForceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/normal-force-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    VelocityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/velocity-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    KinematicsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/kinematics-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    EnthalpyCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/enthalpy-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SpringConstantCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/spring-constant-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MomentOfInertiaCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/moment-of-inertia-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ScaleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/scale-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TransformerCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/transformer-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ConstantOfProportionalityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/constant-of-proportionality-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    QuarterMileCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/quarter-mile-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    EscapeVelocityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/escape-velocity-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CoulombsLawCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/coulombs-law-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    GravityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/gravity-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SolarPanelCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/solar-panel-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ArrowSpeedCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/arrow-speed-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TensionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/tension-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AirDensityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/air-density-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    BeamDeflectionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/beam-deflection-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    WireSizeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/wire-size-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DbmToWatts: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/dbm-to-watts`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AngleOfDeviationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/angle-of-deviation-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    JouleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/joule-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    EfficiencyCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/efficiency-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    VoltsToJoulesCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/volts-to-joules-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FpeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/fpe-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RelativeHumidityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/relative-humidity-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FrictionLossCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/friction-loss-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    OrbitalPeriodCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/orbital-period-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    NewtonsLawOfCoolingCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/newtons-law-of-cooling-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DcWireSizeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/dc-wire-size-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DensityAltitudeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/density-altitude-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // Physics calculator
+
+    // Math calculator
     ScientificNotationCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/scientific-notation-calculator`,
-      method: "POST",
-      body: data,
+      query: (data) => ({
+        url: `/calculators-lol/scientific-notation-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-}),
     LimitCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/limit-calculator`,
-      method: "POST",
-      body: data,
+      query: (data) => ({
+        url: `/calculators-lol/limit-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
 
     PrimeFactorizationCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/prime-factorization-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PercentErrorCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/percent-error-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ModuloCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/modulo-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    MidpointCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/midpoint-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    LongAdditionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/long-addition-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    StandardFormCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/standard-form-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    AverageCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/average-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    LogAntilogCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/log-antilog-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    CentroidTriangleCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/centroid-triangle-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    RemainderCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/remainder-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    QuadraticFormulaCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/quadratic-formula-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    RoundingNumbersCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/rounding-numbers-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    FractionToDecimalCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/fraction-to-decimal-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DecimalToFractionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/decimal-to-fraction-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    FractionToPercentCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/fraction-to-percent-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PercentToFractionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/percent-to-fraction-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    MillionBillionLakhCrore: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/million-billion-lakh-crore`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PointSlopeFormCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/point-slope-form-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    HemisphereCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/hemisphere-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DiscriminantCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/discriminant-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    EndpointCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/endpoint-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    SlopeInterceptFormCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/slope-intercept-form-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ExponentCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/exponent-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    SquareRootCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/square-root-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    BinaryCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/binary-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ProportionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/proportion-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    LinearInterpolationCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/linear-interpolation-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PythagoreanTheoremCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/pythagorean-theorem-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    UnitCircleCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/unit-circle-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    LaplaceTransformCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/laplace-transform-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    InflectionPointCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/inflection-point-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ArcLengthCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/arc-length-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ArcsinCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/arcsin-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    BinomialTheoremCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/binomial-theorem-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    SineCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/sine-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ArccosCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/arccos-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ArctanCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/arctan-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    CosineCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/cosine-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    TangentCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/tangent-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    SecantCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/secant-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    CscCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/csc-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    CotangentCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/cotangent-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    AreaBetweenTwoCurvesCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/area-between-two-curves-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ECalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/e-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ParallelAndPerpendicularCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/parallel-and-perpendicular-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    CompositeFunctionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/composite-function-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    CoterminalAngleCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/coterminal-angle-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ArithmeticSequencesCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/arithmetic-sequences-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    InverseFunctionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/inverse-function-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DoubleAngleCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/double-angle-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    RiemannSumCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/riemann-sum-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    MeanValueTheoremCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/mean-value-theorem-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    HalfAngleCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/half-angle-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    NewtonsMethodCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/newtons-method-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    TrapezoidalRuleCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/trapezoidal-rule-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    FoilCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/foil-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    unitTangentVectorCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/unit-tangent-vector-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    RemainderTheoremCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/remainder-theorem-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PowerSetCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/power-set-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    GradientCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/gradient-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    VertexFormCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/vertex-form-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    MidpointRuleCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/midpoint-rule-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    SubsetCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/subset-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    MaclaurinSeriesCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/maclaurin-series-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DifferenceQuotientCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/difference-quotient-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ComplexNumberCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/complex-number-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    WronskianCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/wronskian-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    InverseLaplaceTransformCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/inverse-laplace-transform-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    SummationCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/summation-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PolarCoordinatesCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/polar-coordinates-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ConvolutionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/convolution-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    JacobianCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/jacobian-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    HyperbolaCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/hyperbola-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    WasherMethodCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/washer-method-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ShellMethodCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/shell-method-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ImplicitDifferentiationCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/implicit-differentiation-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    CriticalPointsCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/critical-points-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PartialDerivativeCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/partial-derivative-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    AbsoluteValueCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/absolute-value-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    AreaUnderTheCurveCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/area-under-the-curve-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    SecondDerivativeCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/second-derivative-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DoubleIntegralCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/double-integral-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    TripleIntegralCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/triple-integral-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ZerosCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/zeros-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    GeometricSequenceCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/geometric-sequence-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    TruthTableCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/truth-table-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    EvenOddFunctionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/even-odd-function-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    SyntheticDivisionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/synthetic-division-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ProductRuleDerivativeCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/product-rule-derivative-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    OrthocenterCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/orthocenter-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PolynomialLongDivisionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/polynomial-long-division-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    RadiusOfConvergenceCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/radius-of-convergence-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PowerSeriesCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/power-series-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    SimpsonsRuleCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/simpsons-rule-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    CurlCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/curl-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    SaddlePointCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/saddle-point-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ImproperIntegralCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/improper-integral-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    FourierSeriesCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/fourier-series-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DivergenceCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/divergence-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    LeastToGreatestCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/least-to-greatest-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    RationalExpressionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/rational-expression-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    AngleOfElevationCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/angle-of-elevation-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DilationCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/dilation-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    SphereCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/sphere-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PercentageIncreaseCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/percentage-increase-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PercentageDecreaseCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/percentage-decrease-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PercentageDifferenceCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/percentage-difference-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    Variationcalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/variation-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    StandardFormTolopeInterceptForm: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/standard-form-to-slope-intercept-form`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PolygonCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/polygon-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    GoldenRatioCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/golden-ratio-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ImproperFractionsToMixedNumbers: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/improper-fractions-to-mixed-numbers`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    MixedNumbersToImproperFractions: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/mixed-numbers-to-improper-fractions`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    LocalMaximaAndMinimaCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/local-maxima-and-minima-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    LcdCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/lcd-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    EquivalentFractionsCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/equivalent-fractions-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    UnitRateCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/unit-rate-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ComparingFractionsCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/comparing-fractions-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    TimeToDecimalCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/time-to-decimal-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PercentToDecimalCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/percent-to-decimal-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DecimalToPercentCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/decimal-to-percent-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    IntegerCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/integer-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    MultiplicativeInverseCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/multiplicative-inverse-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    InverseModuloCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/inverse-modulo-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    CombineLikeTermsCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/combine-like-terms-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    SolveForXCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/solve-for-x-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    InequalityCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/inequality-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    MultiplyingPolynomialsCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/multiplying-polynomials-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    EquationOfALineCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/equation-of-a-line-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    FractionExponentCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/fraction-exponent-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    AmplitudeAndPeriodCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/amplitude-and-period-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ExponentialGrowthCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/exponential-growth-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PerfectSquareTrinomialCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/perfect-square-trinomial-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PowerReducingFormulaCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/power-reducing-formula-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    FunctionOperationsCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/function-operations-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DiamondCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/diamond-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    CrossMultiplyCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/cross-multiply-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    AreaOfASemicircle: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/area-of-a-semicircle`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DegreeAndLeadingCoefficient: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/degree-and-leading-coefficient`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    EquivalentExpressionsCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/equivalent-expressions-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DescartesRuleOfSignsCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/descartes-rule-of-signs-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    RotationCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/rotation-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ReciprocalCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/reciprocal-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    CofunctionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/cofunction-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    AdditiveInverseCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/additive-inverse-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    MonomialCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/monomial-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    LongMultiplicationCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/long-multiplication-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DivisibleCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/divisible-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    AverageValueOfFunction: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/average-value-of-function`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ProductSumCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/product-sum-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PascalsTriangleCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/pascals-triangle-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    OrderOfOperationsCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/order-of-operations-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    CharacteristicPolynomialCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/characteristic-polynomial-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    InterceptsCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/intercepts-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DomainAndRangeCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/domain-and-range-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DistanceBetweenTwoPointsCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/distance-between-two-points-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    SasTriangleCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/sas-triangle-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    RadiusOfACircleCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/radius-of-a-circle-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    EquilateralTriangleCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/equilateral-triangle-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PointOfIntersection: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/point-of-intersection`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    ExponentialFunctionCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/exponential-function-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PowerOf10Calculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/power-of-10-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    SlopePercentageCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/slope-percentage-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-  
-    ChangeOfBaseFormulaCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/change-of-base-formula-calculator`,
-      method: "POST",
-      body: data,
-    }),
-
-  }),
-  
-    CompletingTheSquareCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/completing-the-square-calculator`,
-      method: "POST",
-      body: data,
-    }),
-
-  }),
-    CubeRootCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/cube-root-calculator`,
-      method: "POST",
-      body: data,
-    }),
-
-  }),
-    TruncatedPyramidCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/truncated-pyramid-calculator`,
-      method: "POST",
-      body: data,
-    }),
+      query: (data) => ({
+        url: `/calculators-lol/prime-factorization-calculator`,
+        method: "POST",
+        body: data,
       }),
-    VolumeOfSquare: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/volume-of-square`,
-      method: "POST",
-      body: data,
+    }),
+    PercentErrorCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/percent-error-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ModuloCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/modulo-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MidpointCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/midpoint-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    LongAdditionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/long-addition-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    StandardFormCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/standard-form-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AverageCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/average-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    LogAntilogCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/log-antilog-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CentroidTriangleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/centroid-triangle-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RemainderCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/remainder-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    QuadraticFormulaCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/quadratic-formula-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RoundingNumbersCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/rounding-numbers-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FractionToDecimalCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/fraction-to-decimal-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DecimalToFractionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/decimal-to-fraction-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FractionToPercentCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/fraction-to-percent-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PercentToFractionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/percent-to-fraction-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MillionBillionLakhCrore: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/million-billion-lakh-crore`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PointSlopeFormCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/point-slope-form-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    HemisphereCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/hemisphere-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DiscriminantCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/discriminant-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    EndpointCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/endpoint-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SlopeInterceptFormCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/slope-intercept-form-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ExponentCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/exponent-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SquareRootCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/square-root-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    BinaryCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/binary-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ProportionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/proportion-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    LinearInterpolationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/linear-interpolation-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PythagoreanTheoremCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/pythagorean-theorem-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    UnitCircleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/unit-circle-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    LaplaceTransformCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/laplace-transform-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    InflectionPointCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/inflection-point-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ArcLengthCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/arc-length-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ArcsinCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/arcsin-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    BinomialTheoremCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/binomial-theorem-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SineCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/sine-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ArccosCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/arccos-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ArctanCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/arctan-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CosineCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/cosine-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TangentCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/tangent-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SecantCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/secant-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CscCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/csc-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CotangentCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/cotangent-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AreaBetweenTwoCurvesCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/area-between-two-curves-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ECalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/e-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ParallelAndPerpendicularCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/parallel-and-perpendicular-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CompositeFunctionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/composite-function-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CoterminalAngleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/coterminal-angle-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ArithmeticSequencesCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/arithmetic-sequences-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    InverseFunctionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/inverse-function-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DoubleAngleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/double-angle-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RiemannSumCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/riemann-sum-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MeanValueTheoremCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/mean-value-theorem-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    HalfAngleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/half-angle-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    NewtonsMethodCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/newtons-method-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TrapezoidalRuleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/trapezoidal-rule-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FoilCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/foil-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    unitTangentVectorCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/unit-tangent-vector-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RemainderTheoremCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/remainder-theorem-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PowerSetCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/power-set-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    GradientCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/gradient-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    VertexFormCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/vertex-form-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MidpointRuleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/midpoint-rule-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SubsetCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/subset-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MaclaurinSeriesCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/maclaurin-series-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DifferenceQuotientCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/difference-quotient-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ComplexNumberCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/complex-number-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    WronskianCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/wronskian-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    InverseLaplaceTransformCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/inverse-laplace-transform-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SummationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/summation-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PolarCoordinatesCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/polar-coordinates-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ConvolutionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/convolution-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    JacobianCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/jacobian-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    HyperbolaCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/hyperbola-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    WasherMethodCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/washer-method-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ShellMethodCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/shell-method-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ImplicitDifferentiationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/implicit-differentiation-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CriticalPointsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/critical-points-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PartialDerivativeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/partial-derivative-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AbsoluteValueCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/absolute-value-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AreaUnderTheCurveCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/area-under-the-curve-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SecondDerivativeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/second-derivative-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DoubleIntegralCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/double-integral-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TripleIntegralCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/triple-integral-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ZerosCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/zeros-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    GeometricSequenceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/geometric-sequence-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TruthTableCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/truth-table-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    EvenOddFunctionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/even-odd-function-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SyntheticDivisionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/synthetic-division-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ProductRuleDerivativeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/product-rule-derivative-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    OrthocenterCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/orthocenter-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PolynomialLongDivisionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/polynomial-long-division-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RadiusOfConvergenceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/radius-of-convergence-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PowerSeriesCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/power-series-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SimpsonsRuleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/simpsons-rule-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CurlCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/curl-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SaddlePointCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/saddle-point-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ImproperIntegralCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/improper-integral-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FourierSeriesCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/fourier-series-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DivergenceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/divergence-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    LeastToGreatestCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/least-to-greatest-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RationalExpressionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/rational-expression-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AngleOfElevationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/angle-of-elevation-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DilationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/dilation-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SphereCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/sphere-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PercentageIncreaseCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/percentage-increase-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PercentageDecreaseCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/percentage-decrease-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PercentageDifferenceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/percentage-difference-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    Variationcalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/variation-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    StandardFormTolopeInterceptForm: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/standard-form-to-slope-intercept-form`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PolygonCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/polygon-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    GoldenRatioCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/golden-ratio-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ImproperFractionsToMixedNumbers: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/improper-fractions-to-mixed-numbers`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MixedNumbersToImproperFractions: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/mixed-numbers-to-improper-fractions`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    LocalMaximaAndMinimaCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/local-maxima-and-minima-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    LcdCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/lcd-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    EquivalentFractionsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/equivalent-fractions-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    UnitRateCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/unit-rate-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ComparingFractionsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/comparing-fractions-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TimeToDecimalCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/time-to-decimal-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PercentToDecimalCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/percent-to-decimal-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DecimalToPercentCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/decimal-to-percent-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    IntegerCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/integer-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MultiplicativeInverseCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/multiplicative-inverse-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    InverseModuloCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/inverse-modulo-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CombineLikeTermsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/combine-like-terms-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SolveForXCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/solve-for-x-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    InequalityCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/inequality-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MultiplyingPolynomialsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/multiplying-polynomials-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    EquationOfALineCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/equation-of-a-line-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FractionExponentCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/fraction-exponent-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AmplitudeAndPeriodCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/amplitude-and-period-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ExponentialGrowthCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/exponential-growth-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PerfectSquareTrinomialCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/perfect-square-trinomial-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PowerReducingFormulaCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/power-reducing-formula-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FunctionOperationsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/function-operations-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DiamondCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/diamond-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CrossMultiplyCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/cross-multiply-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AreaOfASemicircle: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/area-of-a-semicircle`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DegreeAndLeadingCoefficient: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/degree-and-leading-coefficient`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    EquivalentExpressionsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/equivalent-expressions-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DescartesRuleOfSignsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/descartes-rule-of-signs-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RotationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/rotation-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ReciprocalCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/reciprocal-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CofunctionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/cofunction-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AdditiveInverseCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/additive-inverse-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MonomialCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/monomial-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    LongMultiplicationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/long-multiplication-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DivisibleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/divisible-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AverageValueOfFunction: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/average-value-of-function`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ProductSumCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/product-sum-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PascalsTriangleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/pascals-triangle-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    OrderOfOperationsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/order-of-operations-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CharacteristicPolynomialCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/characteristic-polynomial-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    InterceptsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/intercepts-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DomainAndRangeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/domain-and-range-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DistanceBetweenTwoPointsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/distance-between-two-points-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SasTriangleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/sas-triangle-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RadiusOfACircleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/radius-of-a-circle-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    EquilateralTriangleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/equilateral-triangle-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PointOfIntersection: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/point-of-intersection`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ExponentialFunctionCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/exponential-function-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PowerOf10Calculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/power-of-10-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SlopePercentageCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/slope-percentage-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
 
-  }),
+    ChangeOfBaseFormulaCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/change-of-base-formula-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    CompletingTheSquareCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/completing-the-square-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CubeRootCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/cube-root-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TruncatedPyramidCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/truncated-pyramid-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    VolumeOfSquare: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/volume-of-square`,
+        method: "POST",
+        body: data,
+      }),
+    }),
 
     MixedNumberCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/mixed-number-calculator`,
-      method: "POST",
-      body: data,
+      query: (data) => ({
+        url: `/calculators-lol/mixed-number-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-
-  }),
     FractionSimplifierCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/fraction-simplifier-calculator`,
-      method: "POST",
-      body: data,
+      query: (data) => ({
+        url: `/calculators-lol/fraction-simplifier-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-
-  }),
     SgpaToPercentageCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/sgpa-to-percentage-calculator`,
-      method: "POST",
-      body: data,
+      query: (data) => ({
+        url: `/calculators-lol/sgpa-to-percentage-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-
-  }),
     HexCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/hex-calculator`,
-      method: "POST",
-      body: data,
+      query: (data) => ({
+        url: `/calculators-lol/hex-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
 
-  }),
-  
     WeightedAverageCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/weighted-average-calculator`,
-      method: "POST",
-      body: data,
+      query: (data) => ({
+        url: `/calculators-lol/weighted-average-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-  
-    TestCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/test-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    MarksPercentageCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/marks-percentage-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DecimalCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/decimal-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    VennDiagramCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/venn-diagram-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    FundamentalCountingPrincipleCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/fundamental-counting-principle-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    AveragePercentageCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/average-percentage-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    FibonacciCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/fibonacci-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    TaylorSeriesCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/taylor-series-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DerivativeCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/derivative-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    CircumcenterCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/circumcenter-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    PercentageChangeCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/percentage-change-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    SlopeCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/slope-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    DeterminantCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/determinant-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    EigenvectorsCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/eigenvectors-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    NullSpaceCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/null-space-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    MatrixMultiplicationCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/matrix-multiplication-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    MatrixTransposeCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/matrix-transpose-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
-    LinearIndependenceCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/linear-independence-calculator`,
-      method: "POST",
-      body: data,
-    }),
-  }),
 
-  // Math calculator
+    TestCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/test-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MarksPercentageCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/marks-percentage-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DecimalCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/decimal-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    VennDiagramCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/venn-diagram-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FundamentalCountingPrincipleCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/fundamental-counting-principle-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AveragePercentageCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/average-percentage-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FibonacciCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/fibonacci-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TaylorSeriesCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/taylor-series-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DerivativeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/derivative-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CircumcenterCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/circumcenter-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PercentageChangeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/percentage-change-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SlopeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/slope-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DeterminantCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/determinant-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    EigenvectorsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/eigenvectors-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    NullSpaceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/null-space-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MatrixMultiplicationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/matrix-multiplication-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MatrixTransposeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/matrix-transpose-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    LinearIndependenceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/linear-independence-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // Math calculator
     // Health calculator
 
     DressSizeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/dress-size-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    // Health calculator
+
+    HeightComparison: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/height-comparison`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    BaseCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/base-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SystemOfEquationsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/system-of-equations-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    SimplifyRadicalsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/simplify-radicals-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FinalGradeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/final-grade-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+       SigFigCalculator: builder.mutation({
     query: (data) => ({
-      url: `/calculators-lol/dress-size-calculator`,
+      url: `/calculators-lol/sig-fig-calculator`,
       method: "POST",
       body: data,
     }),
   }),
-      // Health calculator
 
-
-
-
-
+   AsuGpaCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/asu-gpa-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    IuGpaCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/iu-gpa-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    
+   UcGpaCalculator: builder.mutation({
+    query: (data) => ({
+      url: `/calculators-lol/uc-gpa-calculator`,
+      method: "POST",
+      body: data,
+    }),
+  }),
+   UtGpaCalculator: builder.mutation({
+    query: (data) => ({
+      url: `/calculators-lol/ut-gpa-calculator`,
+      method: "POST",
+      body: data,
+    }),
+  }),
+   UfGpaCalculator: builder.mutation({
+    query: (data) => ({
+      url: `/calculators-lol/uf-gpa-calculator`,
+      method: "POST",
+      body: data,
+    }),
+  }),
   }),
 });
 
 export const {
-     // Health calculator
-     useDressSizeCalculatorMutation,
-      // Health calculator
-      
+  useGratuityCalculatorMutation,
+  useSystemOfEquationsCalculatorMutation,
+  useHeightComparisonMutation,
+  useBaseCalculatorMutation,
+  useSimplifyRadicalsCalculatorMutation,
+  useFinalGradeCalculatorMutation,
+  useSigFigCalculatorMutation,
+  useAsuGpaCalculatorMutation,
+  useIuGpaCalculatorMutation,
+  useUfGpaCalculatorMutation,
+  useUtGpaCalculatorMutation,
+  useUcGpaCalculatorMutation,
+  // Health calculator
+  useDressSizeCalculatorMutation,
+  // Health calculator
+
   // Pets Calculators start
   useGetSingleCalculatorLanguageQuery,
   useGetSingleCalculatorDetailsMutation,
@@ -5847,8 +5915,6 @@ export const {
   useLogWeightCalculatorMutation,
   useAquariumCalculatorMutation,
 
-
-  
   // Statistics  Calculators start
   useProbabilityCalculatorMutation,
   useCoefficientOfVariationCalculatorMutation,
@@ -5907,9 +5973,8 @@ export const {
   useZScoreToPercentileMutation,
   useSampleSizeCalculatorMutation,
 
-    // Statistics  Calculators start
+  // Statistics  Calculators start
 
-  
   // Chemistry Calculators start
   useBoylesLawCalculatorMutation,
   useActivationEnergyCalculatorMutation,
@@ -5975,46 +6040,44 @@ export const {
   useCPMCalculatorMutation,
   useCAGRCalculatorMutation,
 
-
   // Chemistry Calculators start
 
-
-   // Physics calculator
-   useCrossProductCalculatorMutation,
-   useInstantaneousVelocityCalculatorMutation,
-   useHorsepowerCalculatorMutation,
-   usePhotonEnergyCalculatorMutation,
-   useDotProductCalculatorMutation,
-   useVectorMagnitudeCalculatorMutation,
-   useProjectileMotionCalculatorMutation,
-   usePotentialEnergyCalculatorMutation,
-   useWavelengthCalculatorMutation,
-   useSpringConstantCalculatorMutation,
-   useDewPointCalculatorMutation,
-   useWetBulbCalculatorMutation,
-   usePowerToWeightRatioCalculatorMutation,
-   useConstantOfProportionalityCalculatorMutation,
-   useFrictionCalculatorMutation,
-   useEscapeVelocityCalculatorMutation,
-   useGravityCalculatorMutation,
-   useArrowSpeedCalculatorMutation,
-   useAngularAccelerationCalculatorMutation,
-   useElectricityCostCalculatorMutation,
-   useAirDensityCalculatorMutation,
-   useTimeOfFlightCalculatorMutation,
-   useFrictionalForceCalculatorMutation,
-   useQuantumNumberCalculatorMutation,
-   useMechanicalEnergyCalculatorMutation,
-   useIndexOfRefractionCalculatorMutation,
-   useSnellsLawCalculatorMutation,
-   useCcToHpCalculatorMutation,
-   useWhpToHpCalculatorMutation,
-   useAverageSpeedCalculatorMutation,
-   useDbmToWattsMutation,
-   useCapacitanceCalculatorMutation,
-   useAngleOfDeviationCalculatorMutation,
-   useElectricPotentialCalculatorMutation,
-   useWavePeriodCalculatorMutation,
+  // Physics calculator
+  useCrossProductCalculatorMutation,
+  useInstantaneousVelocityCalculatorMutation,
+  useHorsepowerCalculatorMutation,
+  usePhotonEnergyCalculatorMutation,
+  useDotProductCalculatorMutation,
+  useVectorMagnitudeCalculatorMutation,
+  useProjectileMotionCalculatorMutation,
+  usePotentialEnergyCalculatorMutation,
+  useWavelengthCalculatorMutation,
+  useSpringConstantCalculatorMutation,
+  useDewPointCalculatorMutation,
+  useWetBulbCalculatorMutation,
+  usePowerToWeightRatioCalculatorMutation,
+  useConstantOfProportionalityCalculatorMutation,
+  useFrictionCalculatorMutation,
+  useEscapeVelocityCalculatorMutation,
+  useGravityCalculatorMutation,
+  useArrowSpeedCalculatorMutation,
+  useAngularAccelerationCalculatorMutation,
+  useElectricityCostCalculatorMutation,
+  useAirDensityCalculatorMutation,
+  useTimeOfFlightCalculatorMutation,
+  useFrictionalForceCalculatorMutation,
+  useQuantumNumberCalculatorMutation,
+  useMechanicalEnergyCalculatorMutation,
+  useIndexOfRefractionCalculatorMutation,
+  useSnellsLawCalculatorMutation,
+  useCcToHpCalculatorMutation,
+  useWhpToHpCalculatorMutation,
+  useAverageSpeedCalculatorMutation,
+  useDbmToWattsMutation,
+  useCapacitanceCalculatorMutation,
+  useAngleOfDeviationCalculatorMutation,
+  useElectricPotentialCalculatorMutation,
+  useWavePeriodCalculatorMutation,
   useAngleOfRefractionCalculatorMutation,
   useJouleCalculatorMutation,
   useEfficiencyCalculatorMutation,
@@ -6042,176 +6105,174 @@ export const {
   useParallelResistorCalculatorMutation,
   useTerminalVelocityCalculatorMutation,
 
-
-  
-    // Math calculator
-    useLinearIndependenceCalculatorMutation,
-    useMatrixTransposeCalculatorMutation,
-    useMatrixMultiplicationCalculatorMutation,
-    useNullSpaceCalculatorMutation,
-    useEigenvectorsCalculatorMutation,
-    useDeterminantCalculatorMutation,
-    useSlopeCalculatorMutation,
-    usePercentageChangeCalculatorMutation,
-    useCircumcenterCalculatorMutation,
-    useDerivativeCalculatorMutation,
-    useTaylorSeriesCalculatorMutation,
-    useAveragePercentageCalculatorMutation,
-    useFundamentalCountingPrincipleCalculatorMutation,
-    useVennDiagramCalculatorMutation,
-    useDecimalCalculatorMutation,
-    useMarksPercentageCalculatorMutation,
-    useTestCalculatorMutation,
-    useWeightedAverageCalculatorMutation,
-    useHexCalculatorMutation,
-    useSgpaToPercentageCalculatorMutation,
-    useFractionSimplifierCalculatorMutation,
-    useMixedNumberCalculatorMutation,
-    useTruncatedPyramidCalculatorMutation,
-    useCubeRootCalculatorMutation,
-    useCompletingTheSquareCalculatorMutation,
-    useChangeOfBaseFormulaCalculatorMutation,
-    useSlopePercentageCalculatorMutation,
-    useSquareRootCalculatorMutation,
-    usePowerOf10CalculatorMutation,
-    useExponentialFunctionCalculatorMutation,
-    usePointOfIntersectionMutation,
-    useEquilateralTriangleCalculatorMutation,
-    useRadiusOfACircleCalculatorMutation,
-    useSasTriangleCalculatorMutation,
-    useDistanceBetweenTwoPointsCalculatorMutation,
-    useDomainAndRangeCalculatorMutation,
-    useInterceptsCalculatorMutation,
-    useCharacteristicPolynomialCalculatorMutation,
-    useOrderOfOperationsCalculatorMutation,
-    usePascalsTriangleCalculatorMutation,
-    useProductSumCalculatorMutation,
-    useAverageValueOfFunctionMutation,
-    useDivisibleCalculatorMutation,
-    useLongMultiplicationCalculatorMutation,
-    useMonomialCalculatorMutation,
-    useAdditiveInverseCalculatorMutation,
-    useCofunctionCalculatorMutation,
-    useReciprocalCalculatorMutation,
-    useRotationCalculatorMutation,
-    useDescartesRuleOfSignsCalculatorMutation,
-    useEquivalentExpressionsCalculatorMutation,
-    useDegreeAndLeadingCoefficientMutation,
-    useAreaOfASemicircleMutation,
-    useCrossMultiplyCalculatorMutation,
-    useDiamondCalculatorMutation,
-    useFunctionOperationsCalculatorMutation,
-    usePowerReducingFormulaCalculatorMutation,
-    usePerfectSquareTrinomialCalculatorMutation,
-    useExponentialGrowthCalculatorMutation,
-    useAmplitudeAndPeriodCalculatorMutation,
-    useFractionExponentCalculatorMutation,
-    useEquationOfALineCalculatorMutation,
-    useMultiplyingPolynomialsCalculatorMutation,
-    useInequalityCalculatorMutation,
-    useSolveForXCalculatorMutation,
-    useCombineLikeTermsCalculatorMutation,
-    useInverseModuloCalculatorMutation,
-    useMultiplicativeInverseCalculatorMutation,
-    useIntegerCalculatorMutation,
-    useDecimalToPercentCalculatorMutation,
-    usePercentToDecimalCalculatorMutation,
-    useTimeToDecimalCalculatorMutation,
-    useComparingFractionsCalculatorMutation,
-    useUnitRateCalculatorMutation,
-    useEquivalentFractionsCalculatorMutation,
-    useLcdCalculatorMutation,
-    useLocalMaximaAndMinimaCalculatorMutation,
-    useMixedNumbersToImproperFractionsMutation,
-    useImproperFractionsToMixedNumbersMutation,
-    useGoldenRatioCalculatorMutation,
-    usePolygonCalculatorMutation,
-    useStandardFormTolopeInterceptFormMutation,
-    useVariationcalculatorMutation,
-    usePercentageDifferenceCalculatorMutation,
-    usePercentageDecreaseCalculatorMutation,
-    usePercentageIncreaseCalculatorMutation,
-    useSphereCalculatorMutation,
-    useDilationCalculatorMutation,
-    useAngleOfElevationCalculatorMutation,
-    useRationalExpressionCalculatorMutation,
-    useLeastToGreatestCalculatorMutation,
-    useDivergenceCalculatorMutation,
-    useFourierSeriesCalculatorMutation,
-    useImproperIntegralCalculatorMutation,
-    useSaddlePointCalculatorMutation,
-    useCurlCalculatorMutation,
-    useSimpsonsRuleCalculatorMutation,
-    usePowerSeriesCalculatorMutation,
-    useRadiusOfConvergenceCalculatorMutation,
-    usePolynomialLongDivisionCalculatorMutation,
-    useOrthocenterCalculatorMutation,
-    useProductRuleDerivativeCalculatorMutation,
-    useSyntheticDivisionCalculatorMutation,
-    useEvenOddFunctionCalculatorMutation,
-    useTruthTableCalculatorMutation,
-    useGeometricSequenceCalculatorMutation,
-    useZerosCalculatorMutation,
-    useTripleIntegralCalculatorMutation,
-    useDoubleIntegralCalculatorMutation,
-    useSecondDerivativeCalculatorMutation,
-    useAreaUnderTheCurveCalculatorMutation,
-    useAbsoluteValueCalculatorMutation,
-    usePartialDerivativeCalculatorMutation,
-    useCriticalPointsCalculatorMutation,
-    useImplicitDifferentiationCalculatorMutation,
-    useShellMethodCalculatorMutation,
-    useWasherMethodCalculatorMutation,
-    useHyperbolaCalculatorMutation,
-    useJacobianCalculatorMutation,
-    useConvolutionCalculatorMutation,
-    usePolarCoordinatesCalculatorMutation,
-    useSummationCalculatorMutation,
-    useInverseLaplaceTransformCalculatorMutation,
-    useWronskianCalculatorMutation,
-    useComplexNumberCalculatorMutation,
-    useDifferenceQuotientCalculatorMutation,
-    useMaclaurinSeriesCalculatorMutation,
-    useSubsetCalculatorMutation,
-    useMidpointRuleCalculatorMutation,
-    useVertexFormCalculatorMutation,
-    useGradientCalculatorMutation,
-    usePowerSetCalculatorMutation,
-    useRemainderTheoremCalculatorMutation,
-    useUnitTangentVectorCalculatorMutation,
-    useFoilCalculatorMutation,
-    useTrapezoidalRuleCalculatorMutation,
-    useNewtonsMethodCalculatorMutation,
-    useHalfAngleCalculatorMutation,
-    useMeanValueTheoremCalculatorMutation,
-    useRiemannSumCalculatorMutation,
-    useDoubleAngleCalculatorMutation,
-    useInverseFunctionCalculatorMutation,
-    useArithmeticSequencesCalculatorMutation,
-    useCoterminalAngleCalculatorMutation,
-    useCompositeFunctionCalculatorMutation,
-    useParallelAndPerpendicularCalculatorMutation,
-    useECalculatorMutation,
-    useAreaBetweenTwoCurvesCalculatorMutation,
-    useCotangentCalculatorMutation,
-    useCscCalculatorMutation,
-    useSecantCalculatorMutation,
-    useTangentCalculatorMutation,
-    useCosineCalculatorMutation,
-    useArctanCalculatorMutation,
-    useArccosCalculatorMutation,
-    useSineCalculatorMutation,
-    useBinomialTheoremCalculatorMutation,
-    useArcsinCalculatorMutation,
-    useArcLengthCalculatorMutation,
-    useInflectionPointCalculatorMutation,
-    useLaplaceTransformCalculatorMutation,
-    useUnitCircleCalculatorMutation,
-    usePythagoreanTheoremCalculatorMutation,
-    useLinearInterpolationCalculatorMutation,
-    useProportionCalculatorMutation,
-    useBinaryCalculatorMutation,
-    useExponentCalculatorMutation,
+  // Math calculator
+  useLinearIndependenceCalculatorMutation,
+  useMatrixTransposeCalculatorMutation,
+  useMatrixMultiplicationCalculatorMutation,
+  useNullSpaceCalculatorMutation,
+  useEigenvectorsCalculatorMutation,
+  useDeterminantCalculatorMutation,
+  useSlopeCalculatorMutation,
+  usePercentageChangeCalculatorMutation,
+  useCircumcenterCalculatorMutation,
+  useDerivativeCalculatorMutation,
+  useTaylorSeriesCalculatorMutation,
+  useAveragePercentageCalculatorMutation,
+  useFundamentalCountingPrincipleCalculatorMutation,
+  useVennDiagramCalculatorMutation,
+  useDecimalCalculatorMutation,
+  useMarksPercentageCalculatorMutation,
+  useTestCalculatorMutation,
+  useWeightedAverageCalculatorMutation,
+  useHexCalculatorMutation,
+  useSgpaToPercentageCalculatorMutation,
+  useFractionSimplifierCalculatorMutation,
+  useMixedNumberCalculatorMutation,
+  useTruncatedPyramidCalculatorMutation,
+  useCubeRootCalculatorMutation,
+  useCompletingTheSquareCalculatorMutation,
+  useChangeOfBaseFormulaCalculatorMutation,
+  useSlopePercentageCalculatorMutation,
+  useSquareRootCalculatorMutation,
+  usePowerOf10CalculatorMutation,
+  useExponentialFunctionCalculatorMutation,
+  usePointOfIntersectionMutation,
+  useEquilateralTriangleCalculatorMutation,
+  useRadiusOfACircleCalculatorMutation,
+  useSasTriangleCalculatorMutation,
+  useDistanceBetweenTwoPointsCalculatorMutation,
+  useDomainAndRangeCalculatorMutation,
+  useInterceptsCalculatorMutation,
+  useCharacteristicPolynomialCalculatorMutation,
+  useOrderOfOperationsCalculatorMutation,
+  usePascalsTriangleCalculatorMutation,
+  useProductSumCalculatorMutation,
+  useAverageValueOfFunctionMutation,
+  useDivisibleCalculatorMutation,
+  useLongMultiplicationCalculatorMutation,
+  useMonomialCalculatorMutation,
+  useAdditiveInverseCalculatorMutation,
+  useCofunctionCalculatorMutation,
+  useReciprocalCalculatorMutation,
+  useRotationCalculatorMutation,
+  useDescartesRuleOfSignsCalculatorMutation,
+  useEquivalentExpressionsCalculatorMutation,
+  useDegreeAndLeadingCoefficientMutation,
+  useAreaOfASemicircleMutation,
+  useCrossMultiplyCalculatorMutation,
+  useDiamondCalculatorMutation,
+  useFunctionOperationsCalculatorMutation,
+  usePowerReducingFormulaCalculatorMutation,
+  usePerfectSquareTrinomialCalculatorMutation,
+  useExponentialGrowthCalculatorMutation,
+  useAmplitudeAndPeriodCalculatorMutation,
+  useFractionExponentCalculatorMutation,
+  useEquationOfALineCalculatorMutation,
+  useMultiplyingPolynomialsCalculatorMutation,
+  useInequalityCalculatorMutation,
+  useSolveForXCalculatorMutation,
+  useCombineLikeTermsCalculatorMutation,
+  useInverseModuloCalculatorMutation,
+  useMultiplicativeInverseCalculatorMutation,
+  useIntegerCalculatorMutation,
+  useDecimalToPercentCalculatorMutation,
+  usePercentToDecimalCalculatorMutation,
+  useTimeToDecimalCalculatorMutation,
+  useComparingFractionsCalculatorMutation,
+  useUnitRateCalculatorMutation,
+  useEquivalentFractionsCalculatorMutation,
+  useLcdCalculatorMutation,
+  useLocalMaximaAndMinimaCalculatorMutation,
+  useMixedNumbersToImproperFractionsMutation,
+  useImproperFractionsToMixedNumbersMutation,
+  useGoldenRatioCalculatorMutation,
+  usePolygonCalculatorMutation,
+  useStandardFormTolopeInterceptFormMutation,
+  useVariationcalculatorMutation,
+  usePercentageDifferenceCalculatorMutation,
+  usePercentageDecreaseCalculatorMutation,
+  usePercentageIncreaseCalculatorMutation,
+  useSphereCalculatorMutation,
+  useDilationCalculatorMutation,
+  useAngleOfElevationCalculatorMutation,
+  useRationalExpressionCalculatorMutation,
+  useLeastToGreatestCalculatorMutation,
+  useDivergenceCalculatorMutation,
+  useFourierSeriesCalculatorMutation,
+  useImproperIntegralCalculatorMutation,
+  useSaddlePointCalculatorMutation,
+  useCurlCalculatorMutation,
+  useSimpsonsRuleCalculatorMutation,
+  usePowerSeriesCalculatorMutation,
+  useRadiusOfConvergenceCalculatorMutation,
+  usePolynomialLongDivisionCalculatorMutation,
+  useOrthocenterCalculatorMutation,
+  useProductRuleDerivativeCalculatorMutation,
+  useSyntheticDivisionCalculatorMutation,
+  useEvenOddFunctionCalculatorMutation,
+  useTruthTableCalculatorMutation,
+  useGeometricSequenceCalculatorMutation,
+  useZerosCalculatorMutation,
+  useTripleIntegralCalculatorMutation,
+  useDoubleIntegralCalculatorMutation,
+  useSecondDerivativeCalculatorMutation,
+  useAreaUnderTheCurveCalculatorMutation,
+  useAbsoluteValueCalculatorMutation,
+  usePartialDerivativeCalculatorMutation,
+  useCriticalPointsCalculatorMutation,
+  useImplicitDifferentiationCalculatorMutation,
+  useShellMethodCalculatorMutation,
+  useWasherMethodCalculatorMutation,
+  useHyperbolaCalculatorMutation,
+  useJacobianCalculatorMutation,
+  useConvolutionCalculatorMutation,
+  usePolarCoordinatesCalculatorMutation,
+  useSummationCalculatorMutation,
+  useInverseLaplaceTransformCalculatorMutation,
+  useWronskianCalculatorMutation,
+  useComplexNumberCalculatorMutation,
+  useDifferenceQuotientCalculatorMutation,
+  useMaclaurinSeriesCalculatorMutation,
+  useSubsetCalculatorMutation,
+  useMidpointRuleCalculatorMutation,
+  useVertexFormCalculatorMutation,
+  useGradientCalculatorMutation,
+  usePowerSetCalculatorMutation,
+  useRemainderTheoremCalculatorMutation,
+  useUnitTangentVectorCalculatorMutation,
+  useFoilCalculatorMutation,
+  useTrapezoidalRuleCalculatorMutation,
+  useNewtonsMethodCalculatorMutation,
+  useHalfAngleCalculatorMutation,
+  useMeanValueTheoremCalculatorMutation,
+  useRiemannSumCalculatorMutation,
+  useDoubleAngleCalculatorMutation,
+  useInverseFunctionCalculatorMutation,
+  useArithmeticSequencesCalculatorMutation,
+  useCoterminalAngleCalculatorMutation,
+  useCompositeFunctionCalculatorMutation,
+  useParallelAndPerpendicularCalculatorMutation,
+  useECalculatorMutation,
+  useAreaBetweenTwoCurvesCalculatorMutation,
+  useCotangentCalculatorMutation,
+  useCscCalculatorMutation,
+  useSecantCalculatorMutation,
+  useTangentCalculatorMutation,
+  useCosineCalculatorMutation,
+  useArctanCalculatorMutation,
+  useArccosCalculatorMutation,
+  useSineCalculatorMutation,
+  useBinomialTheoremCalculatorMutation,
+  useArcsinCalculatorMutation,
+  useArcLengthCalculatorMutation,
+  useInflectionPointCalculatorMutation,
+  useLaplaceTransformCalculatorMutation,
+  useUnitCircleCalculatorMutation,
+  usePythagoreanTheoremCalculatorMutation,
+  useLinearInterpolationCalculatorMutation,
+  useProportionCalculatorMutation,
+  useBinaryCalculatorMutation,
+  useExponentCalculatorMutation,
   useSlopeInterceptFormCalculatorMutation,
   useEndpointCalculatorMutation,
   useDiscriminantCalculatorMutation,
@@ -6237,8 +6298,5 @@ export const {
   usePercentToFractionCalculatorMutation,
   useGramSchmidtCalculatorMutation,
 
-    // Math calculator
-
-
-
+  // Math calculator
 } = calculatorApi;

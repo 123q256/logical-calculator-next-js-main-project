@@ -1,0 +1,53 @@
+    .t_set tr{
+        border-color:transparent
+    }
+    .t_set tr td:hover{
+        cursor:pointer
+    }
+    .t_set .btn-small{
+        display:table-cell
+    }
+    .bt_set{
+        background: #99EA48;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        padding: 0 16px;
+        font-size: 13px;
+        min-height: 32.4px;
+        border: none;
+        border-radius: 2px;
+        box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+    }
+    .t1{
+        background:#F4CDCD;
+    }
+    .t2{
+        background:#ACDFEC;
+    }
+    .t3{
+        background:#85E185;
+    }
+    .t4{
+        background:#EACE5D;
+    }
+    .t5{
+        background:#F1F165;
+    }
+    .t6{
+        background:#E5BDE5;
+    }
+    .t7{
+        background:#F6D4A2;
+    }
+    .t8{
+        background:#FACCDB;
+    }
+    .t9{
+        background:#9EE5D4;
+    }
+    .t10{
+        background:#E9E9E9;
+    }
+    .check{
+        padding: 5px
+    }

@@ -6,35 +6,32 @@ import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
 import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
 import { useRationalizeTheDenominatorCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
-
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
 import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeedback";
 import Calculator from "../../Calculator";
-import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
+import { getUserCurrency } from "../../../../components/Calculator/GetCurrency";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
 
 const RationalizeTheDenominatorCalculator = () => {
   const pathname = usePathname();
-  const parts = pathname.split("/").filter(Boolean); // remove empty strings
-
+  const parts = pathname.split("/").filter(Boolean);
+  
   let url = "";
-
+  
   if (parts.length === 1) {
-    // sirf ek part
-    url = parts[0]; // "age-calculator"
+    url = parts[0];
   } else {
-    // do ya zyada parts
-    url = parts[0] + "/" + parts[1]; // "de/age-calculator"
+    url = parts[0] + "/" + parts[1];
   }
+
   const [getSingleCalculatorDetails, { data, error, isLoading }] =
     useGetSingleCalculatorDetailsMutation();
+  
   const handleFetchDetails = async () => {
     try {
-      // Call the mutation with the `tech_calculator_link`
       await getSingleCalculatorDetails({ tech_calculator_link: url });
     } catch (err) {
       console.error("Error fetching calculator details:", err);
@@ -46,7 +43,7 @@ const RationalizeTheDenominatorCalculator = () => {
   }, [url]);
 
   const [formData, setFormData] = useState({
-    tech_type: "first", //  first second
+    tech_type: "first",
     tech_operations: "1",
     tech_a: "15",
     tech_b: "13",
@@ -64,12 +61,415 @@ const RationalizeTheDenominatorCalculator = () => {
 
   const [result, setResult] = useState(null);
   const [formError, setFormError] = useState("");
+  const [calculationResult, setCalculationResult] = useState({
+    steps: [],
+    finalAnswer: ""
+  });
 
-  // RTK mutation hook
   const [
     calculateEbitCalculator,
     { isLoading: roundToTheNearestLoading, isError, error: calculateLoveError },
   ] = useRationalizeTheDenominatorCalculatorMutation();
+
+  // Utility Functions
+  const roundPrice = (rnum, rlength) => {
+    const str = rnum.toString();
+    const myarr = str.split(".");
+    if (myarr.length === 1) {
+      return rnum;
+    } else if (myarr.length === 2) {
+      const newnumber = Math.ceil(rnum * Math.pow(10, rlength - 1)) / Math.pow(10, rlength - 1);
+      return parseFloat(newnumber.toFixed(rlength));
+    }
+    return rnum;
+  };
+
+  const isInteger = (_n) => {
+    return _n % 1 === 0;
+  };
+
+  const find_gcf = (a, b) => {
+    a = Math.abs(a);
+    b = Math.abs(b);
+    if (b > a) {
+      const temp = a;
+      a = b;
+      b = temp;
+    }
+    for (;;) {
+      if (b === 0) {
+        return a;
+      }
+      a = a % b;
+      if (a === 0) {
+        return b;
+      }
+      b = b % a;
+    }
+  };
+
+  const find_lcm = (a, b) => {
+    return Math.abs((a * b) / find_gcf(a, b));
+  };
+
+  // Fixed primeFactorization function
+const primeFactorization = (num, result = []) => {
+  const root = Math.sqrt(num);
+  let x = 2;
+
+  if (num % x) {
+    x = 3;
+    while ((num % x) && ((x = x + 2) < root)) {}
+  }
+  x = (x <= root) ? x : num;
+  result.push(x);
+
+  return (x === num) ? result : primeFactorization(num / x, result);
+};
+
+const toPower = (primeFactors) => {
+  let array = [];
+  let power = 1;
+  let isShorter = false;
+  let exponents = [];
+  
+  for (let i = 0; i < primeFactors.length; i++) {
+    if (i !== primeFactors.length - 1 && primeFactors[i] === primeFactors[i + 1]) {
+      power++;
+    } else {
+      if (power !== 1) {
+        array.push(primeFactors[i]);
+        isShorter = true;
+      } else {
+        array.push(primeFactors[i]);
+      }
+      exponents.push(power);
+      power = 1;
+    }
+  }
+  return [array, isShorter, exponents];
+};
+
+  const getSimplification = (x, root) => {
+    let simplification = [];
+    const primeFactors = primeFactorization(x);
+    let to_power;
+    let valuesPulled = [];
+    let numberInFront = 1,
+      numberUnder = 1;
+    let newRoot, newUnder;
+    let to_powerUnderAfter;
+    let factorizationRoot, factorizationUnder;
+    let simplifyRoot = [],
+      divideRootBy = 1;
+    let index = 1;
+
+    if (primeFactors.length === 1) {
+      simplification.push('prime');
+    } else {
+      simplification.push(primeFactors.join(' * '));
+      to_power = toPower(primeFactors);
+      index += 1;
+
+      if (to_power[1]) {
+        simplification.push(to_power[0].join(' * '));
+
+        for (let i = 0; i < to_power[2].length; i++) {
+          for (let j = 0; j < Math.floor(to_power[2][i] / root); j++) {
+            valuesPulled.push(to_power[0][i]);
+          }
+        }
+
+        for (let i = 0; i < valuesPulled.length; i++) {
+          numberInFront *= valuesPulled[i];
+        }
+        numberUnder = roundPrice(x / Math.pow(numberInFront, root), 4);
+
+        factorizationRoot = primeFactorization(root);
+        factorizationUnder = primeFactorization(numberUnder);
+        to_powerUnderAfter = toPower(factorizationUnder);
+
+        for (let i = 0; i < factorizationRoot.length; i++) {
+          for (let j = 0; j < to_powerUnderAfter[2].length; j++) {
+            if (to_powerUnderAfter[2][j] % factorizationRoot[i] === 0) {
+              simplifyRoot.push(1);
+            } else {
+              simplifyRoot.push(0);
+            }
+          }
+          if (!simplifyRoot.includes(0)) {
+            divideRootBy *= factorizationRoot[i];
+            for (let j = 0; j < to_powerUnderAfter[2].length; j++) {
+              to_powerUnderAfter[2][j] /= factorizationRoot[i];
+            }
+          }
+          simplifyRoot = [];
+        }
+
+        newRoot = roundPrice(root / divideRootBy, 4);
+        newUnder = roundPrice(Math.pow(numberUnder, 1 / divideRootBy), 4);
+
+        if (numberInFront !== 1 || newRoot !== root) {
+          index += 1;
+          simplification.push([]);
+          simplification[2].push(numberInFront);
+          simplification[2].push(to_powerUnderAfter[0].join(' * '));
+          if (newRoot !== root) {
+            index += 1;
+            simplification.push([]);
+            simplification[3].push(numberInFront);
+            simplification[3].push(newRoot);
+            simplification[3].push(newUnder);
+          }
+        }
+      }
+    }
+    return [simplification, index];
+  };
+
+  const getSimplified = (x, root) => {
+    const a = x;
+    const n = root;
+    const simplificationAll = getSimplification(a, n);
+    const simplification = simplificationAll[0];
+
+    if (simplificationAll[1] > 3) {
+      return simplification[3];
+    } else if (simplificationAll[1] > 2) {
+      return [simplification[2][0], root, roundPrice(x / Math.pow(simplification[2][0], root), 4)];
+    } else {
+      return [1, root, x];
+    }
+  };
+
+  // Main Calculation Function for all 4 expressions
+  const performCalculation = () => {
+    if (formData.tech_type !== "first") return;
+
+    const expression = parseInt(formData.tech_operations);
+    let a = parseFloat(formData.tech_a);
+    let b = parseFloat(formData.tech_b);
+    let c = parseFloat(formData.tech_c);
+    let d = parseFloat(formData.tech_d);
+    let n = parseFloat(formData.tech_n);
+    let m = parseFloat(formData.tech_m);
+    let x = parseFloat(formData.tech_x);
+    let y = parseFloat(formData.tech_y);
+    let k = parseFloat(formData.tech_k);
+    let u = parseFloat(formData.tech_u);
+    let z = parseFloat(formData.tech_u); // Using u as z for expression 3
+
+    const steps = [];
+    let finalAnswer = "";
+
+    // Handle default values and formatting
+    if (isNaN(a) || a === 1) a = 1;
+    if (isNaN(x) || x === 1) x = 1;
+    if (isNaN(c) || c === 1) c = 1;
+    if (isNaN(z) || z === 1) z = 1;
+
+    // Formatting variables
+    let aWrite = a === 1 ? '' : a === -1 ? '-' : `${a}`;
+    let xWrite = x === 1 ? '' : x === -1 ? '-' : `${x}`;
+    let cWrite = c === 1 ? '' : c === -1 ? '-' : `${c}`;
+    let zWrite = z === 1 ? '' : z === -1 ? '-' : `${z}`;
+    
+    let nWrite = n === 2 ? '' : n.toString();
+    let mWrite = m === 2 ? '' : m.toString();
+    let kWrite = k === 2 ? '' : k.toString();
+
+    let bWrite = b === 1 ? '' : `\\sqrt[${nWrite}]{${b}}`;
+    let dWrite = d === 1 ? '' : `\\sqrt[${mWrite}]{${d}}`;
+    let yWrite = y === 1 ? '' : `\\sqrt[${kWrite}]{${y}}`;
+    let uWrite = u === 1 ? '' : `\\sqrt{${u}}`;
+
+    let signUp = c >= 0 ? ' + ' : ' - ';
+    let signDown = z >= 0 ? ' + ' : ' - ';
+
+    // EXPRESSION 1: a√[n]{b} / x√[k]{y}
+    if (expression === 1) {
+      if (!isNaN(b) && !isNaN(n) && !isNaN(y) && !isNaN(k)) {
+        steps.push(`\\frac{${aWrite}${bWrite}}{${xWrite}${yWrite}}`);
+        
+        if (isInteger(roundPrice(Math.pow(y, 1 / k), 4))) {
+          if (isInteger(roundPrice(Math.pow(b, 1 / n), 4))) {
+            const bVal = roundPrice(Math.pow(b, 1 / n), 4);
+            const yVal = roundPrice(Math.pow(y, 1 / k), 4);
+            const result = roundPrice((a * bVal) / (x * yVal), 4);
+            finalAnswer = result.toString();
+          } else {
+            const yVal = roundPrice(Math.pow(y, 1 / k), 4);
+            const newA = roundPrice(a / (x * yVal), 4);
+            const aWriteNew = newA === 1 ? '' : `${newA}`;
+            finalAnswer = `${aWriteNew}${bWrite}`;
+          }
+        } else {
+          // Rationalization needed
+          const reducedMultiplier = k === 2 ? `\\sqrt{${y}}` : `\\sqrt[${k}]{${y}^{${k-1}}}`;
+          steps.push(`\\frac{${aWrite}${bWrite}}{${xWrite}${yWrite}} \\times \\frac{${reducedMultiplier}}{${reducedMultiplier}}`);
+          
+          const newRoot = find_lcm(n, k);
+          const newRootWrite = newRoot === 2 ? '' : newRoot.toString();
+          const simplified = getSimplified(b, n);
+          finalAnswer = `${simplified[0]}\\sqrt[${simplified[1]}]{${simplified[2]}}`;
+        }
+      }
+    }
+
+    // EXPRESSION 2: (a√[n]{b} + c√[m]{d}) / x√[k]{y}
+    else if (expression === 2) {
+      if (!isNaN(b) && !isNaN(n) && !isNaN(d) && !isNaN(m) && !isNaN(y) && !isNaN(k)) {
+        steps.push(`\\frac{${aWrite}${bWrite}${signUp}${cWrite}${dWrite}}{${xWrite}${yWrite}}`);
+        
+        if (isInteger(roundPrice(Math.pow(y, 1 / k), 4))) {
+          if (isInteger(roundPrice(Math.pow(b, 1 / n), 4)) && isInteger(roundPrice(Math.pow(d, 1 / m), 4))) {
+            const bVal = roundPrice(Math.pow(b, 1 / n), 4);
+            const dVal = roundPrice(Math.pow(d, 1 / m), 4);
+            const yVal = roundPrice(Math.pow(y, 1 / k), 4);
+            const result = roundPrice((a * bVal + c * dVal) / (x * yVal), 4);
+            finalAnswer = result.toString();
+          } else if (isInteger(roundPrice(Math.pow(b, 1 / n), 4))) {
+            const bVal = roundPrice(Math.pow(b, 1 / n), 4);
+            const yVal = roundPrice(Math.pow(y, 1 / k), 4);
+            const result1 = roundPrice((a * bVal) / (x * yVal), 4);
+            const cNew = roundPrice(c / (x * yVal), 4);
+            finalAnswer = `${result1}${signUp}${cNew}${dWrite}`;
+          } else if (isInteger(roundPrice(Math.pow(d, 1 / m), 4))) {
+            const dVal = roundPrice(Math.pow(d, 1 / m), 4);
+            const yVal = roundPrice(Math.pow(y, 1 / k), 4);
+            const result2 = roundPrice((c * dVal) / (x * yVal), 4);
+            const aNew = roundPrice(a / (x * yVal), 4);
+            finalAnswer = `${aNew}${bWrite}${signUp}${result2}`;
+          } else {
+            const yVal = roundPrice(Math.pow(y, 1 / k), 4);
+            const aNew = roundPrice(a / (x * yVal), 4);
+            const cNew = roundPrice(c / (x * yVal), 4);
+            finalAnswer = `${aNew}${bWrite}${signUp}${cNew}${dWrite}`;
+          }
+        } else {
+          // Rationalization needed
+          const reducedMultiplier = k === 2 ? `\\sqrt{${y}}` : `\\sqrt[${k}]{${y}^{${k-1}}}`;
+          steps.push(`\\frac{${aWrite}${bWrite}${signUp}${cWrite}${dWrite}}{${xWrite}${yWrite}} \\times \\frac{${reducedMultiplier}}{${reducedMultiplier}}`);
+          
+          const newRoot1st = find_lcm(n, k);
+          const newRoot2nd = find_lcm(m, k);
+          const simplified1st = getSimplified(b, n);
+          const simplified2nd = getSimplified(d, m);
+          
+          finalAnswer = `${simplified1st[0]}\\sqrt[${simplified1st[1]}]{${simplified1st[2]}}${signUp}${simplified2nd[0]}\\sqrt[${simplified2nd[1]}]{${simplified2nd[2]}}`;
+        }
+      }
+    }
+
+    // EXPRESSION 3: a√b / (x√y + z√u)
+    else if (expression === 3) {
+      if (!isNaN(b) && !isNaN(y) && !isNaN(u)) {
+        steps.push(`\\frac{${aWrite}\\sqrt{${b}}}{${xWrite}\\sqrt{${y}}${signDown}${zWrite}\\sqrt{${u}}}`);
+        
+        if (isInteger(roundPrice(Math.pow(y, 1 / 2), 4)) && isInteger(roundPrice(Math.pow(u, 1 / 2), 4))) {
+          const yVal = roundPrice(Math.pow(y, 1 / 2), 4);
+          const uVal = roundPrice(Math.pow(u, 1 / 2), 4);
+          
+          if (isInteger(roundPrice(Math.pow(b, 1 / 2), 4))) {
+            const bVal = roundPrice(Math.pow(b, 1 / 2), 4);
+            const result = roundPrice((a * bVal) / (x * yVal + z * uVal), 4);
+            finalAnswer = result.toString();
+          } else {
+            const result = roundPrice(a / (x * yVal + z * uVal), 4);
+            finalAnswer = `${result}\\sqrt{${b}}`;
+          }
+        } else if (y === u) {
+          // Special case when y = u
+          const denominator = x + z;
+          steps.push(`\\frac{${aWrite}\\sqrt{${b}}}{${denominator}\\sqrt{${y}}}`);
+          const result = roundPrice(a / denominator, 4);
+          finalAnswer = `${result}\\sqrt{${b}}`;
+        } else {
+          // Rationalization using conjugate
+          const conjugate = `${xWrite}\\sqrt{${y}}${signDown === ' + ' ? ' - ' : ' + '}${Math.abs(z)}\\sqrt{${u}}`;
+          steps.push(`\\frac{${aWrite}\\sqrt{${b}}}{${xWrite}\\sqrt{${y}}${signDown}${zWrite}\\sqrt{${u}}} \\times \\frac{${conjugate}}{${conjugate}}`);
+          
+          const numerator = a * x * b;
+          const denominator = x * x * y - z * z * u;
+          const result = roundPrice(numerator / denominator, 4);
+          finalAnswer = `${result}\\sqrt{${b}}`;
+        }
+      }
+    }
+
+    // EXPRESSION 4: (a√b + c√d) / (x√y + z√u)
+    else if (expression === 4) {
+      if (!isNaN(b) && !isNaN(d) && !isNaN(y) && !isNaN(u)) {
+        steps.push(`\\frac{${aWrite}\\sqrt{${b}}${signUp}${cWrite}\\sqrt{${d}}}{${xWrite}\\sqrt{${y}}${signDown}${zWrite}\\sqrt{${u}}}`);
+        
+        if (isInteger(roundPrice(Math.pow(y, 1 / 2), 4)) && isInteger(roundPrice(Math.pow(u, 1 / 2), 4))) {
+          const yVal = roundPrice(Math.pow(y, 1 / 2), 4);
+          const uVal = roundPrice(Math.pow(u, 1 / 2), 4);
+          
+          if (isInteger(roundPrice(Math.pow(b, 1 / 2), 4)) && isInteger(roundPrice(Math.pow(d, 1 / 2), 4))) {
+            const bVal = roundPrice(Math.pow(b, 1 / 2), 4);
+            const dVal = roundPrice(Math.pow(d, 1 / 2), 4);
+            const result = roundPrice((a * bVal + c * dVal) / (x * yVal + z * uVal), 4);
+            finalAnswer = result.toString();
+          } else if (isInteger(roundPrice(Math.pow(b, 1 / 2), 4))) {
+            const bVal = roundPrice(Math.pow(b, 1 / 2), 4);
+            const result1 = roundPrice((a * bVal) / (x * yVal + z * uVal), 4);
+            const result2 = roundPrice(c / (x * yVal + z * uVal), 4);
+            finalAnswer = `${result1}${signUp}${result2}\\sqrt{${d}}`;
+          } else if (isInteger(roundPrice(Math.pow(d, 1 / 2), 4))) {
+            const dVal = roundPrice(Math.pow(d, 1 / 2), 4);
+            const result1 = roundPrice(a / (x * yVal + z * uVal), 4);
+            const result2 = roundPrice((c * dVal) / (x * yVal + z * uVal), 4);
+            finalAnswer = `${result1}\\sqrt{${b}}${signUp}${result2}`;
+          } else {
+            const result1 = roundPrice(a / (x * yVal + z * uVal), 4);
+            const result2 = roundPrice(c / (x * yVal + z * uVal), 4);
+            finalAnswer = `${result1}\\sqrt{${b}}${signUp}${result2}\\sqrt{${d}}`;
+          }
+        } else if (y === u) {
+          // Special case when y = u
+          const denominator = x + z;
+          steps.push(`\\frac{${aWrite}\\sqrt{${b}}${signUp}${cWrite}\\sqrt{${d}}}{${denominator}\\sqrt{${y}}}`);
+          const result1 = roundPrice(a / denominator, 4);
+          const result2 = roundPrice(c / denominator, 4);
+          finalAnswer = `${result1}\\sqrt{${b}}${signUp}${result2}\\sqrt{${d}}`;
+        } else if (b === d) {
+          // Special case when b = d
+          const numeratorCoeff = a + c;
+          steps.push(`\\frac{${numeratorCoeff}\\sqrt{${b}}}{${xWrite}\\sqrt{${y}}${signDown}${zWrite}\\sqrt{${u}}}`);
+          // Continue with expression 3 logic
+          const conjugate = `${xWrite}\\sqrt{${y}}${signDown === ' + ' ? ' - ' : ' + '}${Math.abs(z)}\\sqrt{${u}}`;
+          steps.push(`\\frac{${numeratorCoeff}\\sqrt{${b}}}{${xWrite}\\sqrt{${y}}${signDown}${zWrite}\\sqrt{${u}}} \\times \\frac{${conjugate}}{${conjugate}}`);
+          
+          const numerator = numeratorCoeff * x * b;
+          const denominator = x * x * y - z * z * u;
+          const result = roundPrice(numerator / denominator, 4);
+          finalAnswer = `${result}\\sqrt{${b}}`;
+        } else {
+          // General rationalization using conjugate
+          const conjugate = `${xWrite}\\sqrt{${y}}${signDown === ' + ' ? ' - ' : ' + '}${Math.abs(z)}\\sqrt{${u}}`;
+          steps.push(`\\frac{${aWrite}\\sqrt{${b}}${signUp}${cWrite}\\sqrt{${d}}}{${xWrite}\\sqrt{${y}}${signDown}${zWrite}\\sqrt{${u}}} \\times \\frac{${conjugate}}{${conjugate}}`);
+          
+          // Simplified result
+          const denominator = x * x * y - z * z * u;
+          const result1 = roundPrice((a * x * b - a * z * Math.sqrt(b * u)) / denominator, 4);
+          const result2 = roundPrice((c * x * Math.sqrt(b * d) - c * z * d) / denominator, 4);
+          finalAnswer = `${result1}${signUp}${result2}`;
+        }
+      }
+    }
+
+    setCalculationResult({
+      steps: steps,
+      finalAnswer: finalAnswer
+    });
+  };
+
+  useEffect(() => {
+    if (formData.tech_type === "first") {
+      performCalculation();
+    }
+  }, [formData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -104,7 +504,7 @@ const RationalizeTheDenominatorCalculator = () => {
         tech_n1: formData.tech_n1,
         tech_d1: formData.tech_d1,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response);
       toast.success("Successfully Calculated");
     } catch (err) {
       setFormError(err.data.error);
@@ -112,10 +512,9 @@ const RationalizeTheDenominatorCalculator = () => {
     }
   };
 
-  // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_type: "first", //  first second
+      tech_type: "first",
       tech_operations: "1",
       tech_a: "15",
       tech_b: "13",
@@ -132,8 +531,9 @@ const RationalizeTheDenominatorCalculator = () => {
     });
     setResult(null);
     setFormError(null);
+    setCalculationResult({ steps: [], finalAnswer: "" });
   };
-  // currency code
+
   const [currency, setCurrency] = useState({
     code: "USD",
     symbol: "$",
@@ -147,23 +547,8 @@ const RationalizeTheDenominatorCalculator = () => {
         setCurrency(result);
       }
     };
-
     fetchCurrency();
   }, []);
-  // currency code
-
-  const operations = result?.tech_operations;
-  const a = result?.tech_a;
-  const b = result?.tech_b;
-  const n = result?.tech_n;
-  const c = result?.tech_c;
-  const d = result?.tech_d;
-  const m = result?.tech_m;
-  const x = result?.tech_x;
-  const y = result?.tech_y;
-  const k = result?.tech_k;
-  const u = result?.tech_u;
-  const z = result?.tech_z;
 
   return (
     <Calculator
@@ -177,7 +562,7 @@ const RationalizeTheDenominatorCalculator = () => {
         },
         {
           name: data?.payload?.tech_calculator_title,
-          path: pathname, // This will use the current path dynamically
+          path: pathname,
         },
       ]}
     >
@@ -189,12 +574,10 @@ const RationalizeTheDenominatorCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
+          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
+            <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
               <div className="col-span-12 flex items-center justify-evenly">
-                <p className="font-s-14 text-blue">
-                  <strong>{data?.payload?.tech_lang_keys[1]}:</strong>
-                </p>
+                <p className="text-blue"><strong>{data?.payload?.tech_lang_keys[1]}:</strong></p>
                 <p id="fInput">
                   <label className="pe-2 cursor-pointer" htmlFor="first">
                     <input
@@ -204,9 +587,9 @@ const RationalizeTheDenominatorCalculator = () => {
                       id="first"
                       className="mr-2 border cursor-pointer"
                       onChange={handleChange}
-                      checked={formData.tech_type == "first"}
+                      checked={formData.tech_type === 'first'}
                     />
-                    <span>{data?.payload?.tech_lang_keys["2"]}</span>
+                    <span>{data?.payload?.tech_lang_keys['2']}</span>
                   </label>
                 </p>
                 <p id="sInput">
@@ -218,16 +601,17 @@ const RationalizeTheDenominatorCalculator = () => {
                       id="second"
                       className="mr-2 border cursor-pointer"
                       onChange={handleChange}
-                      checked={formData.tech_type == "second"}
+                      checked={formData.tech_type === 'second'}
                     />
-                    <span>{data?.payload?.tech_lang_keys["3"]}</span>
+                    <span>{data?.payload?.tech_lang_keys['3']}</span>
                   </label>
                 </p>
               </div>
-              {formData.tech_type == "first" && (
+              
+              {formData.tech_type === 'first' && (
                 <>
                   <div className="col-span-12" id="simpleMethod">
-                    <div className="grid grid-cols-12    gap-2 md:gap-4 lg:gap-4">
+                    <div className="grid grid-cols-12 gap-2 md:gap-4 lg:gap-4">
                       <div className="col-span-12 px-2">
                         <label htmlFor="tech_operations" className="label">
                           {data?.payload?.tech_lang_keys["4"]}:
@@ -241,72 +625,42 @@ const RationalizeTheDenominatorCalculator = () => {
                             value={formData.tech_operations}
                             onChange={handleChange}
                           >
-                            <option value="1">
-                              {data?.payload?.tech_lang_keys["5"]}/{" "}
-                              {data?.payload?.tech_lang_keys["5"]}{" "}
-                            </option>
-                            <option value="2">
-                              {data?.payload?.tech_lang_keys["6"]}/{" "}
-                              {data?.payload?.tech_lang_keys["5"]}
-                            </option>
-                            <option value="3">
-                              {data?.payload?.tech_lang_keys["5"]}/{" "}
-                              {data?.payload?.tech_lang_keys["6"]}
-                            </option>
-                            <option value="4">
-                              {data?.payload?.tech_lang_keys["6"]} /
-                              {data?.payload?.tech_lang_keys["6"]}
-                            </option>
+                            <option value="1">{data?.payload?.tech_lang_keys["5"]}/ {data?.payload?.tech_lang_keys["5"]}</option>
+                            <option value="2">{data?.payload?.tech_lang_keys["6"]}/ {data?.payload?.tech_lang_keys["5"]}</option>
+                            <option value="3">{data?.payload?.tech_lang_keys["5"]}/ {data?.payload?.tech_lang_keys["6"]}</option>
+                            <option value="4">{data?.payload?.tech_lang_keys["6"]} /{data?.payload?.tech_lang_keys["6"]}</option>
                           </select>
                         </div>
                       </div>
+                      
                       <div className="col-span-12 px-2 ">
-                        {/* Operation 1 */}
-                        {(!formData.tech_operations ||
-                          formData.tech_operations == "1") && (
+                        {(!formData.tech_operations || formData.tech_operations === "1") && (
                           <p className="col-span-12 text-[25px] mt-0 mt-lg-2 text-center">
-                            <InlineMath
-                              math={`\\frac{a\\sqrt[n]{b}}{x\\sqrt[k]{y}} = ?`}
-                            />
+                            <InlineMath math={`\\frac{a\\sqrt[n]{b}}{x\\sqrt[k]{y}} = ?`} />
                           </p>
                         )}
-
-                        {/* Operation 2 */}
-                        {formData.tech_operations == "2" && (
+                        {formData.tech_operations === "2" && (
                           <p className="col-span-12 text-[25px] mt-0 mt-lg-2 text-center">
-                            <InlineMath
-                              math={`\\frac{a\\sqrt[n]{b} + c\\sqrt[m]{d}}{x\\sqrt[k]{y}} = ?`}
-                            />
+                            <InlineMath math={`\\frac{a\\sqrt[n]{b} + c\\sqrt[m]{d}}{x\\sqrt[k]{y}} = ?`} />
                           </p>
                         )}
-
-                        {/* Operation 3 */}
-                        {formData.tech_operations == "3" && (
+                        {formData.tech_operations === "3" && (
                           <p className="col-span-12 text-[25px] mt-0 mt-lg-2 text-center">
-                            <InlineMath
-                              math={`\\frac{a\\sqrt{b}}{x\\sqrt{y} + z\\sqrt{u}} = ?`}
-                            />
+                            <InlineMath math={`\\frac{a\\sqrt{b}}{x\\sqrt{y} + z\\sqrt{u}} = ?`} />
                           </p>
                         )}
-
-                        {/* Operation 4 */}
-                        {formData.tech_operations == "4" && (
+                        {formData.tech_operations === "4" && (
                           <p className="col-span-12 text-[25px] mt-0 mt-lg-2 text-center">
-                            <InlineMath
-                              math={`\\frac{a\\sqrt{b} + c\\sqrt{d}}{x\\sqrt{y} + k\\sqrt{u}} = ?`}
-                            />
+                            <InlineMath math={`\\frac{a\\sqrt{b} + c\\sqrt{d}}{x\\sqrt{y} + z\\sqrt{u}} = ?`} />
                           </p>
                         )}
                       </div>
 
-                      <p className="col-span-12">
-                        <strong>{data?.payload?.tech_lang_keys[7]}</strong>
-                      </p>
+                      <p className="col-span-12"><strong>{data?.payload?.tech_lang_keys[7]}</strong></p>
+                      
                       <div className="col-span-4" id="aInput">
-                        <label htmlFor="tech_a" className="label">
-                          a:
-                        </label>
-                        <div className=" relative">
+                        <label htmlFor="tech_a" className="label">a:</label>
+                        <div className="relative">
                           <input
                             type="number"
                             step="any"
@@ -320,11 +674,10 @@ const RationalizeTheDenominatorCalculator = () => {
                           />
                         </div>
                       </div>
+                      
                       <div className="col-span-4" id="bInput">
-                        <label htmlFor="tech_b" className="label">
-                          b:
-                        </label>
-                        <div className=" relative">
+                        <label htmlFor="tech_b" className="label">b:</label>
+                        <div className="relative">
                           <input
                             type="number"
                             step="any"
@@ -338,105 +691,88 @@ const RationalizeTheDenominatorCalculator = () => {
                           />
                         </div>
                       </div>
-                      {(formData.tech_operations == "1" ||
-                        formData.tech_operations == "2") && (
-                        <>
-                          <div className="col-span-4 " id="nInput">
-                            <label htmlFor="tech_n" className="label">
-                              n:
-                            </label>
-                            <div className=" relative">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_n"
-                                id="tech_n"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_n}
-                                onChange={handleChange}
-                              />
-                            </div>
+                      
+                      {(formData.tech_operations === "1" || formData.tech_operations === "2") && (
+                        <div className="col-span-4" id="nInput">
+                          <label htmlFor="tech_n" className="label">n:</label>
+                          <div className="relative">
+                            <input
+                              type="number"
+                              step="any"
+                              name="tech_n"
+                              id="tech_n"
+                              className="input my-2"
+                              aria-label="input"
+                              placeholder="00"
+                              value={formData.tech_n}
+                              onChange={handleChange}
+                            />
                           </div>
-                        </>
+                        </div>
                       )}
-                      {(formData.tech_operations == "2" ||
-                        formData.tech_operations == "4") && (
-                        <>
-                          <div className="col-span-4 " id="cInput">
-                            <label htmlFor="tech_c" className="label">
-                              c:
-                            </label>
-                            <div className=" relative">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_c"
-                                id="tech_c"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_c}
-                                onChange={handleChange}
-                              />
-                            </div>
+                      
+                      {(formData.tech_operations === "2" || formData.tech_operations === "4") && (
+                        <div className="col-span-4" id="cInput">
+                          <label htmlFor="tech_c" className="label">c:</label>
+                          <div className="relative">
+                            <input
+                              type="number"
+                              step="any"
+                              name="tech_c"
+                              id="tech_c"
+                              className="input my-2"
+                              aria-label="input"
+                              placeholder="00"
+                              value={formData.tech_c}
+                              onChange={handleChange}
+                            />
                           </div>
-                        </>
+                        </div>
                       )}
-                      {(formData.tech_operations == "2" ||
-                        formData.tech_operations == "4") && (
-                        <>
-                          <div className="col-span-4 " id="dInput">
-                            <label htmlFor="tech_d" className="label">
-                              d:
-                            </label>
-                            <div className=" relative">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_d"
-                                id="tech_d"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_d}
-                                onChange={handleChange}
-                              />
-                            </div>
+                      
+                      {(formData.tech_operations === "2" || formData.tech_operations === "4") && (
+                        <div className="col-span-4" id="dInput">
+                          <label htmlFor="tech_d" className="label">d:</label>
+                          <div className="relative">
+                            <input
+                              type="number"
+                              step="any"
+                              name="tech_d"
+                              id="tech_d"
+                              className="input my-2"
+                              aria-label="input"
+                              placeholder="00"
+                              value={formData.tech_d}
+                              onChange={handleChange}
+                            />
                           </div>
-                        </>
+                        </div>
                       )}
-                      {formData.tech_operations == "2" && (
-                        <>
-                          <div className="col-span-4 " id="mInput">
-                            <label htmlFor="tech_m" className="label">
-                              m:
-                            </label>
-                            <div className=" relative">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_m"
-                                id="tech_m"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_m}
-                                onChange={handleChange}
-                              />
-                            </div>
+                      
+                      {formData.tech_operations === "2" && (
+                        <div className="col-span-4" id="mInput">
+                          <label htmlFor="tech_m" className="label">m:</label>
+                          <div className="relative">
+                            <input
+                              type="number"
+                              step="any"
+                              name="tech_m"
+                              id="tech_m"
+                              className="input my-2"
+                              aria-label="input"
+                              placeholder="00"
+                              value={formData.tech_m}
+                              onChange={handleChange}
+                            />
                           </div>
-                        </>
+                        </div>
                       )}
-                      <p className="col-span-12">
-                        <strong>{data?.payload?.tech_lang_keys[8]}</strong>
-                      </p>
+                      
+                      <p className="col-span-12"><strong>{data?.payload?.tech_lang_keys[8]}</strong></p>
+                      
                       <div className="col-span-4" id="xInput">
-                        <label htmlFor="tech_x" className="label">
-                          x:
-                        </label>
-                        <div className=" relative">
+                        <label htmlFor="tech_x" className="label">x:</label>
+                        <div className="relative">
                           <input
                             type="number"
                             step="any"
@@ -450,11 +786,10 @@ const RationalizeTheDenominatorCalculator = () => {
                           />
                         </div>
                       </div>
+                      
                       <div className="col-span-4" id="yInput">
-                        <label htmlFor="tech_y" className="label">
-                          y:
-                        </label>
-                        <div className=" relative">
+                        <label htmlFor="tech_y" className="label">y:</label>
+                        <div className="relative">
                           <input
                             type="number"
                             step="any"
@@ -468,11 +803,10 @@ const RationalizeTheDenominatorCalculator = () => {
                           />
                         </div>
                       </div>
+                      
                       <div className="col-span-4" id="kInput">
-                        <label htmlFor="tech_k" className="label">
-                          k:
-                        </label>
-                        <div className=" relative">
+                        <label htmlFor="tech_k" className="label">k:</label>
+                        <div className="relative">
                           <input
                             type="number"
                             step="any"
@@ -486,40 +820,37 @@ const RationalizeTheDenominatorCalculator = () => {
                           />
                         </div>
                       </div>
-                      {(formData.tech_operations == "3" ||
-                        formData.tech_operations == "4") && (
-                        <>
-                          <div className="col-span-4" id="uInput">
-                            <label htmlFor="tech_u" className="label">
-                              u:
-                            </label>
-                            <div className=" relative">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_u"
-                                id="tech_u"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_u}
-                                onChange={handleChange}
-                              />
-                            </div>
+                      
+                      {(formData.tech_operations === "3" || formData.tech_operations === "4") && (
+                        <div className="col-span-4" id="uInput">
+                          <label htmlFor="tech_u" className="label">u:</label>
+                          <div className="relative">
+                            <input
+                              type="number"
+                              step="any"
+                              name="tech_u"
+                              id="tech_u"
+                              className="input my-2"
+                              aria-label="input"
+                              placeholder="00"
+                              value={formData.tech_u}
+                              onChange={handleChange}
+                            />
                           </div>
-                        </>
+                        </div>
                       )}
                     </div>
                   </div>
                 </>
               )}
-              {formData.tech_type == "second" && (
+              
+              {formData.tech_type === 'second' && (
                 <>
-                  <div className="col-span-12 mt-0 mt-lg-2 " id="advanceMethod">
+                  <div className="col-span-12 mt-0 mt-lg-2" id="advanceMethod">
                     <label htmlFor="tech_n1" className="label">
                       {data?.payload?.tech_lang_keys["9"]}:
                     </label>
-                    <div className=" relative">
+                    <div className="relative">
                       <input
                         type="text"
                         step="any"
@@ -532,11 +863,11 @@ const RationalizeTheDenominatorCalculator = () => {
                         onChange={handleChange}
                       />
                     </div>
-                    <hr className="my-2" />
+                    <hr className="my-2"/>
                     <label htmlFor="tech_d1" className="label">
                       {data?.payload?.tech_lang_keys["10"]}:
                     </label>
-                    <div className=" relative">
+                    <div className="relative">
                       <input
                         type="text"
                         step="any"
@@ -561,78 +892,71 @@ const RationalizeTheDenominatorCalculator = () => {
             </Button>
             {result && (
               <ResetButton type="button" onClick={handleReset}>
-                {data?.payload?.tech_lang_keys["locale"] == "en"
+                {data?.payload?.tech_lang_keys["locale"] === "en"
                   ? "RESET"
                   : data?.payload?.tech_lang_keys["reset"] || "RESET"}
               </ResetButton>
             )}
           </div>
         </div>
+
         {roundToTheNearestLoading ? (
           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
             <div className="animate-pulse">
-              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
-              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
+              <div className="w-full h-[30px] bg-gray-200 animate-pulse rounded-[10px] mb-4"></div>
+              <div className="w-[75%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[50%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[25%] h-[20px] bg-gray-200 animate-pulse rounded-[10px]"></div>
             </div>
           </div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
-
+                  
                   <div className="rounded-lg flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="w-full text-[16px]">
-                        {formData?.tech_type == "first" ? (
+                        {formData?.tech_type === "first" ? (
                           <>
-                            <p className="mt-3 text-[18px] font-bold">
-                              <span className="main_jawab"></span>
+                            <p className="mt-3 text-[16px] md:text-[18px] font-bold">
+                              <InlineMath math={calculationResult.finalAnswer || ""} />
                             </p>
                             <p className="mt-3">
-                              <strong>
-                                {data?.payload?.tech_lang_keys[12]}:
-                              </strong>
+                              <strong>{data?.payload?.tech_lang_keys[12]}:</strong>
                             </p>
-                            <div className="w-full all_result">
-                              <p className="mt-3">
-                                {/* you can place extra output here */}
-                              </p>
+                            <div className="w-full all_result text-[16px] md:text-[18px] lg:text-[22px]">
+                              {calculationResult.steps.map((step, index) => (
+                                <p key={index} className="mt-3">
+                                  <InlineMath math={step} />
+                                </p>
+                              ))}
                             </div>
                             <p className="mt-3">
                               = &nbsp;&nbsp;&nbsp;&nbsp;
-                              <span className="main_jawab"></span>
+                              <InlineMath math={calculationResult.finalAnswer || ""} />
                             </p>
                           </>
                         ) : (
                           <>
-                            <p className="mt-3 text-[18px] md:text-[22px] font-bold">
+                            <p className="mt-3 text-[16px] md:text-[18px] lg:text-[22px] font-bold">
                               <InlineMath math={result?.tech_main_ans || ""} />
                             </p>
-                            <p className="mt-3 text-[18px] md:text-[22px]">
-                              <strong>
-                                {data?.payload?.tech_lang_keys[12]}:
-                              </strong>
+                            <p className="mt-3 text-[16px] md:text-[18px] lg:text-[22px]">
+                              <strong>{data?.payload?.tech_lang_keys[12]}:</strong>
                             </p>
-                            <p className="mt-3 text-[18px] md:text-[22px]">
+                            <p className="mt-3 text-[16px] md:text-[18px] lg:text-[22px]">
+                              <InlineMath math={`= ${result?.tech_enter || ""}`} />
+                            </p>
+                            <p className="mt-3 text-[16px] md:text-[18px] lg:text-[22px]">
                               <InlineMath
-                                math={`= ${result?.tech_enter || ""}`}
+                                math={`= \\dfrac{${result?.tech_up || ""}}{${result?.tech_down || ""}}`}
                               />
                             </p>
-                            <p className="mt-3 text-[18px] md:text-[22px]">
-                              <InlineMath
-                                math={`= \\dfrac{${result?.tech_up || ""}}{${
-                                  result?.tech_down || ""
-                                }}`}
-                              />
-                            </p>
-                            <p className="mt-3 text-[18px] md:text-[22px]">
-                              <InlineMath
-                                math={`= ${result?.tech_main_ans || ""}`}
-                              />
+                            <p className="mt-3 text-[16px] md:text-[18px] lg:text-[22px]">
+                              <InlineMath math={`= ${result?.tech_main_ans || ""}`} />
                             </p>
                           </>
                         )}
@@ -645,6 +969,7 @@ const RationalizeTheDenominatorCalculator = () => {
           )
         )}
       </form>
+      
       {result && (
         <CalculatorFeedback calName={data?.payload?.tech_calculator_title} />
       )}

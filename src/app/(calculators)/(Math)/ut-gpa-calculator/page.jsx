@@ -1,228 +1,223 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-
-import {
-  useGetSingleCalculatorDetailsMutation,
-  useMidpointCalculatorMutation,
-} from "../../../../redux/services/calculator/calculatorApi";
-
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
 import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeedback";
 import Calculator from "../../Calculator";
-import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
+import { getUserCurrency } from "../../../../components/Calculator/GetCurrency";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useUtGpaCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 const UtGpaCalculator = () => {
   const pathname = usePathname();
-  const parts = pathname.split("/").filter(Boolean); // remove empty strings
-
+  const parts = pathname.split("/").filter(Boolean);
+  
   let url = "";
-
   if (parts.length === 1) {
-    // sirf ek part
-    url = parts[0]; // "age-calculator"
+    url = parts[0];
   } else {
-    // do ya zyada parts
-    url = parts[0] + "/" + parts[1]; // "de/age-calculator"
+    url = parts[0] + "/" + parts[1];
   }
-  const [getSingleCalculatorDetails, { data, error }] =
+
+  const [getSingleCalculatorDetails, { data, error, isLoading }] =
     useGetSingleCalculatorDetailsMutation();
+
   const handleFetchDetails = async () => {
     try {
-      // Call the mutation with the `tech_calculator_link`
       await getSingleCalculatorDetails({ tech_calculator_link: url });
     } catch (err) {
       console.error("Error fetching calculator details:", err);
     }
   };
+
   useEffect(() => {
     handleFetchDetails();
   }, [url]);
-  // data get
 
-  // RTK mutation hook   // data get
-  const [
-    calculateEbitCalculator,
-    { isLoading: roundToTheNearestLoading, isError, error: calculateLoveError },
-  ] = useMidpointCalculatorMutation();
-  // data get
-
-  // Your existing state structure
+  // State for form data
   const [formData, setFormData] = useState({
-    tech_x: "5",
-    tech_y: "19",
-    courses: [{ id: 1, courseName: "", creditHours: "", grade: "" }],
+    currentCGPA: "",
+    creditsCompleted: "",
+    semesters: [
+      {
+        semesterName: "Semester 1",
+        courses: [
+          { courseName: "", credits: "", grade: "" },
+          { courseName: "", credits: "", grade: "" },
+          { courseName: "", credits: "", grade: "" }
+        ]
+      }
+    ]
   });
 
   const [result, setResult] = useState(null);
   const [formError, setFormError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [showCurrentGPA, setShowCurrentGPA] = useState(true);
 
-  // Grade point mapping (4.0 scale)
-  const gradePoints = {
-    "A+": 4.0,
-    A: 4.0,
-    "A-": 3.7,
-    "B+": 3.3,
-    B: 3.0,
-    "B-": 2.7,
-    "C+": 2.3,
-    C: 2.0,
-    "C-": 1.7,
-    "D+": 1.3,
-    D: 1.0,
-    F: 0.0,
+  const [calculateUtGpa, { isLoading: calculateGpaLoading }] = useUtGpaCalculatorMutation();
+
+  // Handle input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setResult(null);
   };
 
   // Handle course changes
-  const handleCourseChange = (id, field, value) => {
-    const updatedCourses = formData.courses.map((course) =>
-      course.id === id ? { ...course, [field]: value } : course
-    );
-
-    setFormData((prevData) => ({
-      ...prevData,
-      courses: updatedCourses,
-    }));
-
+  const handleCourseChange = (semesterIndex, courseIndex, field, value) => {
+    const newSemesters = [...formData.semesters];
+    newSemesters[semesterIndex].courses[courseIndex][field] = value;
+    setFormData(prev => ({ ...prev, semesters: newSemesters }));
     setResult(null);
-    setFormError("");
   };
 
-  // Add new course
-  const addCourse = () => {
-    const newId = Math.max(...formData.courses.map((c) => c.id)) + 1;
-    const newCourse = { id: newId, courseName: "", creditHours: "", grade: "" };
-
-    setFormData((prevData) => ({
-      ...prevData,
-      courses: [...prevData.courses, newCourse],
-    }));
-  };
-
-  // Remove course
-  const removeCourse = (id) => {
-    if (formData.courses.length > 1) {
-      const filteredCourses = formData.courses.filter(
-        (course) => course.id !== id
-      );
-      setFormData((prevData) => ({
-        ...prevData,
-        courses: filteredCourses,
-      }));
-    }
-  };
-
-  // Handle regular form data change (for tech_x, tech_y if needed)
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-    setResult(null);
-    setFormError("");
-  };
-
-  // Validate form
-  const validateForm = () => {
-    for (let course of formData.courses) {
-      if (!course.courseName.trim()) {
-        return "Please enter course name for all courses.";
-      }
-      if (!course.creditHours || parseFloat(course.creditHours) <= 0) {
-        return "Please enter valid credit hours for all courses.";
-      }
-      if (!course.grade) {
-        return "Please select grade for all courses.";
-      }
-    }
-    return null;
-  };
-
-  // Calculate GPA locally (since your API might not support this specific calculation)
-  const calculateGPA = () => {
-    const error = validateForm();
-    if (error) {
-      setFormError(error);
-      return;
-    }
-
-    setFormError("");
-    setIsLoading(true);
-
-    // Calculate GPA
-    let totalGradePoints = 0;
-    let totalCreditHours = 0;
-
-    const courseResults = formData.courses.map((course) => {
-      const creditHours = parseFloat(course.creditHours);
-      const gradePoint = gradePoints[course.grade];
-      const qualityPoints = creditHours * gradePoint;
-
-      totalGradePoints += qualityPoints;
-      totalCreditHours += creditHours;
-
-      return {
-        courseName: course.courseName,
-        creditHours: creditHours,
-        grade: course.grade,
-        gradePoint: gradePoint,
-        qualityPoints: qualityPoints,
-      };
+  // Add new course to semester
+  const addCourse = (semesterIndex) => {
+    const newSemesters = [...formData.semesters];
+    newSemesters[semesterIndex].courses.push({
+      courseName: "",
+      credits: "",
+      grade: ""
     });
+    setFormData(prev => ({ ...prev, semesters: newSemesters }));
+  };
 
-    const gpa = totalCreditHours > 0 ? totalGradePoints / totalCreditHours : 0;
+  // Remove course from semester
+  const removeCourse = (semesterIndex, courseIndex) => {
+    const newSemesters = [...formData.semesters];
+    if (newSemesters[semesterIndex].courses.length > 1) {
+      newSemesters[semesterIndex].courses.splice(courseIndex, 1);
+      setFormData(prev => ({ ...prev, semesters: newSemesters }));
+    }
+  };
 
-    // Simulate API delay
-    setTimeout(() => {
-      setResult({
-        gpa: gpa.toFixed(2),
-        totalCreditHours: totalCreditHours,
-        totalQualityPoints: totalGradePoints.toFixed(2),
-        courses: courseResults,
-      });
-      setIsLoading(false);
-    }, 500);
+  // Add new semester
+  const addSemester = () => {
+    const newSemester = {
+      semesterName: `Semester ${formData.semesters.length + 1}`,
+      courses: [
+        { courseName: "", credits: "", grade: "" },
+        { courseName: "", credits: "", grade: "" },
+        { courseName: "", credits: "", grade: "" }
+      ]
+    };
+    setFormData(prev => ({
+      ...prev,
+      semesters: [...prev.semesters, newSemester]
+    }));
+  };
+
+  // Remove semester
+  const removeSemester = (semesterIndex) => {
+    if (formData.semesters.length > 1) {
+      const newSemesters = formData.semesters.filter((_, index) => index !== semesterIndex);
+      setFormData(prev => ({ ...prev, semesters: newSemesters }));
+    }
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    calculateGPA();
+
+    // Validate form data
+    let hasData = false;
+    
+    // Check if current GPA section has data
+    if (formData.currentCGPA || formData.creditsCompleted) {
+      if (!formData.currentCGPA || !formData.creditsCompleted) {
+        setFormError("Please fill both current GPA and credits completed");
+        return;
+      }
+      hasData = true;
+    }
+
+    // Check if any semester has course data
+    for (const semester of formData.semesters) {
+      for (const course of semester.courses) {
+        if (course.courseName || course.credits || course.grade) {
+          if (!course.credits || !course.grade) {
+            setFormError("Please fill all credits and grade fields for courses");
+            return;
+          }
+          hasData = true;
+        }
+      }
+    }
+
+    if (!hasData) {
+      setFormError("Please fill in at least one course or current GPA information");
+      return;
+    }
+
+    // Prepare submission data with proper number conversion
+    const submissionData = {
+      currentCGPA: formData.currentCGPA ? parseFloat(formData.currentCGPA) : "",
+      creditsCompleted: formData.creditsCompleted ? parseFloat(formData.creditsCompleted) : "",
+      semesters: formData.semesters.map(semester => ({
+        semesterName: semester.semesterName,
+        courses: semester.courses
+          .filter(course => course.credits && course.grade)
+          .map(course => ({
+            courseName: course.courseName || `Course ${Math.random().toString(36).substr(2, 5)}`,
+            credits: course.credits,
+            grade: course.grade
+          }))
+      })).filter(semester => semester.courses.length > 0)
+    };
+
+    setFormError("");
+    try {
+      const response = await calculateUtGpa(submissionData).unwrap();
+      setResult(response?.payload);
+      toast.success("GPA Calculated Successfully");
+    } catch (err) {
+      setFormError(err.data?.payload?.error || "Calculation failed");
+      toast.error(err.data?.payload?.error || "Calculation failed");
+    }
   };
 
-  // Handle reset
+  // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_x: "5",
-      tech_y: "19",
-      courses: [{ id: 1, courseName: "", creditHours: "", grade: "" }],
+      currentCGPA: "",
+      creditsCompleted: "",
+      semesters: [
+        {
+          semesterName: "Semester 1",
+          courses: [
+            { courseName: "", credits: "", grade: "" },
+            { courseName: "", credits: "", grade: "" },
+            { courseName: "", credits: "", grade: "" }
+          ]
+        }
+      ]
     });
     setResult(null);
-    setFormError("");
+    setFormError(null);
+    setShowCurrentGPA(false);
   };
 
-  const getGPAClass = (gpa) => {
-    const numGpa = parseFloat(gpa);
-    if (numGpa >= 3.5) return "text-green-600";
-    if (numGpa >= 3.0) return "text-blue-600";
-    if (numGpa >= 2.5) return "text-yellow-600";
-    return "text-red-600";
-  };
+  // Currency state
+  const [currency, setCurrency] = useState({
+    code: "USD",
+    symbol: "$",
+    name: "US Dollar",
+  });
 
-  const getGPAStatus = (gpa) => {
-    const numGpa = parseFloat(gpa);
-    if (numGpa >= 3.5) return "Excellent";
-    if (numGpa >= 3.0) return "Good";
-    if (numGpa >= 2.5) return "Satisfactory";
-    if (numGpa >= 2.0) return "Below Average";
-    return "Poor";
-  };
+  useEffect(() => {
+    const fetchCurrency = async () => {
+      const result = await getUserCurrency();
+      if (result) {
+        setCurrency(result);
+      }
+    };
+    fetchCurrency();
+  }, []);
 
   return (
     <Calculator
@@ -236,358 +231,334 @@ const UtGpaCalculator = () => {
         },
         {
           name: data?.payload?.tech_calculator_title,
-          path: pathname, // This will use the current path dynamically
+          path: pathname,
         },
       ]}
     >
-      <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
-        <div className=" mx-auto">
-          {/* Calculator Form */}
-          <div className="w-full mx-auto p-2  rounded-lg  space-y-6 mb-3">
-            {formError && (
-              <p className="text-red-500 text-lg font-semibold w-full">
-                {formError}
-              </p>
-            )}
-            {/* Course Input Section */}
-            <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-gray-800">
-                Enter Your Course Information
-              </h2>
+      <form className="row" onSubmit={handleSubmit}>
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
+          {formError && (
+            <p className="text-red-500 text-lg font-semibold w-full">
+              {formError}
+            </p>
+          )}
 
-              {/* Course Headers */}
-              <div className="grid grid-cols-12 md:grid-cols-12 gap-4 mb-4">
-                <div className="col-span-5">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Course Name
-                  </label>
-                </div>
-                <div className="col-span-3">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Credit Hours
-                  </label>
-                </div>
-                <div className="col-span-3">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Grade
-                  </label>
-                </div>
-                <div className="col-span-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Action
-                  </label>
+          <div className="lg:w-[90%] md:w-[90%] w-full mx-auto">
+            <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
+
+              {/* Current GPA Section */}
+              <div className="col-span-12">
+                <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
+                  <div className="col-span-12 current_gpa bg-[#2845F5] text-[#fff] p-2 rounded-lg">
+                    <strong 
+                      className="col-8 cursor-pointer"
+                      onClick={() => setShowCurrentGPA(!showCurrentGPA)}
+                    >
+                      {data?.payload?.tech_lang_keys?.["14"] || "Current"} {data?.payload?.tech_lang_keys?.["4"] || "GPA"}
+                    </strong>
+                  </div>
+                  <div className={`col-span-12 row current_inp  ${showCurrentGPA ? 'block' : 'hidden'}`}>
+                    <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
+                      <div className="col-span-12 md:col-span-6 lg:col-span-6">
+                        <label htmlFor="currentCGPA" className="text-[#2845F5] text-sm">
+                          {data?.payload?.tech_lang_keys?.["3"] || "GPA"}
+                        </label>
+                        <input 
+                          type="number" 
+                          step="any" 
+                          min="0" 
+                          max="5" 
+                          id="currentCGPA"
+                          name="currentCGPA"
+                          className="input mt-2 w-full p-2 border rounded"
+                          placeholder="0.0"
+                          value={formData.currentCGPA}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="col-span-12 md:col-span-6 lg:col-span-6">
+                        <label htmlFor="creditsCompleted" className="text-[#2845F5] text-sm">
+                          {data?.payload?.tech_lang_keys?.["5"] || "Credits"}
+                        </label>
+                        <input 
+                          type="number" 
+                          step="any" 
+                          min="0" 
+                          id="creditsCompleted"
+                          name="creditsCompleted"
+                          className="input mt-2 w-full p-2 border rounded"
+                          placeholder="0.0"
+                          value={formData.creditsCompleted}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              {/* Course Inputs */}
-              {formData.courses.map((course, index) => (
-                <div
-                  key={course.id}
-                  className="grid grid-cols-12 md:grid-cols-12 gap-4 mb-4 items-end"
-                >
-                  <div className="col-span-5">
-                    <input
-                      type="text"
-                      placeholder={`Course ${index + 1} (e.g., Mathematics)`}
-                      value={course.courseName}
-                      onChange={(e) =>
-                        handleCourseChange(
-                          course.id,
-                          "courseName",
-                          e.target.value
-                        )
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
 
-                  <div className="col-span-3">
-                    <input
-                      type="number"
-                      step="0.5"
-                      min="0.5"
-                      max="6"
-                      placeholder="3"
-                      value={course.creditHours}
-                      onChange={(e) =>
-                        handleCourseChange(
-                          course.id,
-                          "creditHours",
-                          e.target.value
-                        )
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  <div className="col-span-3">
-                    <select
-                      value={course.grade}
-                      onChange={(e) =>
-                        handleCourseChange(course.id, "grade", e.target.value)
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="">Select Grade</option>
-                      <option value="A+">A+ (4.0)</option>
-                      <option value="A">A (4.0)</option>
-                      <option value="A-">A- (3.7)</option>
-                      <option value="B+">B+ (3.3)</option>
-                      <option value="B">B (3.0)</option>
-                      <option value="B-">B- (2.7)</option>
-                      <option value="C+">C+ (2.3)</option>
-                      <option value="C">C (2.0)</option>
-                      <option value="C-">C- (1.7)</option>
-                      <option value="D+">D+ (1.3)</option>
-                      <option value="D">D (1.0)</option>
-                      <option value="F">F (0.0)</option>
-                    </select>
-                  </div>
-                  <div className="col-span-1">
-                    <button
-                      type="button"
-                      onClick={() => removeCourse(course.id)}
-                      disabled={formData.courses.length === 1}
-                      className="w-full p-2 text-red-600 hover:text-red-800 disabled:text-gray-300 disabled:cursor-not-allowed text-xl cursor-pointer"
-                    >
-                      ✕
-                    </button>
+              {/* Semesters */}
+              {formData.semesters.map((semester, semesterIndex) => (
+                <div key={semesterIndex} className="col-span-12 overflow-auto">
+                  <div className="semester rounded-lg p-3 mt-2 md:w-auto w-[400px]">
+                    <p>
+                      <strong className="text-[20px] text-[#2845F5]">
+                        {semester.semesterName}
+                      </strong>
+                    </p>
+                    
+                    <div className="row mt-3">
+                      <div className="grid grid-cols-12 gap-2 md:gap-4 lg:gap-4">
+                        <strong className="col-span-4 text-[14px] px-1">
+                          {data?.payload?.tech_lang_keys?.["course"] || "Course"}
+                        </strong>
+                        <strong className="col-span-4 text-[14px] px-1">
+                          {data?.payload?.tech_lang_keys?.["credit"] || "Credit"}
+                        </strong>
+                        <strong className="col-span-4 text-[14px] px-1">
+                          {data?.payload?.tech_lang_keys?.["grade"] || "Grade"}
+                        </strong>
+                      </div>
+                    </div>
+
+                    <div className="row addCourse mt-2" id={`accept_row${semesterIndex + 1}`}>
+                      <ul className="get_html">
+                        {semester.courses.map((course, courseIndex) => (
+                          <li key={courseIndex} className="row relative grid grid-cols-12 gap-2 md:gap-4 lg:gap-4 mb-3" style={{listStyle: "none"}}>
+                            <div className="col-span-4 px-1">
+                              <input
+                                type="text"
+                                className="input w-full p-2 border rounded"
+                                placeholder={data?.payload?.tech_lang_keys?.["13"] || "Course name"}
+                                value={course.courseName}
+                                onChange={(e) => handleCourseChange(semesterIndex, courseIndex, "courseName", e.target.value)}
+                              />
+                            </div>
+                            <div className="col-span-3 px-1">
+                              <input
+                                type="number"
+                                step="any"
+                                min="1"
+                                className="input w-full p-2 border rounded"
+                                placeholder="Credit"
+                                value={course.credits}
+                                onChange={(e) => handleCourseChange(semesterIndex, courseIndex, "credits", e.target.value)}
+                              />
+                            </div>
+                            <div className="col-span-4 px-1">
+                              <select
+                                className="input w-full p-2 border rounded"
+                                value={course.grade}
+                                onChange={(e) => handleCourseChange(semesterIndex, courseIndex, "grade", e.target.value)}
+                              >
+                                <option value="" disabled>
+                                  {data?.payload?.tech_lang_keys?.["grade"] || "Grade"}
+                                </option>
+                                <option value="4.0">A</option>
+                                <option value="3.67">A-</option>
+                                <option value="3.33">B+</option>
+                                <option value="3.0">B</option>
+                                <option value="2.67">B-</option>
+                                <option value="2.33">C+</option>
+                                <option value="2.0">C</option>
+                                <option value="1.67">C-</option>
+                                <option value="1.33">D+</option>
+                                <option value="1.0">D</option>
+                                <option value="0.67">D-</option>
+                                <option value="0.0">F</option>
+                              </select>
+                            </div>
+                            <div className="col-span-1 px-1 flex items-center">
+                              <button
+                                type="button"
+                                className="text-red-500 cursor-pointer"
+                                onClick={() => removeCourse(semesterIndex, courseIndex)}
+                              >
+                                ✕
+                              </button>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div className="w-full pb-2 mt-3 flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          className="col-6 col-md-4 units_active  rounded-lg cursor-pointer add_course bg-[#2845F5] text-white p-3"
+                          onClick={() => addCourse(semesterIndex)}
+                        >
+                          <strong className="flex items-center justify-center">
+                            <span className="pe-2">+</span>
+                            {data?.payload?.tech_lang_keys?.["add_course"] || "Add Course"}
+                          </strong>
+                        </button>
+                        
+                        {semesterIndex === formData.semesters.length - 1 && (
+                          <button
+                            type="button"
+                            className="col-6 col-md-4 units_active  rounded-lg cursor-pointer add_semester bg-[#2845F5] text-white p-3"
+                            onClick={addSemester}
+                          >
+                            <strong className="flex items-center justify-center">
+                              <span className="pe-2">+</span>
+                              {data?.payload?.tech_lang_keys?.["add_semester"] || "Add Semester"}
+                            </strong>
+                          </button>
+                        )}
+                        {formData.semesters.length > 1 && (
+                          <button
+                            type="button"
+                            className="col-6 col-md-4 units_active border rounded-lg cursor-pointer bg-red-500 text-white p-3"
+                            onClick={() => removeSemester(semesterIndex)}
+                          >
+                            <strong className="flex items-center justify-center">
+                              Remove Semester
+                            </strong>
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
-
-              {/* Add Course Button */}
-              <div className="mb-6">
-                <button
-                  type="button"
-                  onClick={addCourse}
-                  className="flex items-center px-4 py-2 bg-[#2845F5] text-white bordered rounded-lg cursor-pointer"
-                >
-                  <span className="mr-2">➕</span>
-                  Add Another Course
-                </button>
-              </div>
             </div>
-            <div className="mb-6 mt-10 text-center space-x-2">
-              <Button
-                type="button"
-                onClick={handleSubmit}
-                disabled={isLoading}
-                className="px-8 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed font-semibold transition-colors"
-              >
-                {isLoading ? "Calculating..." : "Calculate GPA"}
-              </Button>
 
+            {/* Submit Button */}
+            <div className="mb-6 mt-10 text-center space-x-2">
+              <Button type="submit" isLoading={calculateGpaLoading}>
+                {data?.payload?.tech_lang_keys?.["calculate"] || "Calculate"}
+              </Button>
               {result && (
-                <ResetButton
-                  type="button"
-                  onClick={handleReset}
-                  className="px-8 py-3 bg-gray-600 text-white rounded-md hover:bg-gray-700 font-semibold transition-colors"
-                >
-                  RESET
+                <ResetButton type="button" onClick={handleReset}>
+                  {data?.payload?.tech_lang_keys?.["reset"] || "RESET"}
                 </ResetButton>
               )}
             </div>
           </div>
         </div>
-      </div>
-      {/* Loading State */}
-      {isLoading && (
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
-          <div className="animate-pulse">
-            <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
-            <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
-            <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
-            <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
-          </div>
-        </div>
-      )}
 
-      {/* Results */}
-      {result && !isLoading && (
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
-          <div>
+        {/* Results Display */}
+        {!calculateGpaLoading && result && (
+          <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
             <ResultActions lang={data?.payload?.tech_lang_keys} />
-            <div className="w-full mx-auto rounded-lg   result">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center mt-4">
-                  Your GPA Results
-                </h3>
-
-                {/* Main GPA Display */}
-                <div className="text-center mb-8 p-6 bg-white rounded-lg bordered">
-                  <div
-                    className={`text-6xl  font-bold mb-2 ${getGPAClass(
-                      result.gpa
-                    )}`}
-                  >
-                    {result.gpa}
-                  </div>
-                  <div className="text-lg text-gray-600 mb-2">
-                    Grade Point Average
-                  </div>
-                  <div
-                    className={`text-xl font-semibold ${getGPAClass(
-                      result.gpa
-                    )}`}
-                  >
-                    {getGPAStatus(result.gpa)}
+            
+            <div className="rounded-lg flex items-center justify-center">
+              <div className="w-full mt-3">
+                {/* Main Result */}
+                <div className="w-full text-center mt-4">
+                  <div className="bg-blue-100 rounded-lg p-4 bordered">
+                    <p className="text-[32px] mt-2">
+                      <b>{result.cumulativeGPA?.toFixed(2)}</b>
+                    </p>
+                    <p>
+                      <strong className="text-[25px]">
+                        {data?.payload?.tech_lang_keys?.["cum"] || "Cumulative"}
+                      </strong>
+                    </p>
+                    <strong className="text-[25px]">
+                      {data?.payload?.tech_lang_keys?.["10"] || "GPA"}
+                    </strong>
                   </div>
                 </div>
 
-                {/* Summary Stats */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  <div className="bg-white rounded-lg bordered p-4 text-center">
-                    <div className="text-3xl font-bold text-gray-800 ">
-                      {result.totalCreditHours}
-                    </div>
-                    <div className="text-gray-600">Total Credit Hours</div>
+                {/* Total Points and Credits */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 text-center">
+                  <div>
+                    <p className="text-[#2845F5] text-[18px]">
+                      <strong>
+                        {data?.payload?.tech_lang_keys?.["total_g"] || "Total Grade Points"} ={" "}
+                        <span className="text-[25px]">{result.totalGradePoints?.toFixed(2)}</span>
+                      </strong>
+                    </p>
                   </div>
-                  <div className="bg-white rounded-lg bordered p-4 text-center">
-                    <div className="text-3xl font-bold text-gray-800 ">
-                      {result.totalQualityPoints}
-                    </div>
-                    <div className="text-gray-600">Total Quality Points</div>
+                  <div>
+                    <p className="text-[#2845F5] text-[18px]">
+                      <strong>
+                        {data?.payload?.tech_lang_keys?.["total_h"] || "Total Credits"} ={" "}
+                        <span className="text-[25px]">{result.totalCredits}</span>
+                      </strong>
+                    </p>
                   </div>
                 </div>
 
-                {/* Course Breakdown */}
-                <div className="mb-6">
-                  <h4 className="text-lg font-semibold text-gray-800 mb-4">
-                    Course Breakdown
-                  </h4>
-                  <div className="overflow-x-auto">
-                    <table className="w-full border-collapse border border-gray-300 text-sm">
-                      <thead>
-                        <tr className="bg-gray-50">
-                          <th className="border border-gray-300 px-4 py-2 text-left">
-                            Course
-                          </th>
-                          <th className="border border-gray-300 px-4 py-2 text-center">
-                            Credit Hours
-                          </th>
-                          <th className="border border-gray-300 px-4 py-2 text-center">
-                            Grade
-                          </th>
-                          <th className="border border-gray-300 px-4 py-2 text-center">
-                            Grade Points
-                          </th>
-                          <th className="border border-gray-300 px-4 py-2 text-center">
-                            Quality Points
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {result.courses.map((course, index) => (
-                          <tr key={index} className="hover:bg-gray-50">
-                            <td className="border border-gray-300 px-4 py-2">
-                              {course.courseName}
+                {/* Semester-wise Results */}
+                {result.semesters && result.semesters.map((semester, semesterIndex) => (
+                  <div key={semesterIndex} className="w-full pb-2 mt-6">
+                    <strong className="text-[#2845F5] text-[20px]">
+                      {semester.semesterName}
+                    </strong>
+                    
+                    <div className="w-full overflow-auto mt-2">
+                      <table className="w-full border-collapse border border-gray-300">
+                        <thead>
+                          <tr className="bg-[#2845F5] text-[#fff]">
+                            <th className="p-2 text-left">
+                              <strong>{data?.payload?.tech_lang_keys?.["course"] || "Course"}</strong>
+                            </th>
+                            <th className="p-2 text-center">
+                              <strong>{data?.payload?.tech_lang_keys?.["grade"] || "Grade"}</strong>
+                            </th>
+                            <th className="p-2 text-center">
+                              <strong>{data?.payload?.tech_lang_keys?.["credit"] || "Credit"}</strong>
+                            </th>
+                            <th className="p-2 text-center">
+                              <strong>{data?.payload?.tech_lang_keys?.["11"] || "Grade Points"}</strong>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {semester.courses && semester.courses.map((course, courseIndex) => (
+                            <tr key={courseIndex} className="hover:bg-gray-50">
+                              <td className="p-2 border-b border-gray-300">
+                                {course.courseName}
+                              </td>
+                              <td className="p-2 border-b border-gray-300 text-center">
+                                {course.grade}
+                              </td>
+                              <td className="p-2 border-b border-gray-300 text-center">
+                                {course.credits}
+                              </td>
+                              <td className="p-2 border-b border-gray-300 text-center font-semibold">
+                                {course.gradePoints?.toFixed(2)}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                        <tfoot>
+                          <tr className="bg-blue-50">
+                            <td className="p-2 border-b border-gray-300 font-semibold text-right" colSpan="2">
+                              <strong>{data?.payload?.tech_lang_keys?.["12"] || "Total Credit"}</strong>
                             </td>
-                            <td className="border border-gray-300 px-4 py-2 text-center">
-                              {course.creditHours}
+                            <td className="p-2 border-b border-gray-300 text-center font-semibold">
+                              {semester.totalCredits}
                             </td>
-                            <td className="border border-gray-300 px-4 py-2 text-center font-semibold">
-                              {course.grade}
-                            </td>
-                            <td className="border border-gray-300 px-4 py-2 text-center">
-                              {course.gradePoint}
-                            </td>
-                            <td className="border border-gray-300 px-4 py-2 text-center">
-                              {course.qualityPoints.toFixed(2)}
+                            <td className="p-2 border-b border-gray-300 text-center font-semibold text-blue-600">
+                              {semester.semesterGradePoints?.toFixed(2)}
                             </td>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                {/* GPA Scale Reference */}
-                <div className="bg-white bordered p-4 rounded-lg">
-                  <h4 className="text-lg font-semibold text-gray-800 mb-3">
-                    GPA Scale Reference
-                  </h4>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
-                    <div>
-                      <span className="font-semibold">A+/A:</span> 4.0
-                    </div>
-                    <div>
-                      <span className="font-semibold">A-:</span> 3.7
-                    </div>
-                    <div>
-                      <span className="font-semibold">B+:</span> 3.3
-                    </div>
-                    <div>
-                      <span className="font-semibold">B:</span> 3.0
-                    </div>
-                    <div>
-                      <span className="font-semibold">B-:</span> 2.7
-                    </div>
-                    <div>
-                      <span className="font-semibold">C+:</span> 2.3
-                    </div>
-                    <div>
-                      <span className="font-semibold">C:</span> 2.0
-                    </div>
-                    <div>
-                      <span className="font-semibold">C-:</span> 1.7
-                    </div>
-                    <div>
-                      <span className="font-semibold">D+:</span> 1.3
-                    </div>
-                    <div>
-                      <span className="font-semibold">D:</span> 1.0
-                    </div>
-                    <div>
-                      <span className="font-semibold">F:</span> 0.0
+                          <tr className="bg-blue-50">
+                            <td className="p-2 border-b border-gray-300 font-semibold text-right" colSpan="2">
+                              <strong>{data?.payload?.tech_lang_keys?.["10"] || "GPA"}</strong>
+                            </td>
+                            <td className="p-2 border-b border-gray-300 text-center font-semibold">
+                              {semester.semesterGPA?.toFixed(2)}
+                            </td>
+                            <td className="p-2 border-b border-gray-300 text-center"></td>
+                          </tr>
+                        </tfoot>
+                      </table>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
-          {/* Information Section */}
-          <div className="bg-white rounded-lg p-3 bordered  mt-6">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">
-              How to Use This Calculator
-            </h3>
-            <div className="space-y-3 text-gray-600">
-              <p>
-                <strong>Step 1:</strong> Enter the name of each course you've
-                taken.
-              </p>
-              <p>
-                <strong>Step 2:</strong> Input the credit hours for each course
-                (typically 1-6 hours).
-              </p>
-              <p>
-                <strong>Step 3:</strong> Select the grade you received for each
-                course.
-              </p>
-              <p>
-                <strong>Step 4:</strong> Click "Add Another Course" to include
-                more courses.
-              </p>
-              <p>
-                <strong>Step 5:</strong> Click "Calculate GPA" to see your
-                results.
-              </p>
-            </div>
+        )}
+      </form>
 
-            <div className="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-              <h4 className="font-semibold text-yellow-800 mb-2">
-                Important Note:
-              </h4>
-              <p className="text-yellow-700 text-sm">
-                This calculator uses the standard 4.0 GPA scale. Different
-                institutions may have slight variations in their grading scales.
-                Always verify with your specific university's academic policies
-                for the most accurate GPA calculation.
-              </p>
-            </div>
-          </div>
-        </div>
+      {result && (
+        <CalculatorFeedback calName={data?.payload?.tech_calculator_title} />
       )}
-
-      <CalculatorFeedback calName={data?.payload?.tech_calculator_title} />
     </Calculator>
   );
 };
