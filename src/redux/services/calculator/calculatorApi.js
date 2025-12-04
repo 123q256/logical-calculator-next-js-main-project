@@ -5495,6 +5495,20 @@ export const calculatorApi = createApi({
       body: data,
     }),
   }),
+   SquareFootageCalculator: builder.mutation({
+    query: (data) => ({
+      url: `/calculators-lol/square-footage-calculator`,
+      method: "POST",
+      body: data,
+    }),
+  }),
+   EllipseEquationCalculator: builder.mutation({
+    query: (data) => ({
+      url: `/calculators-lol/ellipse-equation-calculator`,
+      method: "POST",
+      body: data,
+    }),
+  }),
   }),
 });
 
@@ -5511,6 +5525,9 @@ export const {
   useUfGpaCalculatorMutation,
   useUtGpaCalculatorMutation,
   useUcGpaCalculatorMutation,
+  useSquareFootageCalculatorMutation,
+  useAnovaCalculatorMutation,
+  useEllipseEquationCalculatorMutation,
   // Health calculator
   useDressSizeCalculatorMutation,
   // Health calculator

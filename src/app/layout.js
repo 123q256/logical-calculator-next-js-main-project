@@ -5,6 +5,7 @@ import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";
 import Script from "next/script";
 import Image from "next/image";
+import GlobalMathRenderer from "../components/GlobalMathRenderer";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -14,6 +15,11 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+
+
+
+
 
 // app/layout.js or wherever you define metadata
 export const metadata = {
@@ -46,6 +52,7 @@ export default function RootLayout({ children }) {
             height={40}
           />
         </button>
+        <GlobalMathRenderer />
         <Providers>
           <Header />
           {children}

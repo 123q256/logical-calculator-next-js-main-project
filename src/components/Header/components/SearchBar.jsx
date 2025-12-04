@@ -104,7 +104,7 @@ export default function SearchBar({ isOpen, onClose }) {
       aria-hidden={!isOpen}
       className={`${
         isOpen ? "flex" : "hidden"
-      } fixed top-0 right-0 left-0 serachbarzindex justify-center w-full md:inset-0 h-[100vh] max-h-full bg-black/50`}
+      } fixed top-0 right-0 left-0 serachbarzindex justify-center w-full md:inset-0 md:h-auto h-[100vh] max-h-full bg-black/50`}
       onClick={onClose}
     >
       <div
@@ -173,7 +173,10 @@ export default function SearchBar({ isOpen, onClose }) {
                   >
                     {/* Left side: Calculator name */}
                     <li
-                      className="text-gray-800 px-2"
+                      className="text-gray-600 px-2 text-[18px]"
+                      style={{
+                        fontFamily: "'Inter', 'Segoe UI', 'Roboto', sans-serif",
+                      }}
                       dangerouslySetInnerHTML={{
                         __html: highlightMatch(item.name),
                       }}

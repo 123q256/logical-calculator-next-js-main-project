@@ -175,7 +175,8 @@ const SearchBar = () => {
                 >
                   {/* Left side: Calculator name */}
                   <li
-                    className="text-gray-800 px-2"
+                    className="text-gray-600 px-2 text-[18px]"
+                    style={{ fontFamily: "'Inter', 'Segoe UI', 'Roboto', sans-serif" }}
                     dangerouslySetInnerHTML={{
                       __html: highlightMatch(item.name),
                     }}
