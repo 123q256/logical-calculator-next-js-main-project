@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { usePValueCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  usePValueCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const PvalueCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -44,14 +44,14 @@ const PvalueCalculator = () => {
   }, [url]);
 
   const [formData, setFormData] = useState({
-    tech_with: "q", // z t  chi  f   r  q
+    tech_with: "z", // z t  chi  f   r  q
     tech_tail: "2",
     tech_score: "1",
     tech_deg: "3",
     tech_deg2: "3",
     tech_degree_freedom: "3",
-    tech_level: ".01",
-    tech_conversionType: "custom_value",
+    tech_level: ".05",
+    tech_conversionType: "fixed_value",
   });
 
   const [result, setResult] = useState(null);
@@ -90,25 +90,25 @@ const PvalueCalculator = () => {
         tech_level: formData.tech_level,
         tech_conversionType: formData.tech_conversionType,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_with: "q", // z t  chi  f   r  q
+      tech_with: "z", // z t  chi  f   r  q
       tech_tail: "2",
       tech_score: "1",
       tech_deg: "3",
       tech_deg2: "3",
       tech_degree_freedom: "3",
-      tech_level: ".01",
-      tech_conversionType: "custom_value",
+      tech_level: ".05",
+      tech_conversionType: "fixed_value",
     });
     setResult(null);
     setFormError(null);
@@ -178,7 +178,7 @@ const PvalueCalculator = () => {
 
           <div className="lg:w-[70%] md:w-[90%] w-full mx-auto ">
             <div className="grid grid-cols-12 mt-3  gap-2">
-              <div className="col-span-6">
+              <div className="col-span-12 ">
                 <label htmlFor="tech_with" className="label">
                   {data?.payload?.tech_lang_keys["5"]}:
                 </label>
@@ -204,13 +204,13 @@ const PvalueCalculator = () => {
                       {data?.payload?.tech_lang_keys["9"]}
                     </option>
                     <option value="r">Pearson r score</option>
-                    <option value="q">Tukey q score</option>
+                    {/* <option value="q">Tukey q score</option> */}
                   </select>
                 </div>
               </div>
               {(formData.tech_with == "z" || formData.tech_with == "t") && (
                 <>
-                  <div className="col-span-6 want_find">
+                  <div className="col-span-12 md:col-span-6 want_find">
                     <label htmlFor="tech_tail" className="label">
                       {data?.payload?.tech_lang_keys["1"]}:
                     </label>
@@ -223,22 +223,18 @@ const PvalueCalculator = () => {
                         value={formData.tech_tail}
                         onChange={handleChange}
                       >
-                        <option value="0">
+                        <option value="2">
                           {data?.payload?.tech_lang_keys["2"]}
                         </option>
-                        <option value="2">One-tailed P-value</option>
-                        <option value="-1">
-                          {data?.payload?.tech_lang_keys["4"]}
-                        </option>
-                        <option value="1">
-                          {data?.payload?.tech_lang_keys["3"]}
-                        </option>
+                        <option value="1">One-tailed P-value</option>
+                        {/* <option value="-1">{data?.payload?.tech_lang_keys["4"]}</option> */}
+                        {/* <option value="1">{data?.payload?.tech_lang_keys["3"]}</option> */}
                       </select>
                     </div>
                   </div>
                 </>
               )}
-              <div className="col-span-6">
+              <div className="col-span-12 md:col-span-6">
                 {formData.tech_with == "t" ? (
                   <>
                     <label htmlFor="tech_score" className="label">
@@ -302,7 +298,7 @@ const PvalueCalculator = () => {
                 formData.tech_with == "r" ||
                 formData.tech_with == "q") && (
                 <>
-                  <div className="col-span-6  deg1">
+                  <div className="col-span-12 md:col-span-6  deg1">
                     {formData.tech_with == "t" ? (
                       <>
                         <label htmlFor="tech_deg" className="label">
@@ -365,7 +361,7 @@ const PvalueCalculator = () => {
               )}
               {formData.tech_with == "f" && (
                 <>
-                  <div className="col-span-6  deg2">
+                  <div className="col-span-12 md:col-span-6  deg2">
                     <label htmlFor="tech_deg2" className="label">
                       {data?.payload?.tech_lang_keys["11"]} (d₂):
                     </label>
@@ -388,7 +384,7 @@ const PvalueCalculator = () => {
 
               {formData.tech_with == "q" && (
                 <>
-                  <div className="col-span-6  n_score">
+                  <div className="col-span-12 md:col-span-6  n_score">
                     <label htmlFor="tech_degree_freedom" className="label">
                       Degrees of freedom (within-groups):
                     </label>
@@ -548,7 +544,10 @@ const PvalueCalculator = () => {
                               onChange={handleChange}
                               checked={formData.tech_level === ".01"}
                             />
-                            <label htmlFor=".01" className="label">
+                            <label
+                              htmlFor="tech_degree_freedom"
+                              className="label"
+                            >
                               0.01
                             </label>
                           </td>
@@ -564,7 +563,10 @@ const PvalueCalculator = () => {
                               onChange={handleChange}
                               checked={formData.tech_level === ".05"}
                             />
-                            <label htmlFor=".05" className="label">
+                            <label
+                              htmlFor="tech_degree_freedom"
+                              className="label"
+                            >
                               0.05
                             </label>
                           </td>
@@ -580,7 +582,10 @@ const PvalueCalculator = () => {
                               onChange={handleChange}
                               checked={formData.tech_level === ".10"}
                             />
-                            <label htmlFor=".10" className="label">
+                            <label
+                              htmlFor="tech_degree_freedom"
+                              className="label"
+                            >
                               0.10
                             </label>
                           </td>
@@ -592,7 +597,7 @@ const PvalueCalculator = () => {
               )}
               {formData.tech_conversionType == "custom_value" && (
                 <>
-                  <div className="col-span-6 custom_value">
+                  <div className="col-span-12 md:col-span-6 custom_value">
                     <label htmlFor="tech_level" className="label">
                       {data?.payload?.tech_lang_keys["12"]}:
                     </label>
@@ -633,16 +638,16 @@ const PvalueCalculator = () => {
         {roundToTheNearestLoading ? (
           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
             <div className="animate-pulse">
-              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
-              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
+              <div className=" w-full h-[30px] bg-gray-200 animate-pulse rounded-[10px] mb-4"></div>
+              <div className="w-[75%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[50%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[25%] h-[20px] bg-gray-200 animate-pulse rounded-[10px]"></div>
             </div>
           </div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 ">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -652,8 +657,8 @@ const PvalueCalculator = () => {
                         <p className="text-[20px] font-semibold">
                           <strong>{getTailText()}</strong>
                         </p>
-                        <p className="text-[32px] bg-[#2845F5] px-3 py-2 rounded-[10px] inline-block my-3">
-                          <strong className="text-white" id="testResult">
+                        <p className="text-[25px] md:text-[32px] bg-[#2845F5] text-[#fff] px-3 py-2 rounded-[10px] inline-block my-3">
+                          <strong className="text-blue" id="testResult">
                             {result?.tech_p}
                           </strong>
                         </p>

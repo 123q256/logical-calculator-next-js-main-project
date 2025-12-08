@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useSohcahtoaCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useSohcahtoaCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -16,7 +17,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const SohcahtoaCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -85,11 +85,12 @@ const SohcahtoaCalculator = () => {
         tech_angle_beta: formData.tech_angle_beta,
         tech_angle_beta_unit: formData.tech_angle_beta_unit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
+
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -192,10 +193,10 @@ const SohcahtoaCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[70%] md:w-[100%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
+          <div className="lg:w-[70%] md:w-[70%] w-full mx-auto ">
+            <div className="grid grid-cols-12 mt-3   gap-1 md:gap-4 lg:gap-4">
               <div className="col-span-12 md:col-span-6">
-                <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
+                <div className="grid grid-cols-12 mt-3   gap-1 md:gap-4 lg:gap-4">
                   <div className="col-span-6">
                     <label htmlFor="tech_len_a" className="label">
                       {/* {data?.payload?.tech_lang_keys["8"]} a */} Leg (a)
@@ -373,7 +374,7 @@ const SohcahtoaCalculator = () => {
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="w-full">
+                      <div className="w-full method2-results">
                         {(result?.tech_method == "1" ||
                           result?.tech_method == "2" ||
                           result?.tech_method == "3" ||
@@ -390,8 +391,8 @@ const SohcahtoaCalculator = () => {
                           result?.tech_method == "11") && (
                           <>
                             <div className="w-full  ">
-                              <div className="w-full md:w-[80%] lg:w-[80%] overflow-auto mt-2p-3">
-                                <table className="w-full text-[18px] px-lg-3 p-1 py-2">
+                              <div className="w-full md:w-[80%] lg:w-[80%] mt-2p-3 overflow-auto">
+                                <table className="w-full text-[16px] md:text-[18px] px-lg-3 p-1 py-2">
                                   <tbody>
                                     {(result?.tech_method == "1" ||
                                       result?.tech_method == "4" ||
@@ -498,26 +499,30 @@ const SohcahtoaCalculator = () => {
                                             </td>
                                             {formData?.tech_angle_beta_unit ===
                                             "deg" ? (
-                                              <td className="py-2 border-b flex items-center">
-                                                <span id="result_value">
+                                              <td className="py-2 border-b flex flex-row items-center gap-3">
+                                                <div
+                                                  id="result_value"
+                                                  className="font-medium"
+                                                >
                                                   {displayAngleA.toFixed(3)}
-                                                </span>
-                                                <div className="py-2 px-2 relative">
-                                                  <select
-                                                    className="input"
-                                                    name="to_cal"
-                                                    id="to_cal"
-                                                    value={unitA}
-                                                    onChange={(e) =>
-                                                      setUnitA(e.target.value)
-                                                    }
-                                                  >
-                                                    <option value="c">°</option>
-                                                    <option value="rad">
-                                                      rad
-                                                    </option>
-                                                  </select>
                                                 </div>
+
+                                                  <div>
+                                                     <select
+                                                  className="input"
+                                                  name="to_cal"
+                                                  id="to_cal"
+                                                  value={unitA}
+                                                  onChange={(e) =>
+                                                    setUnitA(e.target.value)
+                                                  }
+                                                >
+                                                  <option value="c">°</option>
+                                                  <option value="rad">
+                                                    rad
+                                                  </option>
+                                                </select>
+                                                  </div>
                                               </td>
                                             ) : (
                                               <td className="py-2 border-b flex items-center">
@@ -570,9 +575,9 @@ const SohcahtoaCalculator = () => {
                                           "deg" ? (
                                             <td className="py-2 border-b flex items-center">
                                               {/* <span id="result_valueb">
-                                                      {Number(result?.tech_angleb * (180 / Math.PI)).toFixed(3)}
-                                                    </span>
-                                                     */}
+                                                            {Number(result?.tech_angleb * (180 / Math.PI)).toFixed(3)}
+                                                          </span>
+                                                          */}
                                               <span id="result_value">
                                                 {displayAngleA.toFixed(3)}
                                               </span>
@@ -689,7 +694,6 @@ const SohcahtoaCalculator = () => {
                             </div>
                           </>
                         )}
-
                         <div className="w-full text-[16px] overflow-auto">
                           <p className="mt-2">
                             <strong>

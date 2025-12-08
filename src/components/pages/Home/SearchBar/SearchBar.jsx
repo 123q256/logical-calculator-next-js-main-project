@@ -7,6 +7,7 @@ const SearchBar = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [placeholderText, setPlaceholderText] = useState("");
   const searchRef = useRef(null);
+  const [recent, setRecent] = useState([]);
 
   const typedStrings = [
     "BMI Calculator",
@@ -123,6 +124,10 @@ const SearchBar = () => {
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [suggestions, selectedIndex]);
+  // useEffect(() => {
+  //   const stored = JSON.parse(localStorage.getItem("recent_calculators")) || [];
+  //   setRecent(stored);
+  // }, []);
 
   return (
     <div ref={searchRef} className="max-w-[670px] mx-auto mt-2">
@@ -176,7 +181,9 @@ const SearchBar = () => {
                   {/* Left side: Calculator name */}
                   <li
                     className="text-gray-600 px-2 text-[18px]"
-                    style={{ fontFamily: "'Inter', 'Segoe UI', 'Roboto', sans-serif" }}
+                    style={{
+                      fontFamily: "'Inter', 'Segoe UI', 'Roboto', sans-serif",
+                    }}
                     dangerouslySetInnerHTML={{
                       __html: highlightMatch(item.name),
                     }}
@@ -197,6 +204,34 @@ const SearchBar = () => {
           </div>
         )}
       </div>
+        {/* {recent.length > 0 && (
+          <div className="w-full bg-[#f4f5f7] py-1 px-3  flex items-center gap-4 overflow-hidden">
+            <div className="flex items-center min-w-max pr-3 border-r border-gray-300">
+              <p className="font-semibold text-sm text-gray-700">
+                Recently Visited
+              </p>
+            </div>
+
+            <div className="relative w-full overflow-hidden">
+              <div
+                id="recent-slider"
+                className="flex gap-3 overflow-x-auto no-scrollbar whitespace-nowrap px-1 scroll-smooth"
+              >
+                {recent.map((item, index) => (
+                  <a
+                    key={index}
+                    href={item.link}
+                    className="px-2 py-2 bg-[#2845F5] text-[#fff] rounded-lg  shadow-sm
+                             whitespace-nowrap text-[12px] 
+                             hover:bg-blue-600 hover:text-white transition-all"
+                  >
+                    {item.title}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        )} */}
     </div>
   );
 };

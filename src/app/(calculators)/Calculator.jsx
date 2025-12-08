@@ -12,6 +12,29 @@ import {
 } from "../../components/Calculator";
 
 const Calculator = ({ isLoading, data, links, children }) => {
+  // ✅ Save Recent Visited Calculators (max 5)
+  useEffect(() => {
+    if (!data?.payload?.tech_calculator_title) return;
+
+    const title = data.payload.tech_calculator_title;
+    const link = `/${data.payload.tech_calculator_link}`;
+
+    let history = JSON.parse(localStorage.getItem("recent_calculators")) || [];
+
+    // Remove if exists
+    history = history.filter((item) => item.link !== link);
+
+    // Add new
+    history.unshift({ title, link });
+
+    // Limit 5
+    if (history.length > 5) history = history.slice(0, 5);
+
+    localStorage.setItem("recent_calculators", JSON.stringify(history));
+  }, [data]);
+
+  // ✅ Save Recent Visited Calculators (max 5)
+
   const [ogImage, setOgImage] = useState(
     "https://calculator-logical.com/images/ogview/pages/calculator-logical.png"
   );
@@ -85,7 +108,7 @@ const Calculator = ({ isLoading, data, links, children }) => {
 
   const updateMetaTag = (attribute, value, content) => {
     if (typeof document === "undefined") return;
-    
+
     let meta = document.querySelector(`meta[${attribute}="${value}"]`);
     if (!meta) {
       meta = document.createElement("meta");
@@ -113,6 +136,7 @@ const Calculator = ({ isLoading, data, links, children }) => {
         <meta name="twitter:image" content={ogImage} />
         {currentUrl && <link rel="canonical" href={currentUrl} />}
       </Head> */}
+
       <CalculatorWrap>
         <LeftSideCalculator showRight={showRight}>
           {isLoading ? (

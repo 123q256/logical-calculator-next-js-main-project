@@ -5509,6 +5509,41 @@ export const calculatorApi = createApi({
       body: data,
     }),
   }),
+   PValueCalculator: builder.mutation({
+    query: (data) => ({
+      url: `/calculators-lol/p-value-calculator`,
+      method: "POST",
+      body: data,
+    }),
+  }),
+   GaussSeidelCalculator: builder.mutation({
+    query: (data) => ({
+      url: `/calculators-lol/gauss-seidel-calculator`,
+      method: "POST",
+      body: data,
+    }),
+  }),
+   SohcahtoaCalculator: builder.mutation({
+    query: (data) => ({
+      url: `/calculators-lol/sohcahtoa-calculator`,
+      method: "POST",
+      body: data,
+    }),
+  }),
+   GpaCalculator: builder.mutation({
+    query: (data) => ({
+      url: `/calculators-lol/gpa-calculator`,
+      method: "POST",
+      body: data,
+    }),
+  }),
+   AreaOfASectorCalculator: builder.mutation({
+    query: (data) => ({
+      url: `/calculators-lol/area-of-a-sector-calculator`,
+      method: "POST",
+      body: data,
+    }),
+  }),
   }),
 });
 
@@ -5528,6 +5563,11 @@ export const {
   useSquareFootageCalculatorMutation,
   useAnovaCalculatorMutation,
   useEllipseEquationCalculatorMutation,
+  usePValueCalculatorMutation,
+  useGaussSeidelCalculatorMutation,
+  useSohcahtoaCalculatorMutation,
+  useGpaCalculatorMutation,
+  useAreaOfASectorCalculatorMutation,
   // Health calculator
   useDressSizeCalculatorMutation,
   // Health calculator
