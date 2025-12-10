@@ -131,8 +131,8 @@ const ReciprocalCalculator = () => {
   }
 
   // Pehle formData.tech_first ka decimal check karo (JSX ke bahar)
-  const parts = formData?.tech_first?.toString().split(".") || [];
-  const isInteger = parts.length === 1;
+  const firstParts  = formData?.tech_first?.toString().split(".") || [];
+  const isInteger = firstParts.length === 1;
 
   // JavaScript me number decimal check
   const uprStr = result?.tech_upr?.toString() || "";

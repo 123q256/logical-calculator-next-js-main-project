@@ -43,7 +43,6 @@ const AbsoluteChangeCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  console.log(data);
 
   const [formData, setFormData] = useState({
     tech_initial: "5",

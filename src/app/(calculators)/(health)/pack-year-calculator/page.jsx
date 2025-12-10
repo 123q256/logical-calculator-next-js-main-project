@@ -43,7 +43,6 @@ const PackYearCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  console.log(data);
 
   const [formData, setFormData] = useState({
     tech_cigarettes: "6",

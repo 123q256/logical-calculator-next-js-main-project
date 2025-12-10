@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useWallpaperCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useWallpaperCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const WallpaperCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -150,11 +150,11 @@ const WallpaperCalculator = () => {
         tech_pattern: formData.tech_pattern,
         tech_pattern_unit: formData.tech_pattern_unit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload?.payload); // Assuming the response'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -374,14 +374,14 @@ const WallpaperCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg pace-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
             <div className="grid grid-cols-12  gap-4">
               <div className="col-span-6 pe-lg-3">
                 <label htmlFor="tech_type" className="label">
@@ -577,7 +577,7 @@ const WallpaperCalculator = () => {
                       )}
                     </div>
                   </div>
-                  <div className="lg:col-span-6 md:col-span-6 col-span-12  pe-lg-3 walls">
+                  <div className="col-span-6 pe-lg-3 walls">
                     <label htmlFor="tech_wall_height" className="label">
                       {data?.payload?.tech_lang_keys["7"]}
                     </label>
@@ -707,7 +707,7 @@ const WallpaperCalculator = () => {
                   )}
                 </div>
               </div>
-              <div className="lg:col-span-6 md:col-span-6 col-span-12  pe-lg-3">
+              <div className="col-span-6 pe-lg-3">
                 <label htmlFor="tech_no_of_doors" className="label">
                   {data?.payload?.tech_lang_keys["11"]}:
                 </label>
@@ -821,7 +821,7 @@ const WallpaperCalculator = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="lg:col-span-6 md:col-span-6 col-span-12  pe-lg-3">
+              <div className="col-span-6 pe-lg-3">
                 <label htmlFor="tech_no_of_windows" className="label">
                   {data?.payload?.tech_lang_keys["15"]}:
                 </label>
@@ -925,7 +925,7 @@ const WallpaperCalculator = () => {
                   )}
                 </div>
               </div>
-              <div className="lg:col-span-6 md:col-span-6 col-span-12 pe-lg-3">
+              <div className="col-span-6 pe-lg-3">
                 <label htmlFor="tech_cost" className="label">
                   {data?.payload?.tech_lang_keys["19"]} ({" "}
                   {data?.payload?.tech_lang_keys["20"]}):
@@ -945,7 +945,7 @@ const WallpaperCalculator = () => {
                   <span className="input_unit">{currency.symbol}</span>
                 </div>
               </div>
-              <div className="lg:col-span-6 md:col-span-6 col-span-12 pe-lg-3">
+              <div className="col-span-6 pe-lg-3">
                 <label htmlFor="tech_pattern" className="label">
                   {data?.payload?.tech_lang_keys["21"]}
                 </label>
@@ -989,7 +989,7 @@ const WallpaperCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -1014,13 +1014,13 @@ const WallpaperCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 ">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="w-full my-1">
-                        <div className="w-full md:w-[70%] lg:w-[70%] overflow-auto text-[16px]">
+                        <div className="w-full md:w-[70%] lg:w-[70%]">
                           <table className="w-full">
                             <tbody>
                               <tr>

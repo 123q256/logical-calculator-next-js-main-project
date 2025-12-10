@@ -2,9 +2,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useCubicFeetCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useCubicFeetCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -13,7 +14,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const CubicFeetCalculator = (
   l,
   w,
@@ -111,11 +111,11 @@ const CubicFeetCalculator = (
         tech_price: formData.tech_price,
         tech_price_unit: formData.tech_price_unit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -386,20 +386,20 @@ const CubicFeetCalculator = (
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
-            <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2 mt-3  lg:gap-4 md:gap-4 gap-4">
+          <div className="lg:w-[60%] md:w-[90%] w-full mx-auto ">
+            <div className="grid grid-cols-2  lg:grid-cols-2 md:grid-cols-2 mt-3  gap-4">
               <div className="space-y-2 room_unit ">
                 <label htmlFor="tech_room_unit" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
                 </label>
-                <div className="mt-1">
+                <div className="mt-2">
                   <select
                     className="input"
                     aria-label="select"
@@ -424,7 +424,7 @@ const CubicFeetCalculator = (
                         type="number"
                         name="tech_area"
                         step="any"
-                        className="mt-0 input"
+                        className="mt-1 input"
                         value={formData.tech_area}
                         placeholder="00"
                         onChange={handleChange}
@@ -722,7 +722,7 @@ const CubicFeetCalculator = (
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -736,7 +736,7 @@ const CubicFeetCalculator = (
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -747,14 +747,14 @@ const CubicFeetCalculator = (
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="w-full my-1">
-                        <div className="w-full md:w-[90%] lg:w-[50%] overflow-auto lg:text-[18px] md:text-[18px] text-[16px]">
+                        <div className="w-full md:w-[50%] lg:w-[50%] text-[18px] overflow-auto">
                           <table className="w-full">
                             <tbody>
                               <tr>

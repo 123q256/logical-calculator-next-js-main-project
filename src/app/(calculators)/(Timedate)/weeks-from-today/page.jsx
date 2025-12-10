@@ -42,7 +42,6 @@ const WeeksFromTodayCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  // console.log(data);
 
   const [formData, setFormData] = useState({
     tech_number: "24",

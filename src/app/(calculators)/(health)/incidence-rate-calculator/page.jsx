@@ -43,7 +43,6 @@ const ActivationEnergyCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  console.log(data);
 
   const [formData, setFormData] = useState({
     tech_cases: "10",

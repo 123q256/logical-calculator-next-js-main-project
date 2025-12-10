@@ -91,7 +91,6 @@ const DaysSinceDateCalculator = (selectedDate) => {
         tech_year1: formData.tech_year1,
       }).unwrap();
       setResult(response); // Assuming the response has 'lovePercentage'
-      console.log(result);
       toast.success("Calculate Successfully");
     } catch (err) {
       setFormError("Error calculating");

@@ -42,7 +42,6 @@ const DeadlineCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  // console.log(data);
 
   const [formData, setFormData] = useState({
     tech_current: "",

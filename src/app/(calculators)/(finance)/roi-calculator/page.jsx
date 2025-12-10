@@ -120,7 +120,6 @@ const ROICalculator = ({ invest, returns }) => {
       }).unwrap();
       setResult(response?.payload); // Assuming the response has 'lovePercentage'
 
-      console.log(result?.tech_date);
 
       toast.success("Successfully Calculated");
     } catch (err) {

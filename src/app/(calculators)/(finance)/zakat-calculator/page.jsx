@@ -252,8 +252,7 @@ const ZakatCalculator = () => {
       
       toast.success("Zakat Calculated Successfully");
       
-      console.log("Complete Form Data:", payload);
-      console.log("API Response:", response);
+
       
     } catch (err) {
       setFormError(err?.data?.payload?.error || "Calculation failed");

@@ -89,7 +89,6 @@ const StampDutyCalculator = () => {
         tech_property: formData.tech_property,
       }).unwrap();
       setResult(response?.payload); // Assuming the response has 'lovePercentage'
-      console.log(result?.tech_aus_a);
       toast.success("Successfully Calculated");
     } catch (err) {
       setFormError("Error in calculating.");

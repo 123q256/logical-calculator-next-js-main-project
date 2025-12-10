@@ -76,9 +76,6 @@ const LimitingReactantCalculator = () => {
         tech_eq: formData.tech_eq,
       }).unwrap();
       
-      console.log("=== API RESPONSE ===");
-      console.log("Full response:", response);
-      console.log("Response payload:", response?.payload);
       
       setResult(response?.payload);
       toast.success("Calculate Successfully");
@@ -147,33 +144,25 @@ const LimitingReactantCalculator = () => {
   // COMPLETE JAVASCRIPT CALCULATION LOGIC
   useEffect(() => {
     if (result) {
-      console.log("Full result object:", result);
       
       // Check for both teach_ and tech_ prefixes, and handle number or string
       const option = result.teach_option || result.tech_option;
-      console.log("Option value:", option, "Type:", typeof option);
       
       if (option === 2 || option === "2") {
-        console.log("Processing equation...");
         // Add small delay to ensure DOM is ready
         setTimeout(() => {
           processEquation(result);
         }, 100);
       } else {
-        console.log("Option is not 2, skipping processing");
       }
     }
   }, [result, data]);
 
   const processEquation = (resultData) => {
     try {
-      console.log("=== STARTING EQUATION PROCESSING ===");
-      console.log("Result data:", resultData);
-      
+  
       // Use teach_ prefix (as per API response)
       const chemEq = resultData.teach_chemical_equation || resultData.tech_chemical_equation;
-      
-      console.log("Chemical equation:", chemEq);
       
       if (!chemEq) {
         console.error("Chemical equation not found");
@@ -591,11 +580,9 @@ const LimitingReactantCalculator = () => {
 
       // Parse and balance equation
       const input = chemEq;
-      console.log("Parsing equation:", input);
       
       const token = new Tokenizer(input);
       const eqn = parseEquation(token);
-      console.log("Equation parsed successfully");
 
       const colorsCode = ["9933ff", "3399ff", "ff9933", "ff3333", "990099", "004c99", "4c9900", "999900", "994c00"];
       shuffle(colorsCode);
@@ -613,12 +600,6 @@ const LimitingReactantCalculator = () => {
       const reDiv = document.getElementById('re');
       const equDiv = document.getElementById('equ');
       
-      console.log("Displaying balanced equation");
-      console.log("Reactants:", reactant);
-      console.log("Products:", product);
-      console.log("Reactant ratios:", reactratio);
-      console.log("Product ratios:", prodratio);
-      
       if (reDiv) {
         reDiv.textContent = 'Balanced Equation';
         reDiv.style.fontSize = '20px';
@@ -630,7 +611,6 @@ const LimitingReactantCalculator = () => {
         equDiv.appendChild(eqNode);
         equDiv.style.fontSize = '24px';
         equDiv.style.margin = '10px 0';
-        console.log("Balanced equation HTML appended");
       } else {
         console.error("equDiv element not found!");
       }
@@ -712,17 +692,12 @@ const LimitingReactantCalculator = () => {
       val += "<div class='p-2 mx-auto mt-4'><input class='w-full p-2 border-2 rounded bg-yellow-50 text-center font-bold text-lg' id='opp' type='text' readonly placeholder='Limiting reactant will appear here' /></div>";
 
       const tableDiv = document.querySelector('.table');
-      console.log("Table div found:", tableDiv !== null);
       
       if (tableDiv) {
-        console.log("Inserting table HTML...");
-        console.log("Table HTML length:", val.length);
         tableDiv.innerHTML = val;
-        console.log("Table HTML inserted successfully");
         
         // Verify table was inserted
         const insertedTable = tableDiv.querySelector('table');
-        console.log("Table element found after insert:", insertedTable !== null);
 
         // Attach event listeners for calculation
         const mole = [];
@@ -840,19 +815,16 @@ const LimitingReactantCalculator = () => {
         // Use event delegation on table div for better performance and reliability
         tableDiv.addEventListener('input', function(e) {
           if (e.target.classList.contains('reactant-mole') || e.target.classList.contains('reactant-weight')) {
-            console.log("Input detected on:", e.target.id, "Value:", e.target.value);
             calculateLimiting();
           }
         });
         
         tableDiv.addEventListener('change', function(e) {
           if (e.target.classList.contains('reactant-mole') || e.target.classList.contains('reactant-weight')) {
-            console.log("Change detected on:", e.target.id, "Value:", e.target.value);
             calculateLimiting();
           }
         });
         
-        console.log("Event delegation set up on table div");
       } else {
         console.error("Table div not found!");
       }

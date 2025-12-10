@@ -93,7 +93,6 @@ const WaistToHipRatioCalculator = () => {
       setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      console.log(err);
       setFormError("Error in calculating.");
       toast.error("Error in calculating.");
     }

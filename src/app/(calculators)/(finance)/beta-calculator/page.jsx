@@ -44,7 +44,6 @@ const BetaCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  console.log(data);
 
   const [formData, setFormData] = useState({
     tech_rs: "1, 13, 5, 7, 9",

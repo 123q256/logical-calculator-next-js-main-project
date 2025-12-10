@@ -42,7 +42,6 @@ const JuliansDateCalendar = (selectedDate) => {
     handleFetchDetails();
   }, [url]);
 
-  // console.log(data);
 
   const [formData, setFormData] = useState({
     tech_timecheck: "stat",

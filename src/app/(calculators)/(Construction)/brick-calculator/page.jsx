@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useBrickCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useBrickCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const BrickCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -147,11 +147,11 @@ const BrickCalculator = () => {
         tech_price_sand_volume_unit: formData.tech_price_sand_volume_unit,
         tech_currancy: formData.tech_currancy,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -369,7 +369,7 @@ const BrickCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
@@ -388,9 +388,9 @@ const BrickCalculator = () => {
             onChange={handleChange}
           />
 
-          <div className="lg:w-[80%] md:w-[80%] w-full mx-auto ">
+          <div className="lg:w-[80%] md:w-[90%] w-full mx-auto ">
             <div className="grid grid-cols-12 mt-3  gap-4">
-              <div className="col-span-12 md:col-span-6 lg:col-span-6">
+              <div className="col-span-6 md:col-span-6 lg:col-span-6">
                 <label htmlFor="tech_wall_type" className="label">
                   {data?.payload?.tech_lang_keys["2"]}:
                 </label>
@@ -412,7 +412,7 @@ const BrickCalculator = () => {
                   </select>
                 </div>
               </div>
-              <div className="col-span-12 md:col-span-6 lg:col-span-6">
+              <div className="col-span-6 md:col-span-6 lg:col-span-6">
                 <label htmlFor="tech_wall_length" className="label">
                   {data?.payload?.tech_lang_keys["5"]}
                 </label>
@@ -455,7 +455,7 @@ const BrickCalculator = () => {
                   )}
                 </div>
               </div>
-              <div className="col-span-12 md:col-span-6 lg:col-span-6">
+              <div className="col-span-6 md:col-span-6 lg:col-span-6">
                 <label htmlFor="tech_wall_width" className="label">
                   {data?.payload?.tech_lang_keys["6"]}
                 </label>
@@ -498,7 +498,7 @@ const BrickCalculator = () => {
                   )}
                 </div>
               </div>
-              <div className="col-span-12 md:col-span-6 lg:col-span-6">
+              <div className="col-span-6 md:col-span-6 lg:col-span-6">
                 <label htmlFor="tech_wall_height" className="label">
                   {data?.payload?.tech_lang_keys["7"]}
                 </label>
@@ -546,7 +546,7 @@ const BrickCalculator = () => {
                 {data?.payload?.tech_lang_keys["8"]}
               </p>
 
-              <div className="col-span-12 md:col-span-6 lg:col-span-6 px-1">
+              <div className="col-span-6 md:col-span-6 lg:col-span-6 px-1">
                 <label htmlFor="tech_brick_type" className="label">
                   Type
                 </label>
@@ -586,7 +586,7 @@ const BrickCalculator = () => {
                   </select>
                 </div>
               </div>
-              <div className="col-span-12 md:col-span-6 lg:col-span-6">
+              <div className="col-span-6 md:col-span-6 lg:col-span-6">
                 <label htmlFor="tech_brick_wastage" className="label">
                   {data?.payload?.tech_lang_keys["17"]}:
                 </label>
@@ -605,7 +605,7 @@ const BrickCalculator = () => {
                   <span className="input_unit">%</span>
                 </div>
               </div>
-              <div className="col-span-12 md:col-span-6 lg:col-span-6">
+              <div className="col-span-6 md:col-span-6 lg:col-span-6">
                 <label htmlFor="tech_mortar_joint_thickness" className="label">
                   {data?.payload?.tech_lang_keys["18"]}
                 </label>
@@ -646,7 +646,7 @@ const BrickCalculator = () => {
               </div>
               {formData.tech_brick_type == "1" && (
                 <>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 custom ">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 custom ">
                     <label htmlFor="tech_brick_length" className="label">
                       {data?.payload?.tech_lang_keys["5"]}
                     </label>
@@ -689,7 +689,7 @@ const BrickCalculator = () => {
                       )}
                     </div>
                   </div>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 custom ">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 custom ">
                     <label htmlFor="tech_brick_width" className="label">
                       {data?.payload?.tech_lang_keys["6"]}
                     </label>
@@ -732,7 +732,7 @@ const BrickCalculator = () => {
                       )}
                     </div>
                   </div>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 custom ">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 custom ">
                     <label htmlFor="tech_brick_height" className="label">
                       {data?.payload?.tech_lang_keys["7"]}
                     </label>
@@ -806,7 +806,7 @@ const BrickCalculator = () => {
 
               {formData.tech_with_motar == "yes" && (
                 <>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 yes ">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 yes ">
                     <label htmlFor="tech_wet_volume" className="label">
                       {data?.payload?.tech_lang_keys["23"]}
                     </label>
@@ -846,7 +846,7 @@ const BrickCalculator = () => {
                       )}
                     </div>
                   </div>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 yes ">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 yes ">
                     <label htmlFor="tech_mortar_wastage" className="label">
                       {data?.payload?.tech_lang_keys["24"]}:
                     </label>
@@ -865,7 +865,7 @@ const BrickCalculator = () => {
                       <span className="input_unit">%</span>
                     </div>
                   </div>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 px-1 yes ">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 px-1 yes ">
                     <label htmlFor="tech_mortar_ratio" className="label">
                       {data?.payload?.tech_lang_keys["25"]}:
                     </label>
@@ -893,7 +893,7 @@ const BrickCalculator = () => {
                       </select>
                     </div>
                   </div>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 yes ">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 yes ">
                     <label htmlFor="tech_bag_size" className="label">
                       {data?.payload?.tech_lang_keys["30"]}
                     </label>
@@ -940,7 +940,7 @@ const BrickCalculator = () => {
               <p className="col-span-12  my-1">
                 {data?.payload?.tech_lang_keys["31"]}
               </p>
-              <div className="col-span-12 md:col-span-6 lg:col-span-6">
+              <div className="col-span-6 md:col-span-6 lg:col-span-6">
                 <label htmlFor="tech_price_per_brick" className="label">
                   {data?.payload?.tech_lang_keys["32"]}:
                 </label>
@@ -962,7 +962,7 @@ const BrickCalculator = () => {
 
               {formData.tech_with_motar == "yes" && (
                 <>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 yes">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 yes">
                     <label htmlFor="tech_price_of_cement" className="label">
                       {data?.payload?.tech_lang_keys["33"]}:
                     </label>
@@ -981,7 +981,7 @@ const BrickCalculator = () => {
                       <span className="input_unit">{currency.symbol}</span>
                     </div>
                   </div>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 yes">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 yes">
                     <label
                       htmlFor="tech_price_sand_per_volume"
                       className="label"
@@ -1029,7 +1029,7 @@ const BrickCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -1054,14 +1054,14 @@ const BrickCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
-                  <div className="rounded-lg  flex items-center justify-center mt-5">
+                  <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full ">
                       <div className="w-full">
-                        <div className="w-full md:w-[90%] lg:w-[70%] overflow-auto text-[16px]">
+                        <div className="w-full md:w-[80%] lg:w-[70%] overflow-auto md:text-[18px] text-[16px]">
                           <table className="w-full">
                             <tbody>
                               <tr>

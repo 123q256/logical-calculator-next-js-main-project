@@ -43,7 +43,6 @@ const LdlCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  console.log(data);
 
   const [formData, setFormData] = useState({
     tech_total: "3",

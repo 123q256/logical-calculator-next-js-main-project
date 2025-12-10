@@ -43,7 +43,6 @@ const VADisabilityCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  console.log(data);
 
   const [formData, setFormData] = useState({
     tech_right_arm: 20,

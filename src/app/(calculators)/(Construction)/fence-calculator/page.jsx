@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useFenceCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useFenceCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const FenceCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -110,11 +110,11 @@ const FenceCalculator = () => {
         tech_four: formData.tech_four,
         tech_units4: formData.tech_units4,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -282,7 +282,7 @@ const FenceCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg shadow-md space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
@@ -380,23 +380,23 @@ const FenceCalculator = () => {
             </div>
             <div className="grid grid-cols-1 gap-4 mt-4">
               <div className="mt-0 my-lg-2 -lg-3 chose">
-                <label className="pe-2" htmlFor="a">
+                <label className="pe-2 cursor-pointer" htmlFor="a">
                   <input
                     type="radio"
                     name="tech_drop1"
                     value="2"
                     id="a"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     onChange={handleChange}
                     checked={formData.tech_drop1 === "2"}
                   />
                   <span>{data?.payload?.tech_lang_keys["8"]}</span>
                 </label>
-                <label htmlFor="b">
+                <label className="cursor-pointer" htmlFor="b">
                   <input
                     type="radio"
                     name="tech_drop1"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     value="1"
                     id="b"
                     onChange={handleChange}
@@ -406,7 +406,7 @@ const FenceCalculator = () => {
                 </label>
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 mt-2  gap-4">
+            <div className="grid grid-cols-2 mt-2  gap-4">
               <div className="space-y-2">
                 <label htmlFor="tech_first" className="label">
                   {formData.tech_drop1 && formData.tech_drop1 !== "1"
@@ -553,23 +553,23 @@ const FenceCalculator = () => {
             </div>
             <div className="grid grid-cols-1 mt-2  gap-4">
               <div className="mt-0 my-lg-2 -lg-3 chose ">
-                <label className="pe-2" htmlFor="c">
+                <label className="pe-2 cursor-pointer" htmlFor="c">
                   <input
                     type="radio"
                     name="tech_drop2"
                     value="2"
                     id="c"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     onChange={handleChange}
                     checked={formData.tech_drop2 === "2"}
                   />
                   <span>{data?.payload?.tech_lang_keys["14"]}</span>
                 </label>
-                <label htmlFor="d">
+                <label className="cursor-pointer" htmlFor="d">
                   <input
                     type="radio"
                     name="tech_drop2"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     value="1"
                     id="d"
                     onChange={handleChange}
@@ -608,23 +608,23 @@ const FenceCalculator = () => {
             </div>
             <div className="grid grid-cols-1  mt-2 gap-4">
               <div className="mt-0 my-lg-2 -lg-3 chose">
-                <label className="pe-2" htmlFor="e">
+                <label className="pe-2 cursor-pointer" htmlFor="e">
                   <input
                     type="radio"
                     name="tech_drop3"
                     value="1"
                     id="e"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     onChange={handleChange}
                     checked={formData.tech_drop3 === "1"}
                   />
                   <span>{data?.payload?.tech_lang_keys["18"]}</span>
                 </label>
-                <label htmlFor="f">
+                <label className="cursor-pointer" htmlFor="f">
                   <input
                     type="radio"
                     name="tech_drop3"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     value="2"
                     id="f"
                     onChange={handleChange}
@@ -634,7 +634,7 @@ const FenceCalculator = () => {
                 </label>
               </div>
             </div>
-            <div className="grid grid-cols-1 mt-2  lg:grid-cols-2 md:grid-cols-2  gap-4">
+            <div className="grid grid-cols-2 mt-2  lg:grid-cols-2 md:grid-cols-2  gap-4">
               <div className="space-y-2">
                 <label htmlFor="tech_third" className="label">
                   {formData.tech_drop3 && formData.tech_drop3 !== "1"
@@ -730,7 +730,7 @@ const FenceCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -744,7 +744,7 @@ const FenceCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg result_calculator space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -755,13 +755,13 @@ const FenceCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg result_calculator space-y-6 result">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className=" my-2 grid grid-cols-12 gap-2">
-                        <div className="col-span-12 md:col-span-10 text-[18px]">
+                        <div className="col-span-12 md:col-span-10 overflow-auto md:text-[18px] text-[16px]">
                           <table className="">
                             <tbody>
                               {result?.tech_no_post && (

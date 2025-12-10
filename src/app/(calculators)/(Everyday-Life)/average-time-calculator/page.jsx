@@ -43,7 +43,6 @@ const AverageTimeCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  // console.log(data);
 
   const [formData, setFormData] = useState({
     tech_inhour: [0], // Default value is 0 for the first input
@@ -112,7 +111,6 @@ const AverageTimeCalculator = () => {
       setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Calculate Successfully");
     } catch (err) {
-      console.log(err);
       setFormError("Error in calculating.");
       toast.error("Error in calculating.");
       setFormError(err.data.payload.error);

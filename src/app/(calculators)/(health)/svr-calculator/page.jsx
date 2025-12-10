@@ -43,7 +43,6 @@ const SvrCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  console.log(data);
 
   const [formData, setFormData] = useState({
     tech_map: "3",

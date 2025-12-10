@@ -44,7 +44,6 @@ const FibonacciCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  console.log(data);
 
   const [formData, setFormData] = useState({
     tech_units: "A Sequence",
@@ -133,7 +132,6 @@ const FibonacciCalculator = () => {
   }, []);
   // currency code
 
-  console.log(formData);
 
   return (
     <Calculator

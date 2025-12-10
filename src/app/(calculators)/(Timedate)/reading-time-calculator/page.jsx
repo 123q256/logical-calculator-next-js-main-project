@@ -42,7 +42,6 @@ const ReadingTimeCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  // console.log(data);
 
   const [formData, setFormData] = useState({
     tech_reading_speed: "0.25",

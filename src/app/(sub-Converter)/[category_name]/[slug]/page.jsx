@@ -28,32 +28,23 @@ const SubConverter = ({ unit1 = "", unit2 = "" }) => {
   const [currentUrl, setCurrentUrl] = useState("");
   // Debug: Log the API response structure
   useEffect(() => {
-    console.log("API Response:", data);
-    console.log("Error:", error);
-    console.log("Loading state:", isLoading);
   }, [data, error, isLoading]);
 
   const handleFetchDetails = useCallback(async () => {
     if (!categoryName || !slug) {
-      console.log("Missing categoryName or slug parameters");
-      console.log("Available params:", params);
       return;
     }
 
     try {
-      console.log("Fetching data for:", `${categoryName}/${slug}`);
       const result = await getSingleConverterDetails({
         tech_calculator_link: `${categoryName}/${slug}`,
       }).unwrap();
 
-      console.log("API result:", result);
 
       // Check if we have the expected data structure
       if (result && result.payload && result.payload.calculator) {
-        console.log("Data structure is valid");
         setNotFound(false);
       } else {
-        console.log("Unexpected data structure:", result);
         setNotFound(true);
       }
     } catch (err) {
@@ -77,7 +68,6 @@ const SubConverter = ({ unit1 = "", unit2 = "" }) => {
   // Redirect to 404 page if data not found
   useEffect(() => {
     if (notFound) {
-      console.log("Data not found, redirecting to 404");
       router.push("/404");
     }
   }, [notFound, router]);
@@ -104,7 +94,6 @@ const SubConverter = ({ unit1 = "", unit2 = "" }) => {
 
   try {
     langObject = langKeysString ? JSON.parse(langKeysString) : {};
-    console.log("Parsed langObject:", langObject);
   } catch (error) {
     console.error(
       "Error parsing tech_lang_keys:",
@@ -229,7 +218,6 @@ const SubConverter = ({ unit1 = "", unit2 = "" }) => {
     }
 
     let formula = rawFormula.trim();
-    console.log("Original formula:", formula);
 
     if (!formula.includes("from")) {
       if (/^[\/*+-]/.test(formula)) {
@@ -248,10 +236,8 @@ const SubConverter = ({ unit1 = "", unit2 = "" }) => {
 
     try {
       const expression = formula.replace(/from/g, value.toString());
-      console.log("Evaluating expression:", expression);
 
       const result = evaluate(expression);
-      console.log("Evaluation result:", result);
 
       if (isNaN(result) || result === undefined || result === null) {
         console.error("Invalid result:", result);

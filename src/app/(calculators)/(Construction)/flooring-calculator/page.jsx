@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useFlooringCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useFlooringCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const FlooringCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -109,11 +109,11 @@ const FlooringCalculator = () => {
         tech_waste_factor: formData.tech_waste_factor,
         tech_submit: formData.tech_submit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -251,7 +251,7 @@ const FlooringCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
             <div className="grid grid-cols-12  gap-4">
               <div className="col-span-12">
                 {formData.tech_room_length.map((_, index) => (
@@ -276,7 +276,7 @@ const FlooringCalculator = () => {
                           placeholder="00"
                         />
                         <label
-                          className="absolute right-6 top-3 cursor-pointer underline text-sm"
+                          className="absolute right-6 top-4 cursor-pointer underline text-sm"
                           onClick={() =>
                             toggleDropdown("tech_room_length_unit", index)
                           }
@@ -334,7 +334,7 @@ const FlooringCalculator = () => {
                           placeholder="00"
                         />
                         <label
-                          className="absolute right-6 top-3 cursor-pointer underline text-sm"
+                          className="absolute right-6 top-4 cursor-pointer underline text-sm"
                           onClick={() =>
                             toggleDropdown("tech_room_width_unit", index)
                           }
@@ -368,7 +368,7 @@ const FlooringCalculator = () => {
                 <div className="col-span-12 my-2">
                   <span
                     title="Add More Fields"
-                    className="p-2 bg-[#2845F5] text-white cursor-pointer rounded inline-block"
+                    className="p-2 bg-[#2845F5] text-white cursor-pointer rounded-lg inline-block"
                     onClick={addField}
                   >
                     <b>
@@ -389,13 +389,13 @@ const FlooringCalculator = () => {
                     type="number"
                     name="tech_cost"
                     step="any"
-                    className="mt-2 input"
+                    className="mt-1 input"
                     value={formData.tech_cost}
                     placeholder="00"
                     onChange={handleSingleChange}
                   />
                   <label
-                    className="absolute cursor-pointer text-sm underline right-6 top-5"
+                    className="absolute cursor-pointer text-sm underline right-6 top-4"
                     onClick={toggleDropdown0}
                   >
                     {formData.tech_cost_unit} ▾
@@ -457,7 +457,7 @@ const FlooringCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -482,7 +482,7 @@ const FlooringCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -490,7 +490,7 @@ const FlooringCalculator = () => {
                     <div className="w-full mt-3">
                       <div className="w-full justify-content-between">
                         <div className="grid grid-cols-12 gap-2 my-1">
-                          <div className="col-span-12 md:col-span-6 overflow-auto text-[16px]">
+                          <div className="col-span-12 md:col-span-8 overflow-auto md:text-[18px] text-[16px]">
                             <table className="w-full">
                               <tbody>
                                 <tr>

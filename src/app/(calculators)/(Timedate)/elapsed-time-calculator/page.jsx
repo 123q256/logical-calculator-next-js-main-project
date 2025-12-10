@@ -42,7 +42,6 @@ const ElapsedTimeCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  // console.log(data);
 
   const [formData, setFormData] = useState({
     tech_main_units: "elapsed",
@@ -116,7 +115,6 @@ const ElapsedTimeCalculator = () => {
       setResult(response); // Assuming the response has 'lovePercentage'
       toast.success("Calculate Successfully");
     } catch (err) {
-      console.log(err);
       setFormError(err.data.error);
       toast.error(err.data.error);
     }

@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useCylinderVolumeCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useCylinderVolumeCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const CylinderVolumeCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -105,11 +105,11 @@ const CylinderVolumeCalculator = () => {
         tech_internal: formData.tech_internal,
         tech_internal_units: formData.tech_internal_units,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -260,7 +260,7 @@ const CylinderVolumeCalculator = () => {
                 </strong>
               </p>
             </div>
-            <div className="grid grid-cols-1 mt-4 lg:grid-cols-2 md:grid-cols-2  gap-4">
+            <div className="grid grid-cols-2 mt-4  lg:grid-cols-2 md:grid-cols-2  gap-4">
               <div className="space-y-2">
                 <label htmlFor="tech_f_height" className="label">
                   {data?.payload?.tech_lang_keys["2"]}
@@ -350,14 +350,14 @@ const CylinderVolumeCalculator = () => {
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 mt-4 gap-4">
+            <div className="grid grid-cols-1 mt-4    gap-4">
               <p className="mt-2">
                 <strong className="text-blue">
                   {data?.payload?.tech_lang_keys["4"]}
                 </strong>
               </p>
             </div>
-            <div className="grid grid-cols-1 mt-4  lg:grid-cols-2 md:grid-cols-2  gap-4">
+            <div className="grid grid-cols-2 mt-4  lg:grid-cols-2 md:grid-cols-2  gap-4">
               <div className="space-y-2">
                 <label htmlFor="tech_s_height" className="label">
                   {data?.payload?.tech_lang_keys["2"]}
@@ -493,7 +493,7 @@ const CylinderVolumeCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -507,7 +507,7 @@ const CylinderVolumeCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg result_calculator space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -518,14 +518,14 @@ const CylinderVolumeCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg result_calculator space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="grid grid-cols-12 gap-2 my-2">
-                        <div className="col-span-12 md:cols-span-6 text-[16px]">
+                        <div className="col-span-12 md:cols-apn-6 overflow-auto md:text-[18px] text-[16px]">
                           <table className="w-full">
                             <tbody>
                               <tr>
@@ -645,7 +645,7 @@ const CylinderVolumeCalculator = () => {
                             </tbody>
                           </table>
                         </div>
-                        <div className="col-span-12 md:cols-span-6">
+                        <div className="col-span-12 md:cols-apn-6">
                           <p className="text-[20px] mt-2">
                             <strong>Solution</strong>
                           </p>

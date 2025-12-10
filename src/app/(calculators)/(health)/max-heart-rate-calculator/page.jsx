@@ -43,7 +43,6 @@ const MaxHeartRateCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  console.log(data);
 
   const [formData, setFormData] = useState({
     formula: "1",

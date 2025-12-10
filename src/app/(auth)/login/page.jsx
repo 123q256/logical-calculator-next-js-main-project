@@ -31,7 +31,6 @@ const Login = () => {
   const onSubmit = async (formData) => {
     try {
       const result = await loginUser(formData).unwrap();
-      console.log("API Response:", result);
 
       // ✅ Save tokens in cookies
       Cookies.set("access_token", result?.payload?.accessToken);

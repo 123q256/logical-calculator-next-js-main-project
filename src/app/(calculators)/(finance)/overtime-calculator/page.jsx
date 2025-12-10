@@ -137,7 +137,6 @@ const OvertimeCalculator = ({ initialValue }) => {
       setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      console.log(err.data.message);
       setFormError("Error in calculating.");
       toast.error("Error in calculating.");
     }

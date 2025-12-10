@@ -43,7 +43,6 @@ const OneRepMaxCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  console.log(data);
 
   const [formData, setFormData] = useState({
     tech_weight: "5",

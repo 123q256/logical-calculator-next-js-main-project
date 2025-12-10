@@ -128,7 +128,6 @@ const PaybackPeriodCalculator = () => {
       setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      console.log(err);
       setFormError(err.data.payload.error);
       toast.error(err.data.payload.error);
     }

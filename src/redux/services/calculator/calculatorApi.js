@@ -5451,15 +5451,15 @@ export const calculatorApi = createApi({
         body: data,
       }),
     }),
-       SigFigCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/sig-fig-calculator`,
-      method: "POST",
-      body: data,
+    SigFigCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/sig-fig-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
 
-   AsuGpaCalculator: builder.mutation({
+    AsuGpaCalculator: builder.mutation({
       query: (data) => ({
         url: `/calculators-lol/asu-gpa-calculator`,
         method: "POST",
@@ -5473,81 +5473,413 @@ export const calculatorApi = createApi({
         body: data,
       }),
     }),
-    
-   UcGpaCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/uc-gpa-calculator`,
-      method: "POST",
-      body: data,
+
+    UcGpaCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/uc-gpa-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-   UtGpaCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/ut-gpa-calculator`,
-      method: "POST",
-      body: data,
+    UtGpaCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/ut-gpa-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-   UfGpaCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/uf-gpa-calculator`,
-      method: "POST",
-      body: data,
+    UfGpaCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/uf-gpa-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-   SquareFootageCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/square-footage-calculator`,
-      method: "POST",
-      body: data,
+    SquareFootageCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/square-footage-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-   EllipseEquationCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/ellipse-equation-calculator`,
-      method: "POST",
-      body: data,
+    EllipseEquationCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/ellipse-equation-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-   PValueCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/p-value-calculator`,
-      method: "POST",
-      body: data,
+    PValueCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/p-value-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-   GaussSeidelCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/gauss-seidel-calculator`,
-      method: "POST",
-      body: data,
+    GaussSeidelCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/gauss-seidel-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-   SohcahtoaCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/sohcahtoa-calculator`,
-      method: "POST",
-      body: data,
+    SohcahtoaCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/sohcahtoa-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-   GpaCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/gpa-calculator`,
-      method: "POST",
-      body: data,
+    GpaCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/gpa-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
-   AreaOfASectorCalculator: builder.mutation({
-    query: (data) => ({
-      url: `/calculators-lol/area-of-a-sector-calculator`,
-      method: "POST",
-      body: data,
+    AreaOfASectorCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/area-of-a-sector-calculator`,
+        method: "POST",
+        body: data,
+      }),
     }),
-  }),
+
+    RoofPitchCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/roof-pitch-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CubicFeetCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/cubic-feet-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FeetAndInchesCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/feet-and-inches-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AcreageCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/acreage-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RebarCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/rebar-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PipeVolumeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/pipe-volume-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MsPlateWeightCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/ms-plate-weight-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PricePerSquareFootCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/price-per-square-foot-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MaterialCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/material-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RetainingWallCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/retaining-wall-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SquareYardsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/square-yards-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    BrickCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/brick-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MetalRoofCostCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/metal-roof-cost-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RoofReplacementCostCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/roof-replacement-cost-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SquareInchesCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/square-inches-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SodCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/sod-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ConcreteBlockCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/concrete-block-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CarpetCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/carpet-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CylinderVolumeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/cylinder-volume-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FramingCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/framing-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RoofingCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/roofing-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DeckingCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/decking-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SonotubeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/sonotube-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    GravelCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/gravel-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    MulchCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/mulch-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SandCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/sand-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AsphaltCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/asphalt-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    ConcreteCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/concrete-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PaverCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/paver-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FenceCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/fence-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TopsoilCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/topsoil-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    CubicYardCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/cubic-yard-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TileCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/tile-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    TankVolumeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/tank-volume-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    FlooringCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/flooring-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    WallpaperCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/wallpaper-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    StudCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/stud-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RampCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/ramp-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    SquareMeterCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/square-meter-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    StoneCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/stone-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    RoomSizeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/room-size-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
 export const {
+  // Construction Calculators
+  useConcreteCalculatorMutation,
+  useRoofPitchCalculatorMutation,
+  useCubicFeetCalculatorMutation,
+  useFeetAndInchesCalculatorMutation,
+  useAcreageCalculatorMutation,
+  useRebarCalculatorMutation,
+  usePipeVolumeCalculatorMutation,
+  useMsPlateWeightCalculatorMutation,
+  usePricePerSquareFootCalculatorMutation,
+  useMaterialCalculatorMutation,
+  useRetainingWallCalculatorMutation,
+  useSquareYardsCalculatorMutation,
+  useBrickCalculatorMutation,
+  useMetalRoofCostCalculatorMutation,
+  useSquareInchesCalculatorMutation,
+  useSodCalculatorMutation,
+  useConcreteBlockCalculatorMutation,
+  useCarpetCalculatorMutation,
+  useCylinderVolumeCalculatorMutation,
+  useFramingCalculatorMutation,
+  useRoofingCalculatorMutation,
+  useDeckingCalculatorMutation,
+  useSonotubeCalculatorMutation,
+  useRoofReplacementCostCalculatorMutation,
+  useStoneCalculatorMutation,
+
+  useGravelCalculatorMutation,
+  useMulchCalculatorMutation,
+  useSandCalculatorMutation,
+  useAsphaltCalculatorMutation,
+  usePaverCalculatorMutation,
+  useFenceCalculatorMutation,
+  useTopsoilCalculatorMutation,
+  useCubicYardCalculatorMutation,
+  useTileCalculatorMutation,
+  useTankVolumeCalculatorMutation,
+  useFlooringCalculatorMutation,
+  useWallpaperCalculatorMutation,
+  useStudCalculatorMutation,
+  useRampCalculatorMutation,
+  useSquareMeterCalculatorMutation,
+  useRoomSizeCalculatorMutation,
+
   useGratuityCalculatorMutation,
   useSystemOfEquationsCalculatorMutation,
   useHeightComparisonMutation,

@@ -70,7 +70,6 @@ const Header = () => {
   const { data: getSingleCalculatorLanguage } =
     useGetSingleCalculatorLanguageQuery(lastSlug);
 
-  // console.log(getSingleCalculatorLanguage);
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {

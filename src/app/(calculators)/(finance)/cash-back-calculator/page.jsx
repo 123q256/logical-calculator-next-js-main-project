@@ -43,7 +43,6 @@ const CashBackCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  console.log(data);
 
   const [formData, setFormData] = useState({
     tech_purchase: "413",

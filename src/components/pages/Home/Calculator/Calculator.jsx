@@ -109,7 +109,6 @@ const Calculator = () => {
           expression = expression.replace(/ans/g, output);
         }
 
-        console.log("Evaluating:", expression);
 
         // Use mathjs evaluate with scope for degree conversion
         const scope = {};

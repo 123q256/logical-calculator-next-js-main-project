@@ -42,7 +42,6 @@ const TimeDurationCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  // console.log(data);
 
   const [formData, setFormData] = useState({
     tech_calculator_time: "date_cal",

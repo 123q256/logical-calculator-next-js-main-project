@@ -357,8 +357,6 @@ const Converter = () => {
     meta.setAttribute("content", content);
   };
 
-  // console.log(data?.payload?.calculator?.tech_meta_title,'tech_meta_title');
-  // console.log(data?.payload?.calculator?.tech_meta_des,'tech_meta_des');
   return (
     <>
       <ConverterWrap

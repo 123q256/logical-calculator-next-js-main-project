@@ -197,10 +197,7 @@ const MidpointCalculator = () => {
         round: 2,
         showTooltip: true,
         onDragEnd: (e, datasetIndex, index, value) => {
-          console.log(
-            `Point moved in dataset ${datasetIndex} at index ${index}:`,
-            value
-          );
+      
           if (onPointMove) {
             onPointMove(datasetIndex, index, value);
           }

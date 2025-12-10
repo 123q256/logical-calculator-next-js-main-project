@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useSandCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useSandCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const SandCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -120,11 +120,11 @@ const SandCalculator = () => {
         tech_volume_price: formData.tech_volume_price,
         tech_volume_price_unit: formData.tech_volume_price_unit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -331,7 +331,7 @@ const SandCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[80%] md:w-[80%] w-full mx-auto ">
+          <div className="lg:w-[80%] md:w-[90%] w-full mx-auto ">
             <div className="grid grid-cols-12 mt-3  gap-2">
               <div className="col-span-12">
                 <label htmlFor="tech_shape" className="label">
@@ -360,13 +360,13 @@ const SandCalculator = () => {
                   <div className="col-span-12 chose">
                     <div className="grid grid-cols-12 mt-3  gap-2">
                       <div className="col-span-12 md:col-span-4 ">
-                        <label className="pe-2" htmlFor="g1">
+                        <label className="pe-2 cursor-pointer" htmlFor="g1">
                           <input
                             type="radio"
                             name="tech_g"
                             value="g1"
                             id="g1"
-                            className="mr-2 border"
+                            className="mr-2 border cursor-pointer"
                             onChange={handleChange}
                             checked={formData.tech_g === "g1"}
                           />
@@ -374,11 +374,11 @@ const SandCalculator = () => {
                         </label>
                       </div>
                       <div className="col-span-12 md:col-span-4 ">
-                        <label htmlFor="g2">
+                        <label className="cursor-pointer" htmlFor="g2">
                           <input
                             type="radio"
                             name="tech_g"
-                            className="mr-2 border"
+                            className="mr-2 border cursor-pointer"
                             value="g2"
                             id="g2"
                             onChange={handleChange}
@@ -388,11 +388,11 @@ const SandCalculator = () => {
                         </label>
                       </div>
                       <div className="col-span-12 md:col-span-4 ">
-                        <label htmlFor="g3">
+                        <label className="cursor-pointer" htmlFor="g3">
                           <input
                             type="radio"
                             name="tech_g"
-                            className="mr-2 border"
+                            className="mr-2 border cursor-pointer"
                             value="g3"
                             id="g3"
                             onChange={handleChange}
@@ -788,7 +788,7 @@ const SandCalculator = () => {
                     {/* Cost Price */}
                     {formData.tech_shape == "1" && (
                       <>
-                        <div className="lg:col-span-6 md:col-span-6 col-span-12 c_price">
+                        <div className="col-span-6 c_price">
                           <label htmlFor="tech_c_price" className="label">
                             {data?.payload?.tech_lang_keys["17"]}:
                           </label>
@@ -814,7 +814,7 @@ const SandCalculator = () => {
                     {formData.tech_shape == "0" && (
                       <>
                         {/* Mass Price */}
-                        <div className="lg:col-span-6 md:col-span-6 col-span-12 price">
+                        <div className="col-span-6 price">
                           <label htmlFor="tech_mass_price" className="label">
                             {data?.payload?.tech_lang_keys["15"]}
                           </label>
@@ -868,7 +868,7 @@ const SandCalculator = () => {
                           />
                         </div>
                         {/* Volume Price */}
-                        <div className="lg:col-span-6 md:col-span-6 col-span-12 optional">
+                        <div className="col-span-6 optional">
                           <label htmlFor="tech_volume_price" className="label">
                             {data?.payload?.tech_lang_keys["16"]}
                           </label>
@@ -913,7 +913,7 @@ const SandCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -927,7 +927,7 @@ const SandCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -938,14 +938,14 @@ const SandCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="w-full my-1">
-                        <div className="w-full md:w-[100%] lg:w-[60%] text-[16px]">
+                        <div className="w-full md:w-[80%] lg:w-[60%] overflow-auto md:text-[18px] text-[16px]">
                           <table className="w-full">
                             <tbody>
                               {result?.tech_volume >= 0 && (
@@ -959,7 +959,7 @@ const SandCalculator = () => {
                                     </td>
                                   </tr>
                                   <tr>
-                                    <td colspan="2" className="pt-3 pb-2">
+                                    <td className="pt-3 pb-2">
                                       <strong>
                                         {data?.payload?.tech_lang_keys["19"]}
                                       </strong>
@@ -1016,9 +1016,8 @@ const SandCalculator = () => {
                                 </td>
                               </tr>
                               <tr>
-                                <td colspan="2" className="pt-3 pb-2">
+                                <td colSpan="2" className="pt-3 pb-2">
                                   <strong>
-                                    {" "}
                                     {data?.payload?.tech_lang_keys["19"]}
                                   </strong>
                                 </td>

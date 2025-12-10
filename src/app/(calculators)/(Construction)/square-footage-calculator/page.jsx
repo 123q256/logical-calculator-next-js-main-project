@@ -330,7 +330,6 @@ const SquareFootageCalculator = () => {
         tech_submit: "calculate",
       };
 
-      // console.log("Sending request data:", requestData);
 
       const response = await squareFootageCalculator(requestData).unwrap();
       setResult(response?.payload || response);

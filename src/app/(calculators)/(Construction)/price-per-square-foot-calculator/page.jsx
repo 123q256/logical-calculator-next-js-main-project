@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { usePricePerSquareFootCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  usePricePerSquareFootCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const PricePerSquareFootCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -103,11 +103,11 @@ const PricePerSquareFootCalculator = () => {
         tech_area_measure2: formData.tech_area_measure2,
         tech_area_measure_unit2: formData.tech_area_measure_unit2,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -228,7 +228,7 @@ const PricePerSquareFootCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[90%] w-full mx-auto ">
             <div className="grid grid-cols-12  gap-4">
               <div className="col-span-12">
                 <label htmlFor="tech_calculate" className="label">
@@ -526,7 +526,7 @@ const PricePerSquareFootCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -540,7 +540,7 @@ const PricePerSquareFootCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -551,14 +551,14 @@ const PricePerSquareFootCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full bg-light-blue result p-3 radius-10 mt-3">
                       <div className="w-full py-2">
-                        <div className="w-full md:w-[80%] lg:w-[80%]  overflow-auto lg:text-[18px] md:text-[18px] text-[14px]">
+                        <div className="w-full md:w-[80%] lg:w-[80%]  md:text-[18px] text-[16px] overflow-auto">
                           {result?.tech_calculate == "1" && (
                             <>
                               <table className="w-full">
@@ -580,11 +580,12 @@ const PricePerSquareFootCalculator = () => {
                               <div className="">
                                 <p className="mt-2 ">
                                   <strong>
-                                    {data?.payload?.tech_lang_keys["15"]}:
+                                    {data?.payload?.tech_lang_keys["15"]}
                                   </strong>
+                                  :
                                 </p>
                               </div>
-                              <div className="">
+                              <div className="overflow-auto">
                                 <table className="w-full">
                                   <tbody>
                                     <tr>
@@ -638,13 +639,15 @@ const PricePerSquareFootCalculator = () => {
                           {formData?.tech_compare == "2" && (
                             <>
                               <div className="">
-                                <p className="font-s-20 mt-3">
+                                <p className="text-[20px] mt-3">
                                   <strong>
                                     {" "}
-                                    {data?.payload?.tech_lang_keys["7"]} :{" "}
+                                    {data?.payload?.tech_lang_keys["7"]}{" "}
                                   </strong>
+                                  :{" "}
                                 </p>
                               </div>
+                                 <div className="overflow-auto">
                               <table className="w-full">
                                 <tbody>
                                   <tr>
@@ -661,14 +664,16 @@ const PricePerSquareFootCalculator = () => {
                                   </tr>
                                 </tbody>
                               </table>
+                              </div>
                               <div className="">
                                 <p className="mt-2 ">
                                   <strong>
-                                    {" "}
-                                    {data?.payload?.tech_lang_keys["15"]}:
+                                    {data?.payload?.tech_lang_keys["15"]}
                                   </strong>
+                                  :
                                 </p>
                               </div>
+                                <div className="overflow-auto">
                               <table className="w-full">
                                 <tbody>
                                   <tr>
@@ -713,6 +718,7 @@ const PricePerSquareFootCalculator = () => {
                                   </tr>
                                 </tbody>
                               </table>
+                              </div>
                             </>
                           )}
                           {formData?.tech_compare2 == "2" &&
@@ -720,14 +726,10 @@ const PricePerSquareFootCalculator = () => {
                               <>
                                 <div className="font-s-20">
                                   <p className="mt-3">
-                                    <strong>
-                                      {" "}
-                                      {
-                                        data?.payload?.tech_lang_keys["11"]
-                                      } :{" "}
-                                    </strong>
+                                    {data?.payload?.tech_lang_keys["11"]} :{" "}
                                   </p>
                                 </div>
+                                  <div className="overflow-auto">
                                 <table className="w-full">
                                   <tbody>
                                     <tr>
@@ -744,13 +746,16 @@ const PricePerSquareFootCalculator = () => {
                                     </tr>
                                   </tbody>
                                 </table>
+                                </div>
                                 <div className="">
                                   <p className="mt-2">
                                     <strong>
-                                      {data?.payload?.tech_lang_keys["15"]}:
+                                      {data?.payload?.tech_lang_keys["15"]}
                                     </strong>
+                                    :
                                   </p>
                                 </div>
+                                 <div className="overflow-auto">
                                 <table className="w-full">
                                   <tbody>
                                     <tr>
@@ -800,10 +805,12 @@ const PricePerSquareFootCalculator = () => {
                                     </tr>
                                   </tbody>
                                 </table>
+                                </div>
                               </>
                             )}
                           {result?.tech_calculate == "2" && (
                             <>
+                             <div className="overflow-auto">
                               <table className="w-full">
                                 <tbody>
                                   <tr>
@@ -820,11 +827,14 @@ const PricePerSquareFootCalculator = () => {
                                   </tr>
                                 </tbody>
                               </table>
+                              </div>
                               <p className="mt-2">
                                 <strong>
-                                  {data?.payload?.tech_lang_keys["15"]}:
+                                  {data?.payload?.tech_lang_keys["15"]}
                                 </strong>
+                                :
                               </p>
+                              <div className="overflow-auto">
                               <table className="w-full">
                                 <tbody>
                                   <tr>
@@ -885,10 +895,12 @@ const PricePerSquareFootCalculator = () => {
                                   </tr>
                                 </tbody>
                               </table>
+                               </div>
                               <p className="mt-2">
                                 <strong>
-                                  {data?.payload?.tech_lang_keys["15"]}:
+                                  {data?.payload?.tech_lang_keys["15"]}
                                 </strong>
+                                :
                               </p>
                               <table className="w-full">
                                 <tbody>
@@ -940,11 +952,12 @@ const PricePerSquareFootCalculator = () => {
                           )}
                           {formData?.tech_compare == "2" && (
                             <>
-                              <p className="font-s-20 mt-2">
+                              <p className="text-[20px] mt-2">
                                 <strong>
                                   {" "}
-                                  {data?.payload?.tech_lang_keys["7"]} :{" "}
-                                </strong>
+                                  {data?.payload?.tech_lang_keys["7"]}
+                                </strong>{" "}
+                                :{" "}
                               </p>
                               <table className="w-full">
                                 <tbody>
@@ -964,8 +977,9 @@ const PricePerSquareFootCalculator = () => {
                               </table>
                               <p className="mt-2">
                                 <strong>
-                                  {data?.payload?.tech_lang_keys["15"]}:
+                                  {data?.payload?.tech_lang_keys["15"]}
                                 </strong>
+                                :
                               </p>
                               <table className="w-full">
                                 <tbody>
@@ -1032,9 +1046,9 @@ const PricePerSquareFootCalculator = () => {
                               <div className="">
                                 <p className="mt-2">
                                   <strong>
-                                    {" "}
-                                    {data?.payload?.tech_lang_keys["15"]}:
+                                    {data?.payload?.tech_lang_keys["15"]}
                                   </strong>
+                                  :
                                 </p>
                               </div>
                               <table className="w-full">
@@ -1089,10 +1103,12 @@ const PricePerSquareFootCalculator = () => {
                             formData?.tech_compare == "2" && (
                               <>
                                 <div className="">
-                                  <p className="font-s-20 mt-2">
+                                  <p className="text-[20px] mt-2">
                                     <strong>
-                                      {data?.payload?.tech_lang_keys["11"]} :{" "}
+                                      {" "}
+                                      {data?.payload?.tech_lang_keys["11"]}{" "}
                                     </strong>
+                                    :{" "}
                                   </p>
                                 </div>
                                 <table className="w-full">
@@ -1114,8 +1130,9 @@ const PricePerSquareFootCalculator = () => {
                                 <div className="">
                                   <p className="mt-2 ">
                                     <strong>
-                                      {data?.payload?.tech_lang_keys["15"]}:
+                                      {data?.payload?.tech_lang_keys["15"]}
                                     </strong>
+                                    :
                                   </p>
                                 </div>
                                 <table className="w-full">
@@ -1185,8 +1202,9 @@ const PricePerSquareFootCalculator = () => {
                                 <div className="">
                                   <p className="mt-2">
                                     <strong>
-                                      {data?.payload?.tech_lang_keys["15"]}:
+                                      {data?.payload?.tech_lang_keys["15"]}
                                     </strong>
+                                    :
                                   </p>
                                 </div>
                                 <table className="w-full">
@@ -1269,7 +1287,7 @@ const PricePerSquareFootCalculator = () => {
                                   {formData?.tech_compare == "2" && (
                                     <>
                                       <tr>
-                                        <td colSpan="2" className="pt-2">
+                                        <td colspan="2" className="pt-2">
                                           {data?.payload?.tech_lang_keys["7"]}
                                         </td>
                                       </tr>
@@ -1305,7 +1323,7 @@ const PricePerSquareFootCalculator = () => {
                                     formData?.tech_compare == "2" && (
                                       <>
                                         <tr>
-                                          <td colSpan="2" className="pt-2">
+                                          <td colspan="2" className="pt-2">
                                             {
                                               data?.payload?.tech_lang_keys[
                                                 "11"

@@ -42,7 +42,6 @@ const AddTimeCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  // console.log(data);
 
   const [formData, setFormData] = useState({
     tech_inhour: [0], // Default value is 0 for the first input

@@ -43,7 +43,6 @@ const VariationCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  console.log(data);
 
   const [formData, setFormData] = useState({
     tech_select: "1",

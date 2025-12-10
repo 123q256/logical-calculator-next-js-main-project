@@ -42,7 +42,6 @@ const WeeksAgoCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  // console.log(data);
 
   const [formData, setFormData] = useState({
     tech_number: "24",
@@ -157,7 +156,6 @@ const WeeksAgoCalculator = () => {
   const addtwlWeeks = substractWeeks(today, 12);
   const currentday = getDayName(today);
   const currentyearMonth = formatDateString(today);
-  console.log(addFourWeeks, "fff");
   useEffect(() => {
     setTimeout(() => {
       const alldays = document.querySelectorAll(".todaydate");

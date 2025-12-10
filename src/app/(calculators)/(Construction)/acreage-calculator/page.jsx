@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useAcreageCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useAcreageCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const AcreageCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -94,41 +94,6 @@ const AcreageCalculator = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.tech_to_cal == 1) {
-      if (
-        !formData.tech_to_cal ||
-        !formData.tech_length ||
-        !formData.tech_length_unit ||
-        !formData.tech_width ||
-        !formData.tech_width_unit
-      ) {
-        setFormError("Please fill in field");
-        return;
-      }
-    } else if (formData.tech_to_cal == 2) {
-      if (
-        !formData.tech_to_cal ||
-        !formData.tech_width ||
-        !formData.tech_width_unit ||
-        !formData.tech_area ||
-        !formData.tech_area_unit
-      ) {
-        setFormError("Please fill in field");
-        return;
-      }
-    } else if (formData.tech_to_cal == 3) {
-      if (
-        !formData.tech_to_cal ||
-        !formData.tech_length ||
-        !formData.tech_length_unit ||
-        !formData.tech_area ||
-        !formData.tech_area_unit
-      ) {
-        setFormError("Please fill in field");
-        return;
-      }
-    }
-
     setFormError("");
     try {
       const response = await calculateEbitCalculator({
@@ -142,11 +107,11 @@ const AcreageCalculator = () => {
         tech_price: formData.tech_price,
         tech_price_unit: formData.tech_price_unit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -262,7 +227,7 @@ const AcreageCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg shadow-md space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
@@ -485,7 +450,7 @@ const AcreageCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -499,7 +464,7 @@ const AcreageCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 rounded-lg  result_calculator space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -510,22 +475,22 @@ const AcreageCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="grid grid-cols-12 gap-3">
-                        <div className="col-span-12 md:col-span-6 lg:text-[18px] md:text-[18px] text-[16px]">
+                        <div className="col-span-12 md:col-span-6 text-[18px]">
                           {formData?.tech_to_cal == 1 && (
-                            <div className="col-lg-7">
+                            <div className="col-lg-7 overflow-auto">
+                              <p className="mt-3 mb-2">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["5"]}
+                                </strong>
+                              </p>
                               <table className="w-full font-s-18">
-                                <td className="mt-3 mb-2">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys["5"]}
-                                  </strong>
-                                </td>
                                 <tbody>
                                   <tr>
                                     <td className="border-b py-2">
@@ -603,12 +568,12 @@ const AcreageCalculator = () => {
 
                           {formData?.tech_to_cal == 2 && (
                             <div className="col-lg-6">
+                              <p className="mt-3 mb-2">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["2"]}
+                                </strong>
+                              </p>
                               <table className="w-full font-s-18">
-                                <td className="mt-3 mb-2">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys["2"]}
-                                  </strong>
-                                </td>
                                 <tbody>
                                   <tr>
                                     <td className="border-b py-2">
@@ -625,17 +590,12 @@ const AcreageCalculator = () => {
 
                           {formData?.tech_to_cal == 3 && (
                             <div className="col-lg-6">
+                              <p className="mt-3 mb-2">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["3"]}
+                                </strong>
+                              </p>
                               <table className="w-full font-s-18">
-                                <thead>
-                                  <tr>
-                                    <td className="mt-3 mb-2">
-                                      <strong>
-                                        {data?.payload?.tech_lang_keys["3"]}
-                                      </strong>
-                                    </td>
-                                  </tr>
-                                </thead>
-
                                 <tbody>
                                   <tr>
                                     <td className="border-b py-2">
@@ -651,17 +611,12 @@ const AcreageCalculator = () => {
                           )}
 
                           <div className="col-lg-7 col-12">
-                            <table className="w-full lg:text-[18px] md:text-[18px] text-[16px]">
-                              <thead>
-                                <tr>
-                                  <td className="mt-3 mb-2">
-                                    <strong>
-                                      {data?.payload?.tech_lang_keys["13"]}
-                                    </strong>
-                                  </td>
-                                </tr>
-                              </thead>
-
+                            <p className="mt-3 mb-2">
+                              <strong>
+                                {data?.payload?.tech_lang_keys["13"]}
+                              </strong>
+                            </p>
+                            <table className="w-full font-s-18">
                               <tbody>
                                 <tr>
                                   <td className="border-b py-2">
@@ -675,30 +630,27 @@ const AcreageCalculator = () => {
                             </table>
 
                             {formData?.tech_price && (
-                              <table className="w-full font-s-18">
-                                <thead>
-                                  <tr>
-                                    <td className="mt-3 mb-2">
-                                      <strong>
-                                        {data?.payload?.tech_lang_keys["14"]}
-                                      </strong>
-                                    </td>
-                                  </tr>
-                                </thead>
-
-                                <tbody>
-                                  <tr>
-                                    <td className="border-b py-2">
-                                      {currency?.symbol} :
-                                    </td>
-                                    <td width="60%" className="border-b py-2">
-                                      {Number(result?.tech_final_price).toFixed(
-                                        2
-                                      )}
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
+                              <>
+                                <p className="mt-3 mb-2">
+                                  <strong>
+                                    {data?.payload?.tech_lang_keys["14"]}
+                                  </strong>
+                                </p>
+                                <table className="w-full font-s-18">
+                                  <tbody>
+                                    <tr>
+                                      <td className="border-b py-2">
+                                        {currency?.symbol} :
+                                      </td>
+                                      <td width="60%" className="border-b py-2">
+                                        {Number(
+                                          result?.tech_final_price
+                                        ).toFixed(2)}
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </>
                             )}
                           </div>
                         </div>

@@ -160,7 +160,6 @@ const FractionCalculator = () => {
       setResult(response); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
 
-      // console.log(result?.data?.tech_btm);
     } catch (err) {
       setFormError(err.data.error);
       toast.error(err.data.error);

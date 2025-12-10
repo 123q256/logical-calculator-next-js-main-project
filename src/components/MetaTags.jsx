@@ -4,7 +4,6 @@ import Head from "next/head";
 
 const MetaTags = ({ title, description, image }) => {
   const currentUrl = window.location.href;
-  // console.log(title,description,image)
 
   return (
     <Head>

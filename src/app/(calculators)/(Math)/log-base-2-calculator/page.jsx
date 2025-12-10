@@ -43,7 +43,6 @@ const LogBase2Calculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  console.log(data);
 
   const [formData, setFormData] = useState({
     tech_input: "30",

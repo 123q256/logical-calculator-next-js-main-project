@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useRoomSizeCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useRoomSizeCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const RoomSizeCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -109,11 +109,11 @@ const RoomSizeCalculator = () => {
         tech_width_m: formData.tech_width_m,
         tech_perce: formData.tech_perce,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -222,7 +222,7 @@ const RoomSizeCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
@@ -235,12 +235,12 @@ const RoomSizeCalculator = () => {
                 <img
                   src="/images/room_size.svg"
                   alt="beam image"
-                  width={220}
+                  className="w-full md:w-[50%] lg:w-[50%]"
                   height="100%"
                 />
               </div>
               <div className="col-span-12">
-                <div className="grid lg:grid-cols-12 md:grid-cols-12 grid-cols-1 gap-2">
+                <div className="grid grid-cols-12 gap-2">
                   <div className="col-span-8 w-full">
                     <input
                       type="hidden"
@@ -465,7 +465,7 @@ const RoomSizeCalculator = () => {
                 </>
               )}
 
-              <div className="col-span-12 md:col-span-4">
+              <div className="col-span-5 md:col-span-4">
                 <label htmlFor="tech_perce" className="label">
                   {data?.payload?.tech_lang_keys["6"]}:
                 </label>
@@ -488,7 +488,7 @@ const RoomSizeCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -504,23 +504,23 @@ const RoomSizeCalculator = () => {
         {roundToTheNearestLoading ? (
           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
             <div className="animate-pulse">
-              <div className=" w-full h-[30px] bg-gray-200 animate-pulse rounded-[10px] mb-4"></div>
-              <div className="w-[75%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[50%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[25%] h-[20px] bg-gray-200 animate-pulse rounded-[10px]"></div>
+              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
+              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
           </div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  w-full items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="w-full">
-                        <div className="w-full md:w-[70%] g:w-[70%] overflow-auto text-[16px]">
+                        <div className="w-full md:w-[90%] lg:w-[80%] overflow-auto md:text-[18px] text-[16px]">
                           {formData?.tech_name === "feet" && (
                             <table className="w-full">
                               <tbody>
@@ -531,7 +531,7 @@ const RoomSizeCalculator = () => {
                                     </strong>
                                   </td>
                                   <td className="border-b py-2">
-                                    {result?.tech_f_r_s?.toFixed(3)} ft²
+                                    {result?.f_r_s?.toFixed(3)} ft²
                                   </td>
                                 </tr>
 
@@ -541,12 +541,12 @@ const RoomSizeCalculator = () => {
                                       <strong>
                                         {data?.payload?.tech_lang_keys["8"]}{" "}
                                         {data?.payload?.tech_lang_keys["9"]}{" "}
-                                        {result?.tech_perce}%{" "}
+                                        {result?.perce}%{" "}
                                         {data?.payload?.tech_lang_keys["10"]}
                                       </strong>
                                     </td>
                                     <td className="border-b py-2">
-                                      {result?.tech_perc?.toFixed(3)} ft²
+                                      {result?.perc?.toFixed(3)} ft²
                                     </td>
                                   </tr>
                                 )}
@@ -557,7 +557,7 @@ const RoomSizeCalculator = () => {
                                     {data?.payload?.tech_lang_keys["11"]})
                                   </td>
                                   <td className="border-b py-2">
-                                    {(result?.tech_f_r_s * 144).toFixed(3)} in
+                                    {(result?.f_r_s * 144).toFixed(3)} in
                                     <sup>2</sup>
                                   </td>
                                 </tr>
@@ -570,7 +570,7 @@ const RoomSizeCalculator = () => {
                                       {data?.payload?.tech_lang_keys["11"]})
                                     </td>
                                     <td className="border-b py-2">
-                                      {(result?.tech_perc * 144).toFixed(3)} in
+                                      {(result?.perc * 144).toFixed(3)} in
                                       <sup>2</sup>
                                     </td>
                                   </tr>
@@ -582,7 +582,7 @@ const RoomSizeCalculator = () => {
                                     {data?.payload?.tech_lang_keys["12"]})
                                   </td>
                                   <td className="border-b py-2">
-                                    {(result?.tech_f_r_s / 10.764).toFixed(3)} m
+                                    {(result?.f_r_s / 10.764).toFixed(3)} m
                                     <sup>2</sup>
                                   </td>
                                 </tr>
@@ -595,8 +595,8 @@ const RoomSizeCalculator = () => {
                                       {data?.payload?.tech_lang_keys["12"]})
                                     </td>
                                     <td className="border-b py-2">
-                                      {(result?.tech_perc / 10.764).toFixed(3)}{" "}
-                                      m<sup>2</sup>
+                                      {(result?.perc / 10.764).toFixed(3)} m
+                                      <sup>2</sup>
                                     </td>
                                   </tr>
                                 )}
@@ -614,7 +614,7 @@ const RoomSizeCalculator = () => {
                                     </strong>
                                   </td>
                                   <td className="border-b py-2">
-                                    {result?.tech_m_r_s?.toFixed(3)} m²
+                                    {result?.m_r_s?.toFixed(3)} m²
                                   </td>
                                 </tr>
 
@@ -623,13 +623,12 @@ const RoomSizeCalculator = () => {
                                     <td className="border-b py-2">
                                       <strong>
                                         {data?.payload?.tech_lang_keys["8"]}{" "}
-                                        with {result?.tech_perce}%{" "}
+                                        with {result?.perce}%{" "}
                                         {data?.payload?.tech_lang_keys["10"]}
                                       </strong>
                                     </td>
                                     <td className="border-b py-2">
-                                      {result?.tech_perc?.toFixed(3)} m
-                                      <sup>2</sup>
+                                      {result?.perc?.toFixed(3)} m<sup>2</sup>
                                     </td>
                                   </tr>
                                 )}
@@ -639,8 +638,7 @@ const RoomSizeCalculator = () => {
                                     {data?.payload?.tech_lang_keys["8"]}
                                   </td>
                                   <td className="border-b py-2">
-                                    {(result?.tech_m_r_s * 10.764).toFixed(3)}{" "}
-                                    ft²
+                                    {(result?.m_r_s * 10.764).toFixed(3)} ft²
                                   </td>
                                 </tr>
 
@@ -651,8 +649,7 @@ const RoomSizeCalculator = () => {
                                       {data?.payload?.tech_lang_keys["10"]}
                                     </td>
                                     <td className="border-b py-2">
-                                      {(result?.tech_perc * 10.764).toFixed(3)}{" "}
-                                      ft²
+                                      {(result?.perc * 10.764).toFixed(3)} ft²
                                     </td>
                                   </tr>
                                 )}
@@ -662,7 +659,7 @@ const RoomSizeCalculator = () => {
                                     {data?.payload?.tech_lang_keys["8"]}
                                   </td>
                                   <td className="border-b py-2">
-                                    {(result?.tech_m_r_s * 1550).toFixed(3)} in
+                                    {(result?.m_r_s * 1550).toFixed(3)} in
                                     <sup>2</sup>
                                   </td>
                                 </tr>
@@ -674,7 +671,7 @@ const RoomSizeCalculator = () => {
                                       {data?.payload?.tech_lang_keys["10"]}
                                     </td>
                                     <td className="border-b py-2">
-                                      {(result?.tech_perc * 1550).toFixed(3)} in
+                                      {(result?.perc * 1550).toFixed(3)} in
                                       <sup>2</sup>
                                     </td>
                                   </tr>
