@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useDatedurationCalculationMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useDatedurationCalculationMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -13,7 +14,6 @@ import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeed
 import Calculator from "../../Calculator";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const DateDurationCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -41,7 +41,6 @@ const DateDurationCalculator = () => {
   useEffect(() => {
     handleFetchDetails();
   }, [url]);
-
 
   const [formData, setFormData] = useState({
     tech_s_date: "",
@@ -83,11 +82,11 @@ const DateDurationCalculator = () => {
         tech_e_date: formData.tech_e_date,
         tech_checkbox: formData.tech_checkbox,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
-      toast.success("Calculate Successfully");
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
+      toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error calculating.");
-      toast.error("Error calculating.");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -209,6 +208,7 @@ const DateDurationCalculator = () => {
                   type="checkbox"
                   name="tech_checkbox"
                   id="tech_checkbox"
+                  className="cursor-pointer"
                   // onChange={handleChange}
 
                   onChange={(e) => {
@@ -219,14 +219,14 @@ const DateDurationCalculator = () => {
                     }));
                   }}
                 />
-                <label htmlFor="tech_checkbox" className="label">
+                <label htmlFor="tech_checkbox" className="label cursor-pointer">
                   {data?.payload?.tech_lang_keys["9"]}:
                 </label>
               </div>
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={calculateDateDurationLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -240,7 +240,7 @@ const DateDurationCalculator = () => {
           </div>
         </div>
         {calculateDateDurationLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -251,14 +251,14 @@ const DateDurationCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
-                    <div className="w-full bg-light-blue rounded-lg p-4 mt-6">
+                    <div className="w-full bg-light-blue rounded-lg p-1 mt-6">
                       <div className="mb-4">
-                        <div className="text-base lg:w-2/3">
+                        <div className="text-base lg:w-2/3 text-[14px] md:text-[18px]">
                           <table className="w-full">
                             <tbody>
                               <tr>
@@ -303,7 +303,6 @@ const DateDurationCalculator = () => {
                                   {data?.payload?.tech_lang_keys[14]}
                                 </td>
                               </tr>
-
                               <tr>
                                 <td className="border-b py-2">
                                   {result?.tech_days}{" "}

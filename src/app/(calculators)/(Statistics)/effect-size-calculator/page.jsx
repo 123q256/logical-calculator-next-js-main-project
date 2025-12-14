@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { InlineMath, BlockMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useEffectSizeCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useEffectSizeCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -16,7 +17,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const EffectSizeCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -130,11 +130,11 @@ const EffectSizeCalculator = () => {
         tech_df: formData.tech_df,
         tech_r2f: formData.tech_r2f,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error in calculating.");
-      toast.error("Error in calculating.");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -239,9 +239,9 @@ const EffectSizeCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3  gap-4">
-              <div className="lg:col-span-6 md:col-span-6 col-span-12 ">
+          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
+            <div className="grid grid-cols-12 mt-3 gap-1  md:gap-4">
+              <div className="col-span-6">
                 <label htmlFor="tech_effect_type" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
                 </label>
@@ -273,7 +273,7 @@ const EffectSizeCalculator = () => {
                 </div>
               </div>
 
-              <div className="lg:col-span-6 md:col-span-6 col-span-12 ">
+              <div className="col-span-6">
                 <label htmlFor="tech_ronding" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
                 </label>
@@ -305,7 +305,7 @@ const EffectSizeCalculator = () => {
                 <>
                   <div className="col-span-12 cohen">
                     <div className="grid grid-cols-12 mt-3 gap-4">
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12  wh">
+                      <div className="col-span-6 wh">
                         <label htmlFor="tech_c_x1" className="label">
                           {data?.payload?.tech_lang_keys["3"]}{" "}
                           <InlineMath math="(\bar{x}):" />
@@ -325,7 +325,7 @@ const EffectSizeCalculator = () => {
                         </div>
                       </div>
 
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12  ww">
+                      <div className="col-span-6 ww">
                         <label htmlFor="tech_c_s" className="label">
                           {data?.payload?.tech_lang_keys["4"]} σ{" "}
                           <InlineMath math="(S):" />
@@ -345,7 +345,7 @@ const EffectSizeCalculator = () => {
                         </div>
                       </div>
 
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12  wh">
+                      <div className="col-span-6 wh">
                         <label htmlFor="tech_c_pm" className="label">
                           {data?.payload?.tech_lang_keys["5"]}{" "}
                           <InlineMath math="(\mu_0):" />
@@ -501,7 +501,7 @@ const EffectSizeCalculator = () => {
                 <>
                   <div className="h col-span-12 ">
                     <div className="grid grid-cols-12 mt-3 gap-4">
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12  wh">
+                      <div className="col-span-6 wh">
                         <label htmlFor="tech_p1" className="label">
                           {/* Use InlineMath component for math rendering */}
                           <InlineMath math={"P_1 (Proportion_1):"} />
@@ -521,7 +521,7 @@ const EffectSizeCalculator = () => {
                         </div>
                       </div>
 
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12  ww">
+                      <div className="col-span-6 ww">
                         <label htmlFor="tech_p2" className="label">
                           <InlineMath math={"P_2 (Proportion_2):"} />
                         </label>
@@ -874,7 +874,7 @@ const EffectSizeCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -885,7 +885,7 @@ const EffectSizeCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -895,7 +895,7 @@ const EffectSizeCalculator = () => {
                         {result?.tech_effect_type && (
                           <>
                             <div className="text-center">
-                              <p className="text-[18px]">
+                              <p className="text-[16px] md:text-[18px]">
                                 <strong>
                                   {data?.payload?.tech_lang_keys[14]}
                                 </strong>
@@ -904,14 +904,14 @@ const EffectSizeCalculator = () => {
                             {result?.tech_effect_type == "cohen2e" ? (
                               <>
                                 <div className="text-center ">
-                                  <p className="text-[25px] bg-[#2845F5] text-white px-3 py-2 rounded-lg inline-block my-3">
+                                  <p className="text-[20px] md:text-[25px] bg-[#2845F5] text-[#fff] px-3 py-2 rounded-[10px] inline-block my-3">
                                     <strong className="text-blue">
                                       {result?.tech_cohen2e}
                                     </strong>
                                   </p>
                                 </div>
-                                <div className="w-full p-3 md:p-9">
-                                  <p className="w-full mt-3 text-[18px]">
+                                <div className="w-full  p-3 md:p-9 overflow-auto text-[14px] md:text-[18px]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                     <strong className="text-blue">
                                       {data?.payload?.tech_lang_keys[15]}
                                     </strong>
@@ -933,7 +933,7 @@ const EffectSizeCalculator = () => {
                                     />
                                   </p>
 
-                                  <p className="w-full mt-3 text-[18px]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                     <strong className="text-blue">
                                       {data?.payload?.tech_lang_keys[16]}
                                     </strong>
@@ -1001,15 +1001,15 @@ const EffectSizeCalculator = () => {
                             ) : result?.tech_effect_type == "cohen2u" ? (
                               <>
                                 <div className="text-center">
-                                  <p className="text-[25px] bg-[#2845F5] text-white px-3 py-2 rounded-[10px] inline-block my-3">
-                                    <strong className="text-white">
+                                  <p className="text-[20px] md:text-[25px] bg-[#2845F5] text-[#fff] px-3 py-2 rounded-[10px] inline-block my-3">
+                                    <strong className="text-blue-600">
                                       {result?.tech_cohen2u}
                                     </strong>
                                   </p>
                                 </div>
-                                <div className="w-full p-3 md:p-9">
-                                  <p className="w-full mt-3 text-[18px]">
-                                    <strong className="text-[#2845F5]">
+                                <div className="w-full p-3 md:p-9 overflow-auto text-[14px] md:text-[18px] ">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
+                                    <strong className="text-blue-600">
                                       {data?.payload?.tech_lang_keys[15]}
                                     </strong>
                                   </p>
@@ -1024,8 +1024,8 @@ const EffectSizeCalculator = () => {
                                     math={`S_1 = ${result?.tech_s1} \\; ; \\; S_2 = ${result?.tech_s2}`}
                                   />
 
-                                  <p className="w-full mt-3 text-[18px]">
-                                    <strong className="text-[#2845F5]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
+                                    <strong className="text-blue-600">
                                       {data?.payload?.tech_lang_keys[16]}
                                     </strong>
                                   </p>
@@ -1082,15 +1082,15 @@ const EffectSizeCalculator = () => {
                             ) : result?.tech_effect_type == "cohen" ? (
                               <>
                                 <div className="text-center">
-                                  <p className="text-[25px] bg-[#2845F5] px-3 py-2 rounded-[10px] inline-block my-3">
-                                    <strong className="text-white">
+                                  <p className="text-[20px] md:text-[25px] bg-[#2845F5] text-[#fff] px-3 py-2 rounded-[10px] inline-block my-3">
+                                    <strong className="text-blue">
                                       {result.tech_cohen}
                                     </strong>
                                   </p>
                                 </div>
 
-                                <div className="w-full p-3 md:p-9">
-                                  <p className="w-full mt-3 text-[18px]">
+                                <div className="w-full p-3 md:p-9 overflow-auto text-[14px] md:text-[18px]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                     <strong className="text-blue">
                                       {data?.payload?.tech_lang_keys[15]}
                                     </strong>
@@ -1114,7 +1114,7 @@ const EffectSizeCalculator = () => {
                                     />
                                   </p>
 
-                                  <p className="w-full mt-3 text-[18px]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                     <strong className="text-blue">
                                       {data?.payload?.tech_lang_keys[16]}
                                     </strong>
@@ -1153,14 +1153,14 @@ const EffectSizeCalculator = () => {
                             ) : result?.tech_effect_type == "h" ? (
                               <>
                                 <div className="text-center">
-                                  <p className="text-[25px] bg-[#2845F5] px-3 py-2 rounded-[10px] inline-block my-3">
-                                    <strong className="text-white">
+                                  <p className="text-[20px] md:text-[25px] bg-[#2845F5] text-[#fff] px-3 py-2 rounded-[10px] inline-block my-3">
+                                    <strong className="text-blue">
                                       {result.tech_h}
                                     </strong>
                                   </p>
                                 </div>
-                                <div className="w-full p-3 md:p-9">
-                                  <p className="w-full mt-3 text-[18px]">
+                                <div className="w-full p-3 md:p-9 overflow-auto text-[14px] md:text-[18px]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                     <strong className="text-blue">
                                       {data?.payload?.tech_lang_keys[15]}
                                     </strong>
@@ -1178,7 +1178,7 @@ const EffectSizeCalculator = () => {
                                     />
                                   </p>
 
-                                  <p className="w-full mt-3 text-[18px]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                     <strong className="text-blue">
                                       {data?.payload?.tech_lang_keys[16]}
                                     </strong>
@@ -1234,14 +1234,14 @@ const EffectSizeCalculator = () => {
                                 {isPhi && (
                                   <>
                                     <div className="text-center">
-                                      <p className="text-[25px] bg-[#2845F5] px-3 py-2 rounded-[10px] inline-block my-3">
-                                        <strong className="text-white">
+                                      <p className="text-[20px] md:text-[25px] bg-[#2845F5] text-[#fff] px-3 py-2 rounded-[10px] inline-block my-3">
+                                        <strong className="text-blue">
                                           {result?.tech_phi}
                                         </strong>
                                       </p>
                                     </div>
-                                    <div className="w-full p-3 md:p-9">
-                                      <p className="w-full mt-3 text-[18px]">
+                                    <div className="w-full p-3 md:p-9 overflow-auto text-[14px] md:text-[18px]">
+                                      <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                         <strong className="text-blue">
                                           {data?.payload?.tech_lang_keys[15]}
                                         </strong>
@@ -1252,7 +1252,7 @@ const EffectSizeCalculator = () => {
                                       <BlockMath
                                         math={`\\text{${data?.payload?.tech_lang_keys[6]}}\\ (n_1) = ${result?.tech_ph_n1}`}
                                       />
-                                      <p className="w-full mt-3 text-[18px]">
+                                      <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                         <strong className="text-blue">
                                           {data?.payload?.tech_lang_keys[16]}
                                         </strong>
@@ -1282,14 +1282,14 @@ const EffectSizeCalculator = () => {
                                 {isCramer && (
                                   <>
                                     <div className="text-center">
-                                      <p className="text-[25px] bg-[#2845F5] px-3 py-2 rounded-[10px] inline-block my-3">
-                                        <strong className="text-white">
+                                      <p className="text-[20px] md:text-[25px] bg-[#2845F5] text-[#fff] px-3 py-2 rounded-[10px] inline-block my-3">
+                                        <strong className="text-blue">
                                           {result?.tech_cramer}
                                         </strong>
                                       </p>
                                     </div>
-                                    <div className="w-full p-3 md:p-9">
-                                      <p className="w-full mt-3 text-[18px]">
+                                    <div className="w-full p-3 md:p-9 overflow-auto text-[14px] md:text-[18px]">
+                                      <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                         <strong className="text-blue">
                                           {data?.payload?.tech_lang_keys[15]}
                                         </strong>
@@ -1303,7 +1303,7 @@ const EffectSizeCalculator = () => {
                                       <BlockMath
                                         math={`\\text{Number of Columns} = ${result?.tech_col}`}
                                       />
-                                      <p className="w-full mt-3 text-[18px]">
+                                      <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                         <strong className="text-blue">
                                           {data?.payload?.tech_lang_keys[16]}
                                         </strong>
@@ -1346,14 +1346,14 @@ const EffectSizeCalculator = () => {
                             ) : result?.tech_effect_type == "r2" ? (
                               <>
                                 <div className="text-center">
-                                  <p className="text-[25px] bg-[#2845F5] px-3 py-2 rounded-[10px] inline-block my-3">
-                                    <strong className="text-white">
+                                  <p className="text-[20px] md:text-[25px] bg-[#2845F5] text-[#fff] px-3 py-2 rounded-[10px] inline-block my-3">
+                                    <strong className="text-blue">
                                       {result?.tech_r2}
                                     </strong>
                                   </p>
                                 </div>
-                                <div className="w-full p-3 md:p-9">
-                                  <p className="w-full mt-3 text-[18px]">
+                                <div className="w-full p-3 md:p-9 overflow-auto text-[14px] md:text-[18px]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                     <strong className="text-blue">
                                       {data?.payload?.tech_lang_keys[15]}
                                     </strong>
@@ -1363,7 +1363,7 @@ const EffectSizeCalculator = () => {
                                     math={`\\text{SSR} = ${result?.tech_ssr} \\quad ; \\quad \\text{SST} = ${result?.tech_sst}`}
                                   />
 
-                                  <p className="w-full mt-3 text-[18px]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                     <strong className="text-blue">
                                       {data?.payload?.tech_lang_keys[16]}
                                     </strong>
@@ -1395,15 +1395,15 @@ const EffectSizeCalculator = () => {
                             ) : result?.tech_effect_type == "eta2" ? (
                               <>
                                 <div className="text-center">
-                                  <p className="text-[25px] bg-[#2845F5] px-3 py-2 rounded-[10px] inline-block my-3">
-                                    <strong className="text-white">
+                                  <p className="text-[20px] md:text-[25px] bg-[#2845F5] text-[#fff] px-3 py-2 rounded-[10px] inline-block my-3">
+                                    <strong className="text-blue">
                                       {result?.tech_eta2}
                                     </strong>
                                   </p>
                                 </div>
 
                                 <div className="w-full p-3 md:p-9">
-                                  <p className="w-full mt-3 text-[18px]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                     <strong className="text-blue">
                                       {data?.payload?.tech_lang_keys[15]}
                                     </strong>
@@ -1413,7 +1413,7 @@ const EffectSizeCalculator = () => {
                                     math={`\\text{SSG} = ${result?.tech_ssg} \\quad ; \\quad \\text{SST} = ${result?.tech_et_sst}`}
                                   />
 
-                                  <p className="w-full mt-3 text-[18px]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                     <strong className="text-blue">
                                       {data?.payload?.tech_lang_keys[16]}
                                     </strong>
@@ -1449,14 +1449,14 @@ const EffectSizeCalculator = () => {
                             ) : result?.tech_effect_type == "r2f" ? (
                               <>
                                 <div className="text-center">
-                                  <p className="text-[25px] bg-[#2845F5] px-3 py-2 rounded-[10px] inline-block my-3">
-                                    <strong className="text-white">
+                                  <p className="text-[20px] md:text-[25px] bg-[#2845F5] text-[#fff] px-3 py-2 rounded-[10px] inline-block my-3">
+                                    <strong className="text-blue">
                                       {result?.tech_rf}
                                     </strong>
                                   </p>
                                 </div>
-                                <div className="w-full  p-3 md:p-9">
-                                  <p className="w-full mt-3 text-[18px]">
+                                <div className="w-full p-3 md:p-9 overflow-auto text-[14px] md:text-[18px]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                     <strong className="text-blue">
                                       {data?.payload?.tech_lang_keys[15]}
                                     </strong>
@@ -1466,7 +1466,7 @@ const EffectSizeCalculator = () => {
                                     math={`R^2 = ${result?.tech_r2f}`}
                                   />
 
-                                  <p className="w-full mt-3 text-[18px]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                     <strong className="text-blue">
                                       {data?.payload?.tech_lang_keys[16]}
                                     </strong>
@@ -1493,15 +1493,15 @@ const EffectSizeCalculator = () => {
                             ) : result?.tech_effect_type == "f2r" ? (
                               <>
                                 <div className="text-center">
-                                  <p className="text-[25px] bg-[#2845F5] px-3 py-2 rounded-[10px] inline-block my-3">
-                                    <strong className="text-white">
+                                  <p className="text-[20px] md:text-[25px] bg-[#2845F5] text-[#fff] px-3 py-2 rounded-[10px] inline-block my-3">
+                                    <strong className="text-blue">
                                       {result?.tech_fr}
                                     </strong>
                                   </p>
                                 </div>
 
-                                <div className="w-full p-3 md:p-9">
-                                  <p className="w-full mt-3 text-[18px]">
+                                <div className="w-full p-3 md:p-9 overflow-auto text-[14px] md:text-[18px]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                     <strong className="text-blue">
                                       {data?.payload?.tech_lang_keys[15]}
                                     </strong>
@@ -1511,7 +1511,7 @@ const EffectSizeCalculator = () => {
                                     math={`f^2 = ${result?.tech_f2r}`}
                                   />
 
-                                  <p className="w-full mt-3 text-[18px]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                     <strong className="text-blue">
                                       {data?.payload?.tech_lang_keys[16]}
                                     </strong>
@@ -1538,15 +1538,15 @@ const EffectSizeCalculator = () => {
                             ) : result?.tech_effect_type == "dr" ? (
                               <>
                                 <div className="text-center">
-                                  <p className="text-[25px] bg-[#2845F5] px-3 py-2 rounded-[10px] inline-block my-3">
-                                    <strong className="text-white">
+                                  <p className="text-[20px] md:text-[25px] bg-[#2845F5] text-[#fff] px-3 py-2 rounded-[10px] inline-block my-3">
+                                    <strong className="text-blue">
                                       {result?.tech_dr}
                                     </strong>
                                   </p>
                                 </div>
 
-                                <div className="w-full p-3 md:p-9">
-                                  <p className="w-full mt-3 text-[18px]">
+                                <div className="w-full p-3 md:p-9 overflow-auto text-[14px] md:text-[18px]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                     <strong className="text-blue">
                                       {data?.payload?.tech_lang_keys[15]}
                                     </strong>
@@ -1556,7 +1556,7 @@ const EffectSizeCalculator = () => {
                                     {`t Value = ${result?.tech_t_value} \u00A0; \u00A0 df = ${result?.tech_df}`}
                                   </p>
 
-                                  <p className="w-full mt-3 text-[18px]">
+                                  <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                     <strong className="text-blue">
                                       {data?.payload?.tech_lang_keys[16]}
                                     </strong>

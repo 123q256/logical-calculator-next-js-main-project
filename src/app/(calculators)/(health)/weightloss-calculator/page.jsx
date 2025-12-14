@@ -26,9 +26,10 @@ ChartJS.register(
   Legend
 );
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useWeightLossCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useWeightlossCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -37,7 +38,7 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
+import "../../../../components/styles/CssWeightLossCalculator.css";
 const WeightLossCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -62,6 +63,12 @@ const WeightLossCalculator = () => {
     }
   };
 
+  const getFutureDate = (days) => {
+    const d = new Date();
+    d.setDate(d.getDate() + days);
+    return d.toISOString().split("T")[0];
+  };
+
   useEffect(() => {
     handleFetchDetails();
   }, [url]);
@@ -79,7 +86,7 @@ const WeightLossCalculator = () => {
     tech_activity: "0.2",
     tech_unit: "lbs",
     tech_select_type: "target_date",
-    tech_by_target: "",
+    tech_by_target: getFutureDate(360), // ← current date + 10 days
     tech_by_calories: "5",
     tech_by_pace: "relaxed",
 
@@ -100,7 +107,7 @@ const WeightLossCalculator = () => {
   const [
     calculateEbitCalculator,
     { isLoading: roundToTheNearestLoading, isError, error: calculateLoveError },
-  ] = useWeightLossCalculatorMutation();
+  ] = useWeightlossCalculatorMutation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -144,11 +151,11 @@ const WeightLossCalculator = () => {
         tech_target: formData.tech_target,
         tech_enter_calories: formData.tech_enter_calories,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -167,7 +174,7 @@ const WeightLossCalculator = () => {
       tech_activity: "0.2",
       tech_unit: "lbs",
       tech_select_type: "target_date",
-      tech_by_target: "",
+      tech_by_target: getFutureDate(360), // ← current date + 10 days
       tech_by_calories: "5",
       tech_by_pace: "relaxed",
 
@@ -528,31 +535,31 @@ const WeightLossCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[90%] md:w-[99%] w-full mx-auto ">
+          <div className="lg:w-[90%] md:w-[90%] w-full mx-auto ">
             <div className="grid grid-cols-12  gap-4">
               <div className="col-span-12 px-2 pb-2">
                 <span className="pe-3 font-s-14 text-blue">
                   {data?.payload?.tech_lang_keys["83"]}:
                 </span>
-                <label className="pe-2" htmlFor="Male">
+                <label className="pe-2 cursor-pointer" htmlFor="Male">
                   <input
                     type="radio"
                     name="tech_gender"
                     value="Male"
                     id="Male"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     onChange={handleChange}
                     checked={formData.tech_gender === "Male"}
                   />
                   <span>{data?.payload?.tech_lang_keys["44"]}</span>
                 </label>
-                <label className="pe-2" htmlFor="Female">
+                <label className="pe-2 cursor-pointer" htmlFor="Female">
                   <input
                     type="radio"
                     name="tech_gender"
                     value="Female"
                     id="Female"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     onChange={handleChange}
                     checked={formData.tech_gender === "Female"}
                   />
@@ -620,13 +627,13 @@ const WeightLossCalculator = () => {
                         type="number"
                         name="tech_height_in"
                         step="any"
-                        className="mt-2 input"
+                        className="mt-1 input"
                         value={formData.tech_height_in}
                         placeholder="00"
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-5"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown}
                       >
                         {formData.tech_unit_h} ▾
@@ -693,7 +700,7 @@ const WeightLossCalculator = () => {
                   </div>
                 </>
               )}
-              <div className="md:col-span-6 col-span-12 px-2">
+              <div className="col-span-6 px-2">
                 <label htmlFor="tech_weight" className="label">
                   {data?.payload?.tech_lang_keys["weight"]}
                 </label>
@@ -733,7 +740,7 @@ const WeightLossCalculator = () => {
                   )}
                 </div>
               </div>
-              <div className="md:col-span-6 col-span-12 px-2">
+              <div className="col-span-6 px-2">
                 <label htmlFor="tech_lose_w" className="label">
                   {data?.payload?.tech_lang_keys["49"]}
                 </label>
@@ -773,7 +780,7 @@ const WeightLossCalculator = () => {
                   )}
                 </div>
               </div>
-              <div className="md:col-span-6 col-span-12 px-2">
+              <div className="col-span-6 px-2">
                 <label
                   htmlFor="tech_select_type"
                   className="label hidden md:block"
@@ -806,10 +813,7 @@ const WeightLossCalculator = () => {
               </div>
               {formData.tech_select_type == "target_date" && (
                 <>
-                  <div
-                    className="md:col-span-6 col-span-12 relative"
-                    id="by_target_show"
-                  >
+                  <div className="col-span-6 relative" id="by_target_show">
                     <label htmlFor="tech_by_target" className="label">
                       {data?.payload?.tech_lang_keys["90"]}:
                       {/* <div className="relative group inline-block">
@@ -844,7 +848,6 @@ const WeightLossCalculator = () => {
                         id="tech_by_target"
                         className="input my-2"
                         aria-label="input"
-                        placeholder="00"
                         value={formData.tech_by_target || getTomorrowDate()}
                         onChange={handleChange}
                         required={formData?.tech_select_type === "pace"}
@@ -856,10 +859,7 @@ const WeightLossCalculator = () => {
               )}
               {formData.tech_select_type == "custom_cal" && (
                 <>
-                  <div
-                    className="md:col-span-6 col-span-12 relative"
-                    id="by_calories_show"
-                  >
+                  <div className="col-span-6 relative" id="by_calories_show">
                     <label htmlFor="tech_by_calories" className="label">
                       {data?.payload?.tech_lang_keys["92"]}:
                       <div className="relative group inline-block">
@@ -897,10 +897,7 @@ const WeightLossCalculator = () => {
               )}
               {formData.tech_select_type == "pace" && (
                 <>
-                  <div
-                    className="md:col-span-6 col-span-12 relative"
-                    id="by_pace_show"
-                  >
+                  <div className="col-span-6 relative" id="by_pace_show">
                     <label htmlFor="tech_activity" className="label">
                       {data?.payload?.tech_lang_keys["94"]}:
                       <div className="relative group inline-block">
@@ -1022,7 +1019,7 @@ const WeightLossCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -1033,13 +1030,15 @@ const WeightLossCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   {formData?.tech_select_type == "custom_cal" ? (
                     <div className="grid grid-cols-1 gap-4 m-3 p-3">
-                      <div className="bg-sky bordered rounded-lg px-4 py-3">
+                      <div
+                        className="bg-sky bordered rounded-xl px-4 py-3"
+                      >
                         <p>
                           <strong className="text-blue border-b border-blue-500 text-lg">
                             {data?.payload?.tech_lang_keys[102]}
@@ -1076,7 +1075,9 @@ const WeightLossCalculator = () => {
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
-                      <div className="bordered bg-white rounded-lg p-4 flex flex-col justify-between">
+                      <div
+                        className="bordered bg-sky rounded-xl p-4 flex flex-col justify-between"
+                      >
                         <div>
                           <p>
                             <strong className="text-blue border-b border-blue-500 text-lg">
@@ -1115,7 +1116,9 @@ const WeightLossCalculator = () => {
                         </div>
                       </div>
 
-                      <div className="bordered bg-white rounded-lg p-4 flex flex-col justify-between">
+                      <div
+                        className="bordered bg-sky rounded-xl p-4 flex flex-col justify-between"
+                      >
                         <div>
                           <p>
                             <strong className="text-blue border-b border-blue-500 text-lg">
@@ -1159,16 +1162,16 @@ const WeightLossCalculator = () => {
                     </strong>
                   </p>
 
-                  <div className="col-12 bg-light-blue result md:p-3 mt-3">
+                  <div className="col-12 bg-light-blue result radius-10  mt-3">
                     <div className="w-full ">
-                      <div className="bg-white bordered rounded-lg px-3 py-2  overflow-auto mt-3">
+                      <div className="bg-sky bordered rounded-lg px-3 py-2  overflow-auto mt-3">
                         <table className="w-full" cellSpacing="0">
                           <tbody>
                             <tr>
-                              <td className="border_black py-2">
+                              <td className="border-bottom py-2">
                                 Maintain weight
                               </td>
-                              <td className="border_black py-2 text-end">
+                              <td className="border-bottom py-2 text-end">
                                 <strong className="font-s-18">
                                   {Number(result?.tech_Calories)}
                                 </strong>
@@ -1177,13 +1180,13 @@ const WeightLossCalculator = () => {
                             </tr>
 
                             <tr>
-                              <td className="border_black py-2">
+                              <td className="border-bottom py-2">
                                 Mild Weight Loss
                                 {result?.tech_submit === "lbs"
                                   ? "( 0.5 lb/week )"
                                   : "( 0.25 kg/week )"}
                               </td>
-                              <td className="border_black py-2 text-end">
+                              <td className="border-bottom py-2 text-end">
                                 {(() => {
                                   const calorieReduction =
                                     result?.tech_submit === "lbs"
@@ -1207,13 +1210,13 @@ const WeightLossCalculator = () => {
                             </tr>
 
                             <tr>
-                              <td className="border_black py-2">
+                              <td className="border-bottom py-2">
                                 Weight Loss
                                 {result?.tech_submit === "lbs"
                                   ? "( 1 lb/week )"
                                   : "( 0.5 kg/week )"}
                               </td>
-                              <td className="border_black py-2 text-end">
+                              <td className="border-bottom py-2 text-end">
                                 {(() => {
                                   const calorieReduction =
                                     result?.tech_submit === "lbs"
@@ -1268,24 +1271,18 @@ const WeightLossCalculator = () => {
                           </tbody>
                         </table>
                       </div>
-                      <div className="mt-3">
-                        <p className="text-[18px] mb-3 ps-lg-3">
-                          <strong className="text-blue border-b border-blue-500">
-                            {data?.payload?.tech_lang_keys[132]}
-                          </strong>
-                        </p>
-                        {/* <div className="bg-[#ffffff] rounded-[10px] pb-2">
-                          <div
-                            style={{
-                              width: "100%",
-                              height: "370px",
-                              marginTop: "15px",
-                            }}
-                          >
-                            <Line data={datachart} options={options} />
-                          </div>
-                        </div> */}
-                      </div>
+                      {/* <div className="mt-3">
+                            <p className="text-[18px] mb-3 ps-lg-3">
+                              <strong className="text-blue border-b border-blue-500">
+                                {data?.payload?.tech_lang_keys[132]}
+                              </strong>
+                            </p>
+                            <div className="bg-[#f7f7f7] rounded-[10px] pb-2">
+                              <div style={{ width: '100%', height: '370px', marginTop: '15px' }}>
+                                  <Line data={datachart} options={options} />
+                                </div>
+                            </div>
+                          </div> */}
 
                       <div className="col-12 mt-3">
                         <p className="ps-lg-3">
@@ -1294,7 +1291,9 @@ const WeightLossCalculator = () => {
                           </strong>
                         </p>
 
-                        <div className="bg-white bordered rounded-lg p-3 mt-2">
+                        <div
+                          className="bg-sky bordered rounded-lg p-3 mt-2"
+                        >
                           <div className="row align-items-center">
                             <p className="col-md-6">
                               <strong className="text-blue">
@@ -1303,7 +1302,7 @@ const WeightLossCalculator = () => {
                             </p>
 
                             <div className="col-md-6">
-                              <div className="col-md-9 ms-auto result_custom_inputs mt-2">
+                              <div className="col-md-9 ms-auto result_custom_inputs">
                                 <select
                                   name="time_duration"
                                   id="time_duration"
@@ -1360,7 +1359,7 @@ const WeightLossCalculator = () => {
                                     className="col-12 overflow-auto"
                                     style={{ height: "300px" }}
                                   >
-                                    <table className="col-12" cellSpacing="0">
+                                    <table className="w-full" cellSpacing="0">
                                       <tbody>
                                         {finalArray.map((value, index) => {
                                           const { cal_ans, name_ans } =
@@ -1386,21 +1385,25 @@ const WeightLossCalculator = () => {
 
                                           return (
                                             <tr key={index}>
-                                              <td style={{ display: "flex" }} className="col-span-10 border_black  py-3 pe-3 flex items-center">
-                                                <img
-                                                  src={`/images/res_icons/${imageName}.svg`}
-                                                  alt={`${firstPart} icon`}
-                                                  width="25"
-                                                  height="25"
-                                                  loading="lazy"
-                                                  decoding="async"
-                                                  className="me-2"
-                                                  onError={(e) =>
-                                                    (e.target.style.display =
-                                                      "none")
-                                                  }
-                                                />
-                                                {name_ans}
+                                              <td className="col-span-12 border-b border-e py-3 pe-3 flex items-center">
+                                                <div className="flex">
+                                                  <div>
+                                                    <img
+                                                      src={`/images/res_icons/${imageName}.svg`}
+                                                      alt={`${firstPart} icon`}
+                                                      width="25"
+                                                      height="25"
+                                                      loading="lazy"
+                                                      decoding="async"
+                                                      className="me-2"
+                                                      onError={(e) =>
+                                                        (e.target.style.display =
+                                                          "none")
+                                                      }
+                                                    />
+                                                  </div>
+                                                  <div> {name_ans}</div>
+                                                </div>
                                               </td>
                                               <td className="col-2 border-bottom py-3 px-3 pe-lg-0">
                                                 <strong>{cal_ans}</strong> kcal
@@ -1422,7 +1425,7 @@ const WeightLossCalculator = () => {
                     </div>
                   </div>
 
-                  <div className="mt-4 border border-gray-200 rounded-xl shadow-sm overflow-auto bg-white">
+                  <div className="mt-4 bordered border-gray-200 rounded-lg p-3 overflow-auto bg-sky">
                     <table className="min-w-full text-sm text-gray-800">
                       <tbody className="divide-y divide-gray-200">
                         {/* BMR */}
@@ -1492,7 +1495,7 @@ const WeightLossCalculator = () => {
                       <strong>{result?.tech_Calories}</strong> calories.
                     </p>
 
-                    <div className="overflow-auto bg-blue-50 border border-blue-200 rounded-xl shadow-sm">
+                    <div className="overflow-auto  bordered rounded-lg">
                       <table className="min-w-full text-left text-sm text-gray-700">
                         <thead className="bg-[#2845F5] text-[#fff] font-semibold">
                           <tr>
@@ -1500,7 +1503,7 @@ const WeightLossCalculator = () => {
                             <th className="py-3 px-4">Weight Lost / Week</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y bg-white">
+                        <tbody className="divide-y bg-sky">
                           {[
                             ["No sport/exercise", result?.tech_activity_first],
                             [

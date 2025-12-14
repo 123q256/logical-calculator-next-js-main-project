@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useHowManyWordsCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useHowManyWordsCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const HowManyWordsCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -30,23 +30,21 @@ const HowManyWordsCalculator = () => {
   }
   const [getSingleCalculatorDetails, { data, error, isLoading }] =
     useGetSingleCalculatorDetailsMutation();
-
-  // Wrap handleFetchDetails in useCallback to prevent unnecessary recreations
-  const handleFetchDetails = useCallback(async () => {
+  const handleFetchDetails = async () => {
     try {
       // Call the mutation with the `tech_calculator_link`
       await getSingleCalculatorDetails({ tech_calculator_link: url });
     } catch (err) {
       console.error("Error fetching calculator details:", err);
     }
-  }, [getSingleCalculatorDetails, url]); // Add dependencies
+  };
 
   useEffect(() => {
     handleFetchDetails();
-  }, [handleFetchDetails]); // Now include handleFetchDetails in the dependency array
+  }, [url]);
 
   const [formData, setFormData] = useState({
-    tech_main: "1", // 1 2 3 4
+    tech_main: "4", // 1 2 3 4
     tech_page: "12",
     tech_size: "12",
     tech_font: "Arial",
@@ -94,18 +92,18 @@ const HowManyWordsCalculator = () => {
         tech_sp_title: formData.tech_sp_title,
         tech_lang: formData.tech_lang,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_main: "1", // 1 2 3 4
+      tech_main: "4", // 1 2 3 4
       tech_page: "12",
       tech_size: "12",
       tech_font: "Arial",
@@ -149,29 +147,28 @@ const HowManyWordsCalculator = () => {
         },
         {
           name: data?.payload?.tech_calculator_title,
-          path: pathname, // Use pathname instead of location.pathname
+          path: pathname, // This will use the current path dynamically
         },
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg3 space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
 
-          <div className="lg-w-[60%] md:w-[80%] w-full mx-auto ">
-            <div className="row grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
+          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
+            <div className="row grid grid-cols-12 mt-3 velocitytab  gap-2 md:gap-4 lg:gap-4">
               <div className="col-span-12">
-                <div className="w-full flex justify-between lg:text-[14px] md:text-[14px] text-[11px] pace_border relative">
-                  <strong className="col-lg-3 pe- font-s-14">
-                    {data?.payload?.tech_lang_keys["to_cal"] ?? "To Calculate"}{" "}
-                    :
-                  </strong>
+                <strong className="col-span-12">
+                  {data?.payload?.tech_lang_keys["to_cal"] ?? "To Calculate"} :
+                </strong>
+                <div className="w-full flex justify-between text-[12px] velocitytab md:text-[14px] pace_border relative border-b">
                   <p
                     id="pace_tab"
-                    className={` px-3 cursor-pointer ${
+                    className={` px-3  cursor-pointer  ${
                       formData.tech_main === "1" ? "pace_tab active" : ""
                     }`}
                     onClick={() => {
@@ -182,7 +179,6 @@ const HowManyWordsCalculator = () => {
                   >
                     <strong>{data?.payload?.tech_lang_keys["1"]}</strong>
                   </p>
-
                   <p
                     id="time_tab"
                     className={` cursor-pointer ${
@@ -196,7 +192,6 @@ const HowManyWordsCalculator = () => {
                   >
                     <strong>{data?.payload?.tech_lang_keys["2"]}</strong>
                   </p>
-
                   <p
                     id="distance_tab"
                     className={` cursor-pointer ${
@@ -212,7 +207,7 @@ const HowManyWordsCalculator = () => {
                   </p>
                   <p
                     id="distance_tab"
-                    className={` cursor-pointer ${
+                    className={`  ${
                       formData.tech_main === "4" ? "pace_tab active" : ""
                     }`}
                     onClick={() => {
@@ -228,7 +223,7 @@ const HowManyWordsCalculator = () => {
             </div>
           </div>
 
-          <div className="lg-w-[60%] md:w-[60%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
             <div className=" grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4"></div>
             <div className="col-span-12">
               {formData.tech_main === "1" && (
@@ -498,7 +493,7 @@ const HowManyWordsCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -512,7 +507,7 @@ const HowManyWordsCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -523,7 +518,7 @@ const HowManyWordsCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 

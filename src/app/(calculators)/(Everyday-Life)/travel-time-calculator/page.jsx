@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useTravelTimeCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useTravelTimeCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const TravelTimeCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -110,11 +110,11 @@ const TravelTimeCalculator = () => {
         tech_price_unit: formData.tech_price_unit,
         tech_passenger: formData.tech_passenger,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -221,16 +221,16 @@ const TravelTimeCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[100%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
             <div className="grid grid-cols-12 mt-3  gap-4">
-              <div className="lg:col-span-6 md:col-span-6 col-span-12">
+              <div className="col-span-6">
                 <label htmlFor="tech_distance" className="label">
                   {data?.payload?.tech_lang_keys["1"]}
                 </label>
@@ -268,7 +268,7 @@ const TravelTimeCalculator = () => {
                   )}
                 </div>
               </div>
-              <div className="lg:col-span-6 md:col-span-6 col-span-12">
+              <div className="col-span-6">
                 <label htmlFor="tech_speed" className="label">
                   {data?.payload?.tech_lang_keys["2"]}
                 </label>
@@ -291,8 +291,8 @@ const TravelTimeCalculator = () => {
                   {dropdownVisible1 && (
                     <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
                       {[
-                        { label: "kmpl", value: "kmpl" },
-                        { label: "mpg", value: "mpg" },
+                        { label: "km", value: "km" },
+                        { label: "mi", value: "mi" },
                       ].map((unit, index) => (
                         <p
                           key={index}
@@ -306,7 +306,7 @@ const TravelTimeCalculator = () => {
                   )}
                 </div>
               </div>
-              <div className="lg:col-span-6 md:col-span-6 col-span-12">
+              <div className="col-span-12 md:col-span-6">
                 <label htmlFor="tech_break_hrs" className="label">
                   {data?.payload?.tech_lang_keys["3"]}:
                 </label>
@@ -341,7 +341,7 @@ const TravelTimeCalculator = () => {
                   </div>
                 </div>
               </div>
-              <div className="lg:col-span-6 md:col-span-6 col-span-12">
+              <div className="col-span-12 md:col-span-6">
                 <label htmlFor="tech_dep_time" className="label">
                   {data?.payload?.tech_lang_keys["4"]}:
                 </label>
@@ -362,7 +362,7 @@ const TravelTimeCalculator = () => {
               <p className="col-span-12 font-bold">
                 {data?.payload?.tech_lang_keys["5"]}
               </p>
-              <div className="lg:col-span-6 md:col-span-6 col-span-12">
+              <div className="col-span-6">
                 <label htmlFor="tech_fule_effi" className="label">
                   {data?.payload?.tech_lang_keys["6"]}
                 </label>
@@ -400,7 +400,7 @@ const TravelTimeCalculator = () => {
                   )}
                 </div>
               </div>
-              <div className="lg:col-span-6 md:col-span-6 col-span-12">
+              <div className="col-span-6">
                 <label htmlFor="tech_price" className="label">
                   {data?.payload?.tech_lang_keys["7"]}
                 </label>
@@ -424,12 +424,12 @@ const TravelTimeCalculator = () => {
                     <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
                       {[
                         {
-                          label: " liter",
-                          value: " liter",
+                          label: currency.symbol + " liter",
+                          value: currency.symbol + " liter",
                         },
                         {
-                          label: " gallon",
-                          value: " gallon",
+                          label: currency.symbol + " gallon",
+                          value: currency.symbol + " gallon",
                         },
                       ].map((unit, index) => (
                         <p
@@ -444,7 +444,7 @@ const TravelTimeCalculator = () => {
                   )}
                 </div>
               </div>
-              <div className="lg:col-span-6 md:col-span-6 col-span-12">
+              <div className="col-span-6">
                 <label htmlFor="tech_passenger" className="label">
                   {data?.payload?.tech_lang_keys["8"]}:
                 </label>
@@ -465,7 +465,7 @@ const TravelTimeCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -479,7 +479,7 @@ const TravelTimeCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -490,14 +490,14 @@ const TravelTimeCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="w-full my-2">
-                        <div className="w-full md:w-[70%] lg:w-[70%]  text-[16px] overflow-auto">
+                        <div className="w-full md:w-[70%] lg:w-[70%]  overflow-auto md:text-[18px] text-[16px]">
                           <table className="w-full">
                             <tbody>
                               <tr>

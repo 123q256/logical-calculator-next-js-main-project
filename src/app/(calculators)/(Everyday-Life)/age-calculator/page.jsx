@@ -5,36 +5,36 @@ import { usePathname } from "next/navigation";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useAgeCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useAgeCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
 import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeedback";
 import Calculator from "../../Calculator";
-import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
+import { getUserCurrency } from "../../../../components/Calculator/GetCurrency";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
 
 const AgeCalculator = () => {
   const pathname = usePathname();
-  const parts = pathname.split("/").filter(Boolean); // remove empty strings
+  const parts = pathname.split("/").filter(Boolean);
 
   let url = "";
 
   if (parts.length === 1) {
-    // sirf ek part
-    url = parts[0]; // "age-calculator"
+    url = parts[0];
   } else {
-    // do ya zyada parts
-    url = parts[0] + "/" + parts[1]; // "de/age-calculator"
+    url = parts[0] + "/" + parts[1];
   }
+
   const [getSingleCalculatorDetails, { data, error, isLoading }] =
     useGetSingleCalculatorDetailsMutation();
+
   const handleFetchDetails = async () => {
     try {
-      // Call the mutation with the `tech_calculator_link`
       await getSingleCalculatorDetails({ tech_calculator_link: url });
     } catch (err) {
       console.error("Error fetching calculator details:", err);
@@ -45,33 +45,12 @@ const AgeCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-  // ✅ Define it before using
   const formatDate = (date) => {
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2, "0");
     const month = String(d.getMonth() + 1).padStart(2, "0");
     const year = d.getFullYear();
     return `${day}-${month}-${year}`;
-  };
-
-  const handleStartDateChange = (date) => {
-    setStartDate1(date);
-    setFormData((prev) => ({
-      ...prev,
-      tech_day: date.getDate().toString(),
-      tech_month: (date.getMonth() + 1).toString(),
-      tech_year: date.getFullYear().toString(),
-    }));
-  };
-
-  const handleEndDateChange = (date) => {
-    setStartDate2(date);
-    setFormData((prev) => ({
-      ...prev,
-      tech_day_sec: date.getDate().toString(),
-      tech_month_sec: (date.getMonth() + 1).toString(),
-      tech_year_sec: date.getFullYear().toString(),
-    }));
   };
 
   const [formData, setFormData] = useState({
@@ -86,7 +65,6 @@ const AgeCalculator = () => {
   const [result, setResult] = useState(null);
   const [formError, setFormError] = useState("");
 
-  // RTK mutation hook
   const [
     calculateEbitCalculator,
     { isLoading: roundToTheNearestLoading, isError, error: calculateLoveError },
@@ -123,15 +101,14 @@ const AgeCalculator = () => {
         tech_month_sec: formData.tech_month_sec,
         tech_year_sec: formData.tech_year_sec,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
-  // Handle reset form
   const handleReset = () => {
     setFormData({
       tech_day: "1",
@@ -144,7 +121,7 @@ const AgeCalculator = () => {
     setResult(null);
     setFormError(null);
   };
-  // currency code
+
   const [currency, setCurrency] = useState({
     code: "USD",
     symbol: "$",
@@ -158,17 +135,16 @@ const AgeCalculator = () => {
         setCurrency(result);
       }
     };
-
     fetchCurrency();
   }, []);
-  // currency code
+
   const [dropdown, setDropdown] = useState({
-    day: false,
-    month: false,
-    year: false,
-    daySec: false,
-    monthSec: false,
-    yearSec: false,
+    tech_day: false,
+    tech_month: false,
+    tech_year: false,
+    tech_day_sec: false,
+    tech_month_sec: false,
+    tech_year_sec: false,
   });
 
   const days = Array.from({ length: 31 }, (_, i) =>
@@ -196,12 +172,12 @@ const AgeCalculator = () => {
     const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setDropdown({
-          day: false,
-          month: false,
-          year: false,
-          daySec: false,
-          monthSec: false,
-          yearSec: false,
+          tech_day: false,
+          tech_month: false,
+          tech_year: false,
+          tech_day_sec: false,
+          tech_month_sec: false,
+          tech_year_sec: false,
         });
         setIsOpen1(false);
         setIsOpen2(false);
@@ -226,7 +202,6 @@ const AgeCalculator = () => {
   const handleCalendar1 = (date) => {
     setStartDate1(date);
     setIsOpen1(false);
-
     const d = new Date(date);
     setFormData((prev) => ({
       ...prev,
@@ -248,6 +223,11 @@ const AgeCalculator = () => {
     }));
   };
 
+  // Helper function to safely get array values
+  const getValue = (arr) => {
+    return arr && Array.isArray(arr) && arr.length > 0 ? arr[0] : "0";
+  };
+
   return (
     <Calculator
       isLoading={isLoading}
@@ -260,12 +240,12 @@ const AgeCalculator = () => {
         },
         {
           name: data?.payload?.tech_calculator_title,
-          path: pathname, // This will use the current path dynamically
+          path: pathname,
         },
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg shadow-md space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
@@ -277,12 +257,10 @@ const AgeCalculator = () => {
             ref={wrapperRef}
           >
             <div className="flex flex-wrap">
-              {/* First Date */}
               <label className="label w-full font-semibold mt-4">
                 Date of Birth:
               </label>
               <div className="grid grid-cols-12 gap-2 w-full mt-2">
-                {/* Day */}
                 <div className="lg:col-span-3 md:col-span-3 col-span-6 relative">
                   <input
                     type="text"
@@ -307,7 +285,6 @@ const AgeCalculator = () => {
                   )}
                 </div>
 
-                {/* Month */}
                 <div className="lg:col-span-3 md:col-span-3 col-span-6 relative">
                   <input
                     type="text"
@@ -332,7 +309,6 @@ const AgeCalculator = () => {
                   )}
                 </div>
 
-                {/* Year */}
                 <div className="lg:col-span-3 md:col-span-3 col-span-6 relative">
                   <input
                     type="text"
@@ -357,7 +333,6 @@ const AgeCalculator = () => {
                   )}
                 </div>
 
-                {/* Calendar Image 1 */}
                 <div className="lg:col-span-3 md:col-span-3 col-span-6 flex items-center">
                   <img
                     src="/images/age_calendar.png"
@@ -378,12 +353,10 @@ const AgeCalculator = () => {
                 </div>
               </div>
 
-              {/* Second Date */}
               <label className="label w-full font-semibold mt-6">
                 Find Age on:
               </label>
               <div className="grid grid-cols-12 gap-2 w-full mt-2">
-                {/* Day */}
                 <div className="lg:col-span-3 md:col-span-3 col-span-6 relative">
                   <input
                     type="text"
@@ -408,7 +381,6 @@ const AgeCalculator = () => {
                   )}
                 </div>
 
-                {/* Month */}
                 <div className="lg:col-span-3 md:col-span-3 col-span-6 relative">
                   <input
                     type="text"
@@ -433,7 +405,6 @@ const AgeCalculator = () => {
                   )}
                 </div>
 
-                {/* Year */}
                 <div className="lg:col-span-3 md:col-span-3 col-span-6 relative">
                   <input
                     type="text"
@@ -458,7 +429,6 @@ const AgeCalculator = () => {
                   )}
                 </div>
 
-                {/* Calendar Image 2 */}
                 <div className="lg:col-span-3 md:col-span-3 col-span-6 flex items-center">
                   <img
                     src="/images/age_calendar.png"
@@ -481,32 +451,34 @@ const AgeCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
-              {data?.payload?.tech_lang_keys["calculate"]}
+              {data?.payload?.tech_lang_keys?.["calculate"] || "Calculate"}
             </Button>
             {result && (
               <ResetButton type="button" onClick={handleReset}>
-                {data?.payload?.tech_lang_keys["locale"] === "en"
+                {data?.payload?.tech_lang_keys?.["locale"] === "en"
                   ? "RESET"
-                  : data?.payload?.tech_lang_keys["reset"] || "RESET"}
+                  : data?.payload?.tech_lang_keys?.["reset"] || "RESET"}
               </ResetButton>
             )}
           </div>
         </div>
+
         {roundToTheNearestLoading ? (
           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
-              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4 "></div>
-              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3 "></div>
-              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3 "></div>
-              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] "></div>
+              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
+              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
+          result &&
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -518,37 +490,43 @@ const AgeCalculator = () => {
                             <div className="bg-sky bordered rounded-lg p-4 text-center">
                               <p className="borderab py-2">
                                 <strong>
-                                  {data?.payload?.tech_lang_keys[60]} :
+                                  {data?.payload?.tech_lang_keys?.[60] ||
+                                    "Your Age"}{" "}
+                                  :
                                 </strong>
                               </p>
                               <p className="py-2 lg:text-[20px] md:text-[20px] text-[18px]">
                                 <b className="text-[#119154]">
-                                  {result?.tech_age_years[0]}
+                                  {getValue(result?.tech_age_years)}
                                 </b>{" "}
-                                {data?.payload?.tech_lang_keys["years"]}{" "}
+                                {data?.payload?.tech_lang_keys?.["years"] ||
+                                  "Years"}{" "}
                                 <b className="text-[#119154]">
-                                  {result?.tech_age_months[0]}
+                                  {getValue(result?.tech_age_months)}
                                 </b>{" "}
-                                {data?.payload?.tech_lang_keys["months"]}{" "}
+                                {data?.payload?.tech_lang_keys?.["months"] ||
+                                  "Months"}{" "}
                                 <b className="text-[#119154]">
-                                  {result?.tech_age_days[0]}
+                                  {getValue(result?.tech_age_days)}
                                 </b>{" "}
-                                {data?.payload?.tech_lang_keys["days"]}
+                                {data?.payload?.tech_lang_keys?.["days"] ||
+                                  "Days"}
                               </p>
                             </div>
                           </div>
                           <div className="col-span-12 md:col-span-6 lg:col-span-6">
                             <div className="bg-sky bordered rounded-lg p-4 text-center">
-                              <p className="borderab py-2 ">
+                              <p className="borderab py-2">
                                 <strong>
-                                  {data?.payload?.tech_lang_keys[108]} :
+                                  {data?.payload?.tech_lang_keys?.[108] ||
+                                    "Your Birth Date"}{" "}
+                                  :
                                 </strong>
                               </p>
                               <p className="py-2 text-[20px] font-bold text-[#119154]">
                                 {formData?.tech_day_sec}-
                                 {formData?.tech_month_sec}-
                                 {formData?.tech_year_sec}
-                                {/* {formatDate(result?.tech_dates_array[0])} */}
                               </p>
                             </div>
                           </div>
@@ -560,143 +538,190 @@ const AgeCalculator = () => {
                               <tr>
                                 <td className="pt-3 pb-1">
                                   <strong>
-                                    {data?.payload?.tech_lang_keys["lived"]}
+                                    {data?.payload?.tech_lang_keys?.["lived"] ||
+                                      "You Have Lived"}
                                   </strong>
                                 </td>
                               </tr>
                               <tr>
-                                <td className="border-b py-">
-                                  {data?.payload?.tech_lang_keys["90"]} :
-                                </td>
                                 <td className="border-b py-2">
-                                  <strong>{result?.tech_Total_years[0]}</strong>{" "}
-                                  {data?.payload?.tech_lang_keys["years"]}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="border-b py-">
-                                  {data?.payload?.tech_lang_keys["91"]} :
+                                  {data?.payload?.tech_lang_keys?.["90"] ||
+                                    "Total Years"}{" "}
+                                  :
                                 </td>
                                 <td className="border-b py-2">
                                   <strong>
-                                    {result?.tech_Total_months[0]}
+                                    {getValue(result?.tech_Total_years)}
                                   </strong>{" "}
-                                  {data?.payload?.tech_lang_keys["months"]}
+                                  {data?.payload?.tech_lang_keys?.["years"] ||
+                                    "Years"}
                                 </td>
                               </tr>
                               <tr>
-                                <td className="border-b py-">
-                                  {data?.payload?.tech_lang_keys["92"]} :
-                                </td>
                                 <td className="border-b py-2">
-                                  <strong>{result?.tech_Total_weeks[0]}</strong>{" "}
-                                  {data?.payload?.tech_lang_keys["weeks"]}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="border-b py-">
-                                  {data?.payload?.tech_lang_keys["93"]} :
-                                </td>
-                                <td className="border-b py-2">
-                                  <strong>{result?.tech_Total_days[0]}</strong>{" "}
-                                  {data?.payload?.tech_lang_keys["days"]}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="border-b py-">
-                                  {data?.payload?.tech_lang_keys["94"]} :
-                                </td>
-                                <td className="border-b py-2">
-                                  <strong>{result?.tech_Total_hours[0]}</strong>{" "}
-                                  {data?.payload?.tech_lang_keys["hours"]}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="border-b py-">
-                                  {data?.payload?.tech_lang_keys["95"]} :
+                                  {data?.payload?.tech_lang_keys?.["91"] ||
+                                    "Total Months"}{" "}
+                                  :
                                 </td>
                                 <td className="border-b py-2">
                                   <strong>
-                                    {result?.tech_Total_minuts[0]}
+                                    {getValue(result?.tech_Total_months)}
                                   </strong>{" "}
-                                  {data?.payload?.tech_lang_keys["minute"]}
+                                  {data?.payload?.tech_lang_keys?.["months"] ||
+                                    "Months"}
                                 </td>
                               </tr>
                               <tr>
                                 <td className="border-b py-2">
-                                  {data?.payload?.tech_lang_keys["96"]} :
+                                  {data?.payload?.tech_lang_keys?.["92"] ||
+                                    "Total Weeks"}{" "}
+                                  :
                                 </td>
                                 <td className="border-b py-2">
                                   <strong>
-                                    {result?.tech_Total_seconds[0]}
+                                    {getValue(result?.tech_Total_weeks)}
                                   </strong>{" "}
-                                  {data?.payload?.tech_lang_keys["seconds"]}
+                                  {data?.payload?.tech_lang_keys?.["weeks"] ||
+                                    "Weeks"}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td className="border-b py-2">
+                                  {data?.payload?.tech_lang_keys?.["93"] ||
+                                    "Total Days"}{" "}
+                                  :
+                                </td>
+                                <td className="border-b py-2">
+                                  <strong>
+                                    {getValue(result?.tech_Total_days)}
+                                  </strong>{" "}
+                                  {data?.payload?.tech_lang_keys?.["days"] ||
+                                    "Days"}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td className="border-b py-2">
+                                  {data?.payload?.tech_lang_keys?.["94"] ||
+                                    "Total Hours"}{" "}
+                                  :
+                                </td>
+                                <td className="border-b py-2">
+                                  <strong>
+                                    {getValue(result?.tech_Total_hours)}
+                                  </strong>{" "}
+                                  {data?.payload?.tech_lang_keys?.["hours"] ||
+                                    "Hours"}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td className="border-b py-2">
+                                  {data?.payload?.tech_lang_keys?.["95"] ||
+                                    "Total Minutes"}{" "}
+                                  :
+                                </td>
+                                <td className="border-b py-2">
+                                  <strong>
+                                    {getValue(result?.tech_Total_minuts)}
+                                  </strong>{" "}
+                                  {data?.payload?.tech_lang_keys?.["minute"] ||
+                                    "Minutes"}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td className="border-b py-2">
+                                  {data?.payload?.tech_lang_keys?.["96"] ||
+                                    "Total Seconds"}{" "}
+                                  :
+                                </td>
+                                <td className="border-b py-2">
+                                  <strong>
+                                    {getValue(result?.tech_Total_seconds)}
+                                  </strong>{" "}
+                                  {data?.payload?.tech_lang_keys?.["seconds"] ||
+                                    "Seconds"}
                                 </td>
                               </tr>
 
                               <tr>
                                 <td colSpan={2} className="pt-3 pb-1">
                                   <strong>
-                                    {data?.payload?.tech_lang_keys["22"]}
+                                    {data?.payload?.tech_lang_keys?.["22"] ||
+                                      "Interesting Statistics"}
                                   </strong>
                                 </td>
                               </tr>
 
                               <tr>
                                 <td className="border-b py-2 flex items-center gap-3">
-                                  {data?.payload?.tech_lang_keys[23]} :
+                                  {data?.payload?.tech_lang_keys?.[23] ||
+                                    "Breaths Taken"}{" "}
+                                  :
                                 </td>
-                                <td className="border-b">
-                                  {result?.tech_breath[0]}{" "}
-                                  {data?.payload?.tech_lang_keys[24]}
+                                <td className="border-b py-2">
+                                  {getValue(result?.tech_breath)}{" "}
+                                  {data?.payload?.tech_lang_keys?.[24] ||
+                                    "times"}
                                 </td>
                               </tr>
 
                               <tr>
                                 <td className="border-b py-2 flex items-center gap-3">
-                                  {data?.payload?.tech_lang_keys[25]} :
+                                  {data?.payload?.tech_lang_keys?.[25] ||
+                                    "Heart Beats"}{" "}
+                                  :
                                 </td>
                                 <td className="border-b py-2">
-                                  {result?.tech_heartBeats[0]}{" "}
-                                  {data?.payload?.tech_lang_keys[26]}
+                                  {getValue(result?.tech_heartBeats)}{" "}
+                                  {data?.payload?.tech_lang_keys?.[26] ||
+                                    "times"}
                                 </td>
                               </tr>
 
                               <tr>
                                 <td className="border-b py-2 flex items-center gap-3">
-                                  {data?.payload?.tech_lang_keys[29]} :
+                                  {data?.payload?.tech_lang_keys?.[29] ||
+                                    "Times Laughed"}{" "}
+                                  :
                                 </td>
                                 <td className="border-b py-2">
-                                  {result?.tech_laughed[0]}{" "}
-                                  {data?.payload?.tech_lang_keys[26]}
+                                  {getValue(result?.tech_laughed)}{" "}
+                                  {data?.payload?.tech_lang_keys?.[26] ||
+                                    "times"}
                                 </td>
                               </tr>
 
                               <tr>
                                 <td className="border-b py-2 flex items-center gap-3">
-                                  {data?.payload?.tech_lang_keys[30]} :
+                                  {data?.payload?.tech_lang_keys?.[30] ||
+                                    "Time Spent Sleeping"}{" "}
+                                  :
                                 </td>
                                 <td className="border-b py-2">
-                                  {result?.tech_sleeping[0]}{" "}
-                                  {data?.payload?.tech_lang_keys["years"]}
+                                  {getValue(result?.tech_sleeping)}{" "}
+                                  {data?.payload?.tech_lang_keys?.["years"] ||
+                                    "Years"}
                                 </td>
                               </tr>
 
                               <tr>
                                 <td className="border-b py-2 flex items-center gap-3">
-                                  {data?.payload?.tech_lang_keys[64]} :
+                                  {data?.payload?.tech_lang_keys?.[64] ||
+                                    "Hair Growth"}{" "}
+                                  :
                                 </td>
                                 <td className="border-b py-2">
-                                  {result?.tech_hair_length_m[0]} m
+                                  {getValue(result?.tech_hair_length_m)} m
                                 </td>
                               </tr>
 
                               <tr>
                                 <td className="border-b py-2 flex items-center gap-3">
-                                  {data?.payload?.tech_lang_keys[65]} :
+                                  {data?.payload?.tech_lang_keys?.[65] ||
+                                    "Nail Growth"}{" "}
+                                  :
                                 </td>
                                 <td className="border-b py-2">
-                                  {result?.tech_nail_length_m[0]} m
+                                  {getValue(result?.tech_nail_length_m)} m
                                 </td>
                               </tr>
                             </tbody>

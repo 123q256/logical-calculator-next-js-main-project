@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useCombinedGasLawCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useCombinedGasLawCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const CombinedGasLawCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -100,7 +100,7 @@ const CombinedGasLawCalculator = () => {
         tech_temp_two: formData.tech_temp_two,
         tech_temp_two_unit: formData.tech_temp_two_unit,
       }).unwrap();
-      setResult(response); // Assuming the response'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
       setFormError(err.data.payload.error);
@@ -283,7 +283,7 @@ const CombinedGasLawCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[90%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
             <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2 gap-1 md:gap-2">
               <div className="space-y-2 relative">
                 <label htmlFor="tech_calculation" className="label">
@@ -334,7 +334,7 @@ const CombinedGasLawCalculator = () => {
                         type="number"
                         name="tech_pressure_one"
                         step="any"
-                        className="mt-2 input"
+                        className="mt-1 input"
                         value={formData.tech_pressure_one}
                         placeholder="00"
                         onChange={handleChange}
@@ -628,7 +628,7 @@ const CombinedGasLawCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -639,7 +639,7 @@ const CombinedGasLawCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -653,7 +653,7 @@ const CombinedGasLawCalculator = () => {
                               <sub>f</sub>)
                             </strong>
                           </p>
-                          <p className="text-[#119154] text-[28px] font-bold">
+                          <p className="text-green-800 text-[24px] md:text-[28px] font-bold">
                             {Number(result.tech_temperature).toFixed(2)} (K)
                           </p>
                         </>
@@ -667,7 +667,7 @@ const CombinedGasLawCalculator = () => {
                               <sub>i</sub>)
                             </strong>
                           </p>
-                          <p className="text-[#119154] text-[28px] font-bold">
+                          <p className="text-green-800 text-[24px] md:text-[28px] font-bold">
                             {Number(result.tech_volume).toFixed(2)} (m
                             <sup className="text-[22px]">3</sup>)
                           </p>
@@ -682,7 +682,7 @@ const CombinedGasLawCalculator = () => {
                               )
                             </strong>
                           </p>
-                          <p className="text-[#119154] text-[28px] font-bold">
+                          <p className="text-green-800 text-[24px] md:text-[28px] font-bold">
                             {Number(result.tech_pressure).toFixed(2)} (Pa)
                           </p>
                         </>
@@ -696,7 +696,7 @@ const CombinedGasLawCalculator = () => {
                               <sub>i</sub>)
                             </strong>
                           </p>
-                          <p className="text-[#119154] text-[28px] font-bold">
+                          <p className="text-green-800 text-[24px] md:text-[28px] font-bold">
                             {Number(result.tech_temperature).toFixed(2)} (K)
                           </p>
                         </>
@@ -710,7 +710,7 @@ const CombinedGasLawCalculator = () => {
                               <sub>f</sub>)
                             </strong>
                           </p>
-                          <p className="text-[#119154] text-[28px] font-bold">
+                          <p className="text-green-800 text-[24px] md:text-[28px] font-bold">
                             {Number(result.tech_volume).toFixed(2)} (m
                             <sup className="text-[22px]">3</sup>)
                           </p>
@@ -725,7 +725,7 @@ const CombinedGasLawCalculator = () => {
                               )
                             </strong>
                           </p>
-                          <p className="text-[#119154] text-[28px] font-bold">
+                          <p className="text-green-800 text-[24px] md:text-[28px] font-bold">
                             {Number(result.tech_pressure).toFixed(2)} (Pa)
                           </p>
                         </>
@@ -737,12 +737,12 @@ const CombinedGasLawCalculator = () => {
                             Results in other units:
                           </p>
                           <div className="overflow-auto">
-                            <table className="w-full text-left text-[16px]">
+                            <table className="w-full text-left text-[14px] md:text-[30]">
                               <tbody>
                                 {isTemp && (
                                   <>
                                     <tr>
-                                      <td className="border-b py-2 pr-4 ">
+                                      <td className="border-b py-2 pr-4 text-[16px] md:text-[20px]">
                                         {result?.tech_method == "1" ? (
                                           <>
                                             {data.payload.tech_lang_keys["7"]}{" "}
@@ -755,12 +755,12 @@ const CombinedGasLawCalculator = () => {
                                           </>
                                         )}
                                       </td>
-                                      <td className="border-b py-2 pl-4 ">
+                                      <td className="border-b py-2 pl-4 text-[16px] md:text-[20px]">
                                         {temperatureC} (°C)
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td className="py-2 pr-4">
+                                      <td className="py-2 pr-4 text-[16px] md:text-[20px]">
                                         {result?.tech_method == "1" ? (
                                           <>
                                             {data.payload.tech_lang_keys["7"]}{" "}
@@ -774,7 +774,7 @@ const CombinedGasLawCalculator = () => {
                                         )}
                                       </td>
 
-                                      <td className="py-2 pl-4 ">
+                                      <td className="py-2 pl-4 text-[16px] md:text-[20px]">
                                         {temperatureF.toFixed(4)} (°F)
                                       </td>
                                     </tr>
@@ -784,7 +784,7 @@ const CombinedGasLawCalculator = () => {
                                 {isVolume && (
                                   <>
                                     <tr>
-                                      <td className="border-b py-2 pr-4 ">
+                                      <td className="border-b py-2 pr-4 text-[16px] md:text-[20px]">
                                         {result?.tech_method == "2" ? (
                                           <>
                                             {data.payload.tech_lang_keys["3"]}{" "}
@@ -798,12 +798,12 @@ const CombinedGasLawCalculator = () => {
                                         )}
                                       </td>
 
-                                      <td className="border-b py-2 pl-4 ">
+                                      <td className="border-b py-2 pl-4 text-[16px] md:text-[20px]">
                                         {volumeLiters} liters (l)
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td className="border-b py-2 pr-4 ">
+                                      <td className="border-b py-2 pr-4 text-[16px] md:text-[20px]">
                                         {result?.tech_method == "2" ? (
                                           <>
                                             {data.payload.tech_lang_keys["3"]}{" "}
@@ -817,12 +817,12 @@ const CombinedGasLawCalculator = () => {
                                         )}
                                       </td>
 
-                                      <td className="border-b py-2 pl-4 ">
+                                      <td className="border-b py-2 pl-4 text-[16px] md:text-[20px]">
                                         {volumeML} milliliters (ml)
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td className="border-b py-2 pr-4 ">
+                                      <td className="border-b py-2 pr-4 text-[16px] md:text-[20px]">
                                         {result?.tech_method == "2" ? (
                                           <>
                                             {data.payload.tech_lang_keys["3"]}{" "}
@@ -836,12 +836,12 @@ const CombinedGasLawCalculator = () => {
                                         )}
                                       </td>
 
-                                      <td className="border-b py-2 pl-4">
+                                      <td className="border-b py-2 pl-4 text-[16px] md:text-[20px]">
                                         {volumeFeet.toFixed(6)} ft³
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td className="py-2 pr-4 ">
+                                      <td className="py-2 pr-4 text-[16px] md:text-[20px]">
                                         {result?.tech_method == "2" ? (
                                           <>
                                             {data.payload.tech_lang_keys["3"]}{" "}
@@ -855,7 +855,7 @@ const CombinedGasLawCalculator = () => {
                                         )}
                                       </td>
 
-                                      <td className="py-2 pl-4 ">
+                                      <td className="py-2 pl-4 text-[16px] md:text-[20px]">
                                         {volumeInch.toFixed(6)} in³
                                       </td>
                                     </tr>
@@ -865,7 +865,7 @@ const CombinedGasLawCalculator = () => {
                                 {isPressure && (
                                   <>
                                     <tr>
-                                      <td className="border-b py-2 pr-4">
+                                      <td className="border-b py-2 pr-4 text-[16px] md:text-[20px]">
                                         {result?.tech_method == "3" ? (
                                           <>
                                             {data.payload.tech_lang_keys["2"]}{" "}
@@ -879,12 +879,12 @@ const CombinedGasLawCalculator = () => {
                                         )}
                                       </td>
 
-                                      <td className="border-b py-2 pl-4 ">
+                                      <td className="border-b py-2 pl-4 text-[16px] md:text-[20px]">
                                         {pressureKPA} kPa
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td className="border-b py-2 pr-4 ">
+                                      <td className="border-b py-2 pr-4 text-[16px] md:text-[20px]">
                                         {result?.tech_method == "3" ? (
                                           <>
                                             {data.payload.tech_lang_keys["2"]}{" "}
@@ -898,12 +898,12 @@ const CombinedGasLawCalculator = () => {
                                         )}
                                       </td>
 
-                                      <td className="border-b py-2 pl-4 ">
+                                      <td className="border-b py-2 pl-4 text-[16px] md:text-[20px]">
                                         {pressureBar} bar
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td className="border-b py-2 pr-4">
+                                      <td className="border-b py-2 pr-4 text-[16px] md:text-[20px]">
                                         {result?.tech_method == "3" ? (
                                           <>
                                             {data.payload.tech_lang_keys["2"]}{" "}
@@ -917,12 +917,12 @@ const CombinedGasLawCalculator = () => {
                                         )}
                                       </td>
 
-                                      <td className="border-b py-2 pl-4 ">
+                                      <td className="border-b py-2 pl-4 text-[16px] md:text-[20px]">
                                         {pressureATM.toFixed(4)} atm
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td className="border-b py-2 pr-4 ">
+                                      <td className="border-b py-2 pr-4 text-[16px] md:text-[20px]">
                                         {result?.tech_method == "3" ? (
                                           <>
                                             {data.payload.tech_lang_keys["2"]}{" "}
@@ -936,12 +936,12 @@ const CombinedGasLawCalculator = () => {
                                         )}
                                       </td>
 
-                                      <td className="border-b py-2 pl-4 ">
+                                      <td className="border-b py-2 pl-4 text-[16px] md:text-[20px]">
                                         {pressureHPA} hPa
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td className="py-2 pr-4 ">
+                                      <td className="py-2 pr-4 text-[16px] md:text-[20px]">
                                         {result?.tech_method == "3" ? (
                                           <>
                                             {data.payload.tech_lang_keys["2"]}{" "}
@@ -955,7 +955,7 @@ const CombinedGasLawCalculator = () => {
                                         )}
                                       </td>
 
-                                      <td className="py-2 pl-4 ">
+                                      <td className="py-2 pl-4 text-[16px] md:text-[20px]">
                                         {pressureMMHG.toFixed(2)} mmHg
                                       </td>
                                     </tr>

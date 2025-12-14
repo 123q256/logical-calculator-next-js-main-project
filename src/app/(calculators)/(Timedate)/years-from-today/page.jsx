@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useYearsfromtodayCalculationMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useYearsfromtodayCalculationMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -13,7 +14,6 @@ import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeed
 import Calculator from "../../Calculator";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const YearsFromTodayCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -42,10 +42,9 @@ const YearsFromTodayCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-
   const [formData, setFormData] = useState({
-    tech_number: "24",
-    tech_current: "",
+    tech_number: 16,
+    tech_current: "2025-10-26",
   });
 
   const [result, setResult] = useState(null);
@@ -76,19 +75,19 @@ const YearsFromTodayCalculator = () => {
         tech_number: Number(formData.tech_number),
         tech_current: formData.tech_current,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
-      toast.success("Calculate Successfully");
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
+      toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error calculating");
-      toast.error("Error calculating");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_number: "24",
-      tech_current: "",
+      tech_number: 16,
+      tech_current: "2025-10-26",
     });
     setResult(null);
     setFormError(null);
@@ -179,11 +178,11 @@ const YearsFromTodayCalculator = () => {
                   <label htmlFor="next" className="text-sm">
                     {data?.payload?.tech_lang_keys["1"]}
                   </label>
-                  <div className="grid grid-cols-7 text-center bordered rounded-md mt-2 bg-white days_box">
+                  <div className="grid grid-cols-7 text-center border rounded-md mt-2 bg-white days_box">
                     {days.map((day, index) => (
                       <p
                         key={index}
-                        className={`col cursor-pointer border-r py-2 hover:bg-[#2845F5] hover:text-white ${
+                        className={`col cursor-pointer border-r py-2 hover:bg-[#2845F5] ${
                           formData.tech_number === day
                             ? "days_class_active"
                             : ""
@@ -251,7 +250,7 @@ const YearsFromTodayCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={calculateDeadlineLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -265,7 +264,7 @@ const YearsFromTodayCalculator = () => {
           </div>
         </div>
         {calculateDeadlineLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -276,12 +275,12 @@ const YearsFromTodayCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
-                    <div className="w-full bg-light-blue result  rounded-lg mt-4 overflow-auto">
+                    <div className="w-full bg-light-blue result p-3 rounded-lg mt-3 overflow-auto">
                       <div className="flex flex-wrap">
                         <div className="lg:w-1/2 w-full p-1">
                           <div className="bordered rounded-md bg-sky p-2">
@@ -302,9 +301,7 @@ const YearsFromTodayCalculator = () => {
                         <div className="lg:w-1/2 w-full p-1">
                           <div className="bordered rounded-md bg-sky p-2">
                             <p>📅 Total Weeks</p>
-                            <p className="text-lg font-bold">
-                              {result?.tech_WeekOfYear}
-                            </p>
+                            <p className="text-lg font-bold">{result?.tech_}</p>
                           </div>
                         </div>
                         <div className="lg:w-1/2 w-full p-1">

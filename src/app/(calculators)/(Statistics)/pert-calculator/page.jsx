@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { usePertCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  usePertCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -16,7 +17,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const PertCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -112,11 +112,11 @@ const PertCalculator = () => {
         tech_output_unit: formData.tech_output_unit,
         tech_deviation_unit: formData.tech_deviation_unit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -221,8 +221,8 @@ const PertCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[80%] md:w-[100%] w-full mx-auto ">
-            <div className="grid grid-cols-12   mt-3 gap-1 md:gap-3">
+          <div className="lg:w-[80%] md:w-[80%] w-full mx-auto ">
+            <div className="grid grid-cols-12  mt-3 gap-1 md:gap-3">
               <div className="col-span-12  md:col-span-6 lg:col-span-6">
                 <div className="grid grid-cols-12   mt-3 gap-1 md:gap-3">
                   {(formData.tech_optimistic_unit == "hrs" ||
@@ -291,7 +291,7 @@ const PertCalculator = () => {
                                 step="any"
                                 name="tech_optimistic_sec"
                                 id="tech_optimistic_sec"
-                                className="input mt-2"
+                                className="input my-2"
                                 aria-label="input"
                                 placeholder="00"
                                 value={formData.tech_optimistic_sec}
@@ -307,7 +307,7 @@ const PertCalculator = () => {
                     <label htmlFor="tech_optimistic_unit" className="label">
                       &nbsp;
                     </label>
-                    <div className="mt-3">
+                    <div className="mt-2">
                       <select
                         className="input"
                         aria-label="select"
@@ -347,7 +347,7 @@ const PertCalculator = () => {
                             step="any"
                             name="tech_pessimistic"
                             id="tech_pessimistic"
-                            className="input mt-3"
+                            className="input my-2"
                             aria-label="input"
                             placeholder="00"
                             value={formData.tech_pessimistic}
@@ -376,7 +376,7 @@ const PertCalculator = () => {
                                 step="any"
                                 name="tech_pessimistic_one"
                                 id="tech_pessimistic_one"
-                                className="input my-3"
+                                className="input my-2"
                                 aria-label="input"
                                 placeholder="00"
                                 value={formData.tech_pessimistic_one}
@@ -701,7 +701,7 @@ const PertCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -712,15 +712,15 @@ const PertCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="w-full text-[12px] md:text-[16px] lg:text-[16px]">
-                        <div className="w-full md:w-[90%] lg:w-[70%] mt-2 px-2">
-                          <table className="w-full text-[16px]">
+                      <div className="w-full text-[12px] md:text-[16px] lg:text-[16px] overflow-auto">
+                        <div className="w-full md:w-[50%] lg:w-[50%] mt-2 px-2 overflow-auto md:text-[18px] text-[16px]">
+                          <table className="w-full">
                             <tbody>
                               <tr>
                                 <td className="text-blue py-2 border-b">
@@ -755,114 +755,113 @@ const PertCalculator = () => {
                             </tbody>
                           </table>
                         </div>
-                        <div className="w-full overflow-auto">
-                          <p className="w-full mt-2 text-[20px]">
-                            <strong className="text-blue">
-                              {data?.payload?.tech_lang_keys["10"]}
-                            </strong>
-                          </p>
-                          <div className="w-full mt-3">
-                            {data?.payload?.tech_lang_keys["11"]}.
-                          </div>
 
-                          <div className="w-full mt-3">
-                            <BlockMath
-                              math={`${data?.payload?.tech_lang_keys["7"]} = \\dfrac{\\text{${data?.payload?.tech_lang_keys["1"]}} + (4 × \\text{${data?.payload?.tech_lang_keys["3"]}}) + \\text{${data?.payload?.tech_lang_keys["2"]}}}{6}`}
-                            />
-                          </div>
+                        <p className="w-full mt-2 text-[20px]">
+                          <strong className="text-blue">
+                            {data?.payload?.tech_lang_keys["10"]}
+                          </strong>
+                        </p>
+                        <p className="w-full mt-3">
+                          {data?.payload?.tech_lang_keys["11"]}.
+                        </p>
 
-                          <div className="w-full mt-3">
-                            <BlockMath
-                              math={`${
-                                data?.payload?.tech_lang_keys["7"]
-                              } = \\dfrac{${parseUnitValue(
-                                formData?.tech_optimistic_unit,
-                                result?.tech_optimistic,
-                                formData?.tech_optimistic
-                              )} + (4 × ${parseUnitValue(
-                                formData?.tech_most_unit,
-                                result?.tech_most,
-                                formData?.tech_most
-                              )}) + ${parseUnitValue(
-                                formData?.tech_pessimistic_unit,
-                                result?.tech_pessimistic,
-                                formData?.tech_pessimistic
-                              )}}{6}`}
-                            />
-                          </div>
-
-                          <div className="w-full mt-3">
-                            <BlockMath
-                              math={`${
-                                data?.payload?.tech_lang_keys["7"]
-                              } = \\dfrac{${Number(result?.tech_add)}}{6}`}
-                            />
-                          </div>
-
-                          <div className="w-full mt-3">
-                            {data?.payload?.tech_lang_keys["7"]} ={" "}
-                            {getNumber(result?.tech_main_answer)}
-                          </div>
-                          <div className="w-full mt-3">
-                            {data?.payload?.tech_lang_keys["12"]}.
-                          </div>
-
-                          <div className="w-full mt-3">
-                            <BlockMath
-                              math={`${data?.payload?.tech_lang_keys["8"]} = \\dfrac{\\text{${data?.payload?.tech_lang_keys["2"]}} - \\text{${data?.payload?.tech_lang_keys["1"]}}}{6}`}
-                            />
-                          </div>
-
-                          <div className="w-full mt-3">
-                            <BlockMath
-                              math={`${
-                                data?.payload?.tech_lang_keys["8"]
-                              } = \\dfrac{${parseUnitValue(
-                                formData?.tech_pessimistic_unit,
-                                result?.tech_pessimistic,
-                                formData?.tech_pessimistic
-                              )} - ${parseUnitValue(
-                                formData?.tech_optimistic_unit,
-                                result?.tech_optimistic,
-                                formData?.tech_optimistic
-                              )}}{6}`}
-                            />
-                          </div>
-
-                          <div className="w-full mt-3">
-                            {data?.payload?.tech_lang_keys["8"]} ={" "}
-                            {getNumber(result?.tech_sub_answer)}
-                          </div>
-                          <div className="w-full mt-3">
-                            {data?.payload?.tech_lang_keys["13"]}.
-                          </div>
-
-                          <div className="w-full mt-3 overflow-auto">
-                            <BlockMath
-                              math={`${data?.payload?.tech_lang_keys["9"]} = \\dfrac{\\text{${data?.payload?.tech_lang_keys["4"]}} - \\text{${data?.payload?.tech_lang_keys["7"]}}}{\\text{${data?.payload?.tech_lang_keys["8"]}}}`}
-                            />
-                          </div>
-
-                          <div className="w-full mt-3">
-                            <BlockMath
-                              math={`${
-                                data?.payload?.tech_lang_keys["9"]
-                              } = \\dfrac{${parseUnitValue(
-                                formData?.tech_desired_unit,
-                                result?.tech_desired,
-                                formData?.tech_desired
-                              )} - ${getNumber(
-                                result?.tech_main_answer
-                              )}}{${getNumber(result?.tech_sub_answer)}}`}
-                            />
-                          </div>
-
-                          <div className="w-full mt-3">
-                            {data?.payload?.tech_lang_keys["9"]} ={" "}
-                            {getNumber(result?.tech_ans)}
-                            <span className="black-text font_size18">%</span>
-                          </div>
+                        <div className="w-full mt-3">
+                          <BlockMath
+                            math={`${data?.payload?.tech_lang_keys["7"]} = \\dfrac{\\text{${data?.payload?.tech_lang_keys["1"]}} + (4 × \\text{${data?.payload?.tech_lang_keys["3"]}}) + \\text{${data?.payload?.tech_lang_keys["2"]}}}{6}`}
+                          />
                         </div>
+
+                        <div className="w-full mt-3">
+                          <BlockMath
+                            math={`${
+                              data?.payload?.tech_lang_keys["7"]
+                            } = \\dfrac{${parseUnitValue(
+                              formData?.tech_optimistic_unit,
+                              result?.tech_optimistic,
+                              formData?.tech_optimistic
+                            )} + (4 × ${parseUnitValue(
+                              formData?.tech_most_unit,
+                              result?.tech_most,
+                              formData?.tech_most
+                            )}) + ${parseUnitValue(
+                              formData?.tech_pessimistic_unit,
+                              result?.tech_pessimistic,
+                              formData?.tech_pessimistic
+                            )}}{6}`}
+                          />
+                        </div>
+
+                        <div className="w-full mt-3">
+                          <BlockMath
+                            math={`${
+                              data?.payload?.tech_lang_keys["7"]
+                            } = \\dfrac{${Number(result?.tech_add)}}{6}`}
+                          />
+                        </div>
+
+                        <p className="w-full mt-3">
+                          {data?.payload?.tech_lang_keys["7"]} ={" "}
+                          {getNumber(result?.tech_main_answer)}
+                        </p>
+                        <p className="w-full mt-3">
+                          {data?.payload?.tech_lang_keys["12"]}.
+                        </p>
+
+                        <div className="w-full mt-3">
+                          <BlockMath
+                            math={`${data?.payload?.tech_lang_keys["8"]} = \\dfrac{\\text{${data?.payload?.tech_lang_keys["2"]}} - \\text{${data?.payload?.tech_lang_keys["1"]}}}{6}`}
+                          />
+                        </div>
+
+                        <div className="w-full mt-3">
+                          <BlockMath
+                            math={`${
+                              data?.payload?.tech_lang_keys["8"]
+                            } = \\dfrac{${parseUnitValue(
+                              formData?.tech_pessimistic_unit,
+                              result?.tech_pessimistic,
+                              formData?.tech_pessimistic
+                            )} - ${parseUnitValue(
+                              formData?.tech_optimistic_unit,
+                              result?.tech_optimistic,
+                              formData?.tech_optimistic
+                            )}}{6}`}
+                          />
+                        </div>
+
+                        <p className="w-full mt-3">
+                          {data?.payload?.tech_lang_keys["8"]} ={" "}
+                          {getNumber(result?.tech_sub_answer)}
+                        </p>
+                        <p className="w-full mt-3">
+                          {data?.payload?.tech_lang_keys["13"]}.
+                        </p>
+
+                        <div className="w-full mt-3 overflow-auto">
+                          <BlockMath
+                            math={`${data?.payload?.tech_lang_keys["9"]} = \\dfrac{\\text{${data?.payload?.tech_lang_keys["4"]}} - \\text{${data?.payload?.tech_lang_keys["7"]}}}{\\text{${data?.payload?.tech_lang_keys["8"]}}}`}
+                          />
+                        </div>
+
+                        <div className="w-full mt-3">
+                          <BlockMath
+                            math={`${
+                              data?.payload?.tech_lang_keys["9"]
+                            } = \\dfrac{${parseUnitValue(
+                              formData?.tech_desired_unit,
+                              result?.tech_desired,
+                              formData?.tech_desired
+                            )} - ${getNumber(
+                              result?.tech_main_answer
+                            )}}{${getNumber(result?.tech_sub_answer)}}`}
+                          />
+                        </div>
+
+                        <p className="w-full mt-3">
+                          {data?.payload?.tech_lang_keys["9"]} ={" "}
+                          {getNumber(result?.tech_ans)}
+                          <span className="black-text font_size18">%</span>
+                        </p>
                       </div>
                     </div>
                   </div>

@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useHowmanydaysuntilmybirthdayCalculationMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useHowmanydaysuntilmybirthdayCalculationMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -13,7 +14,6 @@ import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeed
 import Calculator from "../../Calculator";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const HowManyDaysTillMyBirthday = (selectedDate) => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -79,11 +79,11 @@ const HowManyDaysTillMyBirthday = (selectedDate) => {
         tech_year: formData.tech_year,
         tech_name: formData.tech_name,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
-      toast.success("Calculate Successfully");
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
+      toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error calculating");
-      toast.error("Error calculating");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -204,7 +204,6 @@ const HowManyDaysTillMyBirthday = (selectedDate) => {
                   </select>
                 </div>
               </div>
-
               <div className="space-y-2 relative">
                 <label htmlFor="tech_day" className="label">
                   {data?.payload?.tech_lang_keys["2"]}:
@@ -252,23 +251,19 @@ const HowManyDaysTillMyBirthday = (selectedDate) => {
                   </select>
                 </div>
               </div>
-
               <div className="space-y-2 relative">
                 <label htmlFor="tech_year" className="label">
                   {data?.payload?.tech_lang_keys["3"]}:
                 </label>
-                <div>
+                <div className="">
                   <select
                     className="input"
                     aria-label="select"
                     name="tech_year"
                     id="tech_year"
-                    value={formData.tech_year ?? ""} // controlled
+                    value={formData.tech_year} // 👈 yaha set karo
                     onChange={handleChange}
                   >
-                    <option value="" disabled>
-                      Select year
-                    </option>
                     {years.map((year) => (
                       <option key={year} value={year}>
                         {year}
@@ -298,7 +293,7 @@ const HowManyDaysTillMyBirthday = (selectedDate) => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={calculateDeadlineLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -312,18 +307,18 @@ const HowManyDaysTillMyBirthday = (selectedDate) => {
           </div>
         </div>
         {calculateDeadlineLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
                   <div
@@ -340,65 +335,50 @@ const HowManyDaysTillMyBirthday = (selectedDate) => {
                       <div className="flex flex-col items-center">
                         <div className="w-full lg:w-2/3 mb-2 text-center">
                           <p className="text-lg my-2">There are only</p>
-                          <div className="flex justify-between gap-5 text-center items-center">
-                            <div className="bg-blue-100 rounded-md p-2 px-5 bordered">
-                              <strong className="text-blue-700 block text-2xl">
+                          <div className="grid grid-cols-12 gap-2">
+                            <div className="col-span-4 md:col-span-2   bg-blue-100 rounded-md p-2">
+                              <strong className="text-blue-700 block md:text-2xl">
                                 {timeLeft.days}
                               </strong>
-                              <strong className="text-sm">Days</strong>
+                              <strong className="text-[12px] md:text-sm">
+                                Days
+                              </strong>
                             </div>
-                            <strong className="text-2xl text-blue-700">
+                            <strong className="txet-[12px] md:text-2xl col-span-1 text-blue-700 flex items-center">
                               :
                             </strong>
-                            <div className="bg-blue-100 rounded-md p-2 px-5 bordered">
-                              <strong className="text-blue-700 block text-2xl">
+                            <div className="col-span-4 md:col-span-2   bg-blue-100 rounded-md p-2">
+                              <strong className="text-blue-700 block md:text-2xl">
                                 {timeLeft.hours}
                               </strong>
-                              <strong className="text-sm">Hours</strong>
+                              <strong className="text-[12px] md:text-sm">
+                                Hours
+                              </strong>
                             </div>
-                            <strong className="text-2xl text-blue-700">
+                            <strong className="txet-[12px] md:text-2xl col-span-1 text-blue-700 flex items-center">
                               :
                             </strong>
-                            <div className="bg-blue-100 rounded-md p-2 px-5 bordered">
-                              <strong className="text-blue-700 block text-2xl">
+                            <div className="col-span-4 md:col-span-2   bg-blue-100 rounded-md p-2">
+                              <strong className="text-blue-700 block md:text-2xl">
                                 {timeLeft.minutes}
                               </strong>
-                              <strong className="text-sm">Minutes</strong>
+                              <strong className="text-[12px] md:text-sm">
+                                Minutes
+                              </strong>
                             </div>
-                            <strong className="text-2xl text-blue-700">
+                            <strong className="txet-[12px] md:text-2xl col-span-1 text-blue-700 flex items-center">
                               :
                             </strong>
-                            <div className="bg-blue-100 rounded-md p-2 px-5 bordered">
-                              <strong className="text-blue-700 block text-2xl">
+                            <div className="col-span-4 md:col-span-2   bg-blue-100 rounded-md p-2">
+                              <strong className="text-blue-700 block md:text-2xl">
                                 {timeLeft.seconds}
                               </strong>
-                              <strong className="text-sm">Seconds</strong>
+                              <strong className="text-[12px] md:text-sm">
+                                Seconds
+                              </strong>
                             </div>
                           </div>
 
-                          {/* <div className="w-full lg:w-2/3 mb-2 text-center">
-                                <p className="text-lg my-2">There are only</p>
-                                <div className="flex justify-between gap-5 text-center items-center">
-                                    <div className="bg-blue-100 rounded-md p-2 px-5">
-                                        <strong className="text-blue-700 block text-2xl" id="days">000</strong>
-                                        <strong className="text-sm">Days</strong>
-                                    </div>
-                                    <strong className="text-2xl text-blue-700">:</strong>
-                                    <div className="bg-blue-100 rounded-md p-2 px-5">
-                                        <strong className="text-blue-700 block text-2xl" id="hours">00</strong>
-                                        <strong className="text-sm">Hours</strong>
-                                    </div>
-                                    <strong className="text-2xl text-blue-700">:</strong>
-                                    <div className="bg-blue-100 rounded-md p-2 px-5">
-                                        <strong className="text-blue-700 block text-2xl" id="minutes">00</strong>
-                                        <strong className="text-sm">Minutes</strong>
-                                    </div>
-                                    <strong className="text-2xl text-blue-700">:</strong>
-                                    <div className="bg-blue-100 rounded-md p-2 px-5">
-                                        <strong className="text-blue-700 block text-2xl" id="seconds">00</strong>
-                                        <strong className="text-sm">Seconds</strong>
-                                    </div>
-                                </div> */}
                           <p className="text-lg mt-2">
                             {" "}
                             until{" "}
@@ -408,55 +388,55 @@ const HowManyDaysTillMyBirthday = (selectedDate) => {
                             Birthday!
                           </p>
                         </div>
-                        <table className="w-full lg:w-2/3 border-collapse border-spacing-0">
-                          <tbody>
-                            <tr>
-                              <td className="border-b border-gray-300 py-2">
-                                🎂 Your Age
-                              </td>
-                              <td className="border-b border-gray-300 py-2 text-right">
-                                <strong>{result?.tech_age} Years</strong>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="border-b border-gray-300 py-2">
-                                📅 Months remaining until your birthday
-                              </td>
-                              <td className="border-b border-gray-300 py-2 text-right">
-                                <strong>
-                                  {result?.tech_diffInMonths}{" "}
-                                  {result?.tech_diffInMonths === 1
-                                    ? " Month"
-                                    : "Months"}
-                                </strong>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="border-b border-gray-300 py-2">
-                                🌞 Hours remaining until your birthday
-                              </td>
-                              <td className="border-b border-gray-300 py-2 text-right">
-                                <strong>
-                                  {result?.tech_diffInHours}{" "}
-                                  {result?.tech_diffInHours === 1
-                                    ? "Hour"
-                                    : "Hours"}
-                                </strong>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="border-b border-gray-300 py-2">
-                                🕑 Minutes remaining until your birthday
-                              </td>
-                              <td className="border-b border-gray-300 py-2 text-right">
-                                <strong>
-                                  {result?.tech_diffInMinutes}{" "}
-                                  {result?.tech_diffInMinutes === 1
-                                    ? "Minute"
-                                    : "Minutes"}
-                                </strong>
-                              </td>
-                            </tr>
+                        <table className="w-full lg:w-2/3 border-collapse border-spacing-0 text-[13px] md:text-[18px]">
+                        <tbody>
+                          <tr>
+                            <td className="border-b border-gray-300 py-2">
+                              🎂 Your Age
+                            </td>
+                            <td className="border-b border-gray-300 py-2 text-right">
+                              <strong>{result?.tech_age} Years</strong>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="border-b border-gray-300 py-2">
+                              📅 Months remaining until your birthday
+                            </td>
+                            <td className="border-b border-gray-300 py-2 text-right">
+                              <strong>
+                                {result?.tech_diffInMonths}{" "}
+                                {result?.tech_diffInMonths === 1
+                                  ? " Month"
+                                  : "Months"}
+                              </strong>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="border-b border-gray-300 py-2">
+                              🌞 Hours remaining until your birthday
+                            </td>
+                            <td className="border-b border-gray-300 py-2 text-right">
+                              <strong>
+                                {result?.tech_diffInHours}{" "}
+                                {result?.tech_diffInHours === 1
+                                  ? "Hour"
+                                  : "Hours"}
+                              </strong>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="border-b border-gray-300 py-2">
+                              🕑 Minutes remaining until your birthday
+                            </td>
+                            <td className="border-b border-gray-300 py-2 text-right">
+                              <strong>
+                                {result?.tech_diffInMinutes}{" "}
+                                {result?.tech_diffInMinutes === 1
+                                  ? "Minute"
+                                  : "Minutes"}
+                              </strong>
+                            </td>
+                          </tr>
                           </tbody>
                         </table>
                       </div>

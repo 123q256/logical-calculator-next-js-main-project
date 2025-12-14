@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useGasCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useGasCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const GasCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -102,11 +102,11 @@ const GasCalculator = () => {
         tech_fule_effi_v2: formData.tech_fule_effi_v2,
         tech_fule_effi_v2_unit: formData.tech_fule_effi_v2_unit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -238,19 +238,19 @@ const GasCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[95%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
             <div className="flex items-center justify-center my-2">
-              <p className="pe-lg-3 text-blue">
+              <p className="pe-lg-3 text-blue mx-3">
                 {data?.payload?.tech_lang_keys["1"]}:
               </p>
-              <p>
-                <label className="pe-2" htmlFor="first">
+                <p className="mx-2">
+                <label className="pe-2 cursor-pointer" htmlFor="first">
                   <input
                     type="radio"
                     name="tech_type"
                     value="first"
                     id="first"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     onChange={handleChange}
                     checked={formData.tech_type === "first"}
                   />
@@ -258,12 +258,12 @@ const GasCalculator = () => {
                 </label>
               </p>
 
-              <p className="my-2">
-                <label htmlFor="second">
+              <p className="my-2 mx-2">
+                <label className="cursor-pointer" htmlFor="second">
                   <input
                     type="radio"
                     name="tech_type"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     value="second"
                     id="second"
                     onChange={handleChange}
@@ -563,7 +563,7 @@ const GasCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -577,28 +577,28 @@ const GasCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="w-full my-2">
+                      <div className="w-full my-2 text-[12px] md:text-[16px] gap-3">
                         {formData?.tech_type === "first" ? (
                           <>
                             <p>
-                              {data?.payload?.tech_lang_keys[22]}{" "}
+                              {data?.payload?.tech_lang_keys[22]}
                               <strong>
                                 {result?.tech_fule_req}{" "}
                                 {formData?.tech_distance_unit === "km"
@@ -606,7 +606,7 @@ const GasCalculator = () => {
                                   : data?.payload?.tech_lang_keys[15]}
                                 ,
                               </strong>{" "}
-                              {data?.payload?.tech_lang_keys[23]}{" "}
+                              {data?.payload?.tech_lang_keys[23]}
                               <strong>
                                 {currency.symbol}{" "}
                                 {result?.tech_fule_price_daily}
@@ -623,7 +623,7 @@ const GasCalculator = () => {
                               </p>
                             )}
 
-                            <div className="w-full md:w-[60%] lg:w-[60%] overflow-auto lg:text-[18px] md:text-[18px] text-[16px]">
+                            <div className="w-full md:w-[60%] lg:w-[60%] text-[12px] md:text-[16px]">
                               <table className="w-full">
                                 <tbody>
                                   <tr>
@@ -692,8 +692,8 @@ const GasCalculator = () => {
                           </>
                         ) : (
                           <>
-                            <div className="flex flex-wrap lg:flex-nowrap">
-                              <div className="lg:w-1/3 border-r">
+                            <div className="flex flex-wrap lg:flex-nowrap gap-5 ">
+                              <div className="lg:w-1/3 md:border-r">
                                 <p>{data?.payload?.tech_lang_keys[35]}</p>
                                 <p>
                                   <strong className="text-green font-s-21">
@@ -701,7 +701,7 @@ const GasCalculator = () => {
                                   </strong>
                                 </p>
                               </div>
-                              <div className="lg:w-1/3 ps-lg-4 border-r">
+                              <div className="lg:w-1/3 ps-lg-4 md:border-r">
                                 <p>{data?.payload?.tech_lang_keys[36]}</p>
                                 <p>
                                   <strong className="text-green font-s-21">
@@ -719,7 +719,7 @@ const GasCalculator = () => {
                               </div>
                             </div>
 
-                            <div className="w-full md:w-[60%] lg:w-[60%] text-[18px] mt-3">
+                            <div className="w-full md:w-[60%] lg:w-[60%] text-[12px] md:text-[16px] mt-3">
                               <table className="w-full">
                                 <tbody>
                                   <tr>

@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { usePlantSpacingCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  usePlantSpacingCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const PlantSpacingCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -115,11 +115,11 @@ const PlantSpacingCalculator = () => {
         tech_plant_price: formData.tech_plant_price,
         tech_submit: formData.tech_submit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -291,7 +291,7 @@ const PlantSpacingCalculator = () => {
                 <div className="grid grid-cols-12  mt-3  gap-4">
                   <div className="col-span-12 md:col-span-6 lg:col-span-6">
                     <div className="grid grid-cols-1  mt-3  gap-4">
-                      <div className="col-span-12">
+                      <div className="col-span-6">
                         <label htmlFor="tech_bed" className="label">
                           {data?.payload?.tech_lang_keys["1"]}:
                         </label>
@@ -315,7 +315,7 @@ const PlantSpacingCalculator = () => {
                       </div>
                       {formData.tech_bed == "grid" && (
                         <>
-                          <div className="col-span-12 ">
+                          <div className="col-span-6 ">
                             <label htmlFor="tech_grid" className="label">
                               {data?.payload?.tech_lang_keys["4"]}:
                             </label>
@@ -344,7 +344,7 @@ const PlantSpacingCalculator = () => {
                       )}
                       {formData.tech_bed == "hedgerow" && (
                         <>
-                          <div className="col-span-12 ">
+                          <div className="col-span-6 ">
                             <label htmlFor="tech_hedgerows" className="label">
                               {data?.payload?.tech_lang_keys["8"]}:
                             </label>
@@ -460,7 +460,7 @@ const PlantSpacingCalculator = () => {
 
               {formData.tech_bed == "grid" && (
                 <>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 length">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 length">
                     <label htmlFor="tech_length" className="label">
                       {data?.payload?.tech_lang_keys["14"]}
                     </label>
@@ -475,7 +475,7 @@ const PlantSpacingCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown}
                       >
                         {formData.tech_length_unit} ▾
@@ -504,7 +504,7 @@ const PlantSpacingCalculator = () => {
                       )}
                     </div>
                   </div>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 width ">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 width ">
                     <label htmlFor="tech_width" className="label">
                       {data?.payload?.tech_lang_keys["15"]}
                     </label>
@@ -519,7 +519,7 @@ const PlantSpacingCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown1}
                       >
                         {formData.tech_width_unit} ▾
@@ -553,7 +553,7 @@ const PlantSpacingCalculator = () => {
 
               {formData.tech_grid == "rectangular" && (
                 <>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 want ">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 want ">
                     <label htmlFor="tech_want" className="label">
                       {data?.payload?.tech_lang_keys["16"]}:
                     </label>
@@ -580,7 +580,7 @@ const PlantSpacingCalculator = () => {
 
               {formData.tech_bed == "grid" && (
                 <>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 borderr ">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 borderr ">
                     <label htmlFor="tech_border" className="label">
                       {data?.payload?.tech_lang_keys["19"]}
                     </label>
@@ -595,7 +595,7 @@ const PlantSpacingCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown2}
                       >
                         {formData.tech_border_unit} ▾
@@ -629,7 +629,7 @@ const PlantSpacingCalculator = () => {
 
               {formData.tech_bed == "hedgerow" && (
                 <>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 hedge ">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 hedge ">
                     <label htmlFor="tech_hedge" className="label">
                       {data?.payload?.tech_lang_keys["20"]}
                     </label>
@@ -644,7 +644,7 @@ const PlantSpacingCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown3}
                       >
                         {formData.tech_hedge_unit} ▾
@@ -678,7 +678,7 @@ const PlantSpacingCalculator = () => {
 
               {formData.tech_want == "amount" && (
                 <>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 plant_spacing ">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 plant_spacing ">
                     <label htmlFor="tech_plant_spacing" className="label">
                       {data?.payload?.tech_lang_keys["21"]}
                     </label>
@@ -693,7 +693,7 @@ const PlantSpacingCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown4}
                       >
                         {formData.tech_plant_spacing_unit} ▾
@@ -728,7 +728,7 @@ const PlantSpacingCalculator = () => {
                 <>
                   {formData.tech_want == "amount" && (
                     <>
-                      <div className="col-span-12 md:col-span-6 lg:col-span-6 row_spacing ">
+                      <div className="col-span-6 md:col-span-6 lg:col-span-6 row_spacing ">
                         <label htmlFor="tech_row_spacing" className="label">
                           {data?.payload?.tech_lang_keys["22"]}
                         </label>
@@ -743,7 +743,7 @@ const PlantSpacingCalculator = () => {
                             onChange={handleChange}
                           />
                           <label
-                            className="absolute cursor-pointer text-sm underline right-6 top-3"
+                            className="absolute cursor-pointer text-sm underline right-6 top-4"
                             onClick={toggleDropdown5}
                           >
                             {formData.tech_row_spacing_unit} ▾
@@ -779,7 +779,7 @@ const PlantSpacingCalculator = () => {
 
               {formData.tech_want == "arrange" && (
                 <>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 total_plants ">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 total_plants ">
                     <label htmlFor="tech_total_plants" className="label">
                       {data?.payload?.tech_lang_keys["23"]}:
                     </label>
@@ -797,7 +797,7 @@ const PlantSpacingCalculator = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6 total_rows ">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6 total_rows ">
                     <label htmlFor="tech_total_rows" className="label">
                       {data?.payload?.tech_lang_keys["24"]}:
                     </label>
@@ -821,7 +821,7 @@ const PlantSpacingCalculator = () => {
               <p className="col-span-12 ">
                 {data?.payload?.tech_lang_keys["39"]}
               </p>
-              <div className="col-span-12 md:col-span-6 lg:col-span-6 no_of_plant ">
+              <div className="col-span-6 md:col-span-6 lg:col-span-6 no_of_plant ">
                 <label htmlFor="tech_no_of_plant" className="label">
                   {data?.payload?.tech_lang_keys["40"]}:
                 </label>
@@ -839,7 +839,7 @@ const PlantSpacingCalculator = () => {
                   />
                 </div>
               </div>
-              <div className="col-span-12 md:col-span-6 lg:col-span-6 plant_price ">
+              <div className="col-span-6 md:col-span-6 lg:col-span-6 plant_price ">
                 <label htmlFor="tech_plant_price" className="label">
                   {data?.payload?.tech_lang_keys["41"]}:
                 </label>
@@ -861,7 +861,7 @@ const PlantSpacingCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -875,7 +875,7 @@ const PlantSpacingCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -886,7 +886,7 @@ const PlantSpacingCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
                   <div className="rounded-lg flex items-center justify-center">
@@ -936,7 +936,7 @@ const PlantSpacingCalculator = () => {
                               ) : (
                                 <>
                                   <div className="grid grid-cols-12 gap-4">
-                                    <div className="flex col-span-6 border-b py-2 text-[18px]">
+                                    <div className="flex col-span-12 md:col-span-6 border-b py-2 text-[18px]">
                                       <span>
                                         <strong>
                                           {data?.payload?.tech_lang_keys[26]} :
@@ -946,7 +946,7 @@ const PlantSpacingCalculator = () => {
                                     </div>
                                   </div>
                                   <div className="grid grid-cols-12 gap-4">
-                                    <div className="flex col-span-6 border-b py-2 text-[18px]">
+                                    <div className="flex col-span-12 md:col-span-6 border-b py-2 text-[18px]">
                                       <span>
                                         <strong>
                                           {data?.payload?.tech_lang_keys[32]} :
@@ -958,7 +958,7 @@ const PlantSpacingCalculator = () => {
                                     </div>
                                   </div>
                                   <div className="grid grid-cols-12 gap-4">
-                                    <div className="flex col-span-6 border-b py-2 text-[18px]">
+                                    <div className="flex col-span-12 md:col-span-6 border-b py-2 text-[18px]">
                                       <span>
                                         <strong>
                                           {data?.payload?.tech_lang_keys[27]} :
@@ -975,7 +975,7 @@ const PlantSpacingCalculator = () => {
                             ) : formData?.tech_grid === "triangular" ? (
                               <>
                                 <div className="grid grid-cols-12 gap-4">
-                                  <div className="flex col-span-6 border-b py-2 text-[18px]">
+                                  <div className="flex col-span-12 md:col-span-6 border-b py-2 text-[18px]">
                                     <span>
                                       <strong>
                                         {data?.payload?.tech_lang_keys[25]} :
@@ -1004,7 +1004,7 @@ const PlantSpacingCalculator = () => {
                           <>
                             {formData?.tech_want === "amount" ? (
                               <div className="grid grid-cols-12 gap-4">
-                                <div className="flex col-span-6 border-b py-2 text-[18px]">
+                                <div className="flex col-span-12 md:col-span-6 border-b py-2 text-[18px]">
                                   <span>
                                     <strong>
                                       {data?.payload?.tech_lang_keys[25]} :
@@ -1016,7 +1016,7 @@ const PlantSpacingCalculator = () => {
                             ) : (
                               <>
                                 <div className="grid grid-cols-12 gap-4">
-                                  <div className="flex col-span-6 border-b py-2 text-[18px]">
+                                  <div className="flex col-span-12 md:col-span-6 border-b py-2 text-[18px]">
                                     <span>
                                       <strong>
                                         {data?.payload?.tech_lang_keys[26]} :
@@ -1026,7 +1026,7 @@ const PlantSpacingCalculator = () => {
                                   </div>
                                 </div>
                                 <div className="grid grid-cols-12 gap-4">
-                                  <div className="flex col-span-6 border-b py-2 text-[18px]">
+                                  <div className="flex col-span-12 md:col-span-6 border-b py-2 text-[18px]">
                                     <span>
                                       <strong>
                                         {data?.payload?.tech_lang_keys[27]} :
@@ -1044,7 +1044,7 @@ const PlantSpacingCalculator = () => {
 
                         {/* Total Plant Cost */}
                         <div className="grid grid-cols-12 gap-4">
-                          <div className="flex col-span-6 text-[18px] border-b py-2">
+                          <div className="flex col-span-12 md:col-span-6 text-[18px] border-b py-2">
                             <span>
                               <strong>
                                 {data?.payload?.tech_lang_keys[42]} :

@@ -3,8 +3,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-import { useOvulationCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useOvulationCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
 import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeedback";
@@ -86,11 +88,11 @@ const OvulationCalculator = () => {
         tech_days: formData.tech_days,
         tech_Luteal: formData.tech_Luteal,
       }).unwrap();
-      setResult(response);
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data?.error || "An error occurred");
-      toast.error(err.data?.error || "An error occurred");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -253,18 +255,18 @@ const OvulationCalculator = () => {
     };
 
     return (
-      <div className="calendar  rounded-lg p-4 overflow-auto">
+      <div className="calendar bg-white rounded-lg shadow-sm p-4 overflow-auto">
         {/* Calendar Header */}
         <div className="flex justify-between items-center mb-4">
           <button
             type="button" // Yeh line add karo
             onClick={prevMonth}
-            className="p-2 hover:bg-gray-100 rounded-lg"
+            className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
           >
             <img
               src="/images/tarrow-left.png"
               alt="Previous"
-              className="w-8 h-8 cursor-pointer"
+              className="w-6 h-6"
             />
           </button>
 
@@ -275,12 +277,12 @@ const OvulationCalculator = () => {
           <button
             type="button" // Yeh line add karo
             onClick={nextMonth}
-            className="p-2 hover:bg-gray-100 rounded-lg"
+            className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
           >
             <img
               src="/images/tarrow-right.png"
               alt="Next"
-              className="w-8 h-8 cursor-pointer"
+              className="w-6 h-6"
             />
           </button>
         </div>
@@ -380,7 +382,7 @@ const OvulationCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
@@ -473,16 +475,16 @@ const OvulationCalculator = () => {
         {roundToTheNearestLoading ? (
           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
-              <div className="w-full h-[30px] bg-gray-200 animate-pulse rounded-[10px] mb-4"></div>
-              <div className="w-[75%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[50%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[25%] h-[20px] bg-gray-200 animate-pulse rounded-[10px]"></div>
+              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
+              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
           </div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -491,7 +493,7 @@ const OvulationCalculator = () => {
                       <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
                         {/* Ovulation Day Card */}
                         <div className="col-span-12 md:col-span-6 lg:col-span-6">
-                          <div className=" text-center bordered bg-white rounded-lg px-3 py-2">
+                          <div className="bg-[#6fab4d12] text-center rounded-lg px-3 py-2">
                             <div className="w-full mx-auto">
                               <p>
                                 <strong>Your Ovulation Day is</strong>
@@ -525,32 +527,32 @@ const OvulationCalculator = () => {
                           </div>
                           {/* 6 Cycle Table */}
                           <div className="col-span-12 md:col-span-6 lg:col-span-6 mt-2">
-                            <div className="bg-white bordered rounded-lg p-2 pt-3">
+                            <div className="bg-[#6fab4d12] rounded-lg p-2 pt-3">
                               <p className="text-center">
                                 <strong className="text-blue-500">
                                   {data?.payload?.tech_lang_keys["6cycle"] ||
                                     "6 Cycle Overview"}
                                 </strong>
                               </p>
-                              <div className="w-full overflow-auto cycle6_table result_table">
+                              <div className="w-full   p-3 overflow-auto cycle6_table result_table">
                                 <table className="w-full mt-2" cellSpacing="0">
                                   <tbody>
                                     <tr>
-                                      <td className="border border-gray-400 text-xs p-2">
+                                      <td className="bordered border-gray-400 text-xs p-2">
                                         <strong>
                                           {data?.payload?.tech_lang_keys[
                                             "p_s"
                                           ] || "Period Start"}
                                         </strong>
                                       </td>
-                                      <td className="border border-gray-400 text-xs p-2">
+                                      <td className="bordered border-gray-400 text-xs p-2">
                                         <strong>
                                           {data?.payload?.tech_lang_keys[
                                             "o_w"
                                           ] || "Ovulation Window"}
                                         </strong>
                                       </td>
-                                      <td className="border border-gray-400 text-xs p-2">
+                                      <td className="bordered border-gray-400 text-xs p-2">
                                         <strong>
                                           {data?.payload?.tech_lang_keys[
                                             "d_d"
@@ -573,7 +575,7 @@ const OvulationCalculator = () => {
 
                         {/* Ovulation Calendar */}
                         <div className="col-span-12 md:col-span-6 lg:col-span-6">
-                          <div className=" text-center bordered bg-white rounded-lg p-2">
+                          <div className="bg-[#6fab4d12] text-center bordered rounded-lg p-2">
                             <p>
                               <strong className="text-blue-500">
                                 Ovulation Calendar
@@ -653,7 +655,7 @@ const OvulationCalculator = () => {
                           <div className="bg-[#6fab4d12] text-center rounded-lg p-2">
                             <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
                               <div className="col-span-12 md:col-span-6 lg:col-span-6">
-                                <div className="bg-white text-sm rounded-lg p-2 bordered">
+                                <div className="bg-white bordered text-sm rounded-lg p-2">
                                   <img
                                     src="/images/fertile.png"
                                     alt="Fertile Period"
@@ -674,7 +676,7 @@ const OvulationCalculator = () => {
                               </div>
 
                               <div className="col-span-12 md:col-span-6 lg:col-span-6">
-                                <div className="bg-white text-sm rounded-lg p-2 bordered">
+                                <div className="bg-white bordered text-sm rounded-lg p-2">
                                   <img
                                     src="/images/next_period.png"
                                     alt="Next Period"
@@ -692,7 +694,7 @@ const OvulationCalculator = () => {
                               </div>
 
                               <div className="col-span-12 md:col-span-6 lg:col-span-6">
-                                <div className="bg-white text-sm rounded-lg p-2 bordered">
+                                <div className="bg-white bordered text-sm rounded-lg p-2">
                                   <img
                                     src="/images/window.png"
                                     alt="Intercourse Window for Pregnancy"
@@ -713,7 +715,7 @@ const OvulationCalculator = () => {
                               </div>
 
                               <div className="col-span-12 md:col-span-6 lg:col-span-6">
-                                <div className="bg-white text-sm rounded-lg p-2 bordered">
+                                <div className="bg-white bordered text-sm rounded-lg p-2">
                                   <img
                                     src="/images/safe.png"
                                     alt="Safe Period"
@@ -731,7 +733,7 @@ const OvulationCalculator = () => {
                               </div>
 
                               <div className="col-span-12 md:col-span-6 lg:col-span-6">
-                                <div className="bg-white text-sm rounded-lg p-2 bordered">
+                                <div className="bg-white bordered text-sm rounded-lg p-2">
                                   <img
                                     src="/images/expected_date.png"
                                     alt="Due Date"
@@ -749,7 +751,7 @@ const OvulationCalculator = () => {
                               </div>
 
                               <div className="col-span-12 md:col-span-6 lg:col-span-6">
-                                <div className="bg-white text-sm rounded-lg p-2 bordered">
+                                <div className="bg-white bordered text-sm rounded-lg p-2">
                                   <img
                                     src="/images/test.png"
                                     alt="Pregnancy Test"

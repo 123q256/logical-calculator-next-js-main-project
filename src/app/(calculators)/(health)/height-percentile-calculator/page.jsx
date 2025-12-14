@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useHeightPercentileCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useHeightPercentileCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const HeightPercentileCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -97,11 +97,11 @@ const HeightPercentileCalculator = () => {
         tech_height_cm: formData.tech_height_cm,
         tech_unit_h_cm: formData.tech_unit_h_cm,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -200,7 +200,7 @@ const HeightPercentileCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
@@ -208,7 +208,7 @@ const HeightPercentileCalculator = () => {
           )}
 
           <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3   gap-2 md:gap-3 lg:gap-3">
+            <div className="grid grid-cols-12 mt-3   gap-1 md:gap-3 lg:gap-3">
               <div className="col-span-12 md:col-span-6 lg:col-span-6">
                 <label htmlFor="tech_gender" className="label">
                   {data?.payload?.tech_lang_keys["gen"]}:
@@ -240,13 +240,13 @@ const HeightPercentileCalculator = () => {
                     type="number"
                     name="tech_age"
                     step="any"
-                    className="my-2 input"
+                    className="mt-1 input"
                     value={formData.tech_age}
                     placeholder="00"
                     onChange={handleChange}
                   />
                   <label
-                    className="absolute cursor-pointer text-sm underline right-6 top-5"
+                    className="absolute cursor-pointer text-sm underline right-6 top-4"
                     onClick={toggleDropdown}
                   >
                     {formData.tech_age_unit} ▾
@@ -271,7 +271,6 @@ const HeightPercentileCalculator = () => {
                   )}
                 </div>
               </div>
-
               <input
                 type="hidden"
                 step="any"
@@ -302,7 +301,7 @@ const HeightPercentileCalculator = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-12 md:col-span-6 lg:col-span-6">
+                  <div className="col-span-6 md:col-span-6 lg:col-span-6">
                     <label htmlFor="tech_height_in" className="label">
                       &nbsp;
                     </label>
@@ -317,7 +316,7 @@ const HeightPercentileCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-5"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown1}
                       >
                         {formData.tech_unit_h} ▾
@@ -374,7 +373,7 @@ const HeightPercentileCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown2}
                       >
                         {formData.tech_unit_h_cm} ▾
@@ -405,7 +404,7 @@ const HeightPercentileCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -421,16 +420,16 @@ const HeightPercentileCalculator = () => {
         {roundToTheNearestLoading ? (
           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
-              <div className=" w-full h-[30px] bg-gray-200 animate-pulse rounded-[10px] mb-4"></div>
-              <div className="w-[75%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[50%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[25%] h-[20px] bg-gray-200 animate-pulse rounded-[10px]"></div>
+              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
+              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
           </div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -439,14 +438,14 @@ const HeightPercentileCalculator = () => {
                       <div className="w-full">
                         <div className="bg-sky bordered rounded-[10px] p-3">
                           {data?.payload?.tech_lang_keys[2]} ={" "}
-                          <span className="text-[#119154] text-[25px]">
+                          <span className="text-green-700 text-[20px] md:text-[25px]">
                             {result?.tech_first_ans}
                           </span>{" "}
                           {data?.payload?.tech_lang_keys[3]}
                         </div>
 
                         <p
-                          className="text-[16px] mt-2"
+                          className="text-[16px] md:text-[18px] mt-2"
                           id="line"
                           dangerouslySetInnerHTML={{
                             __html: result?.tech_line,

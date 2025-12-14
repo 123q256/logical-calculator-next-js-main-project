@@ -2,9 +2,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useHoursagoCalculationMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useHoursagoCalculationMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -12,7 +13,6 @@ import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeed
 import Calculator from "../../Calculator";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const TimeAgoCalculator = (selectedDate) => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -41,14 +41,14 @@ const TimeAgoCalculator = (selectedDate) => {
     handleFetchDetails();
   }, [url]);
 
-
   const [formData, setFormData] = useState({
-    tech_time: "stat",
-    tech_hours: "",
-    tech_minuts: "",
-    tech_sec: "",
-    tech_hrs: "",
-    tech_min: "",
+    tech_time: "stat", // stat dyna
+    tech_hours: "12",
+    tech_minutes: "3",
+    tech_seconds: "9",
+    tech_hrs: "4",
+    tech_min: "5",
+    tech_submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -95,43 +95,35 @@ const TimeAgoCalculator = (selectedDate) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !formData.tech_time ||
-      !formData.tech_hours ||
-      !formData.tech_minuts ||
-      !formData.tech_sec
-    ) {
-      setFormError("Please fill in field.");
-      return;
-    }
-
     setFormError("");
     try {
       const response = await calculateHourseFromNow({
         tech_time: formData.tech_time,
         tech_hours: formData.tech_hours,
-        tech_minuts: formData.tech_minuts,
-        tech_sec: formData.tech_sec,
+        tech_minutes: formData.tech_minutes,
+        tech_seconds: formData.tech_seconds,
         tech_hrs: formData.tech_hrs,
         tech_min: formData.tech_min,
+        tech_submit: formData.tech_submit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
-      toast.success("Calculate Successfully");
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
+      toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error calculating");
-      toast.error("Error calculating");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_time: "stat",
-      tech_hours: "",
-      tech_minuts: "",
-      tech_sec: "",
-      tech_hrs: "",
-      tech_min: "",
+      tech_time: "stat", // stat dyna
+      tech_hours: "12",
+      tech_minutes: "3",
+      tech_seconds: "9",
+      tech_hrs: "4",
+      tech_min: "5",
+      tech_submit: "calculate",
     });
     setResult(null);
     setFormError(null);
@@ -217,26 +209,26 @@ const TimeAgoCalculator = (selectedDate) => {
             </p>
           )}
 
-          <div className="lg:w-[50%] md:w-[50%] w-full mx-auto ">
+          <div className="lg:w-[50%] md:w-[80%] w-full mx-auto ">
             <div className="grid grid-cols-1 gap-3">
               <div className="space-y-2 relative mb-5">
-                <label className="pe-2" htmlFor="stat">
+                <label className="pe-2 cursor-pointer" htmlFor="stat">
                   <input
                     type="radio"
                     name="tech_time"
                     value="stat"
                     id="stat"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     onChange={handleChange}
                     checked={formData.tech_time === "stat"}
                   />
                   <span>{data?.payload?.tech_lang_keys["1"]}</span>
                 </label>
-                <label htmlFor="dyna">
+                <label className="cursor-pointer" htmlFor="dyna">
                   <input
                     type="radio"
                     name="tech_time"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     value="dyna"
                     id="dyna"
                     onChange={handleChange}
@@ -252,7 +244,7 @@ const TimeAgoCalculator = (selectedDate) => {
                 <div className="w-full inputshow">
                   <div className="w-full pt-1 pb-2">
                     <input
-                      type="text"
+                      type="number"
                       step="any"
                       name="tech_hours"
                       id="tech_hours"
@@ -272,7 +264,7 @@ const TimeAgoCalculator = (selectedDate) => {
                 <div className="w-full inputshow">
                   <div className="w-full pt-1 pb-2">
                     <input
-                      type="text"
+                      type="number"
                       step="any"
                       name="tech_minuts"
                       id="tech_minuts"
@@ -292,7 +284,7 @@ const TimeAgoCalculator = (selectedDate) => {
                 <div className="w-full inputshow">
                   <div className="w-full pt-1 pb-2">
                     <input
-                      type="text"
+                      type="number"
                       step="any"
                       name="tech_sec"
                       id="tech_sec"
@@ -318,7 +310,7 @@ const TimeAgoCalculator = (selectedDate) => {
                   </label>
                   <div className="w-full pt-1 pb-2">
                     <input
-                      type="text"
+                      type="number"
                       step="any"
                       name="tech_hrs"
                       id="tech_hrs"
@@ -336,7 +328,7 @@ const TimeAgoCalculator = (selectedDate) => {
                   </label>
                   <div className="w-full pt-1 pb-2">
                     <input
-                      type="text"
+                      type="number"
                       step="any"
                       name="tech_min"
                       id="tech_min"
@@ -351,7 +343,7 @@ const TimeAgoCalculator = (selectedDate) => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={calculateDeadlineLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -365,7 +357,7 @@ const TimeAgoCalculator = (selectedDate) => {
           </div>
         </div>
         {calculateDeadlineLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -376,7 +368,7 @@ const TimeAgoCalculator = (selectedDate) => {
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 

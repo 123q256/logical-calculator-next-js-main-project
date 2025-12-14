@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useBodyFatCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useBodyFatCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,7 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
+import "../../../../components/styles/CssBodyFatCalculator.css";
 const BodyFatCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -44,48 +45,48 @@ const BodyFatCalculator = () => {
   }, [url]);
 
   const [formData, setFormData] = useState({
-    tech_gender: "Male",
-    tech_method: "2",
-    tech_age: 25,
-    tech_weight: Number(150),
-    tech_unit: "lbs",
-    tech_heightft: "5",
-    tech_unit_ft_in: "ft/in",
-    tech_heightin: "9",
-    tech_unit_h: "ft/in",
-    tech_heightcm: "175",
-    tech_unit_h_cm: "cm",
-    tech_hightUnit: "ft/in",
-    tech_height_ft: Number(19),
-    tech_neck: Number(19),
-    tech_neck_in: "19",
-    tech_height_cm: 19,
-    tech_unit_n: "in",
-    tech_waist: Number(30),
-    tech_unit_w: "in",
-    tech_hip: "30",
-    tech_unit_hip: "in",
-    tech_chest: "4",
-    tech_unit_chest: "mm",
-    tech_abd: "4",
-    tech_unit_abd: "mm",
-    tech_thigh: "6",
-    tech_unit_thigh: "mm",
-    tech_tricep: "4",
-    tech_unit_tricep: "mm",
-    tech_sub: "4",
-    tech_unit_sub: "mm",
-    tech_sup: "4",
-    tech_unit_sup: "mm",
-    tech_mid: "4",
-    tech_unit_mid: "mm",
-    tech_bicep: "1",
-    tech_unit_bicep: "mm",
-    tech_back: "1",
-    tech_unit_back: "mm",
-    tech_calf: "1",
-    tech_unit_calf: "mm",
-    tech_submit: "calculate",
+    gender: "Male",
+    method: "2",
+    age: 25,
+    weight: Number(150),
+    unit: "lbs",
+    heightft: "5",
+    unit_ft_in: "ft/in",
+    heightin: "9",
+    unit_h: "ft/in",
+    heightcm: "175",
+    unit_h_cm: "cm",
+    hightUnit: "ft/in",
+    height_ft: Number(19),
+    neck: Number(19),
+    neck_in: "19",
+    height_cm: 19,
+    unit_n: "in",
+    waist: Number(30),
+    unit_w: "in",
+    hip: "30",
+    unit_hip: "in",
+    chest: "4",
+    unit_chest: "mm",
+    abd: "4",
+    unit_abd: "mm",
+    thigh: "6",
+    unit_thigh: "mm",
+    tricep: "4",
+    unit_tricep: "mm",
+    sub: "4",
+    unit_sub: "mm",
+    sup: "4",
+    unit_sup: "mm",
+    mid: "4",
+    unit_mid: "mm",
+    bicep: "1",
+    unit_bicep: "mm",
+    back: "1",
+    unit_back: "mm",
+    calf: "1",
+    unit_calf: "mm",
+    submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -107,7 +108,7 @@ const BodyFatCalculator = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.tech_gender || !formData.tech_method) {
+    if (!formData.gender || !formData.method) {
       setFormError("Please fill in field.");
       return;
     }
@@ -115,102 +116,102 @@ const BodyFatCalculator = () => {
     setFormError("");
     try {
       const response = await calculateEbitCalculator({
-        tech_gender: formData.tech_gender,
-        tech_method: formData.tech_method,
-        tech_age: formData.tech_age,
-        tech_weight: formData.tech_weight,
-        tech_unit: formData.tech_unit,
-        tech_heightft: formData.tech_heightft,
-        tech_unit_ft_in: formData.tech_unit_ft_in,
-        tech_heightin: formData.tech_heightin,
-        tech_unit_h: formData.tech_unit_h,
-        tech_heightcm: formData.tech_heightcm,
-        tech_unit_h_cm: formData.tech_unit_h_cm,
-        tech_hightUnit: formData.tech_hightUnit,
-        tech_neck: formData.tech_neck,
-        tech_unit_n: formData.tech_unit_n,
-        tech_waist: formData.tech_waist,
-        tech_unit_w: formData.tech_unit_w,
-        tech_hip: formData.tech_hip,
-        tech_unit_hip: formData.tech_unit_hip,
-        tech_chest: formData.tech_chest,
-        tech_unit_chest: formData.tech_unit_chest,
-        tech_abd: formData.tech_abd,
-        tech_unit_abd: formData.tech_unit_abd,
-        tech_thigh: formData.tech_thigh,
-        tech_unit_thigh: formData.tech_unit_thigh,
-        tech_tricep: formData.tech_tricep,
-        tech_unit_tricep: formData.tech_unit_tricep,
-        tech_sub: formData.tech_sub,
-        tech_unit_sub: formData.tech_unit_sub,
-        tech_sup: formData.tech_sup,
-        tech_unit_sup: formData.tech_unit_sup,
-        tech_mid: formData.tech_mid,
-        tech_unit_mid: formData.tech_unit_mid,
-        tech_bicep: formData.tech_bicep,
-        tech_unit_bicep: formData.tech_unit_bicep,
-        tech_back: formData.tech_back,
-        tech_unit_back: formData.tech_unit_back,
-        tech_calf: formData.tech_calf,
-        tech_unit_calf: formData.tech_unit_calf,
-        tech_submit: formData.tech_submit,
-        tech_height_ft: formData.tech_height_ft,
-        tech_neck_in: formData.tech_neck_in,
-        tech_height_cm: formData.tech_height_cm,
+        gender: formData.gender,
+        method: formData.method,
+        age: formData.age,
+        weight: formData.weight,
+        unit: formData.unit,
+        heightft: formData.heightft,
+        unit_ft_in: formData.unit_ft_in,
+        heightin: formData.heightin,
+        unit_h: formData.unit_h,
+        heightcm: formData.heightcm,
+        unit_h_cm: formData.unit_h_cm,
+        hightUnit: formData.hightUnit,
+        neck: formData.neck,
+        unit_n: formData.unit_n,
+        waist: formData.waist,
+        unit_w: formData.unit_w,
+        hip: formData.hip,
+        unit_hip: formData.unit_hip,
+        chest: formData.chest,
+        unit_chest: formData.unit_chest,
+        abd: formData.abd,
+        unit_abd: formData.unit_abd,
+        thigh: formData.thigh,
+        unit_thigh: formData.unit_thigh,
+        tricep: formData.tricep,
+        unit_tricep: formData.unit_tricep,
+        sub: formData.sub,
+        unit_sub: formData.unit_sub,
+        sup: formData.sup,
+        unit_sup: formData.unit_sup,
+        mid: formData.mid,
+        unit_mid: formData.unit_mid,
+        bicep: formData.bicep,
+        unit_bicep: formData.unit_bicep,
+        back: formData.back,
+        unit_back: formData.unit_back,
+        calf: formData.calf,
+        unit_calf: formData.unit_calf,
+        submit: formData.submit,
+        height_ft: formData.height_ft,
+        neck_in: formData.neck_in,
+        height_cm: formData.height_cm,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_gender: "Male",
-      tech_method: "2",
-      tech_age: "25",
-      tech_weight: "150",
-      tech_unit: "lbs",
-      tech_heightft: "5",
-      tech_unit_ft_in: "ft/in",
-      tech_heightin: "9",
-      tech_unit_h: "ft/in",
-      tech_heightcm: "175",
-      tech_unit_h_cm: "cm",
-      tech_hightUnit: "ft/in",
-      tech_height_ft: "19",
-      tech_neck: "19",
-      tech_neck_in: "19",
-      tech_height_cm: "19",
-      tech_unit_n: "in",
-      tech_waist: "30",
-      tech_unit_w: "in",
-      tech_hip: "30",
-      tech_unit_hip: "in",
-      tech_chest: "4",
-      tech_unit_chest: "mm",
-      tech_abd: "4",
-      tech_unit_abd: "mm",
-      tech_thigh: "6",
-      tech_unit_thigh: "mm",
-      tech_tricep: "4",
-      tech_unit_tricep: "mm",
-      tech_sub: "4",
-      tech_unit_sub: "mm",
-      tech_sup: "4",
-      tech_unit_sup: "mm",
-      tech_mid: "4",
-      tech_unit_mid: "mm",
-      tech_bicep: "1",
-      tech_unit_bicep: "mm",
-      tech_back: "1",
-      tech_unit_back: "mm",
-      tech_calf: "1",
-      tech_unit_calf: "mm",
-      tech_submit: "calculate",
+      gender: "Male",
+      method: "2",
+      age: "25",
+      weight: "150",
+      unit: "lbs",
+      heightft: "5",
+      unit_ft_in: "ft/in",
+      heightin: "9",
+      unit_h: "ft/in",
+      heightcm: "175",
+      unit_h_cm: "cm",
+      hightUnit: "ft/in",
+      height_ft: "19",
+      neck: "19",
+      neck_in: "19",
+      height_cm: "19",
+      unit_n: "in",
+      waist: "30",
+      unit_w: "in",
+      hip: "30",
+      unit_hip: "in",
+      chest: "4",
+      unit_chest: "mm",
+      abd: "4",
+      unit_abd: "mm",
+      thigh: "6",
+      unit_thigh: "mm",
+      tricep: "4",
+      unit_tricep: "mm",
+      sub: "4",
+      unit_sub: "mm",
+      sup: "4",
+      unit_sup: "mm",
+      mid: "4",
+      unit_mid: "mm",
+      bicep: "1",
+      unit_bicep: "mm",
+      back: "1",
+      unit_back: "mm",
+      calf: "1",
+      unit_calf: "mm",
+      submit: "calculate",
     });
     setResult(null);
     setFormError(null);
@@ -238,7 +239,7 @@ const BodyFatCalculator = () => {
   const [dropdownVisible0, setDropdownVisible0] = useState(false);
 
   const setUnitHandler0 = (unit) => {
-    setFormData((prev) => ({ ...prev, tech_unit_h_cm: unit }));
+    setFormData((prev) => ({ ...prev, unit_h_cm: unit }));
     setDropdownVisible0(false);
   };
 
@@ -250,7 +251,7 @@ const BodyFatCalculator = () => {
   const [dropdownVisible00, setDropdownVisible00] = useState(false);
 
   const setUnitHandler00 = (unit) => {
-    setFormData((prev) => ({ ...prev, tech_unit_n: unit }));
+    setFormData((prev) => ({ ...prev, unit_n: unit }));
     setDropdownVisible00(false);
   };
 
@@ -262,7 +263,7 @@ const BodyFatCalculator = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const setUnitHandler = (unit) => {
-    setFormData((prev) => ({ ...prev, tech_unit: unit }));
+    setFormData((prev) => ({ ...prev, unit: unit }));
     setDropdownVisible(false);
   };
 
@@ -274,7 +275,7 @@ const BodyFatCalculator = () => {
   const [dropdownVisible1, setDropdownVisible1] = useState(false);
 
   const setUnitHandler1 = (unit) => {
-    setFormData((prev) => ({ ...prev, tech_unit_w: unit }));
+    setFormData((prev) => ({ ...prev, unit_w: unit }));
     setDropdownVisible1(false);
   };
 
@@ -286,7 +287,7 @@ const BodyFatCalculator = () => {
   const [dropdownVisible2, setDropdownVisible2] = useState(false);
 
   const setUnitHandler2 = (unit) => {
-    setFormData((prev) => ({ ...prev, tech_unit_hip: unit }));
+    setFormData((prev) => ({ ...prev, unit_hip: unit }));
     setDropdownVisible2(false);
   };
 
@@ -298,7 +299,7 @@ const BodyFatCalculator = () => {
   const [dropdownVisible3, setDropdownVisible3] = useState(false);
 
   const setUnitHandler3 = (unit) => {
-    setFormData((prev) => ({ ...prev, tech_unit_chest: unit }));
+    setFormData((prev) => ({ ...prev, unit_chest: unit }));
     setDropdownVisible3(false);
   };
 
@@ -309,7 +310,7 @@ const BodyFatCalculator = () => {
   const [dropdownVisible4, setDropdownVisible4] = useState(false);
 
   const setUnitHandler4 = (unit) => {
-    setFormData((prev) => ({ ...prev, tech_unit_abd: unit }));
+    setFormData((prev) => ({ ...prev, unit_abd: unit }));
     setDropdownVisible4(false);
   };
 
@@ -320,7 +321,7 @@ const BodyFatCalculator = () => {
   const [dropdownVisible5, setDropdownVisible5] = useState(false);
 
   const setUnitHandler5 = (unit) => {
-    setFormData((prev) => ({ ...prev, tech_unit_thigh: unit }));
+    setFormData((prev) => ({ ...prev, unit_thigh: unit }));
     setDropdownVisible5(false);
   };
 
@@ -331,7 +332,7 @@ const BodyFatCalculator = () => {
   const [dropdownVisible6, setDropdownVisible6] = useState(false);
 
   const setUnitHandler6 = (unit) => {
-    setFormData((prev) => ({ ...prev, tech_unit_tricep: unit }));
+    setFormData((prev) => ({ ...prev, unit_tricep: unit }));
     setDropdownVisible6(false);
   };
 
@@ -342,7 +343,7 @@ const BodyFatCalculator = () => {
   const [dropdownVisible7, setDropdownVisible7] = useState(false);
 
   const setUnitHandler7 = (unit) => {
-    setFormData((prev) => ({ ...prev, tech_unit_sub: unit }));
+    setFormData((prev) => ({ ...prev, unit_sub: unit }));
     setDropdownVisible7(false);
   };
 
@@ -354,7 +355,7 @@ const BodyFatCalculator = () => {
   const [dropdownVisible8, setDropdownVisible8] = useState(false);
 
   const setUnitHandler8 = (unit) => {
-    setFormData((prev) => ({ ...prev, tech_unit_sup: unit }));
+    setFormData((prev) => ({ ...prev, unit_sup: unit }));
     setDropdownVisible8(false);
   };
 
@@ -365,7 +366,7 @@ const BodyFatCalculator = () => {
   const [dropdownVisible9, setDropdownVisible9] = useState(false);
 
   const setUnitHandler9 = (unit) => {
-    setFormData((prev) => ({ ...prev, tech_unit_mid: unit }));
+    setFormData((prev) => ({ ...prev, unit_mid: unit }));
     setDropdownVisible9(false);
   };
 
@@ -377,7 +378,7 @@ const BodyFatCalculator = () => {
   const [dropdownVisible10, setDropdownVisible10] = useState(false);
 
   const setUnitHandler10 = (unit) => {
-    setFormData((prev) => ({ ...prev, tech_unit_bicep: unit }));
+    setFormData((prev) => ({ ...prev, unit_bicep: unit }));
     setDropdownVisible10(false);
   };
 
@@ -389,7 +390,7 @@ const BodyFatCalculator = () => {
   const [dropdownVisible11, setDropdownVisible11] = useState(false);
 
   const setUnitHandler11 = (unit) => {
-    setFormData((prev) => ({ ...prev, tech_unit_bicep: unit }));
+    setFormData((prev) => ({ ...prev, unit_bicep: unit }));
     setDropdownVisible11(false);
   };
 
@@ -400,7 +401,7 @@ const BodyFatCalculator = () => {
   const [dropdownVisible12, setDropdownVisible12] = useState(false);
 
   const setUnitHandler12 = (unit) => {
-    setFormData((prev) => ({ ...prev, tech_unit_calf: unit }));
+    setFormData((prev) => ({ ...prev, unit_calf: unit }));
     setDropdownVisible12(false);
   };
 
@@ -459,7 +460,7 @@ const BodyFatCalculator = () => {
   const [showModal2, setShowModal2] = useState(false);
 
   const handleImageClick2 = () => {
-    if (formData.tech_method) {
+    if (formData.method) {
       setShowModal2(true);
     } else {
       alert("Pehle koi method select karo");
@@ -469,7 +470,7 @@ const BodyFatCalculator = () => {
   const handleCloseModal2 = () => setShowModal2(false);
 
   const getModalContent2 = () => {
-    switch (formData.tech_method) {
+    switch (formData.method) {
       case "1":
         return {
           title: `Estimate from BMI`,
@@ -550,27 +551,27 @@ const BodyFatCalculator = () => {
                 <label htmlFor="gender" className="pe-lg-3 pe-2 label">
                   {data?.payload?.tech_lang_keys["gender"]}:
                 </label>
-                <label className="pe-2" htmlFor="Male">
+                <label className="pe-2 cursor-pointer" htmlFor="Male">
                   <input
                     type="radio"
-                    name="tech_gender"
+                    name="gender"
                     value="Male"
                     id="Male"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     onChange={handleChange}
-                    checked={formData.tech_gender === "Male"}
+                    checked={formData.gender === "Male"}
                   />
                   <span>{data?.payload?.tech_lang_keys["male"]}</span>
                 </label>
-                <label htmlFor="Female">
+                <label className="cursor-pointer" htmlFor="Female">
                   <input
                     type="radio"
-                    name="tech_gender"
-                    className="mr-2 border"
+                    name="gender"
+                    className="mr-2 border cursor-pointer"
                     value="Female"
                     id="Female"
                     onChange={handleChange}
-                    checked={formData.tech_gender === "Female"}
+                    checked={formData.gender === "Female"}
                   />
                   <span>{data?.payload?.tech_lang_keys["female"]}</span>
                 </label>
@@ -584,9 +585,9 @@ const BodyFatCalculator = () => {
                   <select
                     className="input"
                     aria-label="select"
-                    name="tech_method"
+                    name="method"
                     id="tech_method"
-                    value={formData.tech_method}
+                    value={formData.method}
                     onChange={handleChange}
                   >
                     <option value="7">
@@ -630,15 +631,15 @@ const BodyFatCalculator = () => {
                 />
               </div>
 
-              {(formData.tech_method == "7" ||
-                formData.tech_method == "1" ||
-                formData.tech_method == "2" ||
-                formData.tech_method == "3" ||
-                formData.tech_method == "4" ||
-                formData.tech_method == "5" ||
-                formData.tech_method == "6") && (
+              {(formData.method == "7" ||
+                formData.method == "1" ||
+                formData.method == "2" ||
+                formData.method == "3" ||
+                formData.method == "4" ||
+                formData.method == "5" ||
+                formData.method == "6") && (
                 <>
-                  <div className="col-span-6 px-2">
+                  <div className="col-span-6 ">
                     <label htmlFor="tech_age" className="label">
                       {data?.payload?.tech_lang_keys["age_year"]}:
                     </label>
@@ -646,37 +647,37 @@ const BodyFatCalculator = () => {
                       <input
                         type="number"
                         step="any"
-                        name="tech_age"
+                        name="age"
                         id="tech_age"
                         className="input my-2"
                         aria-label="input"
                         placeholder="00"
-                        value={formData.tech_age}
+                        value={formData.age}
                         onChange={handleChange}
                       />
                     </div>
                   </div>
                 </>
               )}
-              {(formData.tech_method == "7" ||
-                formData.tech_method == "1" ||
-                formData.tech_method == "2" ||
-                formData.tech_method == "3" ||
-                formData.tech_method == "4" ||
-                formData.tech_method == "5" ||
-                formData.tech_method == "6") && (
+              {(formData.method == "7" ||
+                formData.method == "1" ||
+                formData.method == "2" ||
+                formData.method == "3" ||
+                formData.method == "4" ||
+                formData.method == "5" ||
+                formData.method == "6") && (
                 <>
-                  <div className="col-span-6 px-2">
+                  <div className="col-span-6 ">
                     <label htmlFor="tech_weight" className="label">
                       {data?.payload?.tech_lang_keys["weight"]}
                     </label>
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="tech_weight"
+                        name="weight"
                         step="any"
                         className="mt-1 input"
-                        value={formData.tech_weight}
+                        value={formData.weight}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -684,7 +685,7 @@ const BodyFatCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown}
                       >
-                        {formData.tech_unit} ▾
+                        {formData.unit} ▾
                       </label>
                       {dropdownVisible && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -710,23 +711,24 @@ const BodyFatCalculator = () => {
               <input
                 type="hidden"
                 step="any"
-                name="tech_unit_ft_in"
+                name="unit_ft_in"
                 id="tech_unit_ft_in"
                 className="input my-2"
                 aria-label="input"
-                value={formData.tech_unit_ft_in}
+                value={formData.unit_ft_in}
                 onChange={handleChange}
               />
-              {(formData.tech_method == "1" ||
-                formData.tech_method == "2" ||
-                formData.tech_method == "3" ||
-                formData.tech_method == "4" ||
-                formData.tech_method == "5" ||
-                formData.tech_method == "6") && (
+              {(formData.method == "1" ||
+                formData.method == "2" ||
+                formData.method == "3" ||
+                formData.method == "4" ||
+                formData.method == "5" ||
+                formData.method == "6" ||
+                formData.method == "7") && (
                 <>
-                  {formData.tech_unit_ft_in == "ft/in" && (
+                  {formData.unit_ft_in == "ft/in" && (
                     <>
-                      <div className="col-span-3  ft_in">
+                      <div className="col-span-6 md:col-span-3  ft_in">
                         <label htmlFor="tech_height_ft" className="label">
                           {data?.payload?.tech_lang_keys["height"]}:
                         </label>
@@ -734,27 +736,27 @@ const BodyFatCalculator = () => {
                           <input
                             type="number"
                             step="any"
-                            name="tech_height_ft"
+                            name="height_ft"
                             id="tech_height_ft"
                             className="input my-2"
                             aria-label="input"
                             placeholder="ft"
-                            value={formData.tech_height_ft}
+                            value={formData.height_ft}
                             onChange={handleChange}
                           />
                         </div>
                       </div>
-                      <div className="col-span-3  ps-lg-0 ft_in ">
+                      <div className="col-span-6 md:col-span-3  ps-lg-0 ft_in ">
                         <label htmlFor="tech_neck_in" className="label">
                           &nbsp;
                         </label>
                         <div className="relative w-full ">
                           <input
                             type="number"
-                            name="tech_neck_in"
+                            name="neck_in"
                             step="any"
                             className="mt-1 input"
-                            value={formData.tech_neck_in}
+                            value={formData.neck_in}
                             placeholder="00"
                             onChange={handleChange}
                           />
@@ -762,7 +764,7 @@ const BodyFatCalculator = () => {
                             className="absolute cursor-pointer text-sm underline right-6 top-4"
                             onClick={toggleDropdown13}
                           >
-                            {formData.tech_unit_h} ▾
+                            {formData.unit_h} ▾
                           </label>
                           {dropdownVisible13 && (
                             <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -784,7 +786,7 @@ const BodyFatCalculator = () => {
                       </div>
                     </>
                   )}
-                  {formData.tech_unit_ft_in == "cm" && (
+                  {formData.unit_ft_in == "cm" && (
                     <>
                       <div className="col-span-6 h_cm   height-cm">
                         <label htmlFor="tech_height_cm" className="label">
@@ -793,10 +795,10 @@ const BodyFatCalculator = () => {
                         <div className="relative w-full ">
                           <input
                             type="number"
-                            name="tech_height_cm"
+                            name="height_cm"
                             step="any"
                             className="mt-1 input"
-                            value={formData.tech_height_cm}
+                            value={formData.height_cm}
                             placeholder="00"
                             onChange={handleChange}
                           />
@@ -804,7 +806,7 @@ const BodyFatCalculator = () => {
                             className="absolute cursor-pointer text-sm underline right-6 top-4"
                             onClick={toggleDropdown14}
                           >
-                            {formData.tech_unit_h_cm} ▾
+                            {formData.unit_h_cm} ▾
                           </label>
                           {dropdownVisible14 && (
                             <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -831,27 +833,27 @@ const BodyFatCalculator = () => {
               <input
                 type="hidden"
                 step="any"
-                name="tech_hightUnit"
+                name="hightUnit"
                 id="tech_hightUnit"
                 className="input my-2"
                 aria-label="input"
-                value={formData.tech_hightUnit}
+                value={formData.hightUnit}
                 onChange={handleChange}
               />
 
-              {formData.tech_method == "1" && (
+              {formData.method == "1" && (
                 <>
-                  <div className="col-span-6 px-2 navy neck ">
+                  <div className="col-span-6  navy neck ">
                     <label htmlFor="tech_neck" className="label">
                       {data?.payload?.tech_lang_keys["neck"]}:
                     </label>
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="tech_neck"
+                        name="neck"
                         step="any"
                         className="mt-1 input"
-                        value={formData.tech_neck}
+                        value={formData.neck}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -859,7 +861,7 @@ const BodyFatCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown00}
                       >
-                        {formData.tech_unit_n} ▾
+                        {formData.unit_n} ▾
                       </label>
                       {dropdownVisible00 && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -881,19 +883,19 @@ const BodyFatCalculator = () => {
                   </div>
                 </>
               )}
-              {formData.tech_method == "1" && (
+              {formData.method == "1" && (
                 <>
-                  <div className="col-span-6 px-2 navy  waist ">
+                  <div className="col-span-6  navy  waist ">
                     <label htmlFor="tech_waist" className="label">
                       {data?.payload?.tech_lang_keys["waist"]}:
                     </label>
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="tech_waist"
+                        name="waist"
                         step="any"
                         className="mt-1 input"
-                        value={formData.tech_waist}
+                        value={formData.waist}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -901,7 +903,7 @@ const BodyFatCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown1}
                       >
-                        {formData.tech_unit_w} ▾
+                        {formData.unit_w} ▾
                       </label>
                       {dropdownVisible1 && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -924,20 +926,20 @@ const BodyFatCalculator = () => {
                 </>
               )}
 
-              {formData.tech_gender === "Female" && (
+              {formData.gender === "Female" && (
                 <>
-                  <div className="col-span-6 px-2 hip">
+                  <div className="col-span-6  hip">
                     <label htmlFor="tech_hip" className="label">
                       {data?.payload?.tech_lang_keys["hip"]}:
                     </label>
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="tech_hip"
+                        name="hip"
                         min="1"
                         step="any"
                         className="mt-1 input"
-                        value={formData.tech_hip}
+                        value={formData.hip}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -945,7 +947,7 @@ const BodyFatCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown2}
                       >
-                        {formData.tech_unit_hip} ▾
+                        {formData.unit_hip} ▾
                       </label>
                       {dropdownVisible2 && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -968,9 +970,9 @@ const BodyFatCalculator = () => {
                 </>
               )}
 
-              {(formData.tech_method == "2" || formData.tech_method == "5") && (
+              {(formData.method == "2" || formData.method == "5") && (
                 <>
-                  <div className="col-span-6 px-2 chest ">
+                  <div className="col-span-6  chest ">
                     <label htmlFor="chest" className="label flex items-center">
                       <span>{data?.payload?.tech_lang_keys["28"]}:</span>
                       <img
@@ -986,11 +988,11 @@ const BodyFatCalculator = () => {
                       <div className="relative w-full ">
                         <input
                           type="number"
-                          name="tech_chest"
+                          name="chest"
                           min="1"
                           step="any"
                           className="mt-1 input"
-                          value={formData.tech_chest}
+                          value={formData.chest}
                           placeholder="00"
                           onChange={handleChange}
                         />
@@ -998,7 +1000,7 @@ const BodyFatCalculator = () => {
                           className="absolute cursor-pointer text-sm underline right-6 top-4"
                           onClick={toggleDropdown3}
                         >
-                          {formData.tech_unit_chest} ▾
+                          {formData.unit_chest} ▾
                         </label>
                         {dropdownVisible3 && (
                           <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -1023,11 +1025,11 @@ const BodyFatCalculator = () => {
                 </>
               )}
 
-              {(formData.tech_method == "2" ||
-                formData.tech_method == "3" ||
-                formData.tech_method == "5") && (
+              {(formData.method == "2" ||
+                formData.method == "3" ||
+                formData.method == "5") && (
                 <>
-                  <div className="col-span-6 px-2 abd ">
+                  <div className="col-span-6  abd ">
                     <label
                       htmlFor="tech_abd"
                       className="label flex items-center"
@@ -1046,11 +1048,11 @@ const BodyFatCalculator = () => {
                       <div className="relative w-full ">
                         <input
                           type="number"
-                          name="tech_abd"
+                          name="abd"
                           min="1"
                           step="any"
                           className="mt-1 input"
-                          value={formData.tech_abd}
+                          value={formData.abd}
                           placeholder="00"
                           onChange={handleChange}
                         />
@@ -1058,7 +1060,7 @@ const BodyFatCalculator = () => {
                           className="absolute cursor-pointer text-sm underline right-6 top-4"
                           onClick={toggleDropdown4}
                         >
-                          {formData.tech_unit_abd} ▾
+                          {formData.unit_abd} ▾
                         </label>
                         {dropdownVisible4 && (
                           <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -1083,12 +1085,12 @@ const BodyFatCalculator = () => {
                 </>
               )}
 
-              {(formData.tech_method == "2" ||
-                formData.tech_method == "3" ||
-                formData.tech_method == "4" ||
-                formData.tech_method == "5") && (
+              {(formData.method == "2" ||
+                formData.method == "3" ||
+                formData.method == "4" ||
+                formData.method == "5") && (
                 <>
-                  <div className="col-span-6 px-2 thigh ">
+                  <div className="col-span-6  thigh ">
                     <label
                       htmlFor="tech_thigh"
                       className="label flex items-center"
@@ -1107,11 +1109,11 @@ const BodyFatCalculator = () => {
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="tech_thigh"
+                        name="thigh"
                         min="1"
                         step="any"
                         className="mt-1 input"
-                        value={formData.tech_thigh}
+                        value={formData.thigh}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -1119,7 +1121,7 @@ const BodyFatCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown5}
                       >
-                        {formData.tech_unit_thigh} ▾
+                        {formData.unit_thigh} ▾
                       </label>
                       {dropdownVisible5 && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -1142,13 +1144,13 @@ const BodyFatCalculator = () => {
                   </div>
                 </>
               )}
-              {(formData.tech_method == "2" ||
-                formData.tech_method == "3" ||
-                formData.tech_method == "4" ||
-                formData.tech_method == "5" ||
-                formData.tech_method == "6") && (
+              {(formData.method == "2" ||
+                formData.method == "3" ||
+                formData.method == "4" ||
+                formData.method == "5" ||
+                formData.method == "6") && (
                 <>
-                  <div className="col-span-6 px-2 tricep ">
+                  <div className="col-span-6  tricep ">
                     <label
                       htmlFor="tritech_tricepcep"
                       className="label flex items-center"
@@ -1167,11 +1169,11 @@ const BodyFatCalculator = () => {
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="tech_tricep"
+                        name="tricep"
                         min="1"
                         step="any"
                         className="mt-1 input"
-                        value={formData.tech_tricep}
+                        value={formData.tricep}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -1179,7 +1181,7 @@ const BodyFatCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown6}
                       >
-                        {formData.tech_unit_tricep} ▾
+                        {formData.unit_tricep} ▾
                       </label>
                       {dropdownVisible6 && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -1202,12 +1204,12 @@ const BodyFatCalculator = () => {
                   </div>
                 </>
               )}
-              {(formData.tech_method == "2" ||
-                formData.tech_method == "3" ||
-                formData.tech_method == "5" ||
-                formData.tech_method == "6") && (
+              {(formData.method == "2" ||
+                formData.method == "3" ||
+                formData.method == "5" ||
+                formData.method == "6") && (
                 <>
-                  <div className="col-span-6 px-2 sub ">
+                  <div className="col-span-6  sub ">
                     <label
                       htmlFor="tech_sub"
                       className="label flex items-center"
@@ -1226,11 +1228,11 @@ const BodyFatCalculator = () => {
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="tech_sub"
+                        name="sub"
                         min="1"
                         step="any"
                         className="mt-1 input"
-                        value={formData.tech_sub}
+                        value={formData.sub}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -1238,7 +1240,7 @@ const BodyFatCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown7}
                       >
-                        {formData.tech_unit_sub} ▾
+                        {formData.unit_sub} ▾
                       </label>
                       {dropdownVisible7 && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -1261,12 +1263,12 @@ const BodyFatCalculator = () => {
                   </div>
                 </>
               )}
-              {(formData.tech_method == "2" ||
-                formData.tech_method == "4" ||
-                formData.tech_method == "5" ||
-                formData.tech_method == "6") && (
+              {(formData.method == "2" ||
+                formData.method == "4" ||
+                formData.method == "5" ||
+                formData.method == "6") && (
                 <>
-                  <div className="col-span-6 px-2 sup ">
+                  <div className="col-span-6  sup ">
                     <label
                       htmlFor="tech_sup"
                       className="label flex items-center"
@@ -1285,11 +1287,11 @@ const BodyFatCalculator = () => {
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="tech_sup"
+                        name="sup"
                         min="1"
                         step="any"
                         className="mt-1 input"
-                        value={formData.tech_sup}
+                        value={formData.sup}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -1297,7 +1299,7 @@ const BodyFatCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown8}
                       >
-                        {formData.tech_unit_sup} ▾
+                        {formData.unit_sup} ▾
                       </label>
                       {dropdownVisible8 && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -1320,9 +1322,9 @@ const BodyFatCalculator = () => {
                   </div>
                 </>
               )}
-              {formData.tech_method == "2" && (
+              {formData.method == "2" && (
                 <>
-                  <div className="col-span-6 px-2 mid ">
+                  <div className="col-span-6  mid ">
                     <label
                       htmlFor="tech_mid"
                       className="label flex items-center"
@@ -1341,11 +1343,11 @@ const BodyFatCalculator = () => {
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="tech_mid"
+                        name="mid"
                         min="1"
                         step="any"
                         className="mt-1 input"
-                        value={formData.tech_mid}
+                        value={formData.mid}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -1353,7 +1355,7 @@ const BodyFatCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown9}
                       >
-                        {formData.tech_unit_mid} ▾
+                        {formData.unit_mid} ▾
                       </label>
                       {dropdownVisible9 && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -1377,9 +1379,9 @@ const BodyFatCalculator = () => {
                 </>
               )}
 
-              {(formData.tech_method == "5" || formData.tech_method == "6") && (
+              {(formData.method == "5" || formData.method == "6") && (
                 <>
-                  <div className="col-span-6 px-2 bicep ">
+                  <div className="col-span-6  bicep ">
                     <label
                       htmlFor="tech_bicep"
                       className="label flex items-center"
@@ -1397,11 +1399,11 @@ const BodyFatCalculator = () => {
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="tech_bicep"
+                        name="bicep"
                         min="1"
                         step="any"
                         className="mt-1 input"
-                        value={formData.tech_bicep}
+                        value={formData.bicep}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -1409,7 +1411,7 @@ const BodyFatCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown10}
                       >
-                        {formData.tech_unit_bicep} ▾
+                        {formData.unit_bicep} ▾
                       </label>
                       {dropdownVisible10 && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -1432,9 +1434,9 @@ const BodyFatCalculator = () => {
                   </div>
                 </>
               )}
-              {formData.tech_method == "5" && (
+              {formData.method == "5" && (
                 <>
-                  <div className="col-span-6 px-2 back ">
+                  <div className="col-span-6  back ">
                     <label
                       htmlFor="tech_back"
                       className="label flex items-center"
@@ -1452,11 +1454,11 @@ const BodyFatCalculator = () => {
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="tech_back"
+                        name="back"
                         min="1"
                         step="any"
                         className="mt-1 input"
-                        value={formData.tech_back}
+                        value={formData.back}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -1464,7 +1466,7 @@ const BodyFatCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown11}
                       >
-                        {formData.tech_unit_back} ▾
+                        {formData.unit_back} ▾
                       </label>
                       {dropdownVisible11 && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -1487,9 +1489,9 @@ const BodyFatCalculator = () => {
                   </div>
                 </>
               )}
-              {formData.tech_method == "5" && (
+              {formData.method == "5" && (
                 <>
-                  <div className="col-span-6 px-2 calf ">
+                  <div className="col-span-6  calf ">
                     <label htmlFor="calf" className="label flex items-center">
                       <span>{data?.payload?.tech_lang_keys["37"]}:</span>
                       <img
@@ -1505,11 +1507,11 @@ const BodyFatCalculator = () => {
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="tech_calf"
+                        name="calf"
                         min="1"
                         step="any"
                         className="mt-1 input"
-                        value={formData.tech_calf}
+                        value={formData.calf}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -1517,7 +1519,7 @@ const BodyFatCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown12}
                       >
-                        {formData.tech_unit_calf} ▾
+                        {formData.unit_calf} ▾
                       </label>
                       {dropdownVisible12 && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -1542,7 +1544,6 @@ const BodyFatCalculator = () => {
               )}
             </div>
           </div>
-
           <div>
             {/* Hidden Input (if you want to pass the selected value in a form) */}
             <input
@@ -1555,7 +1556,7 @@ const BodyFatCalculator = () => {
               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div className="bg-white p-5 rounded-lg relative w-[350px]">
                   <button
-                    className="absolute top-2 right-3 text-gray-600 text-xl cursor-pointer"
+                    className="absolute top-2 right-3 text-gray-600 text-xl"
                     onClick={closeModal}
                   >
                     &times;
@@ -1737,7 +1738,7 @@ const BodyFatCalculator = () => {
             </div>
           )}
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -1751,27 +1752,29 @@ const BodyFatCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+      
+   <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
+
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="col-12">
+                      <div className="grid grid-cols-12 gap-2">
                         {formData?.tech_method == 1 ||
                         formData?.tech_calculator_type == "simple" ? (
-                          <div className="col-lg-12 mx-auto">
+                          <div className="col-span-12 mx-auto">
                             <div className="grid grid-cols-12 gap-3">
                               <div className="col-span-12 md:col-span-6 ">
                                 <div className="bg-sky text-center bordered rounded-lg p-3 ">
@@ -1815,14 +1818,14 @@ const BodyFatCalculator = () => {
                                 or lower for women.
                               </p>
                             </div>
-                            <div className="border rounded-lg mt-3 statistics">
+                            <div className=" radius-10 mt-3 statistics">
                               <div className="row text-center ">
-                                <p className="text-[14px] py-2 font_w  bg-[#2845F5] text-white br-top ">
+                                <p className="text-[14px] py-2 font_w  bg-[#2845F5] text-[#fff] br-top ">
                                   1) American Council on Exercise (Male, Body
                                   Fat 59%)
                                 </p>
                               </div>
-                              <div className="col-12">
+                              <div className="col-12 bordered">
                                 <table
                                   className="table new_table font-s-14"
                                   cellspacing="0"
@@ -1862,15 +1865,15 @@ const BodyFatCalculator = () => {
                                 </table>
                               </div>
                             </div>
-                            <div className="bordered rounded-[10px] mt-3 statistics">
+                            <div className=" rounded-[10px] mt-3 statistics">
                               <div className="row text-center">
-                                <p className="text-[14px] py-2 font_w bg-[#2845F5] text-white br-top">
+                                <p className="text-[14px] py-2 font_w bg-[#2845F5] text-[#fff] br-top">
                                   2) WHO/NIH Guidelines, Gallagher et al. (Male
                                   20 to 39 yrs, Body Fat 59 %)
                                 </p>
                               </div>
 
-                              <div className="col-12">
+                              <div className="col-12 bordered">
                                 <table
                                   className="table new_table text-[14px]"
                                   cellSpacing="0"
@@ -1939,15 +1942,15 @@ const BodyFatCalculator = () => {
                                 </table>
                               </div>
                             </div>
-                            <div className="border rounded-[10px] mt-3 statistics">
+                            <div className=" rounded-[10px] mt-3 statistics">
                               <div className="row text-center">
-                                <p className="text-[14px] py-2 font_w bg-[#2845F5] text-white br-top">
+                                <p className="text-[14px] py-2 font_w bg-[#2845F5] text-[#fff] br-top">
                                   3) American College of Sports Medicine* (Male
                                   20 to 29 yrs, Body Fat 59%)
                                 </p>
                               </div>
 
-                              <div className="col-12">
+                              <div className="col-12 bordered">
                                 <table
                                   className="table new_table text-[14px]"
                                   cellSpacing="0"
@@ -2043,7 +2046,7 @@ const BodyFatCalculator = () => {
                                 </table>
                               </div>
                             </div>
-                            <div className="row bg-gradient rounded-lg hidden">
+                            <div className="row bg-gradient radius-10 hidden">
                               <p
                                 className=" text-center text-white p-2"
                                 colspan="2"
@@ -2051,7 +2054,7 @@ const BodyFatCalculator = () => {
                                 {data?.payload?.tech_lang_keys["13"]}
                               </p>
                             </div>
-                            <div className="col-12 overflow-auto mt-2 table-wrapper hidden">
+                            <div className="col-12 bordered overflow-auto mt-2 table-wrapper hidden">
                               <table
                                 className="col-12 table-border rounded-[10px]"
                                 cellSpacing="0"
@@ -2270,7 +2273,7 @@ const BodyFatCalculator = () => {
                             </div>
                           </div>
                         ) : (
-                          <div className="col-lg-12 mx-auto">
+                          <div className="col-span-12 mx-auto">
                             <div className="grid grid-cols-12 gap-3">
                               <div className="col-span-12 md:col-span-6">
                                 <div className="bg-sky text-center bordered rounded-lg p-3 ">
@@ -2316,7 +2319,7 @@ const BodyFatCalculator = () => {
                                 or lower for women.
                               </p>
                             </div>
-                            <div className="row bg-[#2845F5] text-white rounded-lg">
+                            <div className="row bg-[#2845F5] text-[#fff] ">
                               <p className="text-center  p-2" colSpan={2}>
                                 {data?.payload?.tech_lang_keys?.secoun_table_h
                                   ? data.payload.tech_lang_keys.secoun_table_h
@@ -2324,7 +2327,7 @@ const BodyFatCalculator = () => {
                               </p>
                             </div>
 
-                            <div className="col-12 overflow-auto mt-2 table-wrapper">
+                            <div className="col-12 overflow-auto mt-2 bordered table-wrapper">
                               <table className="col-12" cellSpacing="0">
                                 <tbody className="">
                                   <tr>
@@ -2395,14 +2398,14 @@ const BodyFatCalculator = () => {
                                 </tbody>
                               </table>
                             </div>
-                            <div className=" rounded-lg mt-3 statistics">
+                            <div className="radius-10 mt-3 statistics">
                               <div className="row text-center ">
-                                <p className="text-[14px] py-2 font_w  bg-[#2845F5] text-white br-top ">
+                                <p className="text-[14px] py-2 font_w  bg-[#2845F5] text-[#fff] br-top ">
                                   1) American Council on Exercise (Male, Body
                                   Fat 59%)
                                 </p>
                               </div>
-                              <div className="col-12">
+                              <div className="col-12 bordered">
                                 <table
                                   className="table new_table text-sm w-full"
                                   cellSpacing="0"
@@ -2484,15 +2487,15 @@ const BodyFatCalculator = () => {
                                   </tbody>
                                 </table>
                               </div>
-                              <div className="bordered rounded-[10px] mt-3 statistics">
+                              <div className=" rounded-[10px] mt-3 statistics">
                                 <div className="row text-center">
-                                  <p className="text-[14px] py-2 font_w bg-[#2845F5] text-white br-top">
+                                  <p className="text-[14px] py-2 font_w bg-[#2845F5] text-[#fff] br-top">
                                     2) WHO/NIH Guidelines, Gallagher et al.
                                     (Male 20 to 39 yrs, Body Fat 59 %)
                                   </p>
                                 </div>
 
-                                <div className="col-12">
+                                <div className="col-12 bordered">
                                   <table
                                     className="table new_table text-sm w-full"
                                     cellSpacing="0"
@@ -2563,15 +2566,15 @@ const BodyFatCalculator = () => {
                                   </table>
                                 </div>
                               </div>
-                              <div className="bordered rounded-[10px] mt-3 statistics">
+                              <div className=" rounded-[10px] mt-3 statistics">
                                 <div className="row text-center">
-                                  <p className="text-[14px] py-2 font_w bg-[#2845F5] text-white br-top">
+                                  <p className="text-[14px] py-2 font_w bg-[#2845F5] text-[#fff] br-top">
                                     3) American College of Sports Medicine*
                                     (Male 20 to 29 yrs, Body Fat 59%)
                                   </p>
                                 </div>
 
-                                <div className="col-12">
+                                <div className="col-12 bordered">
                                   <table
                                     className="table new_table text-sm w-full"
                                     cellSpacing="0"

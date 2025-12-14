@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useTimedurationCalculationMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useTimedurationCalculationMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -13,7 +14,6 @@ import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeed
 import Calculator from "../../Calculator";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const TimeDurationCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -42,31 +42,27 @@ const TimeDurationCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-
   const [formData, setFormData] = useState({
-    tech_calculator_time: "date_cal",
-
-    tech_start_date: "",
+    tech_calculator_time: "date_cal", // date_cal  time_cal
+    tech_start_date: "2025-10-15",
     tech_d_start_h: "8",
     tech_d_start_m: "30",
-    tech_d_start_s: "00",
+    tech_d_start_s: "0",
     tech_d_start_ampm: "am",
-
-    tech_end_date: "",
-    tech_d_end_h: "5",
-    tech_d_end_m: "30",
-    tech_d_end_s: "0",
-    tech_d_end_ampm: "pm",
-
     tech_t_start_h: "8",
     tech_t_start_m: "30",
     tech_t_start_s: "0",
     tech_t_start_ampm: "am",
-
+    tech_end_date: "2025-10-31",
+    tech_d_end_h: "5",
+    tech_d_end_m: "30",
+    tech_d_end_s: "0",
+    tech_d_end_ampm: "pm",
     tech_t_end_h: "5",
     tech_t_end_m: "30",
     tech_t_end_s: "0",
     tech_t_end_ampm: "pm",
+    tech_submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -82,44 +78,11 @@ const TimeDurationCalculator = () => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
     setResult(null);
+    setFormError(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (formData.tech_calculator_time == "date_cal") {
-      if (
-        !formData.tech_calculator_time ||
-        !formData.tech_t_start_h ||
-        !formData.tech_t_start_m ||
-        !formData.tech_t_start_s ||
-        !formData.tech_t_start_ampm ||
-        !formData.tech_t_end_h ||
-        !formData.tech_t_end_m ||
-        !formData.tech_t_end_s ||
-        !formData.tech_t_end_ampm
-      ) {
-        setFormError("Please fill in field");
-        return;
-      }
-    } else {
-      if (
-        !formData.tech_calculator_time ||
-        !formData.tech_start_date ||
-        !formData.tech_d_start_h ||
-        !formData.tech_d_start_m ||
-        !formData.tech_d_start_s ||
-        !formData.tech_d_start_ampm ||
-        !formData.tech_end_date ||
-        !formData.tech_d_end_h ||
-        !formData.tech_d_end_m ||
-        !formData.tech_d_end_s ||
-        !formData.tech_d_end_ampm
-      ) {
-        setFormError("Please fill in field");
-        return;
-      }
-    }
 
     setFormError("");
     try {
@@ -143,41 +106,39 @@ const TimeDurationCalculator = () => {
         tech_t_end_m: formData.tech_t_end_m,
         tech_t_end_s: formData.tech_t_end_s,
         tech_t_end_ampm: formData.tech_t_end_ampm,
+        tech_submit: formData.tech_submit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
-      toast.success("Calculate Successfully");
+      setResult(response?.payload?.payload); // Assuming the response has 'lovePercentage'
+      toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error calculating");
-      toast.error("Error calculating");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_calculator_time: "date_cal",
-
-      tech_start_date: "",
+      tech_calculator_time: "date_cal", // date_cal  time_cal
+      tech_start_date: "2025-10-15",
       tech_d_start_h: "8",
       tech_d_start_m: "30",
-      tech_d_start_s: "00",
+      tech_d_start_s: "0",
       tech_d_start_ampm: "am",
-
-      tech_end_date: "",
-      tech_d_end_h: "5",
-      tech_d_end_m: "30",
-      tech_d_end_s: "0",
-      tech_d_end_ampm: "am",
-
       tech_t_start_h: "8",
       tech_t_start_m: "30",
       tech_t_start_s: "0",
       tech_t_start_ampm: "am",
-
+      tech_end_date: "2025-10-31",
+      tech_d_end_h: "5",
+      tech_d_end_m: "30",
+      tech_d_end_s: "0",
+      tech_d_end_ampm: "pm",
       tech_t_end_h: "5",
       tech_t_end_m: "30",
       tech_t_end_s: "0",
-      tech_t_end_ampm: "am",
+      tech_t_end_ampm: "pm",
+      tech_submit: "calculate",
     });
     setResult(null);
     setFormError(null);
@@ -200,70 +161,69 @@ const TimeDurationCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg shadow-md space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
-
-          <div className="col-12 col-lg-9 mx-auto mt-2 lg:w-[50%] w-full">
-            <input
-              type="hidden"
-              name="tech_calculator_time"
-              id="calculator_time"
-              value={formData.tech_calculator_time}
-            />
-
-            <div className="flex flex-wrap items-center bg-blue-100 border border-blue-500 text-center rounded-lg px-1">
-              {/* Date Cal Tab */}
-              <div className="lg:w-1/2 w-full px-2 py-1">
-                <div
-                  className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab  ${
-                    formData.tech_calculator_time === "date_cal"
-                      ? "tagsUnit"
-                      : ""
-                  }`}
-                  id="date_cal"
-                  onClick={() =>
-                    setFormData({
-                      ...formData,
-                      tech_calculator_time: "date_cal",
-                    })
-                  }
-                >
-                  {data?.payload?.tech_lang_keys["1"]}
+          <div className="lg:w-[90%] md:w-[80%] w-full mx-auto ">
+            <div className="col-12  mx-auto mt-2 lg:w-[80%] w-full">
+              <input
+                type="hidden"
+                name="tech_calculator_time"
+                id="calculator_time"
+                value={formData.tech_calculator_time}
+              />
+              <div className="flex flex-wrap items-center bg-blue-100 border border-blue-500 text-center rounded-lg px-1">
+                {/* Date Cal Tab */}
+                <div className="lg:w-1/2 w-full px-2 py-1">
+                  <div
+                    className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab  ${
+                      formData.tech_calculator_time === "date_cal"
+                        ? "tagsUnit"
+                        : ""
+                    }`}
+                    id="date_cal"
+                    onClick={() =>
+                      setFormData({
+                        ...formData,
+                        tech_calculator_time: "date_cal",
+                      })
+                    }
+                  >
+                    {data?.payload?.tech_lang_keys["1"]}
+                  </div>
                 </div>
-              </div>
-
-              {/* Time Cal Tab */}
-              <div className="lg:w-1/2 w-full px-2 py-1">
-                <div
-                  className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab ${
-                    formData.tech_calculator_time === "time_cal"
-                      ? "tagsUnit"
-                      : ""
-                  }`}
-                  id="time_cal"
-                  onClick={() =>
-                    setFormData({
-                      ...formData,
-                      tech_calculator_time: "time_cal",
-                    })
-                  }
-                >
-                  {data?.payload?.tech_lang_keys["2"]}
+                {/* Time Cal Tab */}
+                <div className="lg:w-1/2 w-full px-2 py-1">
+                  <div
+                    className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab ${
+                      formData.tech_calculator_time === "time_cal"
+                        ? "tagsUnit"
+                        : ""
+                    }`}
+                    id="time_cal"
+                    onClick={() =>
+                      setFormData({
+                        ...formData,
+                        tech_calculator_time: "time_cal",
+                      })
+                    }
+                  >
+                    {data?.payload?.tech_lang_keys["2"]}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="lg:w-[80%] md:w-[80%] w-full mx-auto overflow-x-auto">
+          <div className="lg:w-[80%] md:w-[80%] w-full mx-auto ">
             <p className="font-s-14 mt-4 text-blue">
               {data?.payload?.tech_lang_keys["3"]}
             </p>
             {formData?.tech_calculator_time === "time_cal" ? (
-              <div className="grid lg:grid-cols-5 md:grid-cols-5 grid-cols-3  gap-4 time_betw">
+              <div className="grid grid-cols-3 md:grid-cols-5  gap-4 time_betw  ">
                 <div className="space-y-2">
                   <label htmlFor="tech_start_date" className="label">
                     Date:
@@ -334,7 +294,6 @@ const TimeDurationCalculator = () => {
                     </label>
                     <div className="mt-2">
                       <select
-                        style={{ width: "100px" }}
                         className="input"
                         aria-label="select"
                         name="tech_d_start_ampm"
@@ -350,7 +309,7 @@ const TimeDurationCalculator = () => {
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-4  gap-4 time_due ">
+              <div className="grid grid-cols-3 md:grid-cols-4  gap-4 time_due ">
                 <div className="space-y-2">
                   <label htmlFor="tech_t_start_h" className="label">
                     Hrs:
@@ -406,7 +365,6 @@ const TimeDurationCalculator = () => {
                     </label>
                     <div className="">
                       <select
-                        style={{ width: "100px" }}
                         className="input"
                         aria-label="select"
                         name="tech_t_start_ampm"
@@ -428,7 +386,7 @@ const TimeDurationCalculator = () => {
             </p>
 
             {formData?.tech_calculator_time === "time_cal" ? (
-              <div className="grid grid lg:grid-cols-5 md:grid-cols-5 grid-cols-3 gap-4 time_betw ">
+              <div className="grid grid-cols-3 md:grid-cols-5 gap-4 time_betw ">
                 <div className="space-y-2">
                   <label htmlFor="tech_end_date" className="label">
                     Date:
@@ -499,7 +457,6 @@ const TimeDurationCalculator = () => {
                     </label>
                     <div className="">
                       <select
-                        style={{ width: "100px" }}
                         className="input"
                         aria-label="select"
                         name="tech_d_end_ampm"
@@ -515,7 +472,7 @@ const TimeDurationCalculator = () => {
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-4 gap-4 time_due ">
+              <div className="grid grid-cols-3 md:grid-cols-4 gap-4 time_due ">
                 <div className="space-y-2">
                   <label htmlFor="tech_t_end_h" className="label">
                     Hrs:
@@ -571,7 +528,6 @@ const TimeDurationCalculator = () => {
                     </label>
                     <div className="">
                       <select
-                        style={{ width: "100px" }}
                         className="input"
                         aria-label="select"
                         name="tech_t_end_ampm"
@@ -589,7 +545,7 @@ const TimeDurationCalculator = () => {
             )}
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={calculateDeadlineLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -603,7 +559,7 @@ const TimeDurationCalculator = () => {
           </div>
         </div>
         {calculateDeadlineLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -614,18 +570,18 @@ const TimeDurationCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center ">
                     <div className="w-full p-3 rounded-lg mt-3">
                       <div className="my-2">
-                        <div className="w-full md:w-[50%] lg:w-[50%] text-xl">
-                          <table className="w-full lg:text-[16px] md:text-[16px] text-[14px]">
+                        <div className="w-full md:w-[80%] lg:w-[70%] overflow-auto md:text-[18px] text-[16px]">
+                          <table className="w-full">
                             <tbody>
                               {formData?.tech_calculator_time ===
-                                "time_cal" && (
+                                "date_cal" && (
                                 <tr>
                                   <td className="border-b py-2 font-semibold">
                                     <strong>{result?.tech_days_ans}</strong>

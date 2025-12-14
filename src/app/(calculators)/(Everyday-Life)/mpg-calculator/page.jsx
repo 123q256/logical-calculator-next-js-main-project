@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useMpgCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useMpgCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const MpgCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -121,11 +121,11 @@ const MpgCalculator = () => {
         tech_ad_units4: formData.tech_ad_units4,
         tech_submit: formData.tech_submit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -325,7 +325,7 @@ const MpgCalculator = () => {
                 <>
                   <div className="col-span-12 simple mt-2 ">
                     <div className="grid grid-cols-12 mt-3  gap-4">
-                      <div className="col-span-12 md:col-span-6 lg:col-span-6 ">
+                      <div className="col-span-6 md:col-span-6 lg:col-span-6 ">
                         <label htmlFor="tech_operations" className="label">
                           {data?.payload?.tech_lang_keys["3"]}:
                         </label>
@@ -352,7 +352,7 @@ const MpgCalculator = () => {
                       </div>
                       {(formData.tech_operations == "2" ||
                         formData.tech_operations == "3") && (
-                        <div className="col-span-12 md:col-span-6 lg:col-span-6 ">
+                        <div className="col-span-6 md:col-span-6 lg:col-span-6 ">
                           <label htmlFor="tech_first" className="label">
                             {data?.payload?.tech_lang_keys["4"]} :
                           </label>
@@ -393,7 +393,7 @@ const MpgCalculator = () => {
                       )}
                       {(formData.tech_operations == "1" ||
                         formData.tech_operations == "3") && (
-                        <div className="col-span-12 md:col-span-6 lg:col-span-6 ">
+                        <div className="col-span-6 md:col-span-6 lg:col-span-6 ">
                           <label htmlFor="tech_second" className="label">
                             {data?.payload?.tech_lang_keys["5"]} :
                           </label>
@@ -435,7 +435,7 @@ const MpgCalculator = () => {
                       )}
                       {(formData.tech_operations == "1" ||
                         formData.tech_operations == "2") && (
-                        <div className="col-span-12 md:col-span-6 lg:col-span-6 ">
+                        <div className="col-span-6 md:col-span-6 lg:col-span-6 ">
                           <label htmlFor="tech_third" className="label">
                             {data?.payload?.tech_lang_keys["5"]} :
                           </label>
@@ -476,7 +476,6 @@ const MpgCalculator = () => {
                           </div>
                         </div>
                       )}
-
                       <div className="col-span-12 md:col-span-6 lg:col-span-6">
                         <label htmlFor="tech_four" className="label">
                           {data?.payload?.tech_lang_keys["8"]} (
@@ -534,7 +533,7 @@ const MpgCalculator = () => {
                 <>
                   <div className=" col-span-12 advance mt-2">
                     <div className="grid grid-cols-12 mt-3  gap-4">
-                      <div className="col-span-12 md:col-span-6 lg:col-span-6 ">
+                      <div className="col-span-6 md:col-span-6 lg:col-span-6 ">
                         <label htmlFor="tech_ad_first" className="label">
                           {data?.payload?.tech_lang_keys["11"]}:
                         </label>
@@ -552,7 +551,7 @@ const MpgCalculator = () => {
                           />
                         </div>
                       </div>
-                      <div className="col-span-12 md:col-span-6 lg:col-span-6">
+                      <div className="col-span-6 md:col-span-6 lg:col-span-6">
                         <label htmlFor="tech_ad_second" className="label">
                           {data?.payload?.tech_lang_keys["12"]}:
                         </label>
@@ -570,7 +569,7 @@ const MpgCalculator = () => {
                           />
                         </div>
                       </div>
-                      <div className="col-span-12 md:col-span-6 lg:col-span-6">
+                      <div className="col-span-6 md:col-span-6 lg:col-span-6">
                         <label htmlFor="tech_ad_third" className="label">
                           {data?.payload?.tech_lang_keys["5"]}
                         </label>
@@ -674,7 +673,7 @@ const MpgCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -699,14 +698,14 @@ const MpgCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="w-full my-2">
-                        <div className="w-full md:w-[60%] lg:w-[60%] overflow-auto lg:text-[18px] md:text-[18px] text-[16px]">
+                        <div className="w-full md:w-[60%] lg:w-[80%] text-[16px]">
                           <table className="w-full">
                             <tbody>
                               {formData?.tech_type == "first" ? (

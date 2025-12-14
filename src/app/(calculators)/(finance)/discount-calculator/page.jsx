@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useDiscountCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useDiscountCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const DiscountCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -44,24 +44,24 @@ const DiscountCalculator = () => {
   }, [url]);
 
   const [formData, setFormData] = useState({
-    tech_lang: "en",
-    tech_type: "8", // 1 2 3 4 5 6 7 8 9 10
-    tech_amount: "5",
-    tech_off: "3",
-    tech_pay: "",
-    tech_saving: "",
-    tech_dis_p: "",
-    tech_off2: "400",
-    tech_off3: "400",
-    tech_p1: "400",
-    tech_p2: "500",
-    tech_p3: "500",
-    tech_p4: "500",
-    tech_nbr: "3000",
-    tech_up: "4000",
-    tech_fix: "4000",
-    tech_tax: "yes",
-    tech_sale: "6",
+    lang: "en",
+    type: "8", // 1 2 3 4 5 6 7 8 9 10
+    amount: "5",
+    off: "3",
+    pay: "",
+    saving: "",
+    dis_p: "",
+    off2: "400",
+    off3: "400",
+    p1: "400",
+    p2: "500",
+    p3: "500",
+    p4: "500",
+    nbr: "3000",
+    up: "4000",
+    fix: "4000",
+    tax: "yes",
+    sale: "6",
   });
 
   const [result, setResult] = useState(null);
@@ -73,13 +73,8 @@ const DiscountCalculator = () => {
     { isLoading: roundToTheNearestLoading, isError, error: calculateLoveError },
   ] = useDiscountCalculatorMutation();
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prevData) => ({ ...prevData, [name]: value }));
-  // };
-
   const getFilledCount = () => {
-    return ["tech_amount", "tech_off", "tech_pay", "tech_saving"].filter(
+    return ["amount", "off", "pay", "saving"].filter(
       (field) => formData[field] !== ""
     ).length;
   };
@@ -95,65 +90,62 @@ const DiscountCalculator = () => {
       ...prev,
       [name]: value,
     }));
+    setResult(null);
+    setFormError(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // if (!formData.tech_type ) {
-    //   setFormError("Please fill in input.");
-    //   return;
-    // }
-
     setFormError("");
     try {
       const response = await calculateEbitCalculator({
-        tech_lang: formData.tech_lang,
-        tech_type: formData.tech_type,
-        tech_amount: formData.tech_amount,
-        tech_dis_p: formData.tech_dis_p,
-        tech_off: formData.tech_off,
-        tech_off2: formData.tech_off2,
-        tech_off3: formData.tech_off3,
-        tech_p1: formData.tech_p1,
-        tech_p2: formData.tech_p2,
-        tech_p3: formData.tech_p3,
-        tech_p4: formData.tech_p4,
-        tech_nbr: formData.tech_nbr,
-        tech_up: formData.tech_up,
-        tech_fix: formData.tech_fix,
-        tech_tax: formData.tech_tax,
-        tech_sale: formData.tech_sale,
+        lang: formData.lang,
+        type: formData.type,
+        amount: formData.amount,
+        dis_p: formData.dis_p,
+        off: formData.off,
+        off2: formData.off2,
+        off3: formData.off3,
+        p1: formData.p1,
+        p2: formData.p2,
+        p3: formData.p3,
+        p4: formData.p4,
+        nbr: formData.nbr,
+        up: formData.up,
+        fix: formData.fix,
+        tax: formData.tax,
+        sale: formData.sale,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error in calculating.");
-      toast.error("Error in calculating.");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_lang: "en",
-      tech_type: "8", // 1 2 3 4 5 6 7 8 9 10
-      tech_amount: "5",
-      tech_off: "3",
-      tech_pay: "",
-      tech_saving: "",
-      tech_dis_p: "",
-      tech_off2: "400",
-      tech_off3: "400",
-      tech_p1: "400",
-      tech_p2: "500",
-      tech_p3: "500",
-      tech_p4: "500",
-      tech_nbr: "3000",
-      tech_up: "4000",
-      tech_fix: "4000",
-      tech_tax: "yes",
-      tech_sale: "6",
+      lang: "en",
+      type: "8", // 1 2 3 4 5 6 7 8 9 10
+      amount: "5",
+      off: "3",
+      pay: "",
+      saving: "",
+      dis_p: "",
+      off2: "400",
+      off3: "400",
+      p1: "400",
+      p2: "500",
+      p3: "500",
+      p4: "500",
+      nbr: "3000",
+      up: "4000",
+      fix: "4000",
+      tax: "yes",
+      sale: "6",
     });
     setResult(null);
     setFormError(null);
@@ -177,6 +169,24 @@ const DiscountCalculator = () => {
   }, []);
   // currency code
 
+  // majax
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src =
+      "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML";
+    script.async = true;
+    script.type = "text/javascript";
+    script.onload = () => {
+      window.MathJax &&
+        window.MathJax.Hub.Queue(["Typeset", window.MathJax.Hub]);
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, [result]);
+  // majax
   return (
     <Calculator
       isLoading={isLoading}
@@ -194,7 +204,7 @@ const DiscountCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
@@ -204,25 +214,25 @@ const DiscountCalculator = () => {
           <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
             <input
               type="hidden"
-              name="tech_lang"
-              id="tech_lang"
+              name="lang"
+              id="lang"
               className="input my-2"
               aria-label="input"
-              value={formData.tech_lang}
+              value={formData.lang}
             />
 
             <div className="grid grid-cols-1    gap-4" id="advance">
               <div className="space-y-2">
-                <label htmlFor="tech_type" className="label">
+                <label htmlFor="type" className="label">
                   {data?.payload?.tech_lang_keys["10"]}:
                 </label>
                 <div className="mt-2">
                   <select
                     className="input"
                     aria-label="select"
-                    name="tech_type"
-                    id="tech_type"
-                    value={formData.tech_type}
+                    name="type"
+                    id="type"
+                    value={formData.type}
                     onChange={handleChange}
                   >
                     <option value="1">
@@ -269,40 +279,40 @@ const DiscountCalculator = () => {
             </p>
             <div className="grid grid-cols-2 mt-4 lg:grid-cols-2 md:grid-cols-2  gap-4">
               <div className="space-y-2 hidden dis_p ">
-                <label htmlFor="tech_dis_p" className="label">
+                <label htmlFor="dis_p" className="label">
                   {data?.payload?.tech_lang_keys["discount"]}:
                 </label>
                 <div className=" relative">
                   <input
                     type="number"
                     step="any"
-                    name="tech_dis_p"
-                    id="tech_dis_p"
+                    name="dis_p"
+                    id="dis_p"
                     className="input my-2"
                     aria-label="input"
-                    value={formData.tech_dis_p}
+                    value={formData.dis_p}
                     onChange={handleChange}
                   />
                   <span className="input_unit">{currency.symbol}</span>
                 </div>
               </div>
 
-              {(formData.tech_type == "1" || formData.tech_type == "4") && (
+              {(formData.type == "1" || formData.type == "4") && (
                 <>
                   {/* Original */}
                   <div className="space-y-2 original">
-                    <label htmlFor="tech_amount" className="label">
+                    <label htmlFor="amount" className="label">
                       {data?.payload?.tech_lang_keys["original"]}:
                     </label>
                     <div className="relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_amount"
-                        id="tech_amount"
+                        name="amount"
+                        id="amount"
                         className="input my-2"
                         aria-label="input"
-                        value={formData.tech_amount}
+                        value={formData.amount}
                         onChange={handleChange}
                         disabled={isDisabled("tech_amount")}
                       />
@@ -311,18 +321,18 @@ const DiscountCalculator = () => {
                   </div>
                   {/* Discount */}
                   <div className="space-y-2 dis">
-                    <label htmlFor="tech_off" className="label">
+                    <label htmlFor="off" className="label">
                       {data?.payload?.tech_lang_keys["20"]} (%):
                     </label>
                     <div className="relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_off"
-                        id="tech_off"
+                        name="off"
+                        id="off"
                         className="input my-2"
                         aria-label="input"
-                        value={formData.tech_off}
+                        value={formData.off}
                         onChange={handleChange}
                         disabled={isDisabled("tech_off")}
                       />
@@ -331,18 +341,18 @@ const DiscountCalculator = () => {
                   </div>
                   {/* You Pay */}
                   <div className="space-y-2 pay">
-                    <label htmlFor="tech_pay" className="label">
+                    <label htmlFor="pay" className="label">
                       You Pay
                     </label>
                     <div className="relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_pay"
-                        id="tech_pay"
+                        name="pay"
+                        id="pay"
                         className="input my-2"
                         aria-label="input"
-                        value={formData.tech_pay}
+                        value={formData.pay}
                         onChange={handleChange}
                         disabled={isDisabled("tech_pay")}
                       />
@@ -351,18 +361,18 @@ const DiscountCalculator = () => {
                   </div>
                   {/* You're saving */}
                   <div className="space-y-2 saving">
-                    <label htmlFor="tech_saving" className="label">
+                    <label htmlFor="saving" className="label">
                       You're saving
                     </label>
                     <div className="relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_saving"
-                        id="tech_saving"
+                        name="saving"
+                        id="saving"
                         className="input my-2"
                         aria-label="input"
-                        value={formData.tech_saving}
+                        value={formData.saving}
                         onChange={handleChange}
                         disabled={isDisabled("tech_saving")}
                       />
@@ -372,21 +382,21 @@ const DiscountCalculator = () => {
                 </>
               )}
 
-              {formData.tech_type == "2" && (
+              {formData.type == "2" && (
                 <>
                   <div className="space-y-2 dis">
-                    <label htmlFor="tech_off" className="label">
+                    <label htmlFor="off" className="label">
                       {data?.payload?.tech_lang_keys["20"]} (%):
                     </label>
                     <div className="relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_off"
-                        id="tech_off"
+                        name="off"
+                        id="off"
                         className="input my-2"
                         aria-label="input"
-                        value={formData.tech_off}
+                        value={formData.off}
                         onChange={handleChange}
                         disabled={isDisabled("tech_off")}
                       />
@@ -394,38 +404,38 @@ const DiscountCalculator = () => {
                     </div>
                   </div>
                   <div className="space-y-2  p1 ">
-                    <label htmlFor="tech_p1" className="label">
+                    <label htmlFor="p1" className="label">
                       {data?.payload?.tech_lang_keys["12"]} 1
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_p1"
-                        id="tech_p1"
+                        name="p1"
+                        id="p1"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_p1}
+                        value={formData.p1}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
                     </div>
                   </div>
                   <div className="space-y-2  p2 ">
-                    <label htmlFor="tech_p2" className="label">
+                    <label htmlFor="p2" className="label">
                       {data?.payload?.tech_lang_keys["12"]} 2
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_p2"
-                        id="tech_p2"
+                        name="p2"
+                        id="p2"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_p2}
+                        value={formData.p2}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
@@ -434,21 +444,21 @@ const DiscountCalculator = () => {
                 </>
               )}
 
-              {formData.tech_type == "3" && (
+              {formData.type == "3" && (
                 <>
                   <div className="space-y-2 dis">
-                    <label htmlFor="tech_off" className="label">
+                    <label htmlFor="off" className="label">
                       {data?.payload?.tech_lang_keys["20"]} (%):
                     </label>
                     <div className="relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_off"
-                        id="tech_off"
+                        name="off"
+                        id="off"
                         className="input my-2"
                         aria-label="input"
-                        value={formData.tech_off}
+                        value={formData.off}
                         onChange={handleChange}
                         disabled={isDisabled("tech_off")}
                       />
@@ -456,38 +466,38 @@ const DiscountCalculator = () => {
                     </div>
                   </div>
                   <div className="space-y-2  p1 ">
-                    <label htmlFor="tech_p1" className="label">
+                    <label htmlFor="p1" className="label">
                       {data?.payload?.tech_lang_keys["12"]} 1
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_p1"
-                        id="tech_p1"
+                        name="p1"
+                        id="p1"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_p1}
+                        value={formData.p1}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
                     </div>
                   </div>
                   <div className="space-y-2  p2 ">
-                    <label htmlFor="tech_p2" className="label">
+                    <label htmlFor="p2" className="label">
                       {data?.payload?.tech_lang_keys["12"]} 2
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_p2"
-                        id="tech_p2"
+                        name="p2"
+                        id="p2"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_p2}
+                        value={formData.p2}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
@@ -495,19 +505,19 @@ const DiscountCalculator = () => {
                   </div>
 
                   <div className="space-y-2  p3 ">
-                    <label htmlFor="tech_p3" className="label">
+                    <label htmlFor="p3" className="label">
                       {data?.payload?.tech_lang_keys["12"]} 3
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_p3"
-                        id="tech_p3"
+                        name="p3"
+                        id="p3"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_p3}
+                        value={formData.p3}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
@@ -516,21 +526,21 @@ const DiscountCalculator = () => {
                 </>
               )}
 
-              {formData.tech_type == "8" && (
+              {formData.type == "8" && (
                 <>
                   <div className="space-y-2 original">
-                    <label htmlFor="tech_amount" className="label">
+                    <label htmlFor="amount" className="label">
                       {data?.payload?.tech_lang_keys["original"]}:
                     </label>
                     <div className="relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_amount"
-                        id="tech_amount"
+                        name="amount"
+                        id="amount"
                         className="input my-2"
                         aria-label="input"
-                        value={formData.tech_amount}
+                        value={formData.amount}
                         onChange={handleChange}
                         disabled={isDisabled("tech_amount")}
                       />
@@ -538,18 +548,18 @@ const DiscountCalculator = () => {
                     </div>
                   </div>
                   <div className="space-y-2 dis">
-                    <label htmlFor="tech_off" className="label">
+                    <label htmlFor="off" className="label">
                       1st {data?.payload?.tech_lang_keys["20"]} (%):
                     </label>
                     <div className="relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_off"
-                        id="tech_off"
+                        name="off"
+                        id="off"
                         className="input my-2"
                         aria-label="input"
-                        value={formData.tech_off}
+                        value={formData.off}
                         onChange={handleChange}
                         disabled={isDisabled("tech_off")}
                       />
@@ -557,19 +567,19 @@ const DiscountCalculator = () => {
                     </div>
                   </div>
                   <div className="space-y-2  dis2 ">
-                    <label htmlFor="tech_off2" className="label">
+                    <label htmlFor="off2" className="label">
                       2nd {data?.payload?.tech_lang_keys["20"]} (%)
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_off2"
-                        id="tech_off2"
+                        name="off2"
+                        id="off2"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_off2}
+                        value={formData.off2}
                         onChange={handleChange}
                       />
                     </div>
@@ -577,21 +587,21 @@ const DiscountCalculator = () => {
                 </>
               )}
 
-              {formData.tech_type == "9" && (
+              {formData.type == "9" && (
                 <>
                   <div className="space-y-2 original">
-                    <label htmlFor="tech_amount" className="label">
+                    <label htmlFor="amount" className="label">
                       {data?.payload?.tech_lang_keys["original"]}:
                     </label>
                     <div className="relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_amount"
-                        id="tech_amount"
+                        name="amount"
+                        id="amount"
                         className="input my-2"
                         aria-label="input"
-                        value={formData.tech_amount}
+                        value={formData.amount}
                         onChange={handleChange}
                         disabled={isDisabled("tech_amount")}
                       />
@@ -599,18 +609,18 @@ const DiscountCalculator = () => {
                     </div>
                   </div>
                   <div className="space-y-2 dis">
-                    <label htmlFor="tech_off" className="label">
+                    <label htmlFor="off" className="label">
                       1st {data?.payload?.tech_lang_keys["20"]} (%):
                     </label>
                     <div className="relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_off"
-                        id="tech_off"
+                        name="off"
+                        id="off"
                         className="input my-2"
                         aria-label="input"
-                        value={formData.tech_off}
+                        value={formData.off}
                         onChange={handleChange}
                         disabled={isDisabled("tech_off")}
                       />
@@ -618,78 +628,78 @@ const DiscountCalculator = () => {
                     </div>
                   </div>
                   <div className="space-y-2  dis2 ">
-                    <label htmlFor="tech_off2" className="label">
+                    <label htmlFor="off2" className="label">
                       2nd {data?.payload?.tech_lang_keys["20"]} (%)
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_off2"
-                        id="tech_off2"
+                        name="off2"
+                        id="off2"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_off2}
+                        value={formData.off2}
                         onChange={handleChange}
                       />
                     </div>
                   </div>
                   <div className="space-y-2  dis3 ">
-                    <label htmlFor="tech_off3" className="label">
+                    <label htmlFor="off3" className="label">
                       3rd {data?.payload?.tech_lang_keys["20"]} (%)
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_off3"
-                        id="tech_off3"
+                        name="off3"
+                        id="off3"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_off3}
+                        value={formData.off3}
                         onChange={handleChange}
                       />
                     </div>
                   </div>
                 </>
               )}
-              {formData.tech_type == "5" && (
+              {formData.type == "5" && (
                 <>
                   <div className="space-y-2  p1 ">
-                    <label htmlFor="tech_p1" className="label">
+                    <label htmlFor="p1" className="label">
                       {data?.payload?.tech_lang_keys["12"]} 1
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_p1"
-                        id="tech_p1"
+                        name="p1"
+                        id="p1"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_p1}
+                        value={formData.p1}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
                     </div>
                   </div>
                   <div className="space-y-2  p2 ">
-                    <label htmlFor="tech_p2" className="label">
+                    <label htmlFor="p2" className="label">
                       {data?.payload?.tech_lang_keys["12"]} 2
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_p2"
-                        id="tech_p2"
+                        name="p2"
+                        id="p2"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_p2}
+                        value={formData.p2}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
@@ -697,60 +707,60 @@ const DiscountCalculator = () => {
                   </div>
                 </>
               )}
-              {formData.tech_type == "6" && (
+              {formData.type == "6" && (
                 <>
                   <div className="space-y-2  p1 ">
-                    <label htmlFor="tech_p1" className="label">
+                    <label htmlFor="p1" className="label">
                       {data?.payload?.tech_lang_keys["12"]} 1
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_p1"
-                        id="tech_p1"
+                        name="p1"
+                        id="p1"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_p1}
+                        value={formData.p1}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
                     </div>
                   </div>
                   <div className="space-y-2  p2 ">
-                    <label htmlFor="tech_p2" className="label">
+                    <label htmlFor="p2" className="label">
                       {data?.payload?.tech_lang_keys["12"]} 2
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_p2"
-                        id="tech_p2"
+                        name="p2"
+                        id="p2"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_p2}
+                        value={formData.p2}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
                     </div>
                   </div>
                   <div className="space-y-2  p3 ">
-                    <label htmlFor="tech_p3" className="label">
+                    <label htmlFor="p3" className="label">
                       {data?.payload?.tech_lang_keys["12"]} 3
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_p3"
-                        id="tech_p3"
+                        name="p3"
+                        id="p3"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_p3}
+                        value={formData.p3}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
@@ -758,79 +768,79 @@ const DiscountCalculator = () => {
                   </div>
                 </>
               )}
-              {formData.tech_type == "7" && (
+              {formData.type == "7" && (
                 <>
                   <div className="space-y-2  p1 ">
-                    <label htmlFor="tech_p1" className="label">
+                    <label htmlFor="p1" className="label">
                       {data?.payload?.tech_lang_keys["12"]} 1
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_p1"
-                        id="tech_p1"
+                        name="p1"
+                        id="p1"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_p1}
+                        value={formData.p1}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
                     </div>
                   </div>
                   <div className="space-y-2  p2 ">
-                    <label htmlFor="tech_p2" className="label">
+                    <label htmlFor="p2" className="label">
                       {data?.payload?.tech_lang_keys["12"]} 2
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_p2"
-                        id="tech_p2"
+                        name="p2"
+                        id="p2"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_p2}
+                        value={formData.p2}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
                     </div>
                   </div>
                   <div className="space-y-2  p3 ">
-                    <label htmlFor="tech_p3" className="label">
+                    <label htmlFor="p3" className="label">
                       {data?.payload?.tech_lang_keys["12"]} 3
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_p3"
-                        id="tech_p3"
+                        name="p3"
+                        id="p3"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_p3}
+                        value={formData.p3}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
                     </div>
                   </div>
                   <div className="space-y-2  p4 ">
-                    <label htmlFor="tech_p4" className="label">
+                    <label htmlFor="p4" className="label">
                       {data?.payload?.tech_lang_keys["12"]} 4
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_p4"
-                        id="tech_p4"
+                        name="p4"
+                        id="p4"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_p4}
+                        value={formData.p4}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
@@ -838,60 +848,60 @@ const DiscountCalculator = () => {
                   </div>
                 </>
               )}
-              {formData.tech_type == "10" && (
+              {formData.type == "10" && (
                 <>
                   <div className="space-y-2  multi  ">
-                    <label htmlFor="tech_nbr" className="label">
+                    <label htmlFor="nbr" className="label">
                       {data?.payload?.tech_lang_keys["21"]}
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_nbr"
-                        id="tech_nbr"
+                        name="nbr"
+                        id="nbr"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_nbr}
+                        value={formData.nbr}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
                     </div>
                   </div>
                   <div className="space-y-2  multi  ">
-                    <label htmlFor="tech_up" className="label">
+                    <label htmlFor="up" className="label">
                       {data?.payload?.tech_lang_keys["22"]}
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_up"
-                        id="tech_up"
+                        name="up"
+                        id="up"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_up}
+                        value={formData.up}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
                     </div>
                   </div>
                   <div className="space-y-2  multi  ">
-                    <label htmlFor="tech_fix" className="label">
+                    <label htmlFor="fix" className="label">
                       {data?.payload?.tech_lang_keys["23"]}
                     </label>
                     <div className=" relative">
                       <input
                         type="number"
                         step="any"
-                        name="tech_fix"
-                        id="tech_fix"
+                        name="fix"
+                        id="fix"
                         className="input my-2"
                         aria-label="input"
                         min="0"
-                        value={formData.tech_fix}
+                        value={formData.fix}
                         onChange={handleChange}
                       />
                       <span className="input_unit">{currency.symbol}</span>
@@ -902,47 +912,47 @@ const DiscountCalculator = () => {
             </div>
             <div className="grid grid-cols-12  gap-4">
               <div className="col-span-12 mt-5 md:col-span-6">
-                <label className="pe-2" htmlFor="yes">
+                <label className="pe-2 cursor-pointer" htmlFor="yes">
                   <input
                     type="radio"
-                    name="tech_tax"
+                    name="tax"
                     value="yes"
                     id="yes"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     onChange={handleChange}
-                    checked={formData.tech_tax === "yes"}
+                    checked={formData.tax === "yes"}
                   />
                   <span>{data?.payload?.tech_lang_keys["25"]}</span>
                 </label>
 
-                <label htmlFor="no">
+                <label className="cursor-pointer" htmlFor="no">
                   <input
                     type="radio"
-                    name="tech_tax"
-                    className="mr-2 border"
+                    name="tax"
+                    className="mr-2 border cursor-pointer"
                     value="no"
                     id="no"
                     onChange={handleChange}
-                    checked={formData.tech_tax === "no"}
+                    checked={formData.tax === "no"}
                   />
                   <span>{data?.payload?.tech_lang_keys["26"]}</span>
                 </label>
               </div>
-              {formData.tech_tax == "no" && (
+              {formData.tax == "no" && (
                 <div className="col-span-12 md:col-span-6  sales">
-                  <label htmlFor="tech_sale" className="label">
+                  <label htmlFor="sale" className="label">
                     {data?.payload?.tech_lang_keys["27"]}
                   </label>
                   <div className=" relative">
                     <input
                       type="number"
                       step="any"
-                      name="tech_sale"
-                      id="tech_sale"
+                      name="sale"
+                      id="sale"
                       className="input my-2"
                       aria-label="input"
                       min="0"
-                      value={formData.tech_sale}
+                      value={formData.sale}
                       onChange={handleChange}
                     />
                     <span className="input_unit">%</span>
@@ -952,7 +962,7 @@ const DiscountCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -977,12 +987,12 @@ const DiscountCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center ">
-                    <div className="w-full md:w-[70%] p-3 radius-10 mt-3">
+                    <div className="w-full  p-3 radius-10 mt-3">
                       {/* @if (isset($detail['nor']))
                                   <div className="w-full M">
                                       <table className="w-full">
@@ -1100,19 +1110,15 @@ const DiscountCalculator = () => {
                                       </table>
                                   </div>
                               @else */}
-                      <div className="mt-2">
-                        <div className="col-lg-8 mt-2">
+                      <div className="grid grid-cols-12 gap-1 md:gap-3 text-[14px] md:text-[18px]">
+                        <div className="col-span-12 md:col-span-8 overflow-auto">
+                          <p className="mt-2">
+                            <strong>
+                              {data?.payload?.tech_lang_keys["28"]}
+                            </strong>
+                          </p>
                           <table className="w-full">
                             <tbody>
-                              <tr>
-                                <td className="mt-2">
-                                  <strong>
-                                    <p className="text-[18px]">
-                                      {data?.payload?.tech_lang_keys["28"]}
-                                    </p>
-                                  </strong>
-                                </td>
-                              </tr>
                               <tr>
                                 <td className="py-2 border-b" width="70%">
                                   <strong>
@@ -1121,7 +1127,7 @@ const DiscountCalculator = () => {
                                 </td>
                                 <td className="py-2 border-b">
                                   {" "}
-                                  {formData?.tech_cur} {result?.tech_pay}
+                                  {formData?.tech_cur} {result?.pay}
                                 </td>
                               </tr>
                               <tr>
@@ -1132,14 +1138,14 @@ const DiscountCalculator = () => {
                                 </td>
                                 <td className="py-2 border-b">
                                   {formData?.tech_cur}
-                                  {result?.tech_Ans}
+                                  {result?.Ans}
                                 </td>
                               </tr>
                             </tbody>
                           </table>
                         </div>
-                        {result?.tech_ave && (
-                          <div className="col-lg-8">
+                        {result?.ave && (
+                          <div className="col-span-12 md:col-span-8">
                             <table className="w-full">
                               <tbody>
                                 <tr>
@@ -1149,15 +1155,15 @@ const DiscountCalculator = () => {
                                     </strong>
                                   </td>
                                   <td className="py-2 border-b">
-                                    {formData?.tech_cur} {result?.tech_ave}
+                                    {formData?.tech_cur} {result?.ave}
                                   </td>
                                 </tr>
                                 <tr>
                                   <td className="py-2" width="70%">
                                     <strong>
-                                      {result?.tech_per}%{" "}
+                                      {result?.per}%{" "}
                                       {data?.payload?.tech_lang_keys["30"]}{" "}
-                                      {result?.tech_stand}
+                                      {result?.stand}
                                     </strong>
                                   </td>
                                 </tr>
@@ -1166,17 +1172,17 @@ const DiscountCalculator = () => {
                           </div>
                         )}
 
-                        {result?.tech_effect && (
-                          <div className="col-lg-8">
+                        {result?.effect && (
+                          <div className="col-span-12 ">
                             <table className="w-full">
                               <tbody>
                                 <tr>
                                   <td className="py-2 border-b" width="70%">
                                     <strong>
                                       {data?.payload?.tech_lang_keys["31"]}{" "}
-                                      {result?.tech_effect} %,
+                                      {result?.effect} %,
                                       {data?.payload?.tech_lang_keys["32"]}{" "}
-                                      {result?.tech_sum}
+                                      {result?.sum}
                                     </strong>
                                   </td>
                                 </tr>

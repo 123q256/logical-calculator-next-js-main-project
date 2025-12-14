@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useDaysuntilCalculationMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useDaysuntilCalculationMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -13,7 +14,6 @@ import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeed
 import Calculator from "../../Calculator";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const DeadlineCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -138,11 +138,11 @@ const DeadlineCalculator = () => {
         tech_inc_day: formData.tech_inc_day,
         tech_weekDay: formData.tech_weekDay,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
-      toast.success("Calculate Successfully");
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
+      toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error calculating");
-      toast.error("Error calculating");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -226,7 +226,7 @@ const DeadlineCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[90%] w-full mx-auto ">
             <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2  gap-4">
               <div className="space-y-2">
                 <label htmlFor="tech_current" className="label">
@@ -286,10 +286,11 @@ const DeadlineCalculator = () => {
                 </div>
               </div>
             </div>
-            <div className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-4 mt-3">
-              <div className="toggle-label ">
+            <div className="grid grid-cols-12 gap-4 mt-5 ">
+              {/* <div className="toggle-container"> */}
+              <div className="toggle-label col-span-12 md:col-span-6">
                 <span>Include all days?</span>
-                <label className="toggle-switch">
+                <label className="toggle-switch cursor-pointer">
                   <input
                     type="checkbox"
                     name="tech_inc_all"
@@ -300,9 +301,9 @@ const DeadlineCalculator = () => {
                   <span className="slider"></span>
                 </label>
               </div>
-              <div className="toggle-label ">
+              <div className="toggle-label col-span-12 md:col-span-6">
                 <span>Include end day?</span>
-                <label className="toggle-switch">
+                <label className="toggle-switch cursor-pointer mt-5">
                   <input
                     type="checkbox"
                     name="tech_inc_day"
@@ -312,16 +313,21 @@ const DeadlineCalculator = () => {
                   <span className="slider"></span>
                 </label>
               </div>
+              {/* </div> */}
             </div>
             {formData?.tech_inc_all == "" && (
-              <div id="dvPassport" className="px-2 mt-2">
-                <label htmlFor="currency" className="heading">
+              <div id="dvPassport" className="px-2 mt-5">
+                <label htmlFor="currency" className="heading block mb-2">
                   Days to include:
                 </label>
-                <span className="radio-switch ">
+                <div className="flex flex-wrap gap-2">
                   {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
                     (day, index) => (
-                      <div key={index} className="inline-block mr-1">
+                      <label
+                        key={index}
+                        htmlFor={`check-${index}`}
+                        className="flex items-center space-x-1  bg-gray-100 px-2 py-1 rounded"
+                      >
                         <input
                           type="checkbox"
                           id={`check-${index}`}
@@ -329,20 +335,20 @@ const DeadlineCalculator = () => {
                           value={day}
                           checked={formData.tech_weekDay.includes(day)}
                           onChange={handleWeekDayChange}
+                          className="form-checkbox h-4 w-4 text-blue-500 cursor-pointer"
                         />
-                        <label htmlFor={`check-${index}`} className="px-1">
+                        <span className="text-sm font-medium">
                           {day.charAt(0)}
-                        </label>
-                      </div>
+                        </span>
+                      </label>
                     )
                   )}
-                </span>
-                <span className="clearElement"></span>
+                </div>
               </div>
             )}
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={calculateDeadlineLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -356,18 +362,18 @@ const DeadlineCalculator = () => {
           </div>
         </div>
         {calculateDeadlineLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lgspace-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -457,7 +463,7 @@ const DeadlineCalculator = () => {
 
                         <div className="border-b pt-2 pb-1 flex">
                           {result?.tech_days ? (
-                            <p className=" pt-2 pb-1">
+                            <p className="pt-2 pb-1">
                               <strong
                                 id="weeks"
                                 className="text text-[20px] me-1"
@@ -471,7 +477,7 @@ const DeadlineCalculator = () => {
                         </div>
                         <div className="border-b pt-2 pb-1 flex">
                           {result?.tech_hours ? (
-                            <p className="border-b pt-2">
+                            <p className=" pt-2">
                               <strong
                                 id="hours"
                                 className="text text-[20px] me-1"

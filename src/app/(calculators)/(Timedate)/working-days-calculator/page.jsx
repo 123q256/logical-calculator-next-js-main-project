@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useWorkingdaysCalculationMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useWorkingdaysCalculationMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -13,7 +14,6 @@ import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeed
 import Calculator from "../../Calculator";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const WorkingDaysCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -42,12 +42,12 @@ const WorkingDaysCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-
   const [formData, setFormData] = useState({
-    tech_start_date: "",
-    tech_end_date: "",
-    tech_period: "Include all days of week",
-    tech_include_end_date: "Yes",
+    tech_start_date: "2025-10-08",
+    tech_end_date: "2025-10-31",
+    tech_working_days: "Include all days of week",
+    tech_include_end_date: "No",
+    tech_submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -68,38 +68,31 @@ const WorkingDaysCalculator = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !formData.tech_start_date ||
-      !formData.tech_end_date ||
-      !formData.tech_period ||
-      !formData.tech_include_end_date
-    ) {
-      setFormError("Please fill in fields.");
-      return;
-    }
     setFormError("");
     try {
       const response = await calculateLovePercentage({
         tech_start_date: formData.tech_start_date,
         tech_end_date: formData.tech_end_date,
-        tech_period: formData.tech_period,
+        tech_working_days: formData.tech_working_days,
         tech_include_end_date: formData.tech_include_end_date,
+        tech_submit: formData.tech_submit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
-      toast.success("Calculate Successfully");
+      setResult(response?.payload?.payload); // Assuming the response has 'lovePercentage'
+      toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error calculating");
-      toast.error("Error calculating");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_start_date: "",
-      tech_end_date: "",
-      tech_period: "Include all days of week",
-      tech_include_end_date: "Yes",
+      tech_start_date: "2025-10-08",
+      tech_end_date: "2025-10-31",
+      tech_working_days: "Include all days of week",
+      tech_include_end_date: "No",
+      tech_submit: "calculate",
     });
     setResult(null);
     setFormError(null);
@@ -179,7 +172,7 @@ const WorkingDaysCalculator = () => {
                     aria-label="select"
                     name="tech_period"
                     id="tech_period"
-                    value={formData.tech_period}
+                    value={formData.tech_working_days}
                     onChange={handleChange}
                   >
                     <option value="Include all days of week">
@@ -214,7 +207,7 @@ const WorkingDaysCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={calculateDeadlineLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -228,7 +221,7 @@ const WorkingDaysCalculator = () => {
           </div>
         </div>
         {calculateDeadlineLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -239,7 +232,7 @@ const WorkingDaysCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -249,7 +242,7 @@ const WorkingDaysCalculator = () => {
                         <p className="text-lg font-bold">
                           {data?.payload?.tech_lang_keys["5"]}
                         </p>
-                        <p className="text-4xl bg-[#2845F5] text-white px-4 py-2 rounded-lg inline-block my-4">
+                        <p className="text-4xl bg-[#2845F5] text-[#fff] px-4 py-2 rounded-lg inline-block my-4">
                           <strong>{result?.tech_answer}</strong>
                         </p>
                       </div>

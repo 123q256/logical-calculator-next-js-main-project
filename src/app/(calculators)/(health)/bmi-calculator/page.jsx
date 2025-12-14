@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useBMICalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useBMICalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -43,13 +44,13 @@ const BMICalculator = () => {
   }, [url]);
 
   const [formData, setFormData] = useState({
-    tech_unit_type: "lbs", // lbs  kg
-    tech_stage: "child",
-    tech_gender: "Male",
-    tech_age: "15",
-    tech_ft_in: "69",
-    tech_height_cm: "175",
-    tech_weight: "160",
+    unit_type: "lbs", // lbs  kg
+    stage: "child",
+    gender: "Male",
+    age: "15",
+    ft_in: "69",
+    height_cm: "175",
+    weight: "160",
   });
 
   const [result, setResult] = useState(null);
@@ -70,13 +71,13 @@ const BMICalculator = () => {
     e.preventDefault();
 
     if (
-      !formData.tech_unit_type ||
-      !formData.tech_stage ||
-      !formData.tech_gender ||
-      !formData.tech_age ||
-      !formData.tech_ft_in ||
-      !formData.tech_height_cm ||
-      !formData.tech_weight
+      !formData.unit_type ||
+      !formData.stage ||
+      !formData.gender ||
+      !formData.age ||
+      !formData.ft_in ||
+      !formData.height_cm ||
+      !formData.weight
     ) {
       setFormError("Please fill in field.");
       return;
@@ -85,32 +86,32 @@ const BMICalculator = () => {
     setFormError("");
     try {
       const response = await calculateEbitCalculator({
-        tech_unit_type: formData.tech_unit_type,
-        tech_stage: formData.tech_stage,
-        tech_gender: formData.tech_gender,
-        tech_age: formData.tech_age,
-        tech_ft_in: formData.tech_ft_in,
-        tech_height_cm: formData.tech_height_cm,
-        tech_weight: formData.tech_weight,
+        unit_type: formData.unit_type,
+        stage: formData.stage,
+        gender: formData.gender,
+        age: formData.age,
+        ft_in: formData.ft_in,
+        height_cm: formData.height_cm,
+        weight: formData.weight,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error in calculating.");
-      toast.error("Error in calculating.");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_unit_type: "lbs", // lbs  kg
-      tech_stage: "child",
-      tech_gender: "Male",
-      tech_age: "15",
-      tech_ft_in: "69",
-      tech_height_cm: "175",
-      tech_weight: "160",
+      unit_type: "lbs", // lbs  kg
+      stage: "child",
+      gender: "Male",
+      age: "15",
+      ft_in: "69",
+      height_cm: "175",
+      weight: "160",
     });
     setResult(null);
     setFormError(null);
@@ -151,7 +152,7 @@ const BMICalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
@@ -160,24 +161,24 @@ const BMICalculator = () => {
 
           <div className="row">
             <div className="mt-2 lg:w-[70%] w-full mx-auto">
-              <div className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-2 mt-4">
-                <div className="px-2 py-1 flex items-end">
+              <div className="grid grid-cols-1 md:grid-cols-2 md:gap-2 mt-4">
+                <div className="px-2 py-1  flex items-end">
                   <div className="col-12  mx-auto mt-2 w-full">
                     <input
                       type="hidden"
-                      name="tech_unit_type"
+                      name="unit_type"
                       id="calculator_time"
-                      value={formData.tech_unit_type}
+                      value={formData.unit_type}
                     />
                     <div className="grid grid-cols-12 gap-2 p-1 items-center bg-blue-100 border border-blue-500 text-center rounded-lg px-1">
                       <div className="col-span-6">
                         <div
-                          className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab  ${
-                            formData.tech_unit_type === "lbs" ? "tagsUnit" : ""
+                          className={`bg-white px-1 md:px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab  ${
+                            formData.unit_type === "lbs" ? "tagsUnit" : ""
                           }`}
                           id="lbs"
                           onClick={() => {
-                            setFormData({ ...formData, tech_unit_type: "lbs" });
+                            setFormData({ ...formData, unit_type: "lbs" });
                             setResult(null);
                             setFormError(null);
                           }}
@@ -187,12 +188,12 @@ const BMICalculator = () => {
                       </div>
                       <div className="col-span-6">
                         <div
-                          className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab ${
-                            formData.tech_unit_type === "kg" ? "tagsUnit" : ""
+                          className={`bg-white px-1 md:px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab ${
+                            formData.unit_type === "kg" ? "tagsUnit" : ""
                           }`}
                           id="kg"
                           onClick={() => {
-                            setFormData({ ...formData, tech_unit_type: "kg" });
+                            setFormData({ ...formData, unit_type: "kg" });
                             setResult(null);
                             setFormError(null);
                           }}
@@ -203,17 +204,17 @@ const BMICalculator = () => {
                     </div>
                   </div>
                 </div>
-                <div className="px-2 py-1">
-                  <label htmlFor="tech_stage" className="label">
+                <div className="px-2 py-1 ">
+                  <label htmlFor="stage" className="label">
                     {data?.payload?.tech_lang_keys["age_stages"]}:
                   </label>
                   <div className="mt-2">
                     <select
                       className="input"
                       aria-label="select"
-                      name="tech_stage"
+                      name="stage"
                       id="tech_stage"
-                      value={formData.tech_stage}
+                      value={formData.stage}
                       onChange={handleChange}
                     >
                       <option value="child">Child & Teen</option>
@@ -221,20 +222,19 @@ const BMICalculator = () => {
                     </select>
                   </div>
                 </div>
-
-                {formData.tech_unit_type == "lbs" && (
+                {formData.unit_type == "lbs" && (
                   <>
                     <div className="px-2 py-1">
-                      <label htmlFor="tech_gender" className="label">
+                      <label htmlFor="gender" className="label">
                         {data?.payload?.tech_lang_keys["gen"]}:
                       </label>
                       <div className="mt-2">
                         <select
                           className="input"
                           aria-label="select"
-                          name="tech_gender"
+                          name="gender"
                           id="tech_gender"
-                          value={formData.tech_gender}
+                          value={formData.gender}
                           onChange={handleChange}
                         >
                           <option value="Male">Male</option>
@@ -242,23 +242,23 @@ const BMICalculator = () => {
                         </select>
                       </div>
                     </div>
-                    {formData.tech_stage == "child" && (
+                    {formData.stage == "child" && (
                       <>
                         <div className="px-2 py-1 ">
-                          <label htmlFor="tech_age" className="label">
+                          <label htmlFor="age" className="label">
                             {data?.payload?.tech_lang_keys["age"]}:
                           </label>
                           <div className=" relative">
                             <input
                               type="number"
                               step="any"
-                              name="tech_age"
+                              name="age"
                               id="tech_age"
                               className="input my-2"
                               aria-label="input"
                               min="1"
                               max="20"
-                              value={formData.tech_age}
+                              value={formData.age}
                               onChange={handleChange}
                             />
                           </div>
@@ -266,16 +266,16 @@ const BMICalculator = () => {
                       </>
                     )}
                     <div className="px-2 py-1 ">
-                      <label htmlFor="tech_ft_in" className="label">
+                      <label htmlFor="ft_in" className="label">
                         {data?.payload?.tech_lang_keys["height"]} (ft/in)
                       </label>
                       <div className="mt-2">
                         <select
                           className="input"
                           aria-label="select"
-                          name="tech_ft_in"
+                          name="ft_in"
                           id="tech_ft_in"
-                          value={formData.tech_ft_in}
+                          value={formData.ft_in}
                           onChange={handleChange}
                         >
                           <option value="55">4ft 7in</option>
@@ -312,18 +312,18 @@ const BMICalculator = () => {
                       </div>
                     </div>
                     <div className="px-2 py-1 ">
-                      <label htmlFor="tech_weight" className="label">
+                      <label htmlFor="weight" className="label">
                         {data?.payload?.tech_lang_keys["weight"]} (lbs):
                       </label>
                       <div className=" relative">
                         <input
                           type="number"
                           step="any"
-                          name="tech_weight"
+                          name="weight"
                           id="tech_weight"
                           className="input my-2"
                           aria-label="input"
-                          value={formData.tech_weight}
+                          value={formData.weight}
                           onChange={handleChange}
                         />
                         <span className="input_unit">lbs</span>
@@ -332,19 +332,19 @@ const BMICalculator = () => {
                   </>
                 )}
 
-                {formData.tech_unit_type == "kg" && (
+                {formData.unit_type == "kg" && (
                   <>
                     <div className="px-2 py-1">
-                      <label htmlFor="tech_gender" className="label">
+                      <label htmlFor="gender" className="label">
                         {data?.payload?.tech_lang_keys["gen"]}:
                       </label>
                       <div className="mt-2">
                         <select
                           className="input"
                           aria-label="select"
-                          name="tech_gender"
+                          name="gender"
                           id="tech_gender"
-                          value={formData.tech_gender}
+                          value={formData.gender}
                           onChange={handleChange}
                         >
                           <option value="Male">Male</option>
@@ -352,23 +352,23 @@ const BMICalculator = () => {
                         </select>
                       </div>
                     </div>
-                    {formData.tech_stage == "child" && (
+                    {formData.stage == "child" && (
                       <>
                         <div className="px-2 py-1 ">
-                          <label htmlFor="tech_age" className="label">
+                          <label htmlFor="age" className="label">
                             {data?.payload?.tech_lang_keys["age"]}:
                           </label>
                           <div className=" relative">
                             <input
                               type="number"
                               step="any"
-                              name="tech_age"
+                              name="age"
                               id="tech_age"
                               className="input my-2"
                               aria-label="input"
                               min="1"
                               max="20"
-                              value={formData.tech_age}
+                              value={formData.age}
                               onChange={handleChange}
                             />
                           </div>
@@ -377,36 +377,36 @@ const BMICalculator = () => {
                     )}
 
                     <div className="px-2 py-1  ">
-                      <label htmlFor="tech_height_cm" className="label">
+                      <label htmlFor="height_cm" className="label">
                         {data?.payload?.tech_lang_keys["height"]} (cm):
                       </label>
                       <div className=" relative">
                         <input
                           type="number"
                           step="any"
-                          name="tech_height_cm"
+                          name="height_cm"
                           id="tech_height_cm"
                           className="input my-2"
                           aria-label="input"
-                          value={formData.tech_height_cm}
+                          value={formData.height_cm}
                           onChange={handleChange}
                         />
                         <span className="input_unit">cm</span>
                       </div>
                     </div>
                     <div className="px-2 py-1 ">
-                      <label htmlFor="tech_weight" className="label">
+                      <label htmlFor="weight" className="label">
                         {data?.payload?.tech_lang_keys["weight"]} (kg):
                       </label>
                       <div className=" relative">
                         <input
                           type="number"
                           step="any"
-                          name="tech_weight"
+                          name="weight"
                           id="tech_weight"
                           className="input my-2"
                           aria-label="input"
-                          value={formData.tech_weight}
+                          value={formData.weight}
                           onChange={handleChange}
                         />
                         <span className="input_unit">kg</span>
@@ -418,7 +418,7 @@ const BMICalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -443,17 +443,17 @@ const BMICalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full  mx-auto px-1 py-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
                   <div className="rounded-lg p-1 flex items-center justify-center">
-                    <div className="col-12  rounded-lg ">
-                      <div className="flex flex-wrap justify-center my-2 ">
+                    <div className="col-12   rounded-lg ">
+                      <div className="flex flex-wrap my-2 ">
                         {result?.tech_BMI ? (
                           <>
                             <div className="lg:w-7/12 lg:pr-3">
                               <div className="text-center pt-1 pb-2">
-                                <p className="bg-blue-500 text-white font-s-13 relative inline-block rounded-full shadow-lg p-3">
+                                <p className="bg-blue-500 text-white font-s-13 relative inline-block rounded-full shadow-lg px-3 py-1">
                                   {data?.payload?.tech_lang_keys["your_bmi"]}
                                 </p>
                                 <p className="font-s-13 text-xl font-bold text-gray-700">
@@ -486,7 +486,7 @@ const BMICalculator = () => {
                                         marginBottom: "-7px",
                                         borderTopColor: result?.tech_color,
                                       }}
-                                    ></div>
+                                    ></div>{" "}
                                     {result?.tech_BMI}
                                   </div>
                                 </div>
@@ -564,9 +564,9 @@ const BMICalculator = () => {
                               <div className="w-full overflow-auto">
                                 <table className="w-full border border-blue-500 rounded-lg text-sm">
                                   <thead>
-                                    <tr className="bg-blue-500  text-white text-center">
-                                      <th className="p-2 rounded-tl-lg">BMI</th>
-                                      <th className="p-2 rounded-tr-lg">
+                                    <tr className="bg-[#2845F5] text-[#fff] text-center">
+                                      <th className="p-2">BMI</th>
+                                      <th className="p-2">
                                         {
                                           data?.payload?.tech_lang_keys[
                                             "classi"
@@ -720,7 +720,7 @@ const BMICalculator = () => {
                         ) : result?.tech_BMI_kid ? (
                           <>
                             <div className="grid grid-cols-12 gap-3">
-                              <div className="col-span-12 md:col-span-6  bg-sky bordered rounded-lg  lg:p-4 md:p-4 p-2">
+                              <div className="col-span-12 lg:col-span-6 bg-sky bordered rounded-lg p-3">
                                 <div className="text-center mb-5">
                                   <p className="inline-block bg-blue-500 text-white text-lg px-4 py-1 rounded-full shadow-lg">
                                     <strong className="text-white">
@@ -732,7 +732,7 @@ const BMICalculator = () => {
                                     </strong>
                                   </p>
                                 </div>
-                                <div className="text-center mb-9">
+                                <div className="text-center mb-6">
                                   <p className="text-4xl font-bold text-green-500">
                                     {Number(result?.tech_BMI_kid).toFixed(2)}
                                   </p>
@@ -770,16 +770,16 @@ const BMICalculator = () => {
                                       {result?.tech_percent}%
                                     </div>
                                   </div>
-                                  <div className="w-1/6 bg-blue-500 text-white text-sm py-2 rounded-l-full text-center">
+                                  <div className="w-1/6 bg-blue-500 text-white text-[12px] py-2 rounded-l-full text-center">
                                     <p className="text-white">&lt; 5%</p>
                                   </div>
-                                  <div className="w-5/12 bg-green-500 text-white text-sm py-2 text-center">
+                                  <div className="w-5/12 bg-green-500 text-white text-[12px] py-2 text-center">
                                     <p className="text-white">5 - 84.9%</p>
                                   </div>
-                                  <div className="w-3/12 bg-yellow-500 text-white text-sm py-2 text-center">
+                                  <div className="w-3/12 bg-yellow-500 text-white text-[12px] py-2 text-center">
                                     <p className="text-white">85 - 94.9%</p>
                                   </div>
-                                  <div className="w-1/6 bg-red-500 text-white text-sm py-2 rounded-r-full text-center">
+                                  <div className="w-1/6 bg-red-500 text-white text-[12px] py-2 rounded-r-full text-center">
                                     <p className="text-white">&gt; 95%</p>
                                   </div>
                                 </div>
@@ -790,15 +790,15 @@ const BMICalculator = () => {
                                   </strong>
                                 </p>
                               </div>
-                              <div className="col-span-12 md:col-span-6  bordered bg-sky rounded-lg lg:p-4 md:p-4 p-2">
+                              <div className="col-span-12 md:col-span-6 bg-sky bordered rounded-lg md:p-3 p-2">
                                 <div className="overflow-auto">
-                                  <table className="w-full bordered text-sm">
-                                    <thead className="bg-blue-600  text-white text-center">
+                                  <table className="w-full bordered text-[12px]">
+                                    <thead className="bg-[#2845F5] text-[#fff] text-center">
                                       <tr>
-                                        <th className="py-2 rounded-tl-lg text-white">
+                                        <th className="py-2 text-white">
                                           {data?.payload?.tech_lang_keys["per"]}
                                         </th>
-                                        <th className="py-2 rounded-tr-lg text-white">
+                                        <th className="py-2 text-white">
                                           {
                                             data?.payload?.tech_lang_keys[
                                               "classi"
@@ -807,7 +807,7 @@ const BMICalculator = () => {
                                         </th>
                                       </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody className="bg-sky-200">
                                       <tr
                                         className={`text-center ${
                                           result?.tech_under
@@ -890,7 +890,7 @@ const BMICalculator = () => {
                               </div>
                             </div>
                             <div className="w-full text-center mt-4">
-                              <strong className="text-green-500 text-lg">
+                              <strong className="text-green-500 text-[12px] md:text-lg">
                                 {result?.tech_under
                                   ? data?.payload?.tech_lang_keys["child1"]
                                   : result?.tech_healthy

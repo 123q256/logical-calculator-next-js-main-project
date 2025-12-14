@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useNavyBodyFatCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useNavyBodyFatCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const NavyBodyFatCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -136,11 +136,11 @@ const NavyBodyFatCalculator = () => {
         tech_unit_h_cm3: formData.tech_unit_h_cm3,
         tech_y: formData.tech_y,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -358,7 +358,7 @@ const NavyBodyFatCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg shadow-md space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
@@ -366,7 +366,7 @@ const NavyBodyFatCalculator = () => {
           )}
 
           <div className="lg:w-[70%] md:w-[90%] w-full mx-auto ">
-            <div className="grid grid-cols-12  gap-2 md:gap-4 lg:gap-4">
+            <div className="grid grid-cols-12  gap-1 md:gap-4 lg:gap-4">
               <div className="col-span-12 md:col-span-6">
                 <label htmlFor="tech_gender" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -982,7 +982,7 @@ const NavyBodyFatCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -996,7 +996,7 @@ const NavyBodyFatCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -1007,14 +1007,14 @@ const NavyBodyFatCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full  mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full bg-light-blue result radius-10 p-3 mt-3">
                       <div className="w-full mt-2">
-                        <div className="bg-sky bordered p-3  rounded-lg">
+                        <div className="bg-sky bordered rounded-lg p-3">
                           <div className="w-full md:w-[60%] lg:w-[60%]  py-2">
                             <div className="grid grid-cols-12 gap-2">
                               <div className="col-span-12 md:col-span-5">
@@ -1024,10 +1024,10 @@ const NavyBodyFatCalculator = () => {
                                   </strong>
                                 </p>
                                 <p>
-                                  <strong className="text-[#119154] text-[32px]">
+                                  <strong className="text-green-700 text-[25px] md:text-[32px]">
                                     {result?.tech_bodyFat}
                                   </strong>
-                                  <span className="text-[#119154] text-[18px]">
+                                  <span className="text-green-700 text-[18px]">
                                     {data?.payload?.tech_lang_keys["15"]}
                                   </span>
                                 </p>
@@ -1042,10 +1042,10 @@ const NavyBodyFatCalculator = () => {
                                   </strong>
                                 </p>
                                 <p>
-                                  <strong className="text-[#119154] text-[32px]">
+                                  <strong className="text-green-700 text-[25px] md:text-[32px]">
                                     {result?.tech_fatMass}
                                   </strong>
-                                  <span className="text-[#119154] text-[18px]">
+                                  <span className="text-green-700 text-[18px]">
                                     {data?.payload?.tech_lang_keys["14"]}
                                   </span>
                                 </p>
@@ -1053,7 +1053,7 @@ const NavyBodyFatCalculator = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="w-full md:w-[60%] lg:w-[60%]  py-2 p-3 mt-2">
+                        <div className="w-full md:w-[60%] lg:w-[60%]  py-2 p-3 mt-2 bg-sky bordered rounded-lg">
                           <div className="grid grid-cols-12 gap-2">
                             <div className="col-span-12 md:col-span-5">
                               <p>
@@ -1062,10 +1062,10 @@ const NavyBodyFatCalculator = () => {
                                 </strong>
                               </p>
                               <p>
-                                <strong className="text-[#119154] text-[32px]">
+                                <strong className="text-green-700 text-[25px] md:text-[32px]">
                                   {result?.tech_leanMass}
                                 </strong>
-                                <span className="text-[#119154] text-[18px]">
+                                <span className="text-green-700 text-[18px]">
                                   {data?.payload?.tech_lang_keys["14"]}
                                 </span>
                               </p>
@@ -1080,7 +1080,7 @@ const NavyBodyFatCalculator = () => {
                                 </strong>
                               </p>
                               <p>
-                                <strong className="text-[#119154] text-[32px]">
+                                <strong className="text-green-700 text-[25px] md:text-[25px]">
                                   {result?.tech_bodyFatCategory}
                                 </strong>
                               </p>

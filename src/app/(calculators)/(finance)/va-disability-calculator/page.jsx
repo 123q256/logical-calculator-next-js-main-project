@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useVaDisabilityCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useVaDisabilityCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const VADisabilityCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -43,28 +43,28 @@ const VADisabilityCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-
   const [formData, setFormData] = useState({
-    tech_right_arm: 20,
-    tech_left_arm: 40,
-    tech_right_leg: 80,
-    tech_left_leg: 80,
-    tech_right_foot: 70,
-    tech_left_foot: 80,
-    tech_back: 60,
-    tech_ssd: 70,
-    tech_ptsd: 80,
-    tech_tinnitus: 90,
-    tech_migraines: 80,
-    tech_sleep_apnea: 50,
-    tech_bilateral_upper: 70,
-    tech_bilateral_lower: 70,
-    tech_others: 50,
-    tech_status: "single",
-    tech_under_age: 11,
-    tech_over_age: 10,
-    tech_parent: 1,
+    tech_right_arm: "10",
+    tech_left_arm: "10",
+    tech_right_leg: "10",
+    tech_left_leg: "10",
+    tech_right_foot: "10",
+    tech_left_foot: "10",
+    tech_back: "10",
+    tech_ssd: "10",
+    tech_ptsd: "10",
+    tech_tinnitus: "10",
+    tech_migraines: "10",
+    tech_sleep_apnea: "10",
+    tech_bilateral_upper: "10",
+    tech_bilateral_lower: "10",
+    tech_others: "10",
+    tech_status: "Single", // Married  Single
+    tech_under_age: "0", // 0 to 14
+    tech_over_age: "0",
+    tech_parent: "0", // 0 1 2
     tech_attendance: "No",
+    tech_submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -136,37 +136,38 @@ const VADisabilityCalculator = () => {
         tech_parent: formData.tech_parent,
         tech_attendance: formData.tech_attendance,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error in calculating.");
-      toast.error("Error in calculating.");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_right_arm: 20,
-      tech_left_arm: 40,
-      tech_right_leg: 80,
-      tech_left_leg: 80,
-      tech_right_foot: 70,
-      tech_left_foot: 80,
-      tech_back: 60,
-      tech_ssd: 70,
-      tech_ptsd: 80,
-      tech_tinnitus: 90,
-      tech_migraines: 80,
-      tech_sleep_apnea: 50,
-      tech_bilateral_upper: 70,
-      tech_bilateral_lower: 70,
-      tech_others: 50,
-      tech_status: "Married",
-      tech_under_age: 11,
-      tech_over_age: 10,
-      tech_parent: 1,
+      tech_right_arm: "10",
+      tech_left_arm: "10",
+      tech_right_leg: "10",
+      tech_left_leg: "10",
+      tech_right_foot: "10",
+      tech_left_foot: "10",
+      tech_back: "10",
+      tech_ssd: "10",
+      tech_ptsd: "10",
+      tech_tinnitus: "10",
+      tech_migraines: "10",
+      tech_sleep_apnea: "10",
+      tech_bilateral_upper: "10",
+      tech_bilateral_lower: "10",
+      tech_others: "10",
+      tech_status: "Single", // Married  Single
+      tech_under_age: "0", // 0 to 14
+      tech_over_age: "0",
+      tech_parent: "0", // 0 1 2
       tech_attendance: "No",
+      tech_submit: "calculate",
     });
     setResult(null);
     setFormError(null);
@@ -207,14 +208,14 @@ const VADisabilityCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[90%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
             <div className="grid grid-cols-12 mt-3  gap-4">
               <div className="col-span-12">
                 {data?.payload?.tech_lang_keys["1"]}
@@ -627,7 +628,7 @@ const VADisabilityCalculator = () => {
               <div className="col-span-12">
                 {data?.payload?.tech_lang_keys[17]}
               </div>
-              <div className="lg:col-span-6 md:col-span-6 col-span-12">
+              <div className="col-span-12 md:col-span-6">
                 <label htmlFor="tech_status" className="label">
                   {data?.payload?.tech_lang_keys["18"]}:
                 </label>
@@ -649,8 +650,7 @@ const VADisabilityCalculator = () => {
                   </select>
                 </div>
               </div>
-
-              <div className="lg:col-span-6 md:col-span-6 col-span-12">
+              <div className="col-span-12 md:col-span-6">
                 <label htmlFor="tech_under_age" className="label">
                   {data?.payload?.tech_lang_keys[21]} 18:
                 </label>
@@ -682,7 +682,7 @@ const VADisabilityCalculator = () => {
                   </select>
                 </div>
               </div>
-              <div className="lg:col-span-6 md:col-span-6 col-span-12">
+              <div className="col-span-12 md:col-span-6">
                 <label htmlFor="tech_over_age" className="label">
                   {data?.payload?.tech_lang_keys[22]} 18:
                 </label>
@@ -714,7 +714,7 @@ const VADisabilityCalculator = () => {
                   </select>
                 </div>
               </div>
-              <div className="lg:col-span-6 md:col-span-6 col-span-12">
+              <div className="col-span-12 md:col-span-6">
                 <label htmlFor="tech_parent" className="label">
                   {data?.payload?.tech_lang_keys["23"]}:
                 </label>
@@ -736,7 +736,7 @@ const VADisabilityCalculator = () => {
                 </div>
               </div>
               {formData?.tech_status == data?.payload?.tech_lang_keys[20] && (
-                <div className="lg:col-span-6 md:col-span-6 col-span-12  married">
+                <div className="col-span-12 md:col-span-6  married">
                   <label htmlFor="tech_attendance" className="label">
                     {data?.payload?.tech_lang_keys[29]}{" "}
                     {data?.payload?.tech_lang_keys[30]}?
@@ -759,7 +759,7 @@ const VADisabilityCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -784,14 +784,14 @@ const VADisabilityCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="w-full md:w-[80%] lg:w-[80%] overflow-auto mt-2">
-                        <table className="w-full text-[16px]">
+                        <table className="w-full text-[14px] md:text-[18px]">
                           <tbody>
                             <tr>
                               <td className="py-2 border-b" width="50%">

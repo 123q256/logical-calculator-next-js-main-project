@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useSalaryCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useSalaryCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const SalaryCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -98,11 +98,11 @@ const SalaryCalculator = () => {
         tech_are: formData.tech_are,
         tech_tax: formData.tech_tax,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error in calculating.");
-      toast.error("Error in calculating.");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -157,7 +157,7 @@ const SalaryCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
@@ -165,171 +165,169 @@ const SalaryCalculator = () => {
           )}
 
           <div className="w-full lg:w-8/12 mx-auto overflow-hidden">
-            <div className="flex flex-wrap justify-center">
-              <div className="grid grid-cols-2 gap-2 mt-4">
-                <div className="px-2 lg:pe-4 mt-0 lg:mt-2">
-                  <label htmlFor="tech_salary" className="label">
-                    {data?.payload?.tech_lang_keys["salary_amount"]}:
-                  </label>
-                  <div className="relative  w-full">
-                    <input
-                      type="number"
-                      step="any"
-                      name="tech_salary"
-                      id="tech_salary"
-                      className="input my-2"
-                      aria-label="input"
-                      value={formData.tech_salary}
-                      onChange={handleChange}
-                    />
-                    <span className="text-blue input_unit">
-                      {currency.symbol}
-                    </span>
-                  </div>
-                </div>
-                <div className="px-2 lg:ps-4 mt-0 lg:mt-2">
-                  <label htmlFor="tech_per" className="label">
-                    {data?.payload?.tech_lang_keys["per"]}:
-                  </label>
-                  <div className="mt-2">
-                    <select
-                      className="input"
-                      aria-label="select"
-                      name="tech_per"
-                      id="tech_per"
-                      value={formData.tech_per}
-                      onChange={handleChange}
-                    >
-                      <option value="Hourly">Hourly</option>
-                      <option value="Daily">Daily</option>
-                      <option value="Weekly">Weekly</option>
-                      <option value="Bi-Weekly">Bi-Weekly</option>
-                      <option value="Semi-Monthly">Semi-Monthly</option>
-                      <option value="Monthly">Monthly</option>
-                      <option value="Quarterly">Quarterly</option>
-                      <option value="Annual">Annual</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="px-2 lg:pe-4 mt-0 lg:mt-2">
-                  <label htmlFor="tech_hours" className="label">
-                    {data?.payload?.tech_lang_keys["hours_per"]}:
-                  </label>
-                  <div className="relative  w-full">
-                    <input
-                      type="number"
-                      step="any"
-                      name="tech_hours"
-                      id="tech_hours"
-                      className="input my-2"
-                      aria-label="input"
-                      value={formData.tech_hours}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div className="px-2 lg:ps-4 mt-0 lg:mt-2">
-                  <label htmlFor="tech_days" className="label">
-                    {data?.payload?.tech_lang_keys["days_per"]}:
-                  </label>
-                  <div className="mt-2">
-                    <select
-                      className="input"
-                      aria-label="select"
-                      name="tech_days"
-                      id="tech_days"
-                      value={formData.tech_days}
-                      onChange={handleChange}
-                    >
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="px-2 lg:pe-4 mt-0 lg:mt-2">
-                  <label htmlFor="tech_holidays" className="label">
-                    {data?.payload?.tech_lang_keys["holidays_per"]}:
-                  </label>
-                  <div className="relative  w-full">
-                    <input
-                      type="number"
-                      step="any"
-                      name="tech_holidays"
-                      id="tech_holidays"
-                      className="input my-2"
-                      aria-label="input"
-                      value={formData.tech_holidays}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div className="px-2 lg:ps-4 mt-0 lg:mt-2">
-                  <label htmlFor="tech_vacation" className="label">
-                    {data?.payload?.tech_lang_keys["vacation_days"]}:
-                  </label>
-                  <div className="relative  w-full">
-                    <input
-                      type="number"
-                      step="any"
-                      name="tech_vacation"
-                      id="tech_vacation"
-                      className="input my-2"
-                      aria-label="input"
-                      value={formData.tech_vacation}
-                      onChange={handleChange}
-                    />
-                  </div>
+            <div className="grid grid-cols-12 gap-1 md:gap-2 mt-4">
+              <div className="col-span-12 md:col-span-6">
+                <label htmlFor="tech_salary" className="label">
+                  {data?.payload?.tech_lang_keys["salary_amount"]}:
+                </label>
+                <div className="relative  w-full">
+                  <input
+                    type="number"
+                    step="any"
+                    name="tech_salary"
+                    id="tech_salary"
+                    className="input my-2"
+                    aria-label="input"
+                    value={formData.tech_salary}
+                    onChange={handleChange}
+                  />
+                  <span className="text-blue input_unit">
+                    {currency.symbol}
+                  </span>
                 </div>
               </div>
-              <div className="w-full lg:w-10/12 mx-auto overflow-hidden">
-                <p className="py-2 mx-2">Income Taxes (Optional)</p>
-              </div>
-              <div className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-2 mt-4">
-                <div className="px-2 lg:pe-4 mt-0 lg:mt-2">
-                  <label htmlFor="tech_are" className="label">
-                    Salary Amount are:
-                  </label>
-                  <div className="mt-2">
-                    <select
-                      className="input"
-                      aria-label="select"
-                      name="tech_are"
-                      id="tech_are"
-                      value={formData.tech_are}
-                      onChange={handleChange}
-                    >
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                    </select>
-                  </div>
+              <div className="col-span-12 md:col-span-6">
+                <label htmlFor="tech_per" className="label">
+                  {data?.payload?.tech_lang_keys["per"]}:
+                </label>
+                <div className="mt-2">
+                  <select
+                    className="input"
+                    aria-label="select"
+                    name="tech_per"
+                    id="tech_per"
+                    value={formData.tech_per}
+                    onChange={handleChange}
+                  >
+                    <option value="Hourly">Hourly</option>
+                    <option value="Daily">Daily</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Bi-Weekly">Bi-Weekly</option>
+                    <option value="Semi-Monthly">Semi-Monthly</option>
+                    <option value="Monthly">Monthly</option>
+                    <option value="Quarterly">Quarterly</option>
+                    <option value="Annual">Annual</option>
+                  </select>
                 </div>
-                <div className="px-2 lg:ps-4 mt-0 lg:mt-2">
-                  <label htmlFor="tech_tax" className="label">
-                    Income Tax (%)
-                  </label>
-                  <div className="relative  w-full">
-                    <input
-                      type="number"
-                      step="any"
-                      name="tech_tax"
-                      id="tech_tax"
-                      className="input my-2"
-                      aria-label="input"
-                      value={formData.tech_tax}
-                      onChange={handleChange}
-                    />
-                  </div>
+              </div>
+              <div className="col-span-12 md:col-span-6">
+                <label htmlFor="tech_hours" className="label">
+                  {data?.payload?.tech_lang_keys["hours_per"]}:
+                </label>
+                <div className="relative  w-full">
+                  <input
+                    type="number"
+                    step="any"
+                    name="tech_hours"
+                    id="tech_hours"
+                    className="input my-2"
+                    aria-label="input"
+                    value={formData.tech_hours}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="col-span-12 md:col-span-6">
+                <label htmlFor="tech_days" className="label">
+                  {data?.payload?.tech_lang_keys["days_per"]}:
+                </label>
+                <div className="mt-2">
+                  <select
+                    className="input"
+                    aria-label="select"
+                    name="tech_days"
+                    id="tech_days"
+                    value={formData.tech_days}
+                    onChange={handleChange}
+                  >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                  </select>
+                </div>
+              </div>
+              <div className="col-span-12 md:col-span-6">
+                <label htmlFor="tech_holidays" className="label">
+                  {data?.payload?.tech_lang_keys["holidays_per"]}:
+                </label>
+                <div className="relative  w-full">
+                  <input
+                    type="number"
+                    step="any"
+                    name="tech_holidays"
+                    id="tech_holidays"
+                    className="input my-2"
+                    aria-label="input"
+                    value={formData.tech_holidays}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="col-span-12 md:col-span-6">
+                <label htmlFor="tech_vacation" className="label">
+                  {data?.payload?.tech_lang_keys["vacation_days"]}:
+                </label>
+                <div className="relative  w-full">
+                  <input
+                    type="number"
+                    step="any"
+                    name="tech_vacation"
+                    id="tech_vacation"
+                    className="input my-2"
+                    aria-label="input"
+                    value={formData.tech_vacation}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="w-full lg:w-10/12 mx-auto overflow-hidden">
+              <p className="py-2 mx-2">Income Taxes (Optional)</p>
+            </div>
+            <div className="grid grid-cols-12 gap-1 md:gap-2 mt-4">
+              <div className="col-span-12 md:col-span-6">
+                <label htmlFor="tech_are" className="label">
+                  Salary Amount are:
+                </label>
+                <div className="mt-2">
+                  <select
+                    className="input"
+                    aria-label="select"
+                    name="tech_are"
+                    id="tech_are"
+                    value={formData.tech_are}
+                    onChange={handleChange}
+                  >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                  </select>
+                </div>
+              </div>
+              <div className="col-span-12 md:col-span-6">
+                <label htmlFor="tech_tax" className="label">
+                  Income Tax (%)
+                </label>
+                <div className="relative  w-full">
+                  <input
+                    type="number"
+                    step="any"
+                    name="tech_tax"
+                    id="tech_tax"
+                    className="input my-2"
+                    aria-label="input"
+                    value={formData.tech_tax}
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -354,7 +352,7 @@ const SalaryCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full  mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -366,10 +364,10 @@ const SalaryCalculator = () => {
                             <p className="col-span-12 mt-3 font-bold text-xl text-gray-900">
                               <strong>Before Tax</strong>
                             </p>
-                            <div className="overflow-x-auto">
+                            <div className="overflow-auto md:text-[18px] text-[16px]">
                               <table className="min-w-full  shadow-lg rounded-lg border border-gray-200">
                                 <thead>
-                                  <tr className="bg_black text_green">
+                                  <tr className="bg-[#2845F5] text-[#fff]">
                                     <th
                                       rowSpan="2"
                                       className="py-4 px-6 text-left font-semibold border-b border-gray-200"
@@ -377,13 +375,13 @@ const SalaryCalculator = () => {
                                       <strong>Periodicity</strong>
                                     </th>
                                     <th
-                                      colspan="2"
+                                      colSpan="2"
                                       className="py-4 px-6 text-left font-semibold border-b border-gray-200"
                                     >
                                       <strong>Holidays & Vacation Days</strong>
                                     </th>
                                   </tr>
-                                  <tr className="bg_black text_green">
+                                  <tr className="bg_black bg-[#2845F5] text-[#fff]">
                                     <th className="py-3 px-6 text-left font-semibold border-b border-gray-200">
                                       <strong>
                                         {
@@ -406,13 +404,13 @@ const SalaryCalculator = () => {
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       $
                                       {Number(
-                                        result?.tech_Hourly / result?.tech_tax
+                                        result?.tech_Hourly / result?.tax
                                       ).toFixed(2)}
                                     </td>
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       $
                                       {Number(
-                                        result?.tech_a_Hourly / result?.tech_tax
+                                        result?.tech_a_Hourly / result?.tax
                                       ).toFixed(2)}
                                     </td>
                                   </tr>
@@ -423,13 +421,13 @@ const SalaryCalculator = () => {
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       $
                                       {Number(
-                                        result?.tech_Daily / result?.tech_tax
+                                        result?.tech_Daily / result?.tax
                                       ).toFixed(2)}
                                     </td>
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       $
                                       {Number(
-                                        result?.tech_a_Daily / result?.tech_tax
+                                        result?.tech_a_Daily / result?.tax
                                       ).toFixed(2)}
                                     </td>
                                   </tr>
@@ -440,13 +438,13 @@ const SalaryCalculator = () => {
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       $
                                       {Number(
-                                        result?.tech_Week / result?.tech_tax
+                                        result?.tech_Week / result?.tax
                                       ).toFixed(2)}
                                     </td>
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       $
                                       {Number(
-                                        result?.tech_a_Week / result?.tech_tax
+                                        result?.tech_a_Week / result?.tax
                                       ).toFixed(2)}
                                     </td>
                                   </tr>
@@ -461,14 +459,13 @@ const SalaryCalculator = () => {
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       $
                                       {Number(
-                                        result?.tech_Bi_week / result?.tech_tax
+                                        result?.tech_Bi_week / result?.tax
                                       ).toFixed(2)}
                                     </td>
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       $
                                       {Number(
-                                        result?.tech_a_Bi_week /
-                                          result?.tech_tax
+                                        result?.tech_a_Bi_week / result?.tax
                                       ).toFixed(2)}
                                     </td>
                                   </tr>
@@ -483,15 +480,13 @@ const SalaryCalculator = () => {
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       $
                                       {Number(
-                                        result?.tech_Sami_month /
-                                          result?.tech_tax
+                                        result?.tech_Sami_month / result?.tax
                                       ).toFixed(2)}
                                     </td>
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       $
                                       {Number(
-                                        result?.tech_a_Sami_month /
-                                          result?.tech_tax
+                                        result?.tech_a_Sami_month / result?.tax
                                       ).toFixed(2)}
                                     </td>
                                   </tr>
@@ -502,14 +497,13 @@ const SalaryCalculator = () => {
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       $
                                       {Number(
-                                        result?.tech_Monthly / result?.tech_tax
+                                        result?.tech_Monthly / result?.tax
                                       ).toFixed(2)}
                                     </td>
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       $
                                       {Number(
-                                        result?.tech_a_Monthly /
-                                          result?.tech_tax
+                                        result?.tech_a_Monthly / result?.tax
                                       ).toFixed(2)}
                                     </td>
                                   </tr>
@@ -520,15 +514,13 @@ const SalaryCalculator = () => {
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       $
                                       {Number(
-                                        result?.tech_Quarterly /
-                                          result?.tech_tax
+                                        result?.tech_Quarterly / result?.tax
                                       ).toFixed(2)}
                                     </td>
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       $
                                       {Number(
-                                        result?.tech_a_Quarterly /
-                                          result?.tech_tax
+                                        result?.tech_a_Quarterly / result?.tax
                                       ).toFixed(2)}
                                     </td>
                                   </tr>
@@ -539,13 +531,13 @@ const SalaryCalculator = () => {
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       $
                                       {Number(
-                                        result?.tech_Yearly / result?.tech_tax
+                                        result?.tech_Yearly / result?.tax
                                       ).toFixed(2)}
                                     </td>
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       $
                                       {Number(
-                                        result?.tech_a_Yearly / result?.tech_tax
+                                        result?.tech_a_Yearly / result?.tax
                                       ).toFixed(2)}
                                     </td>
                                   </tr>
@@ -564,10 +556,10 @@ const SalaryCalculator = () => {
                                   : "After Tax")}
                             </strong>
                           </p>
-                          <div className="overflow-x-auto">
+                          <div className="overflow-auto md:text-[18px] text-[16px]">
                             <table className="min-w-full  shadow-lg rounded-lg border border-gray-200">
                               <thead>
-                                <tr className="bg_black text_green">
+                                <tr className="bg-[#2845F5] text-[#fff]">
                                   <th
                                     rowSpan="2"
                                     className="py-4 px-6 text-left font-semibold border-b border-gray-200"
@@ -575,13 +567,13 @@ const SalaryCalculator = () => {
                                     <strong>Periodicity</strong>
                                   </th>
                                   <th
-                                    colspan="2"
+                                    colSpan="2"
                                     className="py-4 px-6 text-left font-semibold border-b border-gray-200"
                                   >
                                     <strong>Holidays & Vacation Days</strong>
                                   </th>
                                 </tr>
-                                <tr className="bg_black text_green">
+                                <tr className="bg_black bg-[#2845F5] text-[#fff]">
                                   <th className="py-3 px-6 text-left font-semibold border-b border-gray-200">
                                     <strong>
                                       {
@@ -720,9 +712,9 @@ const SalaryCalculator = () => {
                             <p className="text-lg font-bold mb-4">
                               <strong>After Tax </strong>
                             </p>
-                            <div className="overflow-x-auto">
+                            <div className="overflow-auto md:text-[18px] text-[16px]">
                               <table className="min-w-full  shadow-lg rounded-lg border border-gray-200">
-                                <thead className="bg_black text_green ">
+                                <thead className="bg_black bg-[#2845F5] text-[#fff] ">
                                   <tr>
                                     <th
                                       rowSpan="2"
@@ -731,13 +723,13 @@ const SalaryCalculator = () => {
                                       Periodicity
                                     </th>
                                     <th
-                                      colspan="2"
+                                      colSpan="2"
                                       className="py-4 px-6 text-left font-semibold border-b border-gray-200"
                                     >
                                       Holidays & Vacation Days
                                     </th>
                                   </tr>
-                                  <tr className="bg_black text_green">
+                                  <tr className="bg_black bg-[#2845F5] text-[#fff]">
                                     <th className="py-3 px-6 text-left font-semibold border-b border-gray-200">
                                       {
                                         data?.payload?.tech_lang_keys[
@@ -750,7 +742,7 @@ const SalaryCalculator = () => {
                                     </th>
                                   </tr>
                                 </thead>
-                                <tbody className=" divide-y divide-gray-200">
+                                <tbody className="bg-white divide-y divide-gray-200">
                                   <tr className="hover:bg-gray-100">
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       {data?.payload?.tech_lang_keys["hourly"]}
@@ -759,15 +751,14 @@ const SalaryCalculator = () => {
                                       {currency.symbol}{" "}
                                       {Number(
                                         result?.tech_Hourly -
-                                          result?.tech_Hourly * result?.tech_tax
+                                          result?.tech_Hourly * result?.tax
                                       ).toFixed(2)}
                                     </td>
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       {currency.symbol}{" "}
                                       {Number(
                                         result?.tech_a_Hourly -
-                                          result?.tech_a_Hourly *
-                                            result?.tech_tax
+                                          result?.tech_a_Hourly * result?.tax
                                       ).toFixed(2)}
                                     </td>
                                   </tr>
@@ -779,15 +770,14 @@ const SalaryCalculator = () => {
                                       {currency.symbol}{" "}
                                       {Number(
                                         result?.tech_Daily -
-                                          result?.tech_Daily * result?.tech_tax
+                                          result?.tech_Daily * result?.tax
                                       ).toFixed(2)}
                                     </td>
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       {currency.symbol}{" "}
                                       {Number(
                                         result?.tech_a_Daily -
-                                          result?.tech_a_Daily *
-                                            result?.tech_tax
+                                          result?.tech_a_Daily * result?.tax
                                       ).toFixed(2)}
                                     </td>
                                   </tr>
@@ -799,14 +789,14 @@ const SalaryCalculator = () => {
                                       {currency.symbol}{" "}
                                       {Number(
                                         result?.tech_Week -
-                                          result?.tech_Week * result?.tech_tax
+                                          result?.tech_Week * result?.tax
                                       ).toFixed(2)}
                                     </td>
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       {currency.symbol}{" "}
                                       {Number(
                                         result?.tech_a_Week -
-                                          result?.tech_a_Week * result?.tech_tax
+                                          result?.tech_a_Week * result?.tax
                                       ).toFixed(2)}
                                     </td>
                                   </tr>
@@ -822,16 +812,14 @@ const SalaryCalculator = () => {
                                       {currency.symbol}{" "}
                                       {Number(
                                         result?.tech_Bi_week -
-                                          result?.tech_Bi_week *
-                                            result?.tech_tax
+                                          result?.tech_Bi_week * result?.tax
                                       ).toFixed(2)}
                                     </td>
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       {currency.symbol}{" "}
                                       {Number(
                                         result?.tech_a_Bi_week -
-                                          result?.tech_a_Bi_week *
-                                            result?.tech_tax
+                                          result?.tech_a_Bi_week * result?.tax
                                       ).toFixed(2)}
                                     </td>
                                   </tr>
@@ -847,8 +835,7 @@ const SalaryCalculator = () => {
                                       {currency.symbol}{" "}
                                       {Number(
                                         result?.tech_Sami_month -
-                                          result?.tech_Sami_month *
-                                            result?.tech_tax
+                                          result?.tech_Sami_month * result?.tax
                                       ).toFixed(2)}
                                     </td>
                                     <td className="py-4 px-6 border-b text-gray-700">
@@ -856,7 +843,7 @@ const SalaryCalculator = () => {
                                       {Number(
                                         result?.tech_a_Sami_month -
                                           result?.tech_a_Sami_month *
-                                            result?.tech_tax
+                                            result?.tax
                                       ).toFixed(2)}
                                     </td>
                                   </tr>
@@ -868,16 +855,14 @@ const SalaryCalculator = () => {
                                       {currency.symbol}{" "}
                                       {Number(
                                         result?.tech_Monthly -
-                                          result?.tech_Monthly *
-                                            result?.tech_tax
+                                          result?.tech_Monthly * result?.tax
                                       ).toFixed(2)}
                                     </td>
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       {currency.symbol}{" "}
                                       {Number(
                                         result?.tech_a_Monthly -
-                                          result?.tech_a_Monthly *
-                                            result?.tech_tax
+                                          result?.tech_a_Monthly * result?.tax
                                       ).toFixed(2)}
                                     </td>
                                   </tr>
@@ -889,16 +874,14 @@ const SalaryCalculator = () => {
                                       {currency.symbol}{" "}
                                       {Number(
                                         result?.tech_Quarterly -
-                                          result?.tech_Quarterly *
-                                            result?.tech_tax
+                                          result?.tech_Quarterly * result?.tax
                                       ).toFixed(2)}
                                     </td>
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       {currency.symbol}{" "}
                                       {Number(
                                         result?.tech_a_Quarterly -
-                                          result?.tech_a_Quarterly *
-                                            result?.tech_tax
+                                          result?.tech_a_Quarterly * result?.tax
                                       ).toFixed(2)}
                                     </td>
                                   </tr>
@@ -910,15 +893,14 @@ const SalaryCalculator = () => {
                                       {currency.symbol}{" "}
                                       {Number(
                                         result?.tech_Yearly -
-                                          result?.tech_Yearly * result?.tech_tax
+                                          result?.tech_Yearly * result?.tax
                                       ).toFixed(2)}
                                     </td>
                                     <td className="py-4 px-6 border-b text-gray-700">
                                       {currency.symbol}{" "}
                                       {Number(
                                         result?.tech_a_Yearly -
-                                          result?.tech_a_Yearly *
-                                            result?.tech_tax
+                                          result?.tech_a_Yearly * result?.tax
                                       ).toFixed(2)}
                                     </td>
                                   </tr>

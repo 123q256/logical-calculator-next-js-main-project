@@ -386,7 +386,7 @@ const toggleDropdown6 = () => {
                             <label htmlFor="profile_ratio" className="label">
                                   Profile Ratio
                             </label>
-                            <div class=" relative">
+                            <div className=" relative">
                             <input
                                 type="number"
                                 name="profile_ratio"
@@ -555,7 +555,7 @@ const toggleDropdown6 = () => {
                           <label htmlFor="profile_ratio_one" className="label">
                                 Profile Ratio 
                           </label>
-                          <div class=" relative">
+                          <div className=" relative">
                           <input
                               type="number"
                               name="profile_ratio_one"
@@ -710,7 +710,7 @@ const toggleDropdown6 = () => {
                           <label htmlFor="profile_ratio_two" className="label">
                                 Profile Ratio 
                           </label>
-                          <div class=" relative">
+                          <div className=" relative">
                           <input
                               type="number"
                               name="profile_ratio_two"

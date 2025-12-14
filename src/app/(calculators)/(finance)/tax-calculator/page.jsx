@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useTaxCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useTaxCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import { toast } from "react-toastify";
@@ -14,7 +15,6 @@ import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeed
 import Calculator from "../../Calculator";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const IncomeTaxCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -67,6 +67,9 @@ const IncomeTaxCalculator = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+
+    setResult(null);
+    setFormError(null);
   };
 
   const handleSubmit = async (e) => {
@@ -84,6 +87,9 @@ const IncomeTaxCalculator = () => {
     ) {
       setFormError("Please fill in field.");
       return;
+
+      setResult(null);
+      setFormError(null);
     }
 
     setFormError("");
@@ -99,11 +105,11 @@ const IncomeTaxCalculator = () => {
         tech_ded: formData.tech_ded,
         tech_item: formData.tech_item,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error in calculating.");
-      toast.error("Error in calculating.");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -166,8 +172,8 @@ const IncomeTaxCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
-            <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 gap-4">
+          <div className="lg:w-[60%] md:w-[90%] w-full mx-auto ">
+            <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 gap-1 md:gap-4">
               <div className="space-y-2">
                 <label htmlFor="tech_tax_year" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -252,7 +258,7 @@ const IncomeTaxCalculator = () => {
                     id="tech_age"
                     min="18"
                     max="99"
-                    className="input mt-2"
+                    className="input mt-2 "
                     aria-label="input"
                     placeholder="00"
                     value={formData.tech_age}
@@ -306,7 +312,7 @@ const IncomeTaxCalculator = () => {
                     step="any"
                     name="tech_tax_with"
                     id="tech_tax_with"
-                    className="input mt-2"
+                    className="input mt-2 "
                     aria-label="input"
                     value={formData.tech_tax_with}
                     onChange={handleChange}
@@ -336,28 +342,32 @@ const IncomeTaxCalculator = () => {
                   </select>
                 </div>
               </div>
-              <div className="space-y-2 relative">
-                <label htmlFor="tech_item" className="label">
-                  {data?.payload?.tech_lang_keys["item"]}:
-                </label>
-                <div className="relative">
-                  <input
-                    type="number"
-                    step="any"
-                    name="tech_item"
-                    id="tech_item"
-                    className="input "
-                    aria-label="input"
-                    value={formData.tech_item}
-                    onChange={handleChange}
-                  />
-                  <span className="input_unit">{currency.symbol}</span>
-                </div>
-              </div>
+              {formData.tech_ded == "i" && (
+                <>
+                  <div className="space-y-2 relative">
+                    <label htmlFor="tech_item" className="label">
+                      {data?.payload?.tech_lang_keys["item"]}:
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        step="any"
+                        name="tech_item"
+                        id="tech_item"
+                        className="input "
+                        aria-label="input"
+                        value={formData.tech_item}
+                        onChange={handleChange}
+                      />
+                      <span className="input_unit">{currency.symbol}</span>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -371,7 +381,7 @@ const IncomeTaxCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -387,17 +397,17 @@ const IncomeTaxCalculator = () => {
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center ">
-                    <div className="w-full md:w-[50%] bg-light-blue  rounded-lg mt-6">
-                      {result?.tech_e && (
-                        <div className=" w-full mt-4 overflow-auto">
-                          <table className="w-full text-[16px]">
+                    <div className="w-full md:w-[70%] bg-light-blue  rounded-lg mt-6">
+                      {result?.payload?.e && (
+                        <div className=" w-full mt-4  overflow-auto md:text-[18px] text-[16px]">
+                          <table className="w-full">
                             <tbody>
                               <tr>
                                 <td className="py-2 border-b w-4/5 font-bold">
                                   {data?.payload?.tech_lang_keys["e"]}
                                 </td>
                                 <td className="py-2 border-b">
-                                  {currency.symbol} {result?.tech_e ?? 0}
+                                  {currency.symbol} {result?.payload?.e ?? 0}
                                 </td>
                               </tr>
                               <tr>
@@ -405,7 +415,7 @@ const IncomeTaxCalculator = () => {
                                   {data?.payload?.tech_lang_keys["a"]}
                                 </td>
                                 <td className="py-2 border-b">
-                                  {currency.symbol} {result?.tech_a ?? 0}
+                                  {currency.symbol} {result?.a ?? 0}
                                 </td>
                               </tr>
                               <tr>
@@ -414,7 +424,7 @@ const IncomeTaxCalculator = () => {
                                 </td>
                                 <td className="py-2 border-b">
                                   {currency.symbol}{" "}
-                                  {Number(result?.tech_s ?? 0).toFixed(2)}
+                                  {Number(result?.s ?? 0).toFixed(2)}
                                 </td>
                               </tr>
                               <tr>
@@ -422,7 +432,7 @@ const IncomeTaxCalculator = () => {
                                   {data?.payload?.tech_lang_keys["4"]}
                                 </td>
                                 <td className="py-2 border-b">
-                                  {Number(result?.tech_m_tax ?? 0).toFixed(2)} %
+                                  {Number(result?.m_tax ?? 0).toFixed(2)} %
                                 </td>
                               </tr>
                               <tr>
@@ -430,7 +440,7 @@ const IncomeTaxCalculator = () => {
                                   {data?.payload?.tech_lang_keys["b"]}
                                 </td>
                                 <td className="py-2 border-b">
-                                  {Number(result?.tech_b ?? 0).toFixed(2)} %
+                                  {Number(result?.b ?? 0).toFixed(2)} %
                                 </td>
                               </tr>
                               <tr>
@@ -438,7 +448,7 @@ const IncomeTaxCalculator = () => {
                                   {data?.payload?.tech_lang_keys["c"]}
                                 </td>
                                 <td className="py-2 border-b">
-                                  {currency.symbol} {result?.tech_c ?? 0}
+                                  {currency.symbol} {result?.c ?? 0}
                                 </td>
                               </tr>
                               <tr>
@@ -446,7 +456,7 @@ const IncomeTaxCalculator = () => {
                                   {data?.payload?.tech_lang_keys["d"]}
                                 </td>
                                 <td className="py-2 border-b">
-                                  {currency.symbol} {result?.tech_d ?? 0}
+                                  {currency.symbol} {result?.d ?? 0}
                                 </td>
                               </tr>
                             </tbody>
@@ -454,16 +464,16 @@ const IncomeTaxCalculator = () => {
                         </div>
                       )}
 
-                      {result?.tech_f && (
-                        <div className="w-full mt-4">
-                          <table className="w-full text-lg">
+                      {result?.f && (
+                        <div className="w-full mt-4  overflow-auto md:text-[18px] text-[16px]">
+                          <table className="w-full ">
                             <tbody>
                               <tr>
                                 <td className="py-2 border-b w-4/5 font-bold">
                                   {data?.payload?.tech_lang_keys["f"]}
                                 </td>
                                 <td className="py-2 border-b">
-                                  {currency.symbol} {result?.tech_f ?? 0}
+                                  {currency.symbol} {result?.f ?? 0}
                                 </td>
                               </tr>
                               <tr>
@@ -471,7 +481,7 @@ const IncomeTaxCalculator = () => {
                                   {data?.payload?.tech_lang_keys["a"]}
                                 </td>
                                 <td className="py-2 border-b">
-                                  {currency.symbol} {result?.tech_a ?? 0}
+                                  {currency.symbol} {result?.a ?? 0}
                                 </td>
                               </tr>
                               <tr>
@@ -480,7 +490,7 @@ const IncomeTaxCalculator = () => {
                                 </td>
                                 <td className="py-2 border-b">
                                   {currency.symbol}{" "}
-                                  {Number(result?.tech_s ?? 0).toFixed(2)}
+                                  {Number(result?.s ?? 0).toFixed(2)}
                                 </td>
                               </tr>
                               <tr>
@@ -488,7 +498,7 @@ const IncomeTaxCalculator = () => {
                                   {data?.payload?.tech_lang_keys["4"]}
                                 </td>
                                 <td className="py-2 border-b">
-                                  {Number(result?.tech_m_tax ?? 0).toFixed(2)} %
+                                  {Number(result?.m_tax ?? 0).toFixed(2)} %
                                 </td>
                               </tr>
                               <tr>
@@ -496,7 +506,7 @@ const IncomeTaxCalculator = () => {
                                   {data?.payload?.tech_lang_keys["b"]}
                                 </td>
                                 <td className="py-2 border-b">
-                                  {Number(result?.tech_b ?? 0).toFixed(2)} %
+                                  {Number(result?.b ?? 0).toFixed(2)} %
                                 </td>
                               </tr>
                               <tr>
@@ -504,7 +514,7 @@ const IncomeTaxCalculator = () => {
                                   {data?.payload?.tech_lang_keys["c"]}
                                 </td>
                                 <td className="py-2 border-b">
-                                  {currency.symbol} {result?.tech_c ?? 0}
+                                  {currency.symbol} {result?.c ?? 0}
                                 </td>
                               </tr>
                               <tr>
@@ -512,7 +522,7 @@ const IncomeTaxCalculator = () => {
                                   {data?.payload?.tech_lang_keys["d"]}
                                 </td>
                                 <td className="py-2 border-b">
-                                  {currency.symbol} {result?.tech_d ?? 0}
+                                  {currency.symbol} {result?.d ?? 0}
                                 </td>
                               </tr>
                             </tbody>

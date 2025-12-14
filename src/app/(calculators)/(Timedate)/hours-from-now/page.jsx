@@ -2,11 +2,10 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { usePathname } from "next/navigation";
-
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useHoursfromnowCalculationMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
-
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useHoursfromnowCalculationMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
 import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeedback";
@@ -14,24 +13,23 @@ import Calculator from "../../Calculator";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
 
-const HoursFromNowCalculator = (selectedDate) => {
+const HoursFromNowCalculator = () => {
   const pathname = usePathname();
-  const parts = pathname.split("/").filter(Boolean); // remove empty strings
+  const parts = pathname.split("/").filter(Boolean);
 
   let url = "";
 
   if (parts.length === 1) {
-    // sirf ek part
-    url = parts[0]; // "age-calculator"
+    url = parts[0];
   } else {
-    // do ya zyada parts
-    url = parts[0] + "/" + parts[1]; // "de/age-calculator"
+    url = parts[0] + "/" + parts[1];
   }
+
   const [getSingleCalculatorDetails, { data, error, isLoading }] =
     useGetSingleCalculatorDetailsMutation();
+
   const handleFetchDetails = async () => {
     try {
-      // Call the mutation with the `tech_calculator_link`
       await getSingleCalculatorDetails({ tech_calculator_link: url });
     } catch (err) {
       console.error("Error fetching calculator details:", err);
@@ -42,21 +40,111 @@ const HoursFromNowCalculator = (selectedDate) => {
     handleFetchDetails();
   }, [url]);
 
-
+  // Initial form state
   const [formData, setFormData] = useState({
     tech_time: "stat",
-    tech_hours: "",
-    tech_minuts: "",
-    tech_sec: "",
-    tech_hrs: "",
-    tech_min: "",
+    tech_hours: "08",
+    tech_minuts: "01",
+    tech_sec: "00",
+    tech_hrs: "2",
+    tech_min: "45",
+    tech_submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
   const [formError, setFormError] = useState("");
+  const [currentTime, setCurrentTime] = useState("");
+  const [timeFormat, setTimeFormat] = useState("12hr"); // Default 12hr format
   const intervalRef = useRef(null);
 
-  const updateTime = () => {
+  // Update current time function
+  const updateCurrentTime = () => {
+    const now = new Date();
+    let hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const seconds = now.getSeconds().toString().padStart(2, "0");
+
+    let displayTime = "";
+    if (timeFormat === "12hr") {
+      const ampm = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12 || 12;
+      displayTime = `${hours
+        .toString()
+        .padStart(2, "0")}:${minutes}:${seconds} ${ampm}`;
+    } else {
+      displayTime = `${hours
+        .toString()
+        .padStart(2, "0")}:${minutes}:${seconds}`;
+    }
+
+    setCurrentTime(displayTime);
+
+    if (formData.tech_time === "stat") {
+      setFormData((prev) => ({
+        ...prev,
+        tech_hours: now.getHours().toString().padStart(2, "0"),
+        tech_minuts: minutes,
+        tech_sec: seconds,
+      }));
+    }
+  };
+
+  useEffect(() => {
+    updateCurrentTime();
+    intervalRef.current = setInterval(updateCurrentTime, 1000);
+
+    return () => clearInterval(intervalRef.current);
+  }, [timeFormat, formData.tech_time]);
+
+  // RTK mutation hook
+  const [calculateHourseFromNow, { isLoading: calculateDeadlineLoading }] =
+    useHoursfromnowCalculationMutation();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setResult(null);
+    setFormError("");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setFormError("");
+
+    try {
+      const response = await calculateHourseFromNow({
+        tech_time: formData.tech_time,
+        tech_hours: formData.tech_hours,
+        tech_minuts: formData.tech_minuts,
+        tech_sec: formData.tech_sec,
+        tech_hrs: formData.tech_hrs,
+        tech_min: formData.tech_min,
+        tech_submit: formData.tech_submit,
+      }).unwrap();
+
+      setResult(response?.payload);
+      toast.success("Successfully Calculated");
+    } catch (err) {
+      setFormError(err.data?.payload?.error || "An error occurred");
+      toast.error(err.data?.payload?.error || "An error occurred");
+    }
+  };
+
+  const handleReset = () => {
+    setFormData({
+      tech_time: "stat",
+      tech_hours: "08",
+      tech_minuts: "01",
+      tech_sec: "00",
+      tech_hrs: "2",
+      tech_min: "45",
+      tech_submit: "calculate",
+    });
+    setResult(null);
+    setFormError(null);
+  };
+
+  const handleNowClick = () => {
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, "0");
     const minutes = now.getMinutes().toString().padStart(2, "0");
@@ -67,139 +155,46 @@ const HoursFromNowCalculator = (selectedDate) => {
       tech_hours: hours,
       tech_minuts: minutes,
       tech_sec: seconds,
+      tech_time: "dyna",
     }));
   };
 
-  useEffect(() => {
-    if (formData.tech_time === "stat") {
-      updateTime(); // Immediately set current time
-      intervalRef.current = setInterval(updateTime, 1000);
+  // Format time function
+  const formatTime = (timeString, format) => {
+    if (!timeString) return "";
+
+    // Check if timeString is already in HH:MM:SS format
+    if (typeof timeString === "string" && timeString.includes(":")) {
+      const [hours, minutes, seconds] = timeString.split(":");
+
+      if (format === "12hr") {
+        const hourNum = parseInt(hours, 10);
+        const ampm = hourNum >= 12 ? "PM" : "AM";
+        const displayHour = hourNum % 12 || 12;
+        return `${displayHour
+          .toString()
+          .padStart(2, "0")}:${minutes}:${seconds} ${ampm}`;
+      } else {
+        return `${hours}:${minutes}:${seconds}`;
+      }
+    }
+
+    // If it's a date string
+    const date = new Date(timeString);
+    if (isNaN(date)) return timeString;
+
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const seconds = date.getSeconds().toString().padStart(2, "0");
+
+    if (format === "12hr") {
+      const ampm = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12 || 12;
+      return `${hours
+        .toString()
+        .padStart(2, "0")}:${minutes}:${seconds} ${ampm}`;
     } else {
-      clearInterval(intervalRef.current);
-    }
-
-    return () => clearInterval(intervalRef.current); // cleanup
-  }, [formData.tech_time]);
-
-  // useEffect(() => {
-  //   const now = new Date(); // 👈 yeh line add karo
-  //   const hours = now.getHours().toString().padStart(2, "0");
-  //   const minutes = now.getMinutes().toString().padStart(2, "0");
-  //   const currentTime = `${hours}:${minutes}`;
-
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     tech_time: currentTime,
-  //   }));
-  // }, []);
-
-  // RTK mutation hook
-  const [
-    calculateHourseFromNow,
-    { isLoading: calculateDeadlineLoading, isError, error: calculateLoveError },
-  ] = useHoursfromnowCalculationMutation();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-    setResult(null);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (
-      !formData.tech_time ||
-      !formData.tech_hours ||
-      !formData.tech_minuts ||
-      !formData.tech_sec
-    ) {
-      setFormError("Please fill in field.");
-      return;
-    }
-
-    setFormError("");
-    try {
-      const response = await calculateHourseFromNow({
-        tech_time: formData.tech_time,
-        tech_hours: formData.tech_hours,
-        tech_minuts: formData.tech_minuts,
-        tech_sec: formData.tech_sec,
-        tech_hrs: formData.tech_hrs,
-        tech_min: formData.tech_min,
-      }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
-      toast.success("Calculate Successfully");
-    } catch (err) {
-      setFormError("Error calculating");
-      toast.error("Error calculating");
-    }
-  };
-
-  // Handle reset form
-  const handleReset = () => {
-    setFormData({
-      tech_time: "stat",
-      tech_hours: "",
-      tech_minuts: "",
-      tech_sec: "",
-      tech_hrs: "",
-      tech_min: "",
-    });
-    setResult(null);
-    setFormError(null);
-  };
-  const years = Array.from({ length: 101 }, (_, i) => 1950 + i);
-
-  // const handleNowClick = () => {
-  //   const today = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD"
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     tech_time: today,
-  //   }));
-  // };
-
-  const handleNowClick = () => {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, "0");
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    const currentTime = `${hours}:${minutes}`;
-
-    setFormData((prev) => ({
-      ...prev,
-      tech_time: currentTime,
-    }));
-  };
-
-  const [timeFormat, setTimeFormat] = useState("twhr"); // "twhr" = 12hr, "tfhr" = 24hr
-  const [formattedTime, setFormattedTime] = useState("");
-
-  useEffect(() => {
-    if (result?.tech_hoursadding) {
-      setFormattedTime(formatTime(result.tech_hoursadding, timeFormat));
-    }
-  }, [result, timeFormat]);
-  const formatTime = (isoString, format) => {
-    if (!isoString || typeof isoString !== "string") return "Invalid Time";
-
-    const date = new Date(isoString);
-    if (isNaN(date)) return "Invalid Time";
-
-    let hours = date.getUTCHours(); // UTC hours
-    let minutes = date.getUTCMinutes(); // UTC minutes
-    let seconds = date.getUTCSeconds(); // UTC seconds
-
-    if (format === "twhr") {
-      const suffix = hours >= 12 ? "PM" : "AM";
-      const hr = ((hours + 11) % 12) + 1;
-      return `${hr}:${String(minutes).padStart(2, "0")}:${String(
-        seconds
-      ).padStart(2, "0")} ${suffix}`;
-    } else {
-      return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
-        2,
-        "0"
-      )}:${String(seconds).padStart(2, "0")}`;
+      return `${hours.toString().padStart(2, "0")}:${minutes}:${seconds}`;
     }
   };
 
@@ -215,7 +210,7 @@ const HoursFromNowCalculator = (selectedDate) => {
         },
         {
           name: data?.payload?.tech_calculator_title,
-          path: pathname, // This will use the current path dynamically
+          path: pathname,
         },
       ]}
     >
@@ -227,10 +222,46 @@ const HoursFromNowCalculator = (selectedDate) => {
             </p>
           )}
 
-          <div className="lg:w-[50%] md:w-[50%] w-full mx-auto ">
-            <div className="grid grid-cols-1 gap-3">
-              <div className="space-y-2 relative mb-5">
-                <label className="pe-2" htmlFor="stat">
+          {/* Current Time Display */}
+          <div className="text-center mb-6">
+            <div className="inline-block bg-gray-100 px-4 py-2 rounded-lg">
+              <p className="text-sm text-gray-600">Current Time</p>
+              <p className="text-2xl font-bold text-blue-600">{currentTime}</p>
+            </div>
+          </div>
+
+          {/* Time Format Selection for Input */}
+          <div className="flex justify-center items-center space-x-4 mb-6">
+            <span className="text-sm font-medium">Time Format:</span>
+            <label className="inline-flex items-center cursor-pointer">
+              <input
+                type="radio"
+                name="timeFormat"
+                value="24hr"
+                className="mr-2"
+                checked={timeFormat === "24hr"}
+                onChange={(e) => setTimeFormat(e.target.value)}
+              />
+              <span className="text-sm">24 Hours</span>
+            </label>
+            <label className="inline-flex items-center cursor-pointer">
+              <input
+                type="radio"
+                name="timeFormat"
+                value="12hr"
+                className="mr-2"
+                checked={timeFormat === "12hr"}
+                onChange={(e) => setTimeFormat(e.target.value)}
+              />
+              <span className="text-sm">12 Hours am/pm</span>
+            </label>
+          </div>
+
+          <div className="lg:w-[50%] md:w-[50%] w-full mx-auto">
+            {/* Mode Selection */}
+            <div className="grid grid-cols-1 gap-3 mb-6">
+              <div className="space-y-2 relative">
+                <label className="inline-flex items-center cursor-pointer pe-2">
                   <input
                     type="radio"
                     name="tech_time"
@@ -240,9 +271,11 @@ const HoursFromNowCalculator = (selectedDate) => {
                     onChange={handleChange}
                     checked={formData.tech_time === "stat"}
                   />
-                  <span>{data?.payload?.tech_lang_keys["1"]}</span>
+                  <span>
+                    {data?.payload?.tech_lang_keys?.["1"] || "Use current time"}
+                  </span>
                 </label>
-                <label htmlFor="dyna">
+                <label className="inline-flex items-center cursor-pointer">
                   <input
                     type="radio"
                     name="tech_time"
@@ -252,128 +285,167 @@ const HoursFromNowCalculator = (selectedDate) => {
                     onChange={handleChange}
                     checked={formData.tech_time === "dyna"}
                   />
-                  <span>{data?.payload?.tech_lang_keys["2"]}</span>
+                  <span>
+                    {data?.payload?.tech_lang_keys?.["2"] ||
+                      "Enter specific time"}
+                  </span>
                 </label>
               </div>
             </div>
 
+            {/* Time Input */}
             <div className="grid grid-cols-1 gap-4">
-              <div className="flex gap-5 mt-3 items-center">
-                <div className="w-full inputshow">
-                  <div className="w-full pt-1 pb-2">
-                    <input
-                      type="text"
-                      step="any"
-                      name="tech_hours"
-                      id="tech_hours"
-                      className={`input w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#38A169] ${
-                        formData.tech_time === "stat"
-                          ? "bg-[#f8f6f6] cursor-not-allowed"
-                          : ""
-                      }`}
-                      aria-label="input"
-                      disabled={formData.tech_time === "stat"}
-                      value={formData.tech_hours}
-                      onChange={handleChange}
-                    />
-                  </div>
+              <div className="flex items-center justify-center gap-4">
+                {/* Hours */}
+                <div className="w-full">
+                  <label
+                    htmlFor="tech_hours"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Hours
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    max={timeFormat === "24hr" ? "23" : "12"}
+                    name="tech_hours"
+                    id="tech_hours"
+                    className={`input w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
+                      formData.tech_time === "stat"
+                        ? "bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={formData.tech_time === "stat"}
+                    value={formData.tech_hours}
+                    onChange={handleChange}
+                  />
                 </div>
-                <p className="mb-1">:</p>
-                <div className="w-full inputshow">
-                  <div className="w-full pt-1 pb-2">
-                    <input
-                      type="text"
-                      step="any"
-                      name="tech_minuts"
-                      id="tech_minuts"
-                      className={`input w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#38A169] ${
-                        formData.tech_time === "stat"
-                          ? "bg-[#f8f6f6] cursor-not-allowed"
-                          : ""
-                      }`}
-                      aria-label="input"
-                      disabled={formData.tech_time === "stat"}
-                      value={formData.tech_minuts}
-                      onChange={handleChange}
-                    />
-                  </div>
+
+                <span className="text-2xl font-bold mt-5">:</span>
+
+                {/* Minutes */}
+                <div className="w-full">
+                  <label
+                    htmlFor="tech_minuts"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Minutes
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="59"
+                    name="tech_minuts"
+                    id="tech_minuts"
+                    className={`input w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
+                      formData.tech_time === "stat"
+                        ? "bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={formData.tech_time === "stat"}
+                    value={formData.tech_minuts}
+                    onChange={handleChange}
+                  />
                 </div>
-                <p className="mb-1">:</p>
-                <div className="w-full inputshow">
-                  <div className="w-full pt-1 pb-2">
-                    <input
-                      type="text"
-                      step="any"
-                      name="tech_sec"
-                      id="tech_sec"
-                      className={`input w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#38A169] ${
-                        formData.tech_time === "stat"
-                          ? "bg-[#f8f6f6] cursor-not-allowed"
-                          : ""
-                      }`}
-                      aria-label="input"
-                      disabled={formData.tech_time === "stat"}
-                      value={formData.tech_sec}
-                      onChange={handleChange}
-                    />
-                  </div>
+
+                <span className="text-2xl font-bold mt-5">:</span>
+
+                {/* Seconds */}
+                <div className="w-full">
+                  <label
+                    htmlFor="tech_sec"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Seconds
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="59"
+                    name="tech_sec"
+                    id="tech_sec"
+                    className={`input w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
+                      formData.tech_time === "stat"
+                        ? "bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={formData.tech_time === "stat"}
+                    value={formData.tech_sec}
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
+
+              {/* Now Button */}
+              <div className="text-center">
+                <button
+                  type="button"
+                  onClick={handleNowClick}
+                  className="px-4 py-2 bg-gray-200 cursor-pointer hover:bg-gray-300 rounded-lg text-sm font-medium transition-colors"
+                >
+                  Set to Current Time
+                </button>
+              </div>
             </div>
-            <div className="grid grid-cols-1 gap-4">
-              <div className="flex gap-5 mt-2 items-center">
-                <div className=" w-full inputshow">
-                  <label htmlFor="tech_hrs" className="text-sm text-[#38A169]">
-                    {data?.payload?.tech_lang_keys["3"]}
+
+            {/* Add Time Inputs */}
+            <div className="grid grid-cols-1 gap-4 mt-6">
+              <div className="flex items-center justify-center gap-4">
+                {/* Hours to Add */}
+                <div className="w-full">
+                  <label
+                    htmlFor="tech_hrs"
+                    className="block text-sm font-medium text-blue-600 mb-1"
+                  >
+                    {data?.payload?.tech_lang_keys?.["3"] || "Hours to Add"}
                   </label>
-                  <div className="w-full pt-1 pb-2">
-                    <input
-                      type="text"
-                      step="any"
-                      name="tech_hrs"
-                      id="tech_hrs"
-                      className="input w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#38A169]"
-                      aria-label="input"
-                      value={formData.tech_hrs}
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <input
+                    type="number"
+                    name="tech_hrs"
+                    id="tech_hrs"
+                    className="input w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    value={formData.tech_hrs}
+                    onChange={handleChange}
+                  />
                 </div>
-                <p className="mt-2">:</p>
-                <div className=" w-full inputshow">
-                  <label htmlFor="tech_min" className="text-sm text-[#38A169]">
-                    {data?.payload?.tech_lang_keys["4"]}
+
+                <span className="text-2xl font-bold mt-5">:</span>
+
+                {/* Minutes to Add */}
+                <div className="w-full">
+                  <label
+                    htmlFor="tech_min"
+                    className="block text-sm font-medium text-blue-600 mb-1"
+                  >
+                    {data?.payload?.tech_lang_keys?.["4"] || "Minutes to Add"}
                   </label>
-                  <div className="w-full pt-1 pb-2">
-                    <input
-                      type="text"
-                      step="any"
-                      name="tech_min"
-                      id="tech_min"
-                      className="input w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#38A169]"
-                      aria-label="input"
-                      value={formData.tech_min}
-                      onChange={handleChange}
-                    />
-                  </div>
+                  <input
+                    type="number"
+                    name="tech_min"
+                    id="tech_min"
+                    className="input w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    value={formData.tech_min}
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          {/* Buttons */}
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={calculateDeadlineLoading}>
-              {data?.payload?.tech_lang_keys["calculate"]}
+              {data?.payload?.tech_lang_keys?.["calculate"] || "Calculate"}
             </Button>
             {result && (
               <ResetButton type="button" onClick={handleReset}>
-                {data?.payload?.tech_lang_keys["locale"] === "en"
-                  ? "RESET"
-                  : data?.payload?.tech_lang_keys["reset"] || "RESET"}
+                {data?.payload?.tech_lang_keys?.["reset"] || "RESET"}
               </ResetButton>
             )}
           </div>
         </div>
+
+        {/* Loading State */}
         {calculateDeadlineLoading ? (
           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
@@ -384,69 +456,81 @@ const HoursFromNowCalculator = (selectedDate) => {
             </div>
           </div>
         ) : (
+          /* Result Display */
           result && (
-            <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
-                <div>
-                  <ResultActions lang={data?.payload?.tech_lang_keys} />
+            <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6">
+              <div>
+                <ResultActions lang={data?.payload?.tech_lang_keys} />
 
-                  <div className="rounded-lg  flex items-center justify-center">
-                    <div className="w-full bg-light-blue result p-3 rounded-lg mt-3 overflow-auto">
-                      <div className="flex flex-wrap justify-center">
-                        <div className="w-full text-center">
-                          <span className="pr-4 text-sm block md:inline-block">
-                            Output Time Format:
-                          </span>
+                <div className="rounded-lg flex items-center justify-center">
+                  <div className="w-full bg-blue-50 p-3 rounded-lg mt-3">
+                    <div className="flex flex-col items-center justify-center">
+                      {/* Result Time Format Selection */}
+                      <div className="mb-4">
+                        <span className="pr-4 text-sm">
+                          Output Time Format:
+                        </span>
+                        <label className="inline-flex items-center cursor-pointer mr-4">
                           <input
                             type="radio"
-                            name="time_st"
-                            id="twhr"
-                            className="cursor-pointer ml-3 border  mx-2"
-                            value="twhr"
-                            checked={timeFormat === "twhr"}
+                            name="resultTimeFormat"
+                            value="12hr"
+                            id="result12hr"
+                            className="mr-2 cursor-pointer border"
+                            checked={timeFormat === "12hr"}
                             onChange={(e) => setTimeFormat(e.target.value)}
                           />
                           <label
-                            htmlFor="twhr"
-                            className="text-sm cursor-pointer text-[#38A169] pr-4 md:pr-6"
+                            htmlFor="result12hr"
+                            className="text-sm cursor-pointer"
                           >
                             12 Hours am/pm
                           </label>
+                        </label>
+                        <label className="inline-flex items-center cursor-pointer">
                           <input
                             type="radio"
-                            className="cursor-pointer  border mx-2"
-                            name="time_st"
-                            id="tfhr"
-                            value="tfhr"
-                            checked={timeFormat === "tfhr"}
+                            name="resultTimeFormat"
+                            value="24hr"
+                            id="result24hr"
+                            className="mr-2 cursor-pointer border"
+                            checked={timeFormat === "24hr"}
                             onChange={(e) => setTimeFormat(e.target.value)}
                           />
                           <label
-                            htmlFor="tfhr"
-                            className="text-sm cursor-pointer text-[#38A169]"
+                            htmlFor="result24hr"
+                            className="text-sm cursor-pointer"
                           >
                             24 Hours
                           </label>
-                          <div>
-                            <p className="text-xl bg-[#2845F5] text-white px-4 py-2 rounded-lg inline-block my-3">
-                              <strong id="currentTime">
-                                {formatTime(
-                                  result?.tech_hoursadding,
-                                  timeFormat
-                                )}
-                              </strong>
-                            </p>
-                          </div>
-                        </div>
+                        </label>
+                      </div>
+
+                      {/* Result Display */}
+                      <div className="bg-[#2845F5] text-[#fff] px-6 py-4 rounded-lg text-center w-full max-w-md">
+                        <p className="text-3xl font-bold mb-2">
+                          {formatTime(
+                            result?.tech_full_date || result?.tech_time,
+                            timeFormat
+                          )}
+                        </p>
+                        <p className="text-sm text-gray-300">
+                          {formData.tech_time === "stat"
+                            ? "Current time"
+                            : "Entered time"}{" "}
+                          + {formData.tech_hrs} hours {formData.tech_min}{" "}
+                          minutes
+                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </>
+            </div>
           )
         )}
       </form>
+
       {result && (
         <CalculatorFeedback calName={data?.payload?.tech_calculator_title} />
       )}

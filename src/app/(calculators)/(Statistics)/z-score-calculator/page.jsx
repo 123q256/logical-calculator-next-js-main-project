@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useZScoreCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useZScoreCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const ZscoreCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -90,11 +90,11 @@ const ZscoreCalculator = () => {
         tech_pmvalue: formData.tech_pmvalue,
         tech_psdvalue: formData.tech_psdvalue,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -277,8 +277,8 @@ const ZscoreCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3  gap-2">
+          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
+            <div className="grid grid-cols-12 mt-3 gap-1 md:gap-2">
               <div className="col-span-12 ">
                 <label htmlFor="tech_to_calculate" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -375,7 +375,7 @@ const ZscoreCalculator = () => {
 
               {formData.tech_to_calculate == "sm" && (
                 <>
-                  <div className="lg:col-span-6 md:col-span-6 col-span-12 vc3 ">
+                  <div className="col-span-6 vc3 ">
                     <label htmlFor="tech_smvalue" className="label">
                       {data?.payload?.tech_lang_keys["9"]}: x̄
                     </label>
@@ -397,7 +397,7 @@ const ZscoreCalculator = () => {
               )}
               {formData.tech_to_calculate == "sm" && (
                 <>
-                  <div className="lg:col-span-6 md:col-span-6 col-span-12 vc3b ">
+                  <div className="col-span-6 vc3b ">
                     <label htmlFor="tech_snvalue" className="label">
                       {data?.payload?.tech_lang_keys["9"]}: x̄
                     </label>
@@ -420,7 +420,7 @@ const ZscoreCalculator = () => {
 
               {formData.tech_to_calculate == "dp" && (
                 <>
-                  <div className="lg:col-span-6 md:col-span-6 col-span-12 vc2">
+                  <div className="col-span-6 vc2">
                     <label htmlFor="tech_dsvalue" className="label">
                       {data?.payload?.tech_lang_keys["2"]}: x
                     </label>
@@ -444,7 +444,7 @@ const ZscoreCalculator = () => {
                 formData.tech_to_calculate == "sm" ||
                 formData.tech_to_calculate == "ds") && (
                 <>
-                  <div className="lg:col-span-6 md:col-span-6 col-span-12 vc1">
+                  <div className="col-span-6 vc1">
                     <label htmlFor="tech_pmvalue" className="label">
                       {data?.payload?.tech_lang_keys["11"]}: μ
                     </label>
@@ -468,7 +468,7 @@ const ZscoreCalculator = () => {
                 formData.tech_to_calculate == "sm" ||
                 formData.tech_to_calculate == "ds") && (
                 <>
-                  <div className="lg:col-span-6 md:col-span-6 col-span-12 vc">
+                  <div className="col-span-6 vc">
                     <label htmlFor="tech_psdvalue" className="label">
                       {data?.payload?.tech_lang_keys["12"]}: σ
                     </label>
@@ -505,7 +505,7 @@ const ZscoreCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -516,7 +516,7 @@ const ZscoreCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -526,7 +526,7 @@ const ZscoreCalculator = () => {
                         {formData?.tech_to_calculate == "dp" ? (
                           <>
                             <div className="text-center">
-                              <p className="text-[20px]">
+                              <p className="text-[16px] md:text-[20px]">
                                 <strong>
                                   {data?.payload?.tech_lang_keys["13"]} (x ={" "}
                                   {formData?.tech_dsvalue} , μ ={" "}
@@ -534,20 +534,18 @@ const ZscoreCalculator = () => {
                                   {formData?.tech_psdvalue})
                                 </strong>
                               </p>
-                              <div className="flex justify-center">
-                                <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
-                                  <strong className="text-blue">
-                                    Z = {result?.tech_rz}
-                                  </strong>
-                                </p>
-                              </div>
+                              <p className="text-[25px] md:text-[32px] bg-sky px-3 py-2 bordered rounded-lg d-inline-block my-3">
+                                <strong className="text-blue">
+                                  Z = {result?.tech_rz}
+                                </strong>
+                              </p>
                             </div>
                             <div className="text-center w-full flex justify-centre">
                               <div className="flex justify-center">
                                 <img
-                                  src={`/images/z_score/${result.tech_z_url}.png`}
+                                  src={`/images/z_score/${result?.tech_z_url}.png`}
                                   alt="Z-Score Graph"
-                                  width="50%"
+                                  width="70%"
                                 />
                               </div>
                             </div>
@@ -558,42 +556,44 @@ const ZscoreCalculator = () => {
                               </strong>
                             </p>
                             <div className="col-lg-10 mt-2 overflow-auto">
-                              <table className="w-full text-[18px]">
-                                <tr>
-                                  <td className="text-blue py-2 border-b">
-                                    Left tailed p value
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {result?.tech_ltpv}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td className="text-blue py-2 border-b">
-                                    Right tailed p value
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {result?.tech_rtpv}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td className="text-blue py-2 border-b">
-                                    Two tailed p value
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {result?.tech_ttpv}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td className="text-blue py-2 border-b">
-                                    Two tailed confidence level
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {result?.tech_ttcl}
-                                  </td>
-                                </tr>
+                              <table className="w-full text-[14px] md:text-[18px]">
+                                <tbody>
+                                  <tr>
+                                    <td className="text-blue py-2 border-b">
+                                      Left tailed p value
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {result?.tech_ltpv}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="text-blue py-2 border-b">
+                                      Right tailed p value
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {result?.tech_rtpv}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="text-blue py-2 border-b">
+                                      Two tailed p value
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {result?.tech_ttpv}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="text-blue py-2 border-b">
+                                      Two tailed confidence level
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {result?.tech_ttcl}
+                                    </td>
+                                  </tr>
+                                </tbody>
                               </table>
                             </div>
-                            <p className="w-full mt-3 text-blue text-[20px]">
+                            <p className="w-full mt-3 text-blue text-[16px] md:text-[20px]">
                               {" "}
                               <b>{data?.payload?.tech_lang_keys["14"]}:</b>
                             </p>
@@ -642,7 +642,7 @@ const ZscoreCalculator = () => {
                         {formData?.tech_to_calculate == "sm" ? (
                           <>
                             <div className="text-center">
-                              <p className="text-[20px]">
+                              <p className="text-[16px] md:text-[20px]">
                                 <strong>
                                   {data?.payload?.tech_lang_keys["13"]} (x̄ ={" "}
                                   {formData?.tech_smvalue} , n ={" "}
@@ -651,15 +651,13 @@ const ZscoreCalculator = () => {
                                   {formData?.tech_psdvalue})
                                 </strong>
                               </p>
-                              <div className="flex justify-center">
-                                <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
-                                  <strong className="text-blue">
-                                    Z = {result?.tech_rz}
-                                  </strong>
-                                </p>
-                              </div>
+                              <p className="text-[25px] md:text-[32px] bg-sky px-3 py-2 bordered rounded-lg d-inline-block my-3">
+                                <strong className="text-blue">
+                                  Z = {result?.tech_rz}
+                                </strong>
+                              </p>
                             </div>
-                            <p className="w-full mt-3 text-blue text-[20px]">
+                            <p className="w-full mt-3 text-blue text-[16px] md:text-[20px]">
                               {" "}
                               <b>{data?.payload?.tech_lang_keys["14"]}:</b>
                             </p>
@@ -721,7 +719,7 @@ const ZscoreCalculator = () => {
                         {formData?.tech_to_calculate == "ds" ? (
                           <>
                             <div className="text-center">
-                              <p className="text-[20px]">
+                              <p className="text-[16px] md:text-[20px]">
                                 <strong>
                                   {data?.payload?.tech_lang_keys["15"]} (x ={" "}
                                   {formData?.tech_x}, μ ={" "}
@@ -730,34 +728,28 @@ const ZscoreCalculator = () => {
                                 </strong>
                               </p>
                               <div className="w-full text-center">
-                                <div className="flex justify-center">
-                                  <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
-                                    <strong className="text-blue">
-                                      Z = {result?.tech_rz}
-                                    </strong>
-                                  </p>
-                                </div>
+                                <p className="text-[25px] md:text-[32px] bg-sky px-3 py-2 bordered rounded-lg d-inline-block my-2">
+                                  <strong className="text-blue">
+                                    Z = {result?.tech_rz}
+                                  </strong>
+                                </p>
                               </div>
                               <div className="w-full text-center">
-                                <div className="flex justify-center">
-                                  <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
-                                    <strong className="text-blue">
-                                      x̄ = {result?.tech_avg}
-                                    </strong>
-                                  </p>
-                                </div>
+                                <p className="text-[25px] md:text-[32px] bg-sky px-3 py-2 bordered rounded-lg d-inline-block my-2">
+                                  <strong className="text-blue">
+                                    x̄ = {result?.tech_avg}
+                                  </strong>
+                                </p>
                               </div>
                               <div className="w-full text-center">
-                                <div className="flex justify-center">
-                                  <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
-                                    <strong className="text-blue">
-                                      n = {result?.tech_n}
-                                    </strong>
-                                  </p>
-                                </div>
+                                <p className="text-[25px] md:text-[32px] bg-sky px-3 py-2 bordered rounded-lg d-inline-block my-2">
+                                  <strong className="text-blue">
+                                    n = {result?.tech_n}
+                                  </strong>
+                                </p>
                               </div>
                             </div>
-                            <p className="w-full mt-3 text-blue text-[20px]">
+                            <p className="w-full mt-3 text-blue text-[16px] md:text-[20px]">
                               {" "}
                               <b>{data?.payload?.tech_lang_keys["14"]}:</b>
                             </p>
@@ -830,8 +822,8 @@ const ZscoreCalculator = () => {
                         {formData?.tech_to_calculate == "p" ? (
                           <>
                             <div className="text-center">
-                              <p className="text-[20px] font-bold">
-                                <p className="text-[20px]">
+                              <p className="text-[16px] md:text-[20px] font-bold">
+                                <p className="text-[16px] md:text-[20px]">
                                   <strong>
                                     {data?.payload?.tech_lang_keys["13"]} (P =
                                     &lt; {formData?.tech_pvalue})
@@ -839,22 +831,18 @@ const ZscoreCalculator = () => {
                                 </p>
                               </p>
                               <div className="w-full text-center">
-                                <div className="flex justify-center">
-                                  <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
-                                    <strong className="text-blue">
-                                      Z = {z1}
-                                    </strong>
-                                  </p>
-                                </div>
+                                <p className="text-[25px] md:text-[32px] bg-sky px-3 py-2 rounded-[10px] inline-block my-2">
+                                  <strong className="text-blue">
+                                    Z = {z1}
+                                  </strong>
+                                </p>
                               </div>
                               <div className="w-full text-center">
-                                <div className="flex justify-center">
-                                  <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
-                                    <strong className="text-blue">
-                                      Z = {z2}
-                                    </strong>
-                                  </p>
-                                </div>
+                                <p className="text-[25px] md:text-[32px] bg-sky px-3 py-2 rounded-[10px] inline-block my-2">
+                                  <strong className="text-blue">
+                                    Z = {z2}
+                                  </strong>
+                                </p>
                               </div>
                             </div>
                           </>

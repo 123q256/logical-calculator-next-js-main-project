@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useMillitarytimeCalculationMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useMillitarytimeCalculationMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -13,7 +14,6 @@ import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeed
 import Calculator from "../../Calculator";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const DeadlineCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -49,6 +49,7 @@ const DeadlineCalculator = () => {
     tech_hur: "7",
     tech_min: "17",
     tech_am_pm: "pm",
+    tech_submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -69,23 +70,6 @@ const DeadlineCalculator = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.tech_conversion == 1) {
-      if (!formData.tech_conversion || !formData.tech_military_time) {
-        setFormError("Please fill in field.");
-        return;
-      }
-    } else {
-      if (
-        !formData.tech_conversion ||
-        !formData.tech_hours ||
-        !formData.tech_min ||
-        !formData.tech_am_pm
-      ) {
-        setFormError("Please fill in field");
-        return;
-      }
-    }
-
     setFormError("");
     try {
       const response = await calculateMilityTime({
@@ -95,12 +79,13 @@ const DeadlineCalculator = () => {
         tech_hur: formData.tech_hur,
         tech_min: formData.tech_min,
         tech_am_pm: formData.tech_am_pm,
+        tech_submit: formData.tech_submit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
-      toast.success("Calculate Successfully");
+      setResult(response?.payload?.payload); // Assuming the response has 'lovePercentage'
+      toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -113,6 +98,7 @@ const DeadlineCalculator = () => {
       tech_hur: "7",
       tech_min: "17",
       tech_am_pm: "pm",
+      tech_submit: "calculate",
     });
     setResult(null);
     setFormError(null);
@@ -135,14 +121,14 @@ const DeadlineCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[90%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
             <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2  gap-4">
               <div className="space-y-2 ">
                 <label htmlFor="tech_conversion" className="label">
@@ -151,7 +137,7 @@ const DeadlineCalculator = () => {
                 </label>
                 <div className="">
                   <select
-                    className="input mt-2"
+                    className="input my-2"
                     aria-label="select"
                     name="tech_conversion"
                     id="tech_conversion"
@@ -167,7 +153,6 @@ const DeadlineCalculator = () => {
                   </select>
                 </div>
               </div>
-
               {formData.tech_conversion === "1" ? (
                 <div className="space-y-2 formate">
                   <label htmlFor="tech_military_time" className="label">
@@ -221,7 +206,6 @@ const DeadlineCalculator = () => {
                       </div>
                     </div>
                   </div>
-
                   <div className="space-y-2 hours">
                     <label htmlFor="tech_hur" className="text-sm text-blue-500">
                       {data?.payload?.tech_lang_keys["6"]}:
@@ -256,7 +240,6 @@ const DeadlineCalculator = () => {
                       />
                     </div>
                   </div>
-
                   <div className="space-y-2 tech_am_pm ">
                     <input
                       type="hidden"
@@ -295,7 +278,7 @@ const DeadlineCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={calculateDeadlineLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -309,7 +292,7 @@ const DeadlineCalculator = () => {
           </div>
         </div>
         {calculateDeadlineLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -320,15 +303,15 @@ const DeadlineCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full rounded-lg mt-6">
                       <div className="mt-4">
-                        <div className="lg:w-2/3 w-full">
-                          <table className="w-full text-lg">
+                        <div className="lg:w-[80%] w-full overflow-auto md:text-[18px] text-[16px]">
+                          <table className="w-full ">
                             <tbody>
                               <tr>
                                 <td className="border-b py-2 font-bold">

@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useJumpRopeCalorieCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useJumpRopeCalorieCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const JumpRopeCalorieCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -107,11 +107,11 @@ const JumpRopeCalorieCalculator = () => {
         tech_second: formData.tech_second,
         tech_units2: formData.tech_units2,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error in calculating.");
-      toast.error("Error in calculating.");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -363,7 +363,7 @@ const JumpRopeCalorieCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-5"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown1}
                       >
                         {formData.tech_unit_h_cm} ▾
@@ -499,7 +499,7 @@ const JumpRopeCalorieCalculator = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -513,56 +513,56 @@ const JumpRopeCalorieCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="w-full">
-                        <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
-                          <div className="col-span-12 md:col-span-12 lg:col-span-6">
-                            <div className="bg-sky bordered rounded-lg p-3 lg:text-[16px] md:text-[16px] text-[14px] ">
+                        <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4 text-[14px] md:text-[18px]">
+                          <div className="col-span-12 md:col-span-6 lg:col-span-6">
+                            <div className="bg-sky bordered rounded-lg p-3">
                               {data?.payload?.tech_lang_keys[11]} ={" "}
-                              <span className="text-[#119154] lg:text-[25px] md:text-[25px] text-[20px] font-bold">
+                              <span className="text-green-800 text-[20px]  md:text-[25px] font-bold">
                                 {Number(result?.tech_cbr_ans).toFixed(2)}
                               </span>{" "}
                               (kcal/min)
                             </div>
                           </div>
-                          <div className="col-span-12 md:col-span-12 lg:col-span-6">
-                            <div className="bg-sky bordered rounded-lg p-3 lg:text-[16px] md:text-[16px] text-[14px]">
+                          <div className="col-span-12 md:col-span-6 lg:col-span-6">
+                            <div className="bg-sky bordered rounded-lg p-3">
                               {data?.payload?.tech_lang_keys[12]} ={" "}
-                              <span className="text-[#119154] lg:text-[25px] md:text-[25px] text-[20px] font-bold">
+                              <span className="text-green-800 text-[20px]  md:text-[25px] font-bold">
                                 {Number(result?.tech_cb_ans).toFixed(2)}
                               </span>{" "}
                               (kcal)
                             </div>
                           </div>
-                          <div className="col-span-12 md:col-span-12 lg:col-span-6">
-                            <div className="bg-sky bordered rounded-lg p-3 lg:text-[16px] md:text-[16px] text-[14px]">
+                          <div className="col-span-12 md:col-span-6 lg:col-span-6">
+                            <div className="bg-sky bordered rounded-lg p-3">
                               BMR ={" "}
-                              <span className="text-[#119154] lg:text-[25px] md:text-[25px] text-[20px] font-bold">
+                              <span className="text-green-800 text-[20px]  md:text-[25px] font-bold">
                                 {Number(result?.tech_BMR).toFixed(2)}
                               </span>{" "}
                               (kcal/day)
                             </div>
                           </div>
-                          <div className="col-span-12 md:col-span-12 lg:col-span-6">
-                            <div className="bg-sky bordered rounded-lg p-3 lg:text-[16px] md:text-[16px] text-[14px]">
+                          <div className="col-span-12 md:col-span-6 lg:col-span-6">
+                            <div className="bg-sky bordered rounded-lg p-3">
                               MET ={" "}
-                              <span className="text-[#119154] lg:text-[25px] md:text-[25px] text-[20px] font-bold">
+                              <span className="text-green-800 text-[20px]  md:text-[25px] font-bold">
                                 {result?.tech_met}
                               </span>{" "}
                               (Mets/h)

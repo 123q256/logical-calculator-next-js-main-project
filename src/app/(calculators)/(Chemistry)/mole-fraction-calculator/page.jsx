@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useMoleFractionCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useMoleFractionCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const MoleFractionCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -46,16 +46,17 @@ const MoleFractionCalculator = () => {
   const [formData, setFormData] = useState({
     tech_x: "3.5482",
     tech_unit_x: "Mole",
-    tech_divide_x: "",
-    tech_y: "1",
+    tech_divide_x: "10",
+    tech_y: "10",
     tech_unit_y: "Mole",
-    tech_divide_y: "",
+    tech_divide_y: "20",
     tech_z: "",
     tech_unit_z: "Mole",
-    tech_divide_z: "",
+    tech_divide_z: "30",
     tech_a: "",
     tech_unit_a: "Mole",
-    tech_divide_a: "",
+    tech_divide_a: "40",
+    tech_submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -85,24 +86,25 @@ const MoleFractionCalculator = () => {
     setFormError("");
     try {
       const response = await calculateActivationCalculator({
-        tech_x: Number(formData.tech_x),
+        tech_x: formData.tech_x,
         tech_unit_x: formData.tech_unit_x,
-        tech_divide_x: Number(formData.tech_divide_x),
-        tech_y: Number(formData.tech_y),
+        tech_divide_x: formData.tech_divide_x,
+        tech_y: formData.tech_y,
         tech_unit_y: formData.tech_unit_y,
-        tech_divide_y: Number(formData.tech_divide_y),
-        tech_z: Number(formData.tech_z),
+        tech_divide_y: formData.tech_divide_y,
+        tech_z: formData.tech_z,
         tech_unit_z: formData.tech_unit_z,
-        tech_divide_z: Number(formData.tech_divide_z),
+        tech_divide_z: formData.tech_divide_z,
         tech_tech_a: formData.tech_tech_a,
         tech_unit_a: formData.tech_unit_a,
-        tech_divide_a: Number(formData.tech_divide_a),
+        tech_divide_a: formData.tech_divide_a,
+        tech_submit: formData.tech_submit,
       }).unwrap();
-      setResult(response); // Assuming the response'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -120,6 +122,7 @@ const MoleFractionCalculator = () => {
       tech_divide_z: "",
       tech_unit_a: "Mole",
       tech_divide_a: "",
+      tech_submit: "calculate",
     });
     setResult(null);
     setFormError(null);
@@ -254,14 +257,14 @@ const MoleFractionCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg shadow-md space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[90%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
             <div className="w-full px-2 mb-2">
               <p>
                 <strong className="text-blue">
@@ -270,7 +273,7 @@ const MoleFractionCalculator = () => {
                 {data?.payload?.tech_lang_keys["note_val"]}
               </p>
             </div>
-            <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2  gap-4">
+            <div className="grid grid-cols-2  lg:grid-cols-2 md:grid-cols-2  gap-4">
               <div className="space-y-2">
                 <label htmlFor="tech_x" className="label">
                   {data?.payload?.tech_lang_keys["sol"]}
@@ -348,7 +351,7 @@ const MoleFractionCalculator = () => {
                 </div>
               )}
             </div>
-            <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2  gap-4">
+            <div className="grid grid-cols-2  lg:grid-cols-2 md:grid-cols-2  gap-4">
               <div className="space-y-2 mt-2">
                 <label htmlFor="tech_y" className="label">
                   {data?.payload?.tech_lang_keys["solv"]}
@@ -426,7 +429,7 @@ const MoleFractionCalculator = () => {
                 </div>
               )}
             </div>
-            <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2  gap-4">
+            <div className="grid grid-cols-2  lg:grid-cols-2 md:grid-cols-2  gap-4">
               <div className="space-y-2 mt-2">
                 <label htmlFor="tech_z" className="label">
                   {data?.payload?.tech_lang_keys["solu"]}
@@ -504,7 +507,7 @@ const MoleFractionCalculator = () => {
                 </div>
               )}
             </div>
-            <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2  gap-4">
+            <div className="grid grid-cols-2  lg:grid-cols-2 md:grid-cols-2  gap-4">
               <div className="space-y-2 mt-2">
                 <label htmlFor="tech_a" className="label">
                   {data?.payload?.tech_lang_keys["mole"]}
@@ -598,7 +601,7 @@ const MoleFractionCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -609,15 +612,15 @@ const MoleFractionCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="w-full">
-                        <div className="w-full md:w-[50%] lg:w-[80%] overflow-auto">
-                          <table className="w-full col-lg-7" cellspacing="0">
+                        <div className="w-full md:w-[50%] lg:w-[80%] overflow-auto md:text-[18px] text-[16px]">
+                          <table className="w-full col-lg-7" cellSpacing="0">
                             <tbody>
                               <tr>
                                 <td className="border-b py-2">

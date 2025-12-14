@@ -24,9 +24,10 @@ ChartJS.register(
   Legend
 );
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { usePaceCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  usePaceCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -35,7 +36,7 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
+import "../../../../components/styles/CssPaceCalculator.css";
 const PaceCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -175,11 +176,11 @@ const PaceCalculator = () => {
         tech_ffdis_unit: formData.tech_ffdis_unit,
         tech_submit: formData.tech_submit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -595,7 +596,7 @@ const PaceCalculator = () => {
                             <div className="w-full flex justify-between text-[14px] pace_border relative">
                               <p
                                 id="pace_tab"
-                                className={` px-3  cursor-pointer  ${
+                                className={` px-3 cursor-pointer ${
                                   formData.tech_type === "pace"
                                     ? "pace_tab active"
                                     : ""
@@ -829,7 +830,7 @@ const PaceCalculator = () => {
                               onChange={handleChange}
                             />
                             <label
-                              className="absolute cursor-pointer text-sm underline right-6 top-3"
+                              className="absolute cursor-pointer text-sm underline right-6 top-4"
                               onClick={toggleDropdown1}
                             >
                               {formData.tech_dis_unit1} ▾
@@ -886,7 +887,7 @@ const PaceCalculator = () => {
                               onChange={handleChange}
                             />
                             <label
-                              className="absolute cursor-pointer text-sm underline right-6 top-3"
+                              className="absolute cursor-pointer text-sm underline right-6 top-4"
                               onClick={toggleDropdown2}
                             >
                               {formData.tech_dis_unit2} ▾
@@ -940,7 +941,7 @@ const PaceCalculator = () => {
                               onChange={handleChange}
                             />
                             <label
-                              className="absolute cursor-pointer text-sm underline right-6 top-3"
+                              className="absolute cursor-pointer text-sm underline right-6 top-4"
                               onClick={toggleDropdown3}
                             >
                               {formData.tech_dis_unit3} ▾
@@ -994,7 +995,7 @@ const PaceCalculator = () => {
                               onChange={handleChange}
                             />
                             <label
-                              className="absolute cursor-pointer text-sm underline right-6 top-3"
+                              className="absolute cursor-pointer text-sm underline right-6 top-4"
                               onClick={toggleDropdown4}
                             >
                               {formData.tech_dis_unit4} ▾
@@ -1048,7 +1049,7 @@ const PaceCalculator = () => {
                               onChange={handleChange}
                             />
                             <label
-                              className="absolute cursor-pointer text-sm underline right-6 top-3"
+                              className="absolute cursor-pointer text-sm underline right-6 top-4"
                               onClick={toggleDropdown5}
                             >
                               {formData.tech_dis_unit5} ▾
@@ -1102,7 +1103,7 @@ const PaceCalculator = () => {
                               onChange={handleChange}
                             />
                             <label
-                              className="absolute cursor-pointer text-sm underline right-6 top-3"
+                              className="absolute cursor-pointer text-sm underline right-6 top-4"
                               onClick={toggleDropdown6}
                             >
                               {formData.tech_dis_unit6} ▾
@@ -1156,7 +1157,7 @@ const PaceCalculator = () => {
                               onChange={handleChange}
                             />
                             <label
-                              className="absolute cursor-pointer text-sm underline right-6 top-3"
+                              className="absolute cursor-pointer text-sm underline right-6 top-4"
                               onClick={toggleDropdown7}
                             >
                               {formData.tech_dis_unit7} ▾
@@ -1210,7 +1211,7 @@ const PaceCalculator = () => {
                               onChange={handleChange}
                             />
                             <label
-                              className="absolute cursor-pointer text-sm underline right-6 top-3"
+                              className="absolute cursor-pointer text-sm underline right-6 top-4"
                               onClick={toggleDropdown8}
                             >
                               {formData.tech_dis_unit8} ▾
@@ -1381,7 +1382,7 @@ const PaceCalculator = () => {
                             onChange={handleChange}
                           />
                           <label
-                            className="absolute cursor-pointer text-sm underline right-6 top-3"
+                            className="absolute cursor-pointer text-sm underline right-6 top-4"
                             onClick={toggleDropdown0}
                           >
                             {formData.tech_fdis_unit} ▾
@@ -1442,7 +1443,7 @@ const PaceCalculator = () => {
                             onChange={handleChange}
                           />
                           <label
-                            className="absolute cursor-pointer text-sm underline right-6 top-3"
+                            className="absolute cursor-pointer text-sm underline right-6 top-4"
                             onClick={toggleDropdown00}
                           >
                             {formData.tech_ffdis_unit} ▾
@@ -1474,7 +1475,7 @@ const PaceCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -1495,11 +1496,11 @@ const PaceCalculator = () => {
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -1515,11 +1516,11 @@ const PaceCalculator = () => {
                               <div className="w-full py-2">
                                 <div className="bg-sky bordered rounded-lg p-3">
                                   <strong>
-                                    <span className="text-blue font-s-20 px">
+                                    <span className="text-blue font-s-20">
                                       {formData?.tech_from}
                                     </span>{" "}
                                     {name[i]} ={" "}
-                                    <span className="text-[#119154] text-[20px]">
+                                    <span className="text-green font-s-20">
                                       {result?.tech_res}
                                     </span>{" "}
                                     {name[j]}
@@ -1534,7 +1535,7 @@ const PaceCalculator = () => {
                               <div className="w-full py-2">
                                 <div className="bg-sky bordered rounded-lg p-3">
                                   {data?.payload?.tech_lang_keys["22"]}{" "}
-                                  <strong className="text-[#119154] text-[20px]">
+                                  <strong className="text-green font-s-20">
                                     {result?.tech_main}
                                   </strong>{" "}
                                   {data?.payload?.tech_lang_keys["23"]}{" "}
@@ -1694,7 +1695,7 @@ const PaceCalculator = () => {
                                 <strong>
                                   {data?.payload?.tech_lang_keys["33"]}{" "}
                                   (hh:mm:ss):{" "}
-                                  <span className="text-[#119154] text-[20px]">
+                                  <span className="text-green font-s-20">
                                     {gettime(result?.tech_stime)}{" "}
                                     {data?.payload?.tech_lang_keys["6"]}
                                   </span>
@@ -1717,7 +1718,7 @@ const PaceCalculator = () => {
                                 <div className="w-full">
                                   <div className="w-full px-lg-3 py-2">
                                     <div className="bg-sky bordered rounded-lg p-3">
-                                      <strong className="text-[#119154] text-[20px] px-1">
+                                      <strong className="text-green font-s-25">
                                         {gethours(result?.tech_pace)} Hours{" "}
                                         {getmins(result?.tech_pace)} Min{" "}
                                         {getsecs(result?.tech_pace)} Sec
@@ -1729,7 +1730,7 @@ const PaceCalculator = () => {
                                   </div>
                                   <div className="w-full px-lg-3 py-2">
                                     <div className="bg-sky bordered rounded-lg p-3">
-                                      <strong className="text-[#119154] text-[20px] px-1">
+                                      <strong className="text-green font-s-25">
                                         {gethours(result?.tech_pacekm)} Hours{" "}
                                         {getmins(result?.tech_pacekm)} Min{" "}
                                         {getsecs(result?.tech_pacekm)} Sec
@@ -1741,7 +1742,7 @@ const PaceCalculator = () => {
                                   </div>
                                   <div className="col-lg-6 px-lg-3 py-2">
                                     <div className="bg-sky bordered rounded-lg p-3">
-                                      <strong className="text-[#119154] text-[20px] px-1">
+                                      <strong className="text-green font-s-25">
                                         {result?.tech_mi_h}
                                       </strong>
                                       <strong>
@@ -1751,7 +1752,7 @@ const PaceCalculator = () => {
                                   </div>
                                   <div className="col-lg-6 px-lg-3 py-2">
                                     <div className="bg-sky bordered rounded-lg p-3">
-                                      <strong className="text-[#119154] text-[20px] px-1">
+                                      <strong className="text-green font-s-25">
                                         {result?.tech_km_h}
                                       </strong>
                                       <strong>
@@ -1761,7 +1762,7 @@ const PaceCalculator = () => {
                                   </div>
                                   <div className="col-lg-6 px-lg-3 py-2">
                                     <div className="bg-sky bordered rounded-lg p-3">
-                                      <strong className="text-[#119154] text-[20px] px-1">
+                                      <strong className="text-green font-s-25">
                                         {result?.tech_m_m}
                                       </strong>
                                       <strong>
@@ -1771,7 +1772,7 @@ const PaceCalculator = () => {
                                   </div>
                                   <div className="col-lg-6 px-lg-3 py-2">
                                     <div className="bg-sky bordered rounded-lg p-3">
-                                      <strong className="text-[#119154] text-[20px] px-1">
+                                      <strong className="text-green font-s-25">
                                         {result?.tech_m_s}
                                       </strong>
                                       <strong>
@@ -1791,7 +1792,7 @@ const PaceCalculator = () => {
                                       <strong>
                                         {data?.payload?.tech_lang_keys["34"]} =
                                       </strong>
-                                      <strong className="text-[#119154] text-[20px] px-1">
+                                      <strong className="text-green font-s-25">
                                         {gethours(result?.tech_timeres)} Hours{" "}
                                         {getmins(result?.tech_timeres)} Min{" "}
                                         {getsecs(result?.tech_timeres)} Sec
@@ -1813,7 +1814,7 @@ const PaceCalculator = () => {
 
                                   <div className="col-lg-6 px-lg-3 py-2">
                                     <div className="bg-sky bordered rounded-lg p-3">
-                                      <strong className="text-[#119154] text-[20px] px-1">
+                                      <strong className="text-green font-s-25">
                                         {Number(result?.tech_dis_mi).toFixed(3)}
                                       </strong>
                                       <span>
@@ -1824,7 +1825,7 @@ const PaceCalculator = () => {
 
                                   <div className="col-lg-6 px-lg-3 py-2">
                                     <div className="bg-sky bordered rounded-lg p-3">
-                                      <strong className="text-[#119154] text-[20px] px-1">
+                                      <strong className="text-green font-s-25">
                                         {Number(result?.tech_dis_km).toFixed(3)}
                                       </strong>
                                       <span>
@@ -1835,7 +1836,7 @@ const PaceCalculator = () => {
 
                                   <div className="col-lg-6 px-lg-3 py-2">
                                     <div className="bg-sky bordered rounded-lg p-3">
-                                      <strong className="text-[#119154] text-[20px] px-1">
+                                      <strong className="text-green font-s-25">
                                         {Number(result?.tech_dis_m).toFixed(3)}
                                       </strong>
                                       <span>
@@ -1846,7 +1847,7 @@ const PaceCalculator = () => {
 
                                   <div className="col-lg-6 px-lg-3 py-2">
                                     <div className="bg-sky bordered rounded-lg p-3">
-                                      <strong className="text-[#119154] text-[20px] px-1">
+                                      <strong className="text-green font-s-25">
                                         {Number(result?.tech_dis_yd).toFixed(3)}
                                       </strong>
                                       <span>

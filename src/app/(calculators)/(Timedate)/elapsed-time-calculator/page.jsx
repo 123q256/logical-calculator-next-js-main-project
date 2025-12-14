@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useElapsedtimeCalculationMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useElapsedtimeCalculationMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -13,7 +14,6 @@ import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeed
 import Calculator from "../../Calculator";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const ElapsedTimeCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -41,7 +41,6 @@ const ElapsedTimeCalculator = () => {
   useEffect(() => {
     handleFetchDetails();
   }, [url]);
-
 
   const [formData, setFormData] = useState({
     tech_main_units: "elapsed",
@@ -112,11 +111,11 @@ const ElapsedTimeCalculator = () => {
         tech_clock_secs: formData.tech_clock_secs,
         tech_clock_end_unit: formData.tech_clock_end_unit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
-      toast.success("Calculate Successfully");
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
+      toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -170,72 +169,73 @@ const ElapsedTimeCalculator = () => {
               {formError}
             </p>
           )}
-
-          <div className="col-12 col-lg-9 mx-auto mt-2 lg:w-[50%] w-full">
-            <input
-              type="hidden"
-              name="tech_main_units"
-              id="tech_main_units"
-              value={formData.tech_main_units}
-            />
-            <div className="flex flex-wrap items-center bg-blue-100 border border-blue-500 text-center rounded-lg px-1">
-              {/* Date Cal Tab */}
-              <div className="lg:w-1/2 w-full px-2 py-1">
-                <div
-                  className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab  ${
-                    formData.tech_main_units === "elapsed" ? "tagsUnit" : ""
-                  }`}
-                  id="elapsed"
-                  onClick={() =>
-                    setFormData({ ...formData, tech_main_units: "elapsed" })
-                  }
-                >
-                  {data?.payload?.tech_lang_keys["1"]}
+          <div className="lg:w-[80%] md:w-[90%] w-full mx-auto ">
+            <div className="col-12 col-lg-9 mx-auto mt-2 lg:w-[50%] w-full">
+              <input
+                type="hidden"
+                name="tech_main_units"
+                id="tech_main_units"
+                value={formData.tech_main_units}
+              />
+              <div className="flex flex-wrap items-center bg-blue-100 border border-blue-500 text-center rounded-lg px-1">
+                {/* Date Cal Tab */}
+                <div className="lg:w-1/2 w-full px-2 py-1">
+                  <div
+                    className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab  ${
+                      formData.tech_main_units === "elapsed" ? "tagsUnit" : ""
+                    }`}
+                    id="elapsed"
+                    onClick={() =>
+                      setFormData({ ...formData, tech_main_units: "elapsed" })
+                    }
+                  >
+                    {data?.payload?.tech_lang_keys["1"]}
+                  </div>
                 </div>
-              </div>
-              {/* Time Cal Tab */}
-              <div className="lg:w-1/2 w-full px-2 py-1">
-                <div
-                  className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab ${
-                    formData.tech_main_units === "clock" ? "tagsUnit" : ""
-                  }`}
-                  id="clock"
-                  onClick={() =>
-                    setFormData({ ...formData, tech_main_units: "clock" })
-                  }
-                >
-                  {data?.payload?.tech_lang_keys["2"]}
+                {/* Time Cal Tab */}
+                <div className="lg:w-1/2 w-full px-2 py-1">
+                  <div
+                    className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab ${
+                      formData.tech_main_units === "clock" ? "tagsUnit" : ""
+                    }`}
+                    id="clock"
+                    onClick={() =>
+                      setFormData({ ...formData, tech_main_units: "clock" })
+                    }
+                  >
+                    {data?.payload?.tech_lang_keys["2"]}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
             {formData?.tech_main_units != "elapsed" && (
               <div className="grid grid-cols-1  gap-4">
-                <div className="d-flex align-items-center px-2 mt-3 clock-time">
+                <div className="flex items-center px-2 mt-3 clock-time">
                   <p className="text-blue font-s-14 pe-2">
                     {data?.payload?.tech_lang_keys["5"]}:
                   </p>
 
-                  <label className="pe-2" htmlFor="first">
+                  <label className="pe-2 cursor-pointer" htmlFor="first">
                     <input
                       type="radio"
                       name="tech_clock_format"
                       value="12"
                       id="first"
-                      className="font-s-14 text-blue ps-lg-1 pe-2 mr-2 border"
+                      className="font-s-14 text-blue ps-lg-1 pe-2 mr-2 border cursor-pointer"
                       onChange={handleChange}
                       checked={formData.tech_clock_format === "12"}
                     />
                     <span>12 Hours</span>
                   </label>
 
-                  <label htmlFor="second">
+                  <label className="cursor-pointer" htmlFor="second">
                     <input
                       type="radio"
                       name="tech_clock_format"
-                      className="font-s-14 ps-lg-1 text-blue mr-2 border"
+                      className="font-s-14 ps-lg-1 text-blue mr-2 border cursor-pointer"
                       value="24"
                       id="second"
                       onChange={handleChange}
@@ -257,7 +257,7 @@ const ElapsedTimeCalculator = () => {
 
             {formData?.tech_main_units == "elapsed" && (
               <>
-                <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2 lg:gap-4 md:gap-4 gap-2 elapsed ">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 elapsed ">
                   <div className="space-y-2 hidden elapsed_start">
                     <label htmlFor="tech_elapsed_start" className="label">
                       hrs:
@@ -357,7 +357,7 @@ const ElapsedTimeCalculator = () => {
                     {data?.payload?.tech_lang_keys["4"]}
                   </p>
                 </div>
-                <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2  lg:gap-4 md:gap-4 gap-2 elapsed ">
+                <div className="grid grid-cols-2 md:grid-cols-4  gap-4 elapsed ">
                   <div className="space-y-2 hidden elapsed_end">
                     <label htmlFor="tech_elapsed_end" className="label">
                       hrs:
@@ -428,7 +428,7 @@ const ElapsedTimeCalculator = () => {
                   </div>
                   <div className="space-y-2 elapsed_end_unit">
                     <label
-                      htmlFor="elapsed_end_unit"
+                      for="elapsed_end_unit"
                       className="font-s-14 text-blue"
                     >
                       &nbsp;
@@ -462,7 +462,7 @@ const ElapsedTimeCalculator = () => {
                     {data?.payload?.tech_lang_keys["6"]}
                   </p>
                 </div>
-                <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2  lg:gap-4 md:gap-4 gap-2  clock">
+                <div className="grid grid-cols-2 md:grid-cols-4  gap-4  clock">
                   <div className="space-y-2 clock_hour">
                     <div className="relative">
                       <input
@@ -531,7 +531,7 @@ const ElapsedTimeCalculator = () => {
                     {data?.payload?.tech_lang_keys["7"]}
                   </p>
                 </div>
-                <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2  lg:gap-4 md:gap-4 gap-2 clock">
+                <div className="grid grid-cols-2 md:grid-cols-4  gap-4 clock">
                   <div className="space-y-2 clock_hur">
                     <div className="relative">
                       <input
@@ -598,8 +598,7 @@ const ElapsedTimeCalculator = () => {
               </>
             )}
           </div>
-
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={calculateDeadlineLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -613,7 +612,7 @@ const ElapsedTimeCalculator = () => {
           </div>
         </div>
         {calculateDeadlineLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -624,14 +623,14 @@ const ElapsedTimeCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
-                    <div className="w-full p-2 rounded-lg mt-6">
+                    <div className="w-full p-1 rounded-lg mt-6">
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div className="text-lg lg:text-[20px]">
+                        <div className="overflow-auto md:text-[18px] text-[16px]">
                           <p className="mb-4 font-bold">
                             {result?.tech_hours} Hours {result?.tech_minutes}{" "}
                             Minutes {result?.tech_seconds} Seconds
@@ -648,7 +647,7 @@ const ElapsedTimeCalculator = () => {
                                 </td>
                               </tr>
                               <tr>
-                                <td className="py-3" colspan="2">
+                                <td className="py-3" colSpan="2">
                                   {data?.payload?.tech_lang_keys[1]}
                                 </td>
                               </tr>
@@ -719,7 +718,7 @@ const ElapsedTimeCalculator = () => {
                               </tr>
 
                               <tr>
-                                <td className="py-3 font-bold" colSpan={2}>
+                                <td className="py-3" colSpan={2}>
                                   {data?.payload?.tech_lang_keys[10]}
                                 </td>
                               </tr>
@@ -728,7 +727,7 @@ const ElapsedTimeCalculator = () => {
                                 <td className="border-b py-2">
                                   {data?.payload?.tech_lang_keys[12]} :
                                 </td>
-                                <td className="border-b py-2 ">
+                                <td className="border-b py-2">
                                   {Number(
                                     (result?.tech_answer / 60).toFixed(4)
                                   )}
@@ -768,6 +767,7 @@ const ElapsedTimeCalculator = () => {
           )
         )}
       </form>
+
       {result && (
         <CalculatorFeedback calName={data?.payload?.tech_calculator_title} />
       )}

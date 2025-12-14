@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useMonthlyIncomeCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useMonthlyIncomeCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const MonthlyIncomeCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -86,11 +86,11 @@ const MonthlyIncomeCalculator = () => {
         tech_first: formData.tech_first,
         tech_second: formData.tech_second,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error in calculating.");
-      toast.error("Error in calculating.");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -140,15 +140,15 @@ const MonthlyIncomeCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[90%] w-full mx-auto ">
-            <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2  gap-4">
+          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
+            <div className="grid grid-cols-2  lg:grid-cols-2 md:grid-cols-2  gap-4">
               <div className="space-y-2">
                 <label htmlFor="tech_pay" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -257,7 +257,7 @@ const MonthlyIncomeCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -282,60 +282,60 @@ const MonthlyIncomeCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center ">
-                    <div className="w-full md:w-[80%] bg-light-blue rounded-lg mt-3">
-                      <div className="w-full mt-2 overflow-auto">
-                        <table className="w-full text-[16px]">
+                    <div className="w-full md:w-[50%] bg-light-blue rounded-lg mt-3">
+                      <div className="w-full mt-2">
+                        <table className="w-full text-lg">
                           <tbody>
                             <tr>
-                              <td className="py-2 border-b border-[#99EA48] w-1/2">
+                              <td className="py-2 border-b border-[#2845F5] w-1/2">
                                 <strong>
                                   {data?.payload?.tech_lang_keys[11]}
                                 </strong>
                               </td>
-                              <td className="py-2 border-b border-[#99EA48]">
+                              <td className="py-2 border-b border-[#2845F5]">
                                 {currency.symbol} {result?.tech_monthly_income}
                               </td>
                             </tr>
                             <tr>
-                              <td className="py-2 border-b border-[#99EA48] w-1/2">
+                              <td className="py-2 border-b border-[#2845F5] w-1/2">
                                 {data?.payload?.tech_lang_keys[12]}
                               </td>
-                              <td className="py-2 border-b border-[#99EA48]">
+                              <td className="py-2 border-b border-[#2845F5]">
                                 <strong>
                                   {currency.symbol} {result?.tech_hourly_income}
                                 </strong>
                               </td>
                             </tr>
                             <tr>
-                              <td className="py-2 border-b border-[#99EA48] w-1/2">
+                              <td className="py-2 border-b border-[#2845F5] w-1/2">
                                 {data?.payload?.tech_lang_keys[13]}
                               </td>
-                              <td className="py-2 border-b border-[#99EA48]">
+                              <td className="py-2 border-b border-[#2845F5]">
                                 <strong>
                                   {currency.symbol} {result?.tech_daily_income}
                                 </strong>
                               </td>
                             </tr>
                             <tr>
-                              <td className="py-2 border-b border-[#99EA48] w-1/2">
+                              <td className="py-2 border-b border-[#2845F5] w-1/2">
                                 {data?.payload?.tech_lang_keys[14]}
                               </td>
-                              <td className="py-2 border-b border-[#99EA48]">
+                              <td className="py-2 border-b border-[#2845F5]">
                                 <strong>
                                   {currency.symbol} {result?.tech_weekly_income}
                                 </strong>
                               </td>
                             </tr>
                             <tr>
-                              <td className="py-2 border-b border-[#99EA48] w-1/2">
+                              <td className="py-2 border-b border-[#2845F5] w-1/2">
                                 {data?.payload?.tech_lang_keys[15]}
                               </td>
-                              <td className="py-2 border-b border-[#99EA48]">
+                              <td className="py-2 border-b border-[#2845F5]">
                                 <strong>
                                   {currency.symbol}{" "}
                                   {result?.tech_bi_weekly_income}
@@ -343,10 +343,10 @@ const MonthlyIncomeCalculator = () => {
                               </td>
                             </tr>
                             <tr>
-                              <td className="py-2 border-b border-[#99EA48] w-1/2">
+                              <td className="py-2 border-b border-[#2845F5] w-1/2">
                                 {data?.payload?.tech_lang_keys[16]}
                               </td>
-                              <td className="py-2 border-b border-[#99EA48]">
+                              <td className="py-2 border-b border-[#2845F5]">
                                 <strong>
                                   {currency.symbol}{" "}
                                   {result?.tech_sami_monthly_income}
@@ -354,10 +354,10 @@ const MonthlyIncomeCalculator = () => {
                               </td>
                             </tr>
                             <tr>
-                              <td className="py-2 border-b border-[#99EA48] w-1/2">
+                              <td className="py-2 border-b border-[#2845F5] w-1/2">
                                 {data?.payload?.tech_lang_keys[17]}
                               </td>
-                              <td className="py-2 border-b border-[#99EA48]">
+                              <td className="py-2 border-b border-[#2845F5]">
                                 <strong>
                                   {currency.symbol}{" "}
                                   {result?.tech_quarterly_income}
@@ -365,10 +365,10 @@ const MonthlyIncomeCalculator = () => {
                               </td>
                             </tr>
                             <tr>
-                              <td className="py-2 border-b border-[#99EA48] w-1/2">
+                              <td className="py-2 border-b border-[#2845F5] w-1/2">
                                 {data?.payload?.tech_lang_keys[18]}
                               </td>
-                              <td className="py-2 border-b border-[#99EA48]">
+                              <td className="py-2 border-b border-[#2845F5]">
                                 <strong>
                                   {currency.symbol} {result?.tech_annual_income}
                                 </strong>

@@ -7,9 +7,10 @@ const daughterImg = "/images/daughter.svg";
 const fatherImg = "/images/father.svg";
 const motherImg = "/images/mother.svg";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useHeightCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useHeightCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -155,11 +156,11 @@ const HeightCalculator = () => {
         tech_father_entry_unit: formData.tech_father_entry_unit,
         tech_submit: formData.tech_submit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -226,12 +227,24 @@ const HeightCalculator = () => {
 
   const [childHeight, setChildHeight] = useState(0);
   const [chartData, setChartData] = useState([]);
+  const [isMobile, setIsMobile] = useState(false);
+  const [step, setStep] = useState(15);
+  // const isMobile =
+  //   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+  //     navigator.userAgent
+  //   );
+  // const step = isMobile ? 30 : 15;
 
-  const isMobile =
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    );
-  const step = isMobile ? 30 : 15;
+  useEffect(() => {
+    if (typeof navigator !== "undefined") {
+      const mobileCheck =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        );
+      setIsMobile(mobileCheck);
+      setStep(mobileCheck ? 30 : 15);
+    }
+  }, []);
 
   useEffect(() => {
     if (!result?.tech_final_ans) return;
@@ -463,8 +476,7 @@ const HeightCalculator = () => {
               {formError}
             </p>
           )}
-
-          <div className="lg:w-[70%] md:w-[100%] w-full mx-auto ">
+          <div className="lg:w-[70%] md:w-[70%] w-full mx-auto ">
             <div className="grid grid-cols-12   gap-2 md:gap-4 lg:gap-4">
               <div className="col-span-12  px-2">
                 <div className=" velocitytab relative">
@@ -494,7 +506,7 @@ const HeightCalculator = () => {
             </div>
           </div>
 
-          <div className="lg:w-[70%] md:w-[100%] w-full mx-auto ">
+          <div className="lg:w-[70%] md:w-[70%] w-full mx-auto ">
             <div className="grid grid-cols-12   gap-2 md:gap-4 lg:gap-4">
               <input
                 type="hidden"
@@ -597,7 +609,7 @@ const HeightCalculator = () => {
                   {/* 1 */}
                   {formData.tech_child_unit == "ft/in" && (
                     <>
-                      <div className="md:col-span-6 col-span-12 ft_in_child">
+                      <div className="col-span-6 ft_in_child">
                         <div className="grid grid-cols-12 gap-3">
                           <div className="col-span-6 ft_in_child">
                             <label htmlFor="tech_c_heigh_ft" className="label">
@@ -658,7 +670,7 @@ const HeightCalculator = () => {
                   )}
                   {formData.tech_child_unit == "cm" && (
                     <>
-                      <div className="md:col-span-6 col-span-12 h_cm_child  height-cm">
+                      <div className="col-span-6 h_cm_child  height-cm">
                         <label htmlFor="tech_c_height_cm" className="label">
                           {data?.payload?.tech_lang_keys["10"]} (cm):
                         </label>
@@ -713,7 +725,7 @@ const HeightCalculator = () => {
                   />
                   {formData.tech_test_unit == "lbs" && (
                     <>
-                      <div className="md:col-span-6 col-span-12 h_cm_child  height-cm">
+                      <div className="col-span-6 h_cm_child  height-cm">
                         <label htmlFor="tech_c_weight_lbs" className="label">
                           {data?.payload?.tech_lang_keys["11"]}:
                         </label>
@@ -755,7 +767,7 @@ const HeightCalculator = () => {
                   )}
                   {formData.tech_test_unit == "kg" && (
                     <>
-                      <div className="md:col-span-6 col-span-12 h_cm_child  height-cm">
+                      <div className="col-span-6 h_cm_child  height-cm">
                         <label htmlFor="tech_c_weight_kg" className="label">
                           {data?.payload?.tech_lang_keys["11"]} (kg):
                         </label>
@@ -816,7 +828,7 @@ const HeightCalculator = () => {
                   {/* 2 */}
                   {formData.tech_mother_1_unit == "ft/in" && (
                     <>
-                      <div className="md:col-span-6 col-span-12 ft_in_child">
+                      <div className="col-span-6 ft_in_child">
                         <div className="grid grid-cols-12 gap-3">
                           <div className="col-span-6 ft_in_child">
                             <label htmlFor="tech_m_height_ft" className="label">
@@ -879,7 +891,7 @@ const HeightCalculator = () => {
                   )}
                   {formData.tech_mother_1_unit == "cm" && (
                     <>
-                      <div className="md:col-span-6 col-span-12 h_cm_child  height-cm">
+                      <div className="col-span-6 h_cm_child  height-cm">
                         <label htmlFor="tech_m_height_cm" className="label">
                           {data?.payload?.tech_lang_keys["4"]} (cm):
                         </label>
@@ -936,7 +948,7 @@ const HeightCalculator = () => {
                   {/* 2 */}
                   {formData.tech_father_1_unit == "ft/in" && (
                     <>
-                      <div className="md:col-span-6 col-span-12 ft_in_child">
+                      <div className="col-span-6 ft_in_child">
                         <div className="grid grid-cols-12 gap-3">
                           <div className="col-span-6 ft_in_child">
                             <label htmlFor="tech_f_height_ft" className="label">
@@ -999,7 +1011,7 @@ const HeightCalculator = () => {
                   )}
                   {formData.tech_father_1_unit == "cm" && (
                     <>
-                      <div className="md:col-span-6 col-span-12 h_cm_child  height-cm">
+                      <div className="col-span-6 h_cm_child  height-cm">
                         <label htmlFor="tech_f_height_cm" className="label">
                           {data?.payload?.tech_lang_keys["5"]} (cm):
                         </label>
@@ -1059,14 +1071,14 @@ const HeightCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
@@ -1077,7 +1089,7 @@ const HeightCalculator = () => {
                   <div className="container">
                     {result?.tech_final_ans ? (
                       <>
-                        <div className="bg-sky bordered rounded-lg p-3 m-5 md:text-[25px]  text-center">
+                        <div className="bg-sky bordered rounded-lg p-3 m-5 md:text-[32px]  text-center">
                           <span className="">Estimated Height:</span>
                           <strong className={`text-[#ff4500c4]  ms-2`}>
                             {result?.tech_final_ans}
@@ -1088,7 +1100,7 @@ const HeightCalculator = () => {
                       <>
                         <div className="w-full mt-5">
                           <div className="flex flex-wrap gap-4">
-                            <div className="flex-1 min-w-[280px] bg-sky bordered rounded-lg p-4 flex items-center">
+                            <div className="flex-1 min-w-[280px] bg-sky-100 border rounded-lg p-4 flex items-center">
                               <strong className="me-2">
                                 {" "}
                                 {data?.payload?.tech_lang_keys["14"]} =
@@ -1098,7 +1110,7 @@ const HeightCalculator = () => {
                                 {result?.tech_final_ans_boy}
                               </strong>
                             </div>
-                            <div className="flex-1 min-w-[280px] bg-sky bordered rounded-lg p-4 flex items-center">
+                            <div className="flex-1 min-w-[280px] bg-sky-100 border rounded-lg p-4 flex items-center">
                               <strong className="me-2">
                                 {" "}
                                 {data?.payload?.tech_lang_keys["13"]} =

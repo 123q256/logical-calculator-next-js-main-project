@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useDaysagoCalculationMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useDaysagoCalculationMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -13,7 +14,6 @@ import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeed
 import Calculator from "../../Calculator";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const DaysAgoCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -42,10 +42,10 @@ const DaysAgoCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-
   const [formData, setFormData] = useState({
-    tech_number: "24",
-    tech_current: "",
+    tech_number: "124",
+    tech_current: "2025-10-26",
+    tech_submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -75,20 +75,22 @@ const DaysAgoCalculator = () => {
       const response = await calculateWeeksAgoCalculator({
         tech_number: Number(formData.tech_number),
         tech_current: formData.tech_current,
+        tech_submit: formData.tech_submit,
       }).unwrap();
-      setResult(response); // Assuming the response has'
-      toast.success("Calculate Successfully");
+      setResult(response?.payload?.payload); // Assuming the response has 'lovePercentage'
+      toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error calculating");
-      toast.error("Error calculating");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_number: "",
-      tech_current: "",
+      tech_number: "124",
+      tech_current: "2025-10-26",
+      tech_submit: "calculate",
     });
     setResult(null);
     setFormError(null);
@@ -205,7 +207,7 @@ const DaysAgoCalculator = () => {
           )}
 
           <div className="lg:w-[40%] md:w-[40%] w-full mx-auto ">
-            <div className="grid grid-cols-1  gap-4">
+            <div className="grid grid-cols-1 gap-2 md:gap-4">
               <div className="px-2 lg:px-0">
                 <div className="space-y-2 inputshow">
                   <label htmlFor="tech_number" className="text-sm">
@@ -225,7 +227,7 @@ const DaysAgoCalculator = () => {
             </div>
           </div>
           <div className="lg:w-[40%] md:w-[40%] w-full mx-auto ">
-            <div className="grid grid-cols-1    gap-4">
+            <div className="grid grid-cols-1   gap-2 md:gap-4">
               <div className="date-now space-y-2 relative">
                 <div className="flex justify-between">
                   <label htmlFor="tech_e_date" className="label">
@@ -258,7 +260,7 @@ const DaysAgoCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={calculateDeadlineLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -272,44 +274,44 @@ const DaysAgoCalculator = () => {
           </div>
         </div>
         {calculateDeadlineLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+         <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
-                    <div className="col-12 bg-light-blue result radius-10 mt-4 overflow-auto">
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2">
+                    <div className="col-12 bg-light-blue result p-1 radius-10 mt-3 overflow-auto">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1  md:gap-4">
                         <div className="col-lg-6 p-1">
-                          <div className="bordered radius-5 bg-sky lg:p-4 md:p-4 p-3">
+                          <div className="bordered rounded flex justify-between bg-sky p-3">
                             <p>📅 Date</p>
-                            <p className="font-s-18">
+                            <p className="text-[18px]">
                               <strong>{result?.tech_t_date}</strong>
                             </p>
                           </div>
                         </div>
                         <div className="col-lg-6 p-1">
-                          <div className="bordered radius-5 bg-sky lg:p-4 md:p-4 p-3">
+                          <div className="bordered rounded flex justify-between bg-sky p-3">
                             <p>🌞 Day</p>
-                            <p className="font-s-18">
+                            <p className="text-[18px]">
                               <strong>{result?.tech_date_name}</strong>
                             </p>
                           </div>
                         </div>
                         <div className="col-lg-6 p-1">
-                          <div className="bordered radius-5 bg-sky lg:p-4 md:p-4 p-3">
+                          <div className="bordered rounded flex justify-between bg-sky p-3">
                             <p>📅 Weeks</p>
-                            <p className="font-s-18">
+                            <p className="text-[18px]">
                               <strong>
                                 {result?.tech_currentWeekOfYear} /{" "}
                                 {result?.tech_weeksInYear}
@@ -318,9 +320,9 @@ const DaysAgoCalculator = () => {
                           </div>
                         </div>
                         <div className="col-lg-6 p-1">
-                          <div className="bordered radius-5 bg-sky lg:p-4 md:p-4 p-3">
+                          <div className="bordered rounded flex justify-between bg-sky p-3">
                             <p>📅 Year</p>
-                            <p className="font-s-18">
+                            <p className="text-[18px]">
                               <strong>
                                 {result?.tech_currentDayOfYear} /{" "}
                                 {result?.tech_daysInYear}
@@ -329,7 +331,7 @@ const DaysAgoCalculator = () => {
                           </div>
                         </div>
                       </div>
-                      <p className="text-center p-2">
+                      <p className="text-center p-2 text-[16px] md:text-[18px]">
                         What is <strong>{formData?.tech_number}</strong> days
                         ago? The answer is{" "}
                         <strong>{result?.tech_date_name}</strong>,{" "}

@@ -415,7 +415,10 @@ const TimeCardCalculator = () => {
           },
         ]}
       >
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 bg-white rounded-lg space-y-6 mb-3">
+        <div
+          id="printArea"
+          className="w-full mx-auto p-4 lg:p-8 md:p-8 bg-white rounded-lg space-y-6 mb-3"
+        >
           <div className="p bg-white rounded-lg  overflow-hidden">
             {/* Employee Info */}
             <div className="  border-b">

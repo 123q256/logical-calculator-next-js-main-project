@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useBirthyearCalculationMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useBirthyearCalculationMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -13,7 +14,6 @@ import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeed
 import Calculator from "../../Calculator";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const BirthYearCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -42,12 +42,12 @@ const BirthYearCalculator = () => {
     handleFetchDetails();
   }, [url]);
 
-
   const [formData, setFormData] = useState({
     tech_date: "",
     tech_age: "25",
     tech_age_unit: "second",
     tech_choose: "after",
+    tech_submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -72,15 +72,6 @@ const BirthYearCalculator = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !formData.tech_date ||
-      !formData.tech_age ||
-      !formData.tech_age_unit ||
-      !formData.tech_choose
-    ) {
-      setFormError("Please fill in fields.");
-      return;
-    }
     setFormError("");
     try {
       const response = await calculateLovePercentage({
@@ -88,12 +79,13 @@ const BirthYearCalculator = () => {
         tech_age: formData.tech_age,
         tech_age_unit: formData.tech_age_unit,
         tech_choose: formData.tech_choose,
+        tech_submit: formData.tech_submit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
-      toast.success("Calculate Successfully");
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
+      toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error calculating");
-      toast.error("Error calculating");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -104,6 +96,7 @@ const BirthYearCalculator = () => {
       tech_age: "25",
       tech_age_unit: "second",
       tech_choose: "after",
+      tech_submit: "calculate",
     });
     setResult(null);
     setFormError(null);
@@ -144,15 +137,15 @@ const BirthYearCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form  rounded-lg space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
-            <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2  gap-4">
+          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
+            <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2 gap-1  md:gap-4">
               <div className="space-y-2 relative">
                 <label htmlFor="tech_date" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -168,7 +161,6 @@ const BirthYearCalculator = () => {
                   onChange={handleChange}
                 />
               </div>
-
               <div className="space-y-2 relative">
                 <label htmlFor="tech_age" className="label">
                   {data?.payload?.tech_lang_keys["2"]}
@@ -233,7 +225,6 @@ const BirthYearCalculator = () => {
                   )}
                 </div>
               </div>
-
               <div className="space-y-2 relative">
                 <label htmlFor="tech_choose" className="label">
                   {data?.payload?.tech_lang_keys["3"]}:
@@ -258,7 +249,7 @@ const BirthYearCalculator = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={calculatebirthyearLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -272,18 +263,18 @@ const BirthYearCalculator = () => {
           </div>
         </div>
         {calculatebirthyearLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+            <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -292,7 +283,7 @@ const BirthYearCalculator = () => {
                       <div className="w-full text-center text-base">
                         <p>{data?.payload?.tech_lang_keys[4]}</p>
                         <p className="my-3">
-                          <strong className="bg-[#2845F5] text-white px-3 py-2 text-4xl rounded-lg">
+                          <strong className="bg-[#2845F5] text-[#fff] px-3 py-2 text-4xl rounded-lg text-blue">
                             {Math.round(result?.tech_newYear).toFixed(0)}
                           </strong>
                         </p>

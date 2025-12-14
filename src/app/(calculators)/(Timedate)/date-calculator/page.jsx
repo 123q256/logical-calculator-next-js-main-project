@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useDateCalculationMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useDateCalculationMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -13,7 +14,6 @@ import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeed
 import Calculator from "../../Calculator";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const DateCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -43,22 +43,23 @@ const DateCalculator = () => {
   }, [url]);
 
   const [formData, setFormData] = useState({
-    lang: "en",
-    tech_add_date: "2025-04-17",
-    tech_method: "add", // add  sub
-    tech_years: "3",
-    tech_months: "4",
-    tech_add_hrs_f: "1",
-    tech_add_min_f: "2",
-    tech_add_sec_f: "4",
-    tech_weeks: "3",
-    tech_days: "5",
-    tech_add_hrs_s: "3",
-    tech_add_min_s: "4",
-    tech_add_sec_s: "2",
-    tech_repeat: "2",
-    tech_checkbox: "",
-    tech_inctime: "time_in",
+    locale: "en",
+    add_date: "2025-04-17",
+    method: "add", // add  sub
+    years: "3",
+    months: "4",
+    add_hrs_f: "1",
+    add_min_f: "2",
+    add_sec_f: "4",
+    weeks: "3",
+    days: "5",
+    add_hrs_s: "3",
+    add_min_s: "4",
+    add_sec_s: "2",
+    repeat: "2",
+    checkbox: "",
+    inctime: "time_in",
+    submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -82,7 +83,7 @@ const DateCalculator = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.tech_add_date || !formData.tech_method) {
+    if (!formData.add_date || !formData.method) {
       setFormError("Please fill in field.");
       return;
     }
@@ -91,27 +92,28 @@ const DateCalculator = () => {
     try {
       const response = await calculateDataCalculator({
         lang: formData.lang,
-        tech_add_date: formData.tech_add_date,
-        tech_method: formData.tech_method,
-        tech_years: formData.tech_years,
-        tech_months: formData.tech_months,
-        tech_add_hrs_f: formData.tech_add_hrs_f,
-        tech_add_min_f: formData.tech_add_min_f,
-        tech_add_sec_f: formData.tech_add_sec_f,
-        tech_weeks: formData.tech_weeks,
-        tech_days: formData.tech_days,
-        tech_add_hrs_s: formData.tech_add_hrs_s,
-        tech_add_min_s: formData.tech_add_min_s,
-        tech_add_sec_s: formData.tech_add_sec_s,
-        tech_repeat: formData.tech_repeat,
-        tech_checkbox: formData.tech_checkbox,
-        tech_inctime: formData.tech_inctime,
+        add_date: formData.add_date,
+        method: formData.method,
+        years: formData.years,
+        months: formData.months,
+        add_hrs_f: formData.add_hrs_f,
+        add_min_f: formData.add_min_f,
+        add_sec_f: formData.add_sec_f,
+        weeks: formData.weeks,
+        days: formData.days,
+        add_hrs_s: formData.add_hrs_s,
+        add_min_s: formData.add_min_s,
+        add_sec_s: formData.add_sec_s,
+        repeat: formData.repeat,
+        checkbox: formData.checkbox,
+        inctime: formData.inctime,
+        submit: formData.submit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
-      toast.success("Calculate Successfully");
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
+      toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error calculating");
-      toast.error("Error calculating");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -119,21 +121,22 @@ const DateCalculator = () => {
   const handleReset = () => {
     setFormData({
       lang: "en",
-      tech_add_date: "2025-04-17",
-      tech_method: "add", // add  sub
-      tech_years: "3",
-      tech_months: "4",
-      tech_add_hrs_f: "1",
-      tech_add_min_f: "2",
-      tech_add_sec_f: "4",
-      tech_weeks: "3",
-      tech_days: "5",
-      tech_add_hrs_s: "3",
-      tech_add_min_s: "4",
-      tech_add_sec_s: "2",
-      tech_repeat: "33",
-      tech_checkbox: "",
-      tech_inctime: "time_in",
+      add_date: "2025-04-17",
+      method: "add", // add  sub
+      years: "3",
+      months: "4",
+      add_hrs_f: "1",
+      add_min_f: "2",
+      add_sec_f: "4",
+      weeks: "3",
+      days: "5",
+      add_hrs_s: "3",
+      add_min_s: "4",
+      add_sec_s: "2",
+      repeat: "33",
+      checkbox: "",
+      inctime: "time_in",
+      submit: "calculate",
     });
     setResult(null);
     setFormError(null);
@@ -156,7 +159,7 @@ const DateCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg shadow-md space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
@@ -166,13 +169,13 @@ const DateCalculator = () => {
           <div className="lg:w-[80%] md:w-[80%] w-full mx-auto ">
             <div className="grid grid-cols-2  lg:grid-cols-2 md:grid-cols-2 text-center  gap-4">
               <a
-                href="https://calculator-logical.com/date-duration-calculator"
+                href="https://technical-calculator.com/date-duration-calculator"
                 className=" cursor-pointer py-2  "
               >
                 <strong>{data?.payload?.tech_lang_keys["41"]}</strong>
               </a>
               <a
-                href="https://calculator-logical.com/date-calculator"
+                href="https://technical-calculator.com/date-calculator"
                 className=" cursor-pointer py-2 text-[#2845F5] border-b-2 border-[#2845F5]"
               >
                 <strong>{data?.payload?.tech_lang_keys["42"]}</strong>
@@ -187,11 +190,11 @@ const DateCalculator = () => {
                 <input
                   type="date"
                   step="any"
-                  name="tech_add_date"
-                  id="tech_add_date"
+                  name="add_date"
+                  id="add_date"
                   className="input my-2"
                   aria-label="input"
-                  value={formData.tech_add_date}
+                  value={formData.add_date}
                   onChange={handleChange}
                 />
               </div>
@@ -204,9 +207,9 @@ const DateCalculator = () => {
                   <select
                     className="input"
                     aria-label="select"
-                    name="tech_method"
-                    id="tech_method"
-                    value={formData.tech_method}
+                    name="method"
+                    id="method"
+                    value={formData.method}
                     onChange={handleChange}
                   >
                     <option value="add">Add (+)</option>
@@ -223,11 +226,11 @@ const DateCalculator = () => {
                     <input
                       type="number"
                       step="any"
-                      name="tech_years"
-                      id="tech_years"
+                      name="years"
+                      id="years"
                       className="input my-2"
                       aria-label="input"
-                      value={formData.tech_years}
+                      value={formData.years}
                       onChange={handleChange}
                     />
                   </div>
@@ -238,28 +241,28 @@ const DateCalculator = () => {
                     <input
                       type="number"
                       step="any"
-                      name="tech_months"
-                      id="tech_months"
+                      name="months"
+                      id="months"
                       className="input my-2"
                       aria-label="input"
-                      value={formData.tech_months}
+                      value={formData.months}
                       onChange={handleChange}
                     />
                   </div>
                 </div>
-                {formData && formData.tech_inctime === "time_out" && (
+                {formData && formData.inctime === "time_out" && (
                   <div className="flex flex-wrap inc_time ">
                     <div className="w-full flex px-2">
                       <div className="w-1/3 py-2 mx-1">
                         <input
                           type="number"
                           step="any"
-                          name="tech_add_hrs_f"
-                          id="tech_add_hrs_f"
+                          name="add_hrs_f"
+                          id="add_hrs_f"
                           className="input w-full border rounded-md p-2"
                           aria-label="input"
                           placeholder="HH"
-                          value={formData.tech_add_hrs_f}
+                          value={formData.add_hrs_f}
                           onChange={handleChange}
                         />
                       </div>
@@ -267,12 +270,12 @@ const DateCalculator = () => {
                         <input
                           type="number"
                           step="any"
-                          name="tech_add_min_f"
-                          id="tech_add_min_f"
+                          name="add_min_f"
+                          id="add_min_f"
                           className="input w-full border rounded-md p-2"
                           aria-label="input"
                           placeholder="MM"
-                          value={formData.tech_add_min_f}
+                          value={formData.add_min_f}
                           onChange={handleChange}
                         />
                       </div>
@@ -280,12 +283,12 @@ const DateCalculator = () => {
                         <input
                           type="number"
                           step="any"
-                          name="tech_add_sec_f"
-                          id="tech_add_sec_f"
+                          name="add_sec_f"
+                          id="add_sec_f"
                           className="input w-full border rounded-md p-2"
                           aria-label="input"
                           placeholder="SS"
-                          value={formData.tech_add_sec_f}
+                          value={formData.add_sec_f}
                           onChange={handleChange}
                         />
                       </div>
@@ -302,11 +305,11 @@ const DateCalculator = () => {
                     <input
                       type="number"
                       step="any"
-                      name="tech_weeks"
-                      id="tech_weeks"
+                      name="weeks"
+                      id="weeks"
                       className="input my-2"
                       aria-label="input"
-                      value={formData.tech_weeks}
+                      value={formData.weeks}
                       onChange={handleChange}
                     />
                   </div>
@@ -317,28 +320,28 @@ const DateCalculator = () => {
                     <input
                       type="number"
                       step="any"
-                      name="tech_days"
-                      id="tech_days"
+                      name="days"
+                      id="days"
                       className="input my-2"
                       aria-label="input"
-                      value={formData.tech_days}
+                      value={formData.days}
                       onChange={handleChange}
                     />
                   </div>
                 </div>
-                {formData && formData.tech_inctime === "time_out" && (
+                {formData && formData.inctime === "time_out" && (
                   <div className="flex flex-wrap inc_time ">
                     <div className="w-full flex px-2">
                       <div className="w-1/3 py-2 mx-1">
                         <input
                           type="number"
                           step="any"
-                          name="tech_add_hrs_s"
-                          id="tech_add_hrs_s"
+                          name="add_hrs_s"
+                          id="add_hrs_s"
                           className="input w-full border rounded-md p-2"
                           aria-label="input"
                           placeholder="HH"
-                          value={formData.tech_add_hrs_s}
+                          value={formData.add_hrs_s}
                           onChange={handleChange}
                         />
                       </div>
@@ -346,12 +349,12 @@ const DateCalculator = () => {
                         <input
                           type="number"
                           step="any"
-                          name="tech_add_min_s"
-                          id="tech_add_min_s"
+                          name="add_min_s"
+                          id="add_min_s"
                           className="input w-full border rounded-md p-2"
                           aria-label="input"
                           placeholder="MM"
-                          value={formData.tech_add_min_s}
+                          value={formData.add_min_s}
                           onChange={handleChange}
                         />
                       </div>
@@ -359,12 +362,12 @@ const DateCalculator = () => {
                         <input
                           type="number"
                           step="any"
-                          name="tech_add_sec_s"
-                          id="tech_add_sec_s"
+                          name="add_sec_s"
+                          id="add_sec_s"
                           className="input w-full border rounded-md p-2"
                           aria-label="input"
                           placeholder="SS"
-                          value={formData.tech_add_sec_s}
+                          value={formData.add_sec_s}
                           onChange={handleChange}
                         />
                       </div>
@@ -372,7 +375,7 @@ const DateCalculator = () => {
                   </div>
                 )}
               </div>
-              {formData.tech_checkbox && (
+              {formData.checkbox && (
                 <div className="w-full px-2 lg:pr-4 checkinput">
                   <label htmlFor="tech_repeat" className="label">
                     {data?.payload?.tech_lang_keys["52"]}:
@@ -381,11 +384,11 @@ const DateCalculator = () => {
                     <input
                       type="number"
                       step="any"
-                      name="tech_repeat"
-                      id="tech_repeat"
+                      name="repeat"
+                      id="repeat"
                       className="input w-full border rounded-md p-2"
                       aria-label="input"
-                      value={formData.tech_repeat}
+                      value={formData.repeat}
                       onChange={handleChange}
                     />
                   </div>
@@ -394,29 +397,31 @@ const DateCalculator = () => {
             </div>
             <div className="flex justify-between px-2">
               <div className="w-1/2 flex">
-                <input
+                <div className="flex">
+                      <input
                   type="checkbox"
-                  name="tech_checkbox"
-                  id="tech_checkbox"
-                  className="input  border rounded-md p-2"
+                  name="checkbox"
+                  id="checkbox"
+                  className="input w-full border rounded-md p-2 cursor-pointer"
                   aria-label="input"
-                  checked={formData.tech_checkbox === true}
+                  checked={formData.checkbox === true}
                   onChange={handleChange}
                 />
-                <label htmlFor="tech_checkbox" className="label">
+                <label  htmlFor="checkbox" className="label cursor-pointer">
                   {data?.payload?.tech_lang_keys["51"]}:
                 </label>
+                </div>
               </div>
 
               <div className="w-1/2 text-right">
-                {formData?.tech_inctime != "time_in" ? (
+                {formData?.inctime != "time_in" ? (
                   <p
                     className={`label cursor-pointer underline  ${
-                      formData.tech_inctime === "time_in" ? "tagsUnit" : ""
+                      formData.inctime === "time_in" ? "tagsUnit" : ""
                     }`}
                     id="time_in"
                     onClick={() =>
-                      setFormData({ ...formData, tech_inctime: "time_in" })
+                      setFormData({ ...formData, inctime: "time_in" })
                     }
                   >
                     {data?.payload?.tech_lang_keys[63]}
@@ -424,11 +429,11 @@ const DateCalculator = () => {
                 ) : (
                   <p
                     className={`label cursor-pointer underline  ${
-                      formData.tech_inctime === "time_out" ? "tagsUnit" : ""
+                      formData.inctime === "time_out" ? "tagsUnit" : ""
                     }`}
                     id="time_out"
                     onClick={() =>
-                      setFormData({ ...formData, tech_inctime: "time_out" })
+                      setFormData({ ...formData, inctime: "time_out" })
                     }
                   >
                     {data?.payload?.tech_lang_keys[62]}
@@ -436,18 +441,18 @@ const DateCalculator = () => {
                 )}
                 <input
                   type="hidden"
-                  name="tech_inctime"
-                  id="tech_inctime"
+                  name="inctime"
+                  id="inctime"
                   className="input w-full border rounded-md p-2"
                   aria-label="input"
-                  value={formData.tech_inctime}
+                  value={formData.inctime}
                   onChange={handleChange}
                 />
               </div>
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={calculateDeadlineLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -472,48 +477,46 @@ const DateCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full  mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6 result">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full  lg:p-3 md:p-3 rounded-lg mt-3">
                       <div className="flex flex-wrap">
-                        <div className="w-full text-base">
-                          <table className="w-full ">
+                        <div className="w-full text-base overflow-auto md:text-[18px] text-[16px]">
+                          <table className="w-full">
                             <tbody>
-                              <tr className=" border-b  hover:bg-gray-300 transition-colors duration-200">
+                              <tr className="border-b border-gray-200 hover:bg-gray-100 transition-colors duration-200">
                                 <td className="py-4 px-6 font-medium text-gray-700">
                                   <strong>
                                     {data?.payload?.tech_lang_keys[61]}{" "}
-                                    {result?.tech_repeat > 1 ? "1" : ""} :
+                                    {result?.repeat > 1 ? "1" : ""} :
                                   </strong>
                                 </td>
                                 <td className="py-4 px-6 font-medium text-gray-700">
-                                  {result?.tech_ans[0]}
+                                  {result?.ans[0]}
                                 </td>
                               </tr>
 
                               {/* Repeat Remaining Answers if tech_repeat > 1 */}
-                              {result?.tech_repeat > 1 &&
-                                result?.tech_ans
-                                  .slice(1)
-                                  .map((value, index) => (
-                                    <tr
-                                      key={index}
-                                      className=" border-b  hover:bg-gray-300 transition-colors duration-200"
-                                    >
-                                      <td className="py-4 px-6 font-medium text-gray-700">
-                                        <strong>
-                                          {data?.payload?.tech_lang_keys[61]}{" "}
-                                          {index + 2} :
-                                        </strong>
-                                      </td>
-                                      <td className="py-4 px-6 font-medium text-gray-700">
-                                        {value}
-                                      </td>
-                                    </tr>
-                                  ))}
+                              {result?.repeat > 1 &&
+                                result?.ans.slice(1).map((value, index) => (
+                                  <tr
+                                    key={index}
+                                    className="border-b border-gray-200 hover:bg-gray-100 transition-colors duration-200"
+                                  >
+                                    <td className="py-4 px-6 font-medium text-gray-700">
+                                      <strong>
+                                        {data?.payload?.tech_lang_keys[61]}{" "}
+                                        {index + 2} :
+                                      </strong>
+                                    </td>
+                                    <td className="py-4 px-6 font-medium text-gray-700">
+                                      {value}
+                                    </td>
+                                  </tr>
+                                ))}
                             </tbody>
                           </table>
                         </div>

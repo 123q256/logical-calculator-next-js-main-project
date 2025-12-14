@@ -639,7 +639,7 @@ export const calculatorApi = createApi({
         body: data,
       }),
     }),
-    VADisabilityCalculator: builder.mutation({
+    VaDisabilityCalculator: builder.mutation({
       query: (data) => ({
         url: `/calculators-lol/va-disability-calculator`,
         method: "POST",
@@ -674,7 +674,8 @@ export const calculatorApi = createApi({
         body: data,
       }),
     }),
-    IncomeTaxCalculator: builder.mutation({
+
+    TaxCalculator: builder.mutation({
       query: (data) => ({
         url: `/calculators-lol/tax-calculator`,
         method: "POST",
@@ -5832,6 +5833,69 @@ export const calculatorApi = createApi({
         body: data,
       }),
     }),
+    DaysFromToday: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/days-from-today`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    WeeksBetweenDatesCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/weeks-between-dates-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    BodyFatCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/body-fat-percentage-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    BabyWeightPercentileCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/weight-percentile-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    AgeCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/age-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    PpiCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/ppi-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    HowManyPagesCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/how-many-pages-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    HowManyWordsCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/how-many-words-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    HypergeometricCalculator: builder.mutation({
+      query: (data) => ({
+        url: `/calculators-lol/hypergeometric-calculator`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -5862,7 +5926,8 @@ export const {
   useSonotubeCalculatorMutation,
   useRoofReplacementCostCalculatorMutation,
   useStoneCalculatorMutation,
-
+  useBabyWeightPercentileCalculatorMutation,
+  useProbabilityDensityFunctionCalculatorMutation,
   useGravelCalculatorMutation,
   useMulchCalculatorMutation,
   useSandCalculatorMutation,
@@ -5879,7 +5944,21 @@ export const {
   useRampCalculatorMutation,
   useSquareMeterCalculatorMutation,
   useRoomSizeCalculatorMutation,
-
+  useDaysFromTodayMutation,
+  useWeeksBetweenDatesCalculatorMutation,
+  useMonthlyIncomeCalculatorMutation,
+  useVaDisabilityCalculatorMutation,
+  useBMICalculatorMutation,
+  usePregnancyWeightGainCalculatorMutation,
+  useBodyFatCalculatorMutation,
+  usePpiCalculatorMutation,
+  useHowManyPagesCalculatorMutation,
+  useHowManyWordsCalculatorMutation,
+  useHypergeometricCalculatorMutation,
+  useZScoreCalculatorMutation,
+  useCorrelationCoefficientCalculatorMutation,
+  useEffectSizeCalculatorMutation,
+  useDecileCalculatorMutation,
   useGratuityCalculatorMutation,
   useSystemOfEquationsCalculatorMutation,
   useHeightComparisonMutation,
@@ -5900,6 +5979,8 @@ export const {
   useSohcahtoaCalculatorMutation,
   useGpaCalculatorMutation,
   useAreaOfASectorCalculatorMutation,
+  usePertCalculatorMutation,
+  useNormalDistributionCalculatorMutation,
   // Health calculator
   useDressSizeCalculatorMutation,
   // Health calculator
@@ -6066,7 +6147,7 @@ export const {
   useTipCalculatorMutation,
   useHourlyToSalaryCalculatorMutation,
   useSalaryToHourlyCalculatorMutation,
-  useIncomeTaxCalculatorMutation,
+  useTaxCalculatorMutation,
   useStampDutyCalculatorMutation,
   useVATCalculatorMutation,
   useSalesTaxCalculatorMutation,

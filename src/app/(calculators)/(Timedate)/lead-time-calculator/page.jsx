@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useLeadtimeCalculationMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useLeadtimeCalculationMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -12,7 +13,6 @@ import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeed
 import Calculator from "../../Calculator";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const LeadTimeCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -57,6 +57,7 @@ const LeadTimeCalculator = () => {
     tech_supply_units: "days",
     tech_r_delay: "25",
     tech_r_units: "days",
+    tech_submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -77,40 +78,6 @@ const LeadTimeCalculator = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.tech_type == "manufac") {
-      if (
-        !formData.tech_type ||
-        !formData.tech_pre_time ||
-        !formData.tech_pre_units ||
-        !formData.tech_p_time ||
-        !formData.tech_p_units ||
-        !formData.tech_post_time ||
-        !formData.tech_post_units
-      ) {
-        setFormError("Please fill in field");
-        return;
-      }
-    } else if (formData.tech_type == "order") {
-      if (
-        !formData.tech_type ||
-        !formData.tech_place_time ||
-        !formData.tech_receive_time
-      ) {
-        setFormError("Please fill in field");
-        return;
-      }
-    } else {
-      if (
-        !formData.tech_type ||
-        !formData.tech_s_delay ||
-        !formData.tech_supply_units ||
-        !formData.tech_r_delay ||
-        !formData.tech_r_units
-      ) {
-        setFormError("Please fill in field");
-        return;
-      }
-    }
     setFormError("");
     try {
       const response = await LeadTimeCalculator({
@@ -127,12 +94,13 @@ const LeadTimeCalculator = () => {
         tech_supply_units: formData.tech_supply_units,
         tech_r_delay: formData.tech_r_delay,
         tech_r_units: formData.tech_r_units,
+        tech_submit: formData.tech_submit,
       }).unwrap();
-      setResult(response); // Assuming the response has'
-      toast.success("Calculate Successfully");
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
+      toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error calculating");
-      toast.error("Error calculating");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -152,6 +120,7 @@ const LeadTimeCalculator = () => {
       tech_supply_units: "days",
       tech_r_delay: "",
       tech_r_units: "days",
+      tech_submit: "calculate",
     });
     setResult(null);
     setFormError(null);
@@ -241,13 +210,13 @@ const LeadTimeCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
-            <div className="grid grid-cols-1  gap-4">
+          <div className="lg:w-[70%] md:w-[90%] w-full mx-auto ">
+            <div className="grid grid-cols-1 gap-1 md:gap-4">
               <div className="space-y-2 relative">
                 <label htmlFor="tech_type" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
                 </label>
-                <div className="py-2">
+                <div className="w-full py-2">
                   <select
                     className="input"
                     aria-label="select"
@@ -269,7 +238,7 @@ const LeadTimeCalculator = () => {
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 mt-4 lg:grid-cols-2 md:grid-cols-2  gap-4">
+            <div className="grid grid-cols-1 mt-4  lg:grid-cols-2 md:grid-cols-2 gap-1  md:gap-4">
               {formData.tech_type === "manufac" && (
                 <>
                   {/*  days */}
@@ -552,7 +521,7 @@ const LeadTimeCalculator = () => {
               )}
             </div>
           </div>
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={calculateLeadTimeLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -566,7 +535,7 @@ const LeadTimeCalculator = () => {
           </div>
         </div>
         {calculateLeadTimeLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -577,15 +546,15 @@ const LeadTimeCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
                   <div className="rounded-lg flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="w-full my-2">
-                        <div className="col-lg-7 font-s-18">
+                        <div className="col-lg-7 overflow-auto md:text-[18px] text-[16px]">
                           {/* Manufacturing Type */}
-                          {result?.tech_type === "manufac" &&
+                          {result?.type === "manufac" &&
                             (() => {
                               const manufac = result?.tech_manufac
                                 ? Math.round(result.tech_manufac * 100) / 100
@@ -671,7 +640,7 @@ const LeadTimeCalculator = () => {
                             })()}
 
                           {/* Order Type */}
-                          {result?.tech_type === "order" &&
+                          {result?.type === "order" &&
                             (() => {
                               const timeDiff = result?.tech_diff_minutes
                                 ? Math.round(result.tech_diff_minutes * 100) /
@@ -754,7 +723,7 @@ const LeadTimeCalculator = () => {
                             })()}
 
                           {/* Supply Type */}
-                          {result?.tech_type === "supply" &&
+                          {result?.type === "supply" &&
                             (() => {
                               const supply = result?.tech_supply
                                 ? Math.round(result.tech_supply * 100) / 100

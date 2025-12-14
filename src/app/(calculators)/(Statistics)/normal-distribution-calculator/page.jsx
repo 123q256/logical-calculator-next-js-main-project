@@ -6,9 +6,10 @@ import katex from "katex";
 import { InlineMath, BlockMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useNormalDistributionCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useNormalDistributionCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -17,7 +18,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const NormalDistributionCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -122,11 +122,11 @@ const NormalDistributionCalculator = () => {
         tech_e2: formData.tech_e2,
         tech_f: formData.tech_f,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -258,8 +258,8 @@ const NormalDistributionCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[70%] md:w-[100%] w-full mx-auto ">
-            <div className="grid grid-cols-12  gap-2">
+          <div className="lg:w-[70%] md:w-[70%] w-full mx-auto ">
+            <div className="grid grid-cols-12 gap-1 md:gap-2">
               <div className="col-span-12   md:col-span-6 lg:col-span-6  mb-2">
                 <label htmlFor="tech_operations" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -381,7 +381,7 @@ const NormalDistributionCalculator = () => {
               {formData.tech_operations == "4" && (
                 <>
                   <div id="main_div2" className="col-span-12 ">
-                    <div className="grid grid-cols-12 gap-1 md:gap-3 overflow-auto">
+                    <div className="grid grid-cols-12 gap-1 md:gap-3">
                       <div className="col-span-12 md:col-span-6 lg:col-span-6">
                         <label htmlFor="tech_mean" className="label">
                           {data?.payload?.tech_lang_keys["8"]}:
@@ -424,7 +424,7 @@ const NormalDistributionCalculator = () => {
                         </strong>
                       </p>
 
-                      <div className="col-span-12 flex items-center overflow-auto">
+                      <div className="col-span-12 flex items-center">
                         <label htmlFor="a">
                           <InlineMath math="P(X \leq" />
                         </label>
@@ -500,7 +500,7 @@ const NormalDistributionCalculator = () => {
                           style={{ width: "90px" }}
                         />
                       </div>
-                      <div className="col-span-12 flex items-center mt-3 gap-1">
+                      <div className="col-span-12 flex items-center mt-3">
                         <label htmlFor="e1">
                           <InlineMath math="P(" />
                         </label>
@@ -537,7 +537,7 @@ const NormalDistributionCalculator = () => {
 
                         <InlineMath math=") = ?" />
                       </div>
-                      <div className="col-span-12 flex items-center mt-3 gap-8">
+                      <div className="col-span-12 flex items-center mt-3">
                         <BlockMath math={"P( -a \\leq X \\leq b ) ="} />
 
                         <input
@@ -574,7 +574,7 @@ const NormalDistributionCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -585,181 +585,57 @@ const NormalDistributionCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
-                  <div className="rounded-lg ">
+                  <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="w-full">
+                      <div className="w-full overflow-auto">
                         {result?.tech_option1 ? (
                           <>
-                            <p className="text-[18px] text-center">
-                              <strong className="text-blue">
-                                {data?.payload?.tech_lang_keys["12"]}
-                              </strong>
-                            </p>
-
-                            <div className="lg:text-[20px] md:text-[20px] text-[16px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3 overflow-auto">
-                              <strong>
-                                <BlockMath
-                                  math={`P(X \\leq ${result?.tech_blow_first}) = ${formData?.tech_f_first}`}
-                                />
-                              </strong>
-                            </div>
-
-                            <p className="col-span-12 w-full mt-3 text-[18px]">
-                              <strong className="text-blue">
-                                {data?.payload?.tech_lang_keys[13]}:
-                              </strong>
-                            </p>
-
-                            <p className="col-span-12 w-full mt-2 text-[18px]">
-                              <b>{data?.payload?.tech_lang_keys[14]} 1:</b>
-                            </p>
-
-                            <p className="col-span-12 w-full mt-2 text-center overflow-auto">
-                              {data?.payload?.tech_lang_keys[15]}{" "}
-                              <strong>
-                                <InlineMath
-                                  math={`(X \\leq ${formData?.tech_f_first})`}
-                                />
-                              </strong>{" "}
-                              {data?.payload?.tech_lang_keys[16]}
-                            </p>
-
-                            <div className="col-span-12 w-full text-center">
-                              <div className="flex justify-center">
-                                <img
-                                  src={`/images/z_score/${result?.tech_z_url}.png`}
-                                  alt="Z-Score Graph"
-                                  className="img_set"
-                                  width="57%"
-                                  height="100%"
-                                />
-                              </div>
-                            </div>
-
-                            <p className="col-span-12 w-full mt-2 text-[18px]">
-                              <b>{data?.payload?.tech_lang_keys[14]} 2:</b>
-                            </p>
-
-                            <p className="col-span-12 w-full mt-2 overflow-auto">
-                              {data?.payload?.tech_lang_keys[17]}{" "}
-                              <b>
-                                <InlineMath
-                                  math={`\\mu = ${formData?.tech_f_second}`}
-                                />
-                              </b>{" "}
-                              {data?.payload?.tech_lang_keys[18]}{" "}
-                              <b>
-                                <InlineMath
-                                  math={`\\sigma = ${formData?.tech_f_third}`}
-                                />
-                              </b>{" "}
-                              {data?.payload?.tech_lang_keys[19]}:
-                            </p>
-
-                            <p className="col-span-12 w-full mt-2 text-center overflow-auto">
-                              <BlockMath
-                                math={`P(X \\leq ?) = P(X - \\mu \\leq ${
-                                  formData?.tech_f_first -
-                                  formData?.tech_f_second
-                                }) = P\\left(\\frac{X - \\mu}{\\sigma} \\leq \\frac{${
-                                  formData?.tech_f_first
-                                } - ${formData?.tech_f_second}}{${
-                                  formData?.tech_f_third
-                                }}\\right)`}
-                              />
-                            </p>
-
-                            <p className="col-span-12 w-full mt-2 overflow-auto">
-                              {data?.payload?.tech_lang_keys[17]}{" "}
-                              <b>
-                                <InlineMath
-                                  math={`\\frac{x - \\mu}{\\sigma} = Z = \\frac{${
-                                    formData?.tech_f_first
-                                  } - ${formData?.tech_f_second}}{${
-                                    formData?.tech_f_third
-                                  }} = ${
-                                    (formData?.tech_f_first -
-                                      formData?.tech_f_second) /
-                                    formData?.tech_f_third
-                                  }`}
-                                />
-                              </b>{" "}
-                              {data?.payload?.tech_lang_keys[19]}:
-                            </p>
-
-                            <p className="col-span-12 w-full mt-2 text-center overflow-auto">
-                              <BlockMath
-                                math={`P(X \\leq ?) = P(Z \\leq ${
-                                  (formData?.tech_f_first -
-                                    formData?.tech_f_second) /
-                                  formData?.tech_f_third
-                                })`}
-                              />
-                            </p>
-
-                            <p className="col-span-12 w-full mt-2 text-[18px]">
-                              <b>{data?.payload?.tech_lang_keys[14]} 3:</b>
-                            </p>
-
-                            <p className="col-span-12 w-full mt-2 overflow-auto">
-                              {data?.payload?.tech_lang_keys[20]}{" "}
-                              <b>{data?.payload?.tech_lang_keys[21]}</b>{" "}
-                              {data?.payload?.tech_lang_keys[22]}:
-                            </p>
-
-                            <p className="col-span-12 w-full mt-2 text-center overflow-auto">
-                              <BlockMath
-                                math={`P(Z \\leq ${result?.tech_blow_first}) = ${formData?.tech_f_first}`}
-                              />
-                            </p>
-                          </>
-                        ) : result?.tech_option2 ? (
-                          <>
-                            <div>
+                            <div className="text-center ">
                               <p className="text-[18px]">
                                 <strong className="text-blue">
                                   {data?.payload?.tech_lang_keys["12"]}
                                 </strong>
                               </p>
+                              <div className="flex justify-center">
+                                <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
+                                  <strong>
+                                    <BlockMath
+                                      math={`P(X \\leq ${result?.tech_blow_first}) = ${formData?.tech_f_first}`}
+                                    />
+                                  </strong>
+                                </p>
+                              </div>
 
-                              <p className="lg:text-[20px] md:text-[20px] text-[16px] bg-[#2845F5] text-white px-3 overflow-auto py-2 rounded-lg d-inline-block my-3">
-                                <strong>
-                                  <BlockMath
-                                    math={`P(X \\leq ${formData?.tech_f_first}) = ${result?.tech_ltpv_first}`}
-                                  />
-                                </strong>
-                              </p>
-
-                              <p className="col-span-12 w-full mt-3 text-[18px]">
+                              <p className="col-span-12 w-full mt-3 text-[14px] md:text-[18px]">
                                 <strong className="text-blue">
                                   {data?.payload?.tech_lang_keys[13]}:
                                 </strong>
                               </p>
 
-                              <p className="col-span-12 w-full mt-2 text-[18px]">
-                                <strong className="text-blue">
-                                  {data?.payload?.tech_lang_keys[14]} 1:
-                                </strong>
+                              <p className="col-span-12 w-full mt-2 text-[14px] md:text-[18px]">
+                                <b>{data?.payload?.tech_lang_keys[14]} 1:</b>
                               </p>
 
-                              <p className="col-span-12 w-full mt-2 text-center overflow-auto">
+                              <div className="col-span-12 w-full mt-2 text-center overflow-auto">
                                 {data?.payload?.tech_lang_keys[15]}{" "}
                                 <strong>
-                                  <BlockMath
+                                  <InlineMath
                                     math={`(X \\leq ${formData?.tech_f_first})`}
                                   />
                                 </strong>{" "}
-                                {data?.payload?.tech_lang_keys[16]}.
-                              </p>
+                                {data?.payload?.tech_lang_keys[16]}
+                              </div>
 
                               <div className="col-span-12 w-full text-center">
                                 <div className="flex justify-center">
                                   <img
-                                    src={`/images/z_score/${result?.tech_z_url}.png`}
+                                    src={`/images/z_score/${
+                                      result?.tech_z_url ?? "default"
+                                    }.png`}
                                     alt="Z-Score Graph"
                                     className="img_set"
                                     width="57%"
@@ -768,13 +644,145 @@ const NormalDistributionCalculator = () => {
                                 </div>
                               </div>
 
-                              <p className="col-span-12 w-full mt-2 text-[18px]">
+                              <p className="col-span-12 w-full mt-2 text-[14px] md:text-[18px]">
+                                <b>{data?.payload?.tech_lang_keys[14]} 2:</b>
+                              </p>
+
+                              <p className="col-span-12 w-full mt-2 overflow-auto">
+                                {data?.payload?.tech_lang_keys[17]}{" "}
+                                <b>
+                                  <InlineMath
+                                    math={`\\mu = ${formData?.tech_f_second}`}
+                                  />
+                                </b>{" "}
+                                {data?.payload?.tech_lang_keys[18]}{" "}
+                                <b>
+                                  <InlineMath
+                                    math={`\\sigma = ${formData?.tech_f_third}`}
+                                  />
+                                </b>{" "}
+                                {data?.payload?.tech_lang_keys[19]}:
+                              </p>
+
+                              <div className="col-span-12 w-full mt-2 text-center overflow-auto">
+                                <BlockMath
+                                  math={`P(X \\leq ?) = P(X - \\mu \\leq ${
+                                    formData?.tech_f_first -
+                                    formData?.tech_f_second
+                                  }) = P\\left(\\frac{X - \\mu}{\\sigma} \\leq \\frac{${
+                                    formData?.tech_f_first
+                                  } - ${formData?.tech_f_second}}{${
+                                    formData?.tech_f_third
+                                  }}\\right)`}
+                                />
+                              </div>
+
+                              <div className="col-span-12 w-full mt-2 overflow-auto">
+                                {data?.payload?.tech_lang_keys[17]}{" "}
+                                <b>
+                                  <InlineMath
+                                    math={`\\frac{x - \\mu}{\\sigma} = Z = \\frac{${
+                                      formData?.tech_f_first
+                                    } - ${formData?.tech_f_second}}{${
+                                      formData?.tech_f_third
+                                    }} = ${
+                                      (formData?.tech_f_first -
+                                        formData?.tech_f_second) /
+                                      formData?.tech_f_third
+                                    }`}
+                                  />
+                                </b>{" "}
+                                {data?.payload?.tech_lang_keys[19]}:
+                              </div>
+
+                              <div className="col-span-12 w-full mt-2 text-center overflow-auto">
+                                <BlockMath
+                                  math={`P(X \\leq ?) = P(Z \\leq ${
+                                    (formData?.tech_f_first -
+                                      formData?.tech_f_second) /
+                                    formData?.tech_f_third
+                                  })`}
+                                />
+                              </div>
+
+                              <p className="col-span-12 w-full mt-2 text-[14px] md:text-[18px]">
+                                <b>{data?.payload?.tech_lang_keys[14]} 3:</b>
+                              </p>
+
+                              <p className="col-span-12 w-full mt-2 overflow-auto">
+                                {data?.payload?.tech_lang_keys[20]}{" "}
+                                <b>{data?.payload?.tech_lang_keys[21]}</b>{" "}
+                                {data?.payload?.tech_lang_keys[22]}:
+                              </p>
+
+                              <div className="col-span-12 w-full mt-2 text-center overflow-auto">
+                                <BlockMath
+                                  math={`P(Z \\leq ${result?.tech_blow_first}) = ${formData?.tech_f_first}`}
+                                />
+                              </div>
+                            </div>
+                          </>
+                        ) : result?.tech_option2 ? (
+                          <>
+                            <div className="text-center">
+                              <p className="text-[14px] md:text-[18px]">
+                                <strong className="text-blue">
+                                  {data?.payload?.tech_lang_keys["12"]}
+                                </strong>
+                              </p>
+                              <div className="flex justify-center">
+                                <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
+                                  <strong>
+                                    <BlockMath
+                                      math={`P(X \\leq ${formData?.tech_f_first}) = ${result?.tech_ltpv_first}`}
+                                    />
+                                  </strong>
+                                </p>
+                              </div>
+
+                              <p className="col-span-12 w-full mt-3 text-[14px] md:text-[18px]">
+                                <strong className="text-blue">
+                                  {data?.payload?.tech_lang_keys[13]}:
+                                </strong>
+                              </p>
+
+                              <p className="col-span-12 w-full mt-2 text-[14px] md:text-[18px]">
+                                <strong className="text-blue">
+                                  {data?.payload?.tech_lang_keys[14]} 1:
+                                </strong>
+                              </p>
+
+                              <div className="col-span-12 w-full mt-2 text-center overflow-auto">
+                                {data?.payload?.tech_lang_keys[15]}{" "}
+                                <strong>
+                                  <BlockMath
+                                    math={`(X \\leq ${formData?.tech_f_first})`}
+                                  />
+                                </strong>{" "}
+                                {data?.payload?.tech_lang_keys[16]}.
+                              </div>
+
+                              <div className="col-span-12 w-full text-center">
+                                <div className="flex justify-center">
+                                  <img
+                                    src={`/images/z_score/${
+                                      result?.tech_z_url ?? "default"
+                                    }.png`}
+                                    alt="Z-Score Graph"
+                                    className="img_set"
+                                    width="57%"
+                                    height="100%"
+                                  />
+                                </div>
+                              </div>
+
+                              <p className="col-span-12 w-full mt-2 text-[14px] md:text-[18px]">
                                 <strong className="text-blue">
                                   {data?.payload?.tech_lang_keys[14]} 2:
                                 </strong>
                               </p>
 
-                              <p className="col-span-12 w-full mt-2 overflow-auto">
+                              <div className="col-span-12 w-full mt-2 overflow-auto">
                                 {data?.payload?.tech_lang_keys[17]}{" "}
                                 <strong>
                                   <BlockMath
@@ -788,15 +796,15 @@ const NormalDistributionCalculator = () => {
                                   />
                                 </strong>{" "}
                                 {data?.payload?.tech_lang_keys[19]}:
-                              </p>
+                              </div>
 
-                              <p className="col-span-12 w-full mt-2 text-center overflow-auto">
+                              <div className="col-span-12 w-full mt-2 text-center overflow-auto">
                                 <BlockMath
                                   math={`P(X \\leq ${formData?.tech_f_first}) = P(X - \\mu \\leq ${formData?.tech_f_first} - ${formData?.tech_f_second}) = P\\left( \\frac{X - \\mu}{\\sigma} \\leq \\frac{${formData?.tech_f_first} - ${formData?.tech_f_second}}{${formData?.tech_f_third}} \\right)`}
                                 />
-                              </p>
+                              </div>
 
-                              <p className="col-span-12 w-full mt-2 overflow-auto">
+                              <div className="col-span-12 w-full mt-2 overflow-auto">
                                 {data?.payload?.tech_lang_keys[17]}{" "}
                                 <strong>
                                   <BlockMath
@@ -804,15 +812,15 @@ const NormalDistributionCalculator = () => {
                                   />
                                 </strong>{" "}
                                 {data?.payload?.tech_lang_keys[19]}:
-                              </p>
+                              </div>
 
-                              <p className="col-span-12 w-full mt-2 text-center overflow-auto">
+                              <div className="col-span-12 w-full mt-2 text-center overflow-auto">
                                 <BlockMath
                                   math={`P(X \\leq ${formData?.tech_f_first}) = P(Z \\leq ${result?.tech_rz_first})`}
                                 />
-                              </p>
+                              </div>
 
-                              <p className="col-span-12 w-full mt-2 text-[18px]">
+                              <p className="col-span-12 w-full mt-2 text-[14px] md:text-[18px]">
                                 <b>{data?.payload?.tech_lang_keys[19]} 3:</b>
                               </p>
 
@@ -822,37 +830,40 @@ const NormalDistributionCalculator = () => {
                                 {data?.payload?.tech_lang_keys[22]}:
                               </p>
 
-                              <p className="col-span-12 w-full mt-2 text-center overflow-auto">
+                              <div className="col-span-12 w-full mt-2 text-center overflow-auto">
                                 <BlockMath
                                   math={`P(Z \\leq ${result?.tech_rz_first}) = ${result?.tech_ltpv_first}`}
                                 />
-                              </p>
+                              </div>
                             </div>
                           </>
                         ) : null}
                         {result?.tech_a && (
-                          <div>
-                            <p className="text-[18px]">
+                          <div className="text-center">
+                            <p className="text-[14px] md:text-[18px]">
                               <strong className="text-blue">
                                 {data?.payload?.tech_lang_keys[12]}
                               </strong>
                             </p>
-                            <p className="lg:text-[20px] md:text-[20px] text-[16px] bg-[#2845F5] text-white px-3 overflow-auto py-2 rounded-lg d-inline-block my-3">
-                              <strong
-                                dangerouslySetInnerHTML={renderMath(
-                                  `P(X \\leq ${formData?.tech_a}) = ${result?.tech_ltpv}`
-                                )}
-                              />
-                            </p>
 
-                            <p className="col-12 mt-3 text-[18px]">
+                            <div className="flex justify-center">
+                              <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
+                                <strong
+                                  dangerouslySetInnerHTML={renderMath(
+                                    `P(X \\leq ${formData?.tech_a}) = ${result?.tech_ltpv}`
+                                  )}
+                                />
+                              </p>
+                            </div>
+
+                            <p className="col-12 mt-3 text-[14px] md:text-[18px]">
                               <strong className="text-blue">
                                 {data?.payload?.tech_lang_keys[13]}:
                               </strong>
                             </p>
 
                             {/* Example of other math expressions */}
-                            <p className="col-12 mt-2 overflow-auto">
+                            <p className="col-12 mt-2 text-center overflow-auto">
                               {data?.payload?.tech_lang_keys[15]}{" "}
                               <strong
                                 dangerouslySetInnerHTML={renderMath(
@@ -862,10 +873,12 @@ const NormalDistributionCalculator = () => {
                               {data?.payload?.tech_lang_keys[16]}.
                             </p>
 
-                            <div>
+                            <div className="text-center">
                               <div className="flex justify-center">
                                 <img
-                                  src={`/images/z_score/${result?.tech_z_url}.png`}
+                                  src={`/images/z_score/${
+                                    result?.tech_z_url ?? "default"
+                                  }.png`}
                                   alt="Z-Score Graph"
                                   className="img_set"
                                   width="57%"
@@ -874,7 +887,7 @@ const NormalDistributionCalculator = () => {
                               </div>
                             </div>
 
-                            <p className="col-12 mt-2 text-[18px]">
+                            <p className="col-12 mt-2 text-[14px] md:text-[18px]">
                               <strong className="text-blue">
                                 {data?.payload?.tech_lang_keys[14]} 2:
                               </strong>
@@ -896,7 +909,7 @@ const NormalDistributionCalculator = () => {
                               {data?.payload?.tech_lang_keys[19]}:
                             </p>
 
-                            <p className="col-12 mt-2 overflow-auto">
+                            <p className="col-12 mt-2 text-center overflow-auto">
                               <strong
                                 dangerouslySetInnerHTML={renderMath(
                                   `P(X \\leq ${formData?.tech_a}) = P\\left(\\frac{X - \\mu}{\\sigma} \\leq \\frac{${formData?.tech_a} - ${formData?.tech_mean}}{${formData?.tech_deviation}}\\right)`
@@ -914,7 +927,7 @@ const NormalDistributionCalculator = () => {
                               {data?.payload?.tech_lang_keys[19]}:
                             </p>
 
-                            <p className="col-12 mt-2 overflow-auto">
+                            <p className="col-12 mt-2 text-center overflow-auto">
                               <strong
                                 dangerouslySetInnerHTML={renderMath(
                                   `P(X \\leq ${formData?.tech_a}) = P(Z \\leq ${result?.tech_rz})`
@@ -922,7 +935,7 @@ const NormalDistributionCalculator = () => {
                               />
                             </p>
 
-                            <p className="col-12 mt-2 text-[18px]">
+                            <p className="col-12 mt-2 text-[14px] md:text-[18px]">
                               <b>{data?.payload?.tech_lang_keys[14]} 3:</b>
                             </p>
 
@@ -934,7 +947,7 @@ const NormalDistributionCalculator = () => {
                               {data?.payload?.tech_lang_keys[22]}:
                             </p>
 
-                            <p className="col-12 mt-2 overflow-auto">
+                            <p className="col-12 mt-2 text-center overflow-auto">
                               <strong
                                 dangerouslySetInnerHTML={renderMath(
                                   `P(Z \\leq ${result?.tech_rz}) = ${result?.tech_ltpv}`
@@ -945,35 +958,36 @@ const NormalDistributionCalculator = () => {
                         )}
                         {result?.tech_b && (
                           <>
-                            <div>
-                              <p className="text-[18px]">
+                            <div className="text-center">
+                              <p className="text-[14px] md:text-[18px]">
                                 <strong className="text-blue">
                                   {data?.payload?.tech_lang_keys[12]}
                                 </strong>
                               </p>
+                              <div className="flex justify-center">
+                                <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
+                                  <strong>
+                                    {/* KaTeX expression */}
+                                    <BlockMath
+                                      math={`P\\left(X \\geq ${formData?.tech_b}\\right) = ${result?.tech_rtpv2}`}
+                                    />
+                                  </strong>
+                                </p>
+                              </div>
 
-                              <p className="lg:text-[20px] md:text-[20px] text-[16px] bg-[#2845F5] text-white px-3 overflow-auto py-2 rounded-lg d-inline-block my-3">
-                                <strong>
-                                  {/* KaTeX expression */}
-                                  <BlockMath
-                                    math={`P\\left(X \\geq ${formData?.tech_b}\\right) = ${result?.tech_rtpv2}`}
-                                  />
-                                </strong>
-                              </p>
-
-                              <p className="col-12 mt-3 text-[18px]">
+                              <p className="col-12 mt-3 text-[14px] md:text-[18px]">
                                 <strong className="text-blue">
                                   {data?.payload?.tech_lang_keys[13]}:
                                 </strong>
                               </p>
 
-                              <p className="col-12 mt-2 text-[18px]">
+                              <p className="col-12 mt-2 text-[14px] md:text-[18px]">
                                 <strong className="text-blue">
                                   {data?.payload?.tech_lang_keys[14]} 1:
                                 </strong>
                               </p>
 
-                              <p className="col-12 mt-2 overflow-auto">
+                              <div className="col-12 mt-2 text-center overflow-auto">
                                 {data?.payload?.tech_lang_keys[15]}{" "}
                                 <b>
                                   <BlockMath
@@ -981,12 +995,14 @@ const NormalDistributionCalculator = () => {
                                   />
                                 </b>{" "}
                                 {data?.payload?.tech_lang_keys[16]}.
-                              </p>
+                              </div>
 
                               <div className="text-blue">
                                 <div className="flex justify-center">
                                   <img
-                                    src={`/images/z_score/${result?.tech_z_url}.png`}
+                                    src={`/images/z_score/${
+                                      result?.tech_z_url2 ?? "default"
+                                    }.png`}
                                     alt="Z-Score Graph"
                                     className="img_set"
                                     width="57%"
@@ -995,11 +1011,11 @@ const NormalDistributionCalculator = () => {
                                 </div>
                               </div>
 
-                              <p className="col-12 mt-2 text-[18px]">
+                              <p className="col-12 mt-2 text-[14px] md:text-[18px]">
                                 <b>{data?.payload?.tech_lang_keys[14]} 2:</b>
                               </p>
 
-                              <p className="col-12 mt-2 overflow-auto">
+                              <div className="col-12 mt-2 overflow-auto">
                                 {data?.payload?.tech_lang_keys[17]}{" "}
                                 <b>
                                   <BlockMath
@@ -1013,15 +1029,15 @@ const NormalDistributionCalculator = () => {
                                   />
                                 </b>{" "}
                                 {data?.payload?.tech_lang_keys[19]}:
-                              </p>
+                              </div>
 
-                              <p className="col-12 mt-2 overflow-auto">
+                              <div className="col-12 mt-2 text-center overflow-auto">
                                 <BlockMath
                                   math={`P\\left( X \\geq ${formData?.tech_b} \\right) = P\\left( X - \\mu \\geq ${formData?.tech_b} - ${formData?.tech_mean} \\right) = P\\left( \\frac{X - \\mu}{\\sigma} \\geq \\frac{${formData?.tech_b} - ${formData?.tech_mean}}{${formData?.tech_deviation}} \\right)`}
                                 />
-                              </p>
+                              </div>
 
-                              <p className="col-12 mt-2 overflow-auto">
+                              <div className="col-12 mt-2 overflow-auto">
                                 {data?.payload?.tech_lang_keys[17]}{" "}
                                 <b>
                                   <BlockMath
@@ -1029,15 +1045,15 @@ const NormalDistributionCalculator = () => {
                                   />
                                 </b>{" "}
                                 {data?.payload?.tech_lang_keys[19]}:
-                              </p>
+                              </div>
 
-                              <p className="col-12 mt-2 overflow-auto">
+                              <div className="col-12 mt-2 text-center overflow-auto">
                                 <BlockMath
                                   math={`P\\left( X \\geq ${formData?.tech_b} \\right) = P\\left( Z \\geq ${result?.tech_rz2} \\right)`}
                                 />
-                              </p>
+                              </div>
 
-                              <p className="col-12 mt-2 text-[18px]">
+                              <p className="col-12 mt-2 text-[14px] md:text-[18px]">
                                 <b>{data?.payload?.tech_lang_keys[14]} 3:</b>
                               </p>
 
@@ -1047,45 +1063,47 @@ const NormalDistributionCalculator = () => {
                                 {data?.payload?.tech_lang_keys[22]}:
                               </p>
 
-                              <p className="col-12 mt-2 overflow-auto">
+                              <div className="col-12 mt-2 text-center overflow-auto">
                                 <BlockMath
                                   math={`P\\left( Z \\geq ${result?.tech_rz2} \\right) = ${result?.tech_rtpv2}`}
                                 />
-                              </p>
+                              </div>
                             </div>
                           </>
                         )}
                         {result?.tech_c && (
                           <>
                             <div>
-                              <div>
-                                <p className="text-[18px]">
+                              <div className="text-center">
+                                <p className="text-[14px] md:text-[18px]">
                                   <strong className="text-blue">
                                     {data?.payload?.tech_lang_keys["12"]}
                                   </strong>
                                 </p>
-                                <p className="lg:text-[20px] md:text-[20px] text-[16px] bg-[#2845F5] text-white px-3 overflow-auto py-2 rounded-lg d-inline-block my-3">
-                                  <strong>
-                                    <BlockMath
-                                      math={`P(X \\leq ${result.tech_blow}) = ${formData.tech_c}`}
-                                    />
-                                  </strong>
-                                </p>
+                                <div className="flex justify-center">
+                                  <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
+                                    <strong>
+                                      <BlockMath
+                                        math={`P(X \\leq ${result.tech_blow}) = ${formData.tech_c}`}
+                                      />
+                                    </strong>
+                                  </p>
+                                </div>
                               </div>
 
-                              <p className="col-12 mt-3 text-[18px]">
+                              <p className="col-12 mt-3 text-[14px] md:text-[18px]">
                                 <strong className="text-blue">
                                   {data?.payload?.tech_lang_keys[13]}:
                                 </strong>
                               </p>
 
-                              <p className="col-12 mt-2 text-[18px]">
+                              <p className="col-12 mt-2 text-[14px] md:text-[18px]">
                                 <strong className="text-blue">
                                   {data?.payload?.tech_lang_keys[14]} 1:
                                 </strong>
                               </p>
 
-                              <p className="col-12 mt-2 overflow-auto">
+                              <p className="col-12 mt-2 text-center overflow-auto">
                                 {data?.payload?.tech_lang_keys[15]}{" "}
                                 <b>
                                   <InlineMath
@@ -1095,10 +1113,12 @@ const NormalDistributionCalculator = () => {
                                 {data?.payload?.tech_lang_keys[16]}.
                               </p>
 
-                              <div>
+                              <div className="text-center">
                                 <div className="flex justify-center">
                                   <img
-                                    src={`/images/z_score/${result?.tech_z_url}.png`}
+                                    src={`/images/z_score/${
+                                      result?.tech_z_urlc ?? "default"
+                                    }.png`}
                                     alt="Z-Score Graph"
                                     className="img_set"
                                     width="57%"
@@ -1107,7 +1127,7 @@ const NormalDistributionCalculator = () => {
                                 </div>
                               </div>
 
-                              <p className="col-12 mt-2 text-[18px]">
+                              <p className="col-12 mt-2 text-[14px] md:text-[18px]">
                                 <b>{data?.payload?.tech_lang_keys[14]} 2:</b>
                               </p>
 
@@ -1127,11 +1147,11 @@ const NormalDistributionCalculator = () => {
                                 {data?.payload?.tech_lang_keys[19]}:
                               </p>
 
-                              <p className="col-12 mt-2 overflow-auto">
+                              <div className="col-12 mt-2 text-center overflow-auto">
                                 <BlockMath
                                   math={`P(X \\leq ? ) = P(X - \\mu \\leq ? - ${formData.tech_mean}) = P\\left(\\frac{X - \\mu}{\\sigma} \\leq \\frac{? - ${formData.tech_mean}}{${formData.tech_deviation}}\\right)`}
                                 />
-                              </p>
+                              </div>
 
                               <p className="col-12 mt-2 overflow-auto">
                                 {data?.payload?.tech_lang_keys[17]}{" "}
@@ -1144,15 +1164,15 @@ const NormalDistributionCalculator = () => {
                                 {data?.payload?.tech_lang_keys[19]}:
                               </p>
 
-                              <p className="col-12 mt-2 overflow-auto">
+                              <div className="col-12 mt-2 text-center overflow-auto">
                                 <BlockMath
                                   math={`P(X \\leq ? ) = P(Z \\leq ${final.toFixed(
                                     4
                                   )})`}
                                 />
-                              </p>
+                              </div>
 
-                              <p className="col-12 mt-2 text-[18px]">
+                              <p className="col-12 mt-2 text-[14px] md:text-[18px]">
                                 <b>{data?.payload?.tech_lang_keys[14]} 3:</b>
                               </p>
 
@@ -1162,29 +1182,30 @@ const NormalDistributionCalculator = () => {
                                 {data?.payload?.tech_lang_keys[22]}:
                               </p>
 
-                              <p className="col-12 mt-2 overflow-auto">
+                              <div className="col-12 mt-2 text-center overflow-auto">
                                 <BlockMath
                                   math={`P(Z \\leq ${final.toFixed(4)}) = ${
                                     formData.tech_c
                                   }`}
                                 />
-                              </p>
+                              </div>
                             </div>
                           </>
                         )}
                         {result?.tech_d && (
                           <>
-                            <div className="text-[18px] overflow-auto">
+                            <div className="text-center text-[14px] md:text-[18px]">
                               <p>
                                 <strong className="text-blue">
                                   {data?.payload?.tech_lang_keys["12"]}
                                 </strong>
                               </p>
-
-                              <div className="lg:text-[20px] md:text-[20px] text-[16px] bg-[#2845F5] text-white px-3 py-2 rounded-lg d-inline-block my-3 overflow-auto">
-                                <BlockMath
-                                  math={`P(X \\ge ${result.tech_above2}) = ${formData.tech_d}`}
-                                />
+                              <div className="flex justify-center">
+                                <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
+                                  <BlockMath
+                                    math={`P(X \\ge ${result.tech_above2}) = ${formData.tech_d}`}
+                                  />
+                                </p>
                               </div>
 
                               <p>
@@ -1195,18 +1216,20 @@ const NormalDistributionCalculator = () => {
                                 <b>{data?.payload?.tech_lang_keys[14]} 1:</b>
                               </p>
 
-                              <p className="mt-2 ">
+                              <div className="mt-2 text-center">
                                 {data?.payload?.tech_lang_keys[15]}
                                 <BlockMath
                                   math={`(X \\ge ${formData.tech_d})`}
                                 />
                                 {data?.payload?.tech_lang_keys[16]}
-                              </p>
+                              </div>
 
-                              <div>
+                              <div className="text-center">
                                 <div className="flex justify-center">
                                   <img
-                                    src={`/images/z_score/${result?.tech_z_url}.png`}
+                                    src={`/images/z_score/${
+                                      result?.tech_z_urld ?? "default"
+                                    }.png`}
                                     alt="Z-Score Graph"
                                     className="img_set"
                                     width="57%"
@@ -1219,7 +1242,7 @@ const NormalDistributionCalculator = () => {
                                 <b>{data?.payload?.tech_lang_keys[14]} 2:</b>
                               </p>
 
-                              <p>
+                              <div>
                                 {data?.payload?.tech_lang_keys[17]}
                                 <BlockMath
                                   math={`\\mu = ${formData.tech_mean}`}
@@ -1229,19 +1252,19 @@ const NormalDistributionCalculator = () => {
                                   math={`\\sigma = ${formData.tech_deviation}`}
                                 />
                                 {data?.payload?.tech_lang_keys[19]}:
-                              </p>
+                              </div>
 
                               <BlockMath
                                 math={`P(X \\ge ? ) = P\\left(\\frac{X - \\mu}{\\sigma} \\ge \\frac{? - ${formData.tech_mean}}{${formData.tech_deviation}}\\right)`}
                               />
 
-                              <p>
+                              <div>
                                 {data?.payload?.tech_lang_keys[17]}
                                 <BlockMath
                                   math={`\\frac{x - \\mu}{\\sigma} = Z = \\frac{${result.tech_above2} - ${formData.tech_mean}}{${formData.tech_deviation}} = ${final11}`}
                                 />
                                 {data?.payload?.tech_lang_keys[19]}:
-                              </p>
+                              </div>
 
                               <BlockMath
                                 math={`P(X \\ge ?) = P(Z \\ge ${result.tech_above2})`}
@@ -1265,28 +1288,29 @@ const NormalDistributionCalculator = () => {
                         )}
 
                         {result?.tech_e1 && result?.tech_e2 && (
-                          <div>
-                            <p className="text-[18px]">
+                          <div className="text-center">
+                            <p className="text-[14px] md:text-[18px]">
                               <strong className="text-blue">
                                 {data?.payload?.tech_lang_keys["12"]}
                               </strong>
                             </p>
+                            <div className="flex justify-center">
+                              <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
+                                <strong>
+                                  P({e1} ≤ X ≥ {e2}) = {mainAns}
+                                </strong>
+                              </p>
+                            </div>
 
-                            <p className="lg:text-[20px] md:text-[20px] text-[16px] bg-[#2845F5] text-white px-3 overflow-auto py-2 rounded-lg d-inline-block my-3">
-                              <strong>
-                                P({e1} ≤ X ≥ {e2}) = {mainAns}
-                              </strong>
-                            </p>
-
-                            <p className="col-12 mt-3 text-[18px]">
+                            <p className="col-12 mt-3 text-[14px] md:text-[18px]">
                               <b>{data?.payload?.tech_lang_keys[13]}:</b>
                             </p>
 
                             {/* Explanation 1 */}
-                            <p className="col-12 mt-2 text-[18px]">
+                            <p className="col-12 mt-2 text-[14px] md:text-[18px]">
                               <b>{data?.payload?.tech_lang_keys[14]} 1:</b>
                             </p>
-                            <p className="col-12 mt-2 overflow-auto">
+                            <p className="col-12 mt-2 text-center overflow-auto">
                               {data?.payload?.tech_lang_keys[15]}{" "}
                               <b>
                                 P({e1} ≤ X ≥ {e2})
@@ -1295,10 +1319,12 @@ const NormalDistributionCalculator = () => {
                             </p>
 
                             {/* Image */}
-                            <div>
+                            <div className="text-center">
                               <div className="flex justify-center">
                                 <img
-                                  src={`/images/z_score/${result?.tech_z_url}.png`}
+                                  src={`/images/z_score/${
+                                    result?.tech_z_urle ?? "default"
+                                  }.png`}
                                   alt="Z-Score Graph"
                                   className="img_set"
                                   width="57%"
@@ -1308,7 +1334,7 @@ const NormalDistributionCalculator = () => {
                             </div>
 
                             {/* Explanation 2 */}
-                            <p className="col-12 mt-2 text-[18px]">
+                            <p className="col-12 mt-2 text-[14px] md:text-[18px]">
                               <b>{data?.payload?.tech_lang_keys[14]} 2:</b>
                             </p>
                             <p className="col-12 mt-2 overflow-auto">
@@ -1319,7 +1345,7 @@ const NormalDistributionCalculator = () => {
                               {data?.payload?.tech_lang_keys[19]}:
                             </p>
 
-                            <p className="col-12 mt-2 overflow-auto">
+                            <p className="col-12 mt-2 text-center overflow-auto">
                               P({e1} ≤ X ≥ {e2}) = P({e1} - {mean} ≤ X - μ ≥{" "}
                               {e2} - {mean}) = P({finalE1} ≤ Z ≥ {finalE2})
                             </p>
@@ -1331,12 +1357,12 @@ const NormalDistributionCalculator = () => {
                               {deviation} = {finalE2}
                             </p>
 
-                            <p className="col-12 mt-2 overflow-auto">
+                            <p className="col-12 mt-2 text-center overflow-auto">
                               P({e1} ≤ X ≥ {e2}) = P({finalE1} ≤ Z ≥ {finalE2})
                             </p>
 
                             {/* Explanation 3 */}
-                            <p className="col-12 mt-2 text-[18px]">
+                            <p className="col-12 mt-2 text-[14px] md:text-[18px]">
                               <b>{data?.payload?.tech_lang_keys[14]} 3:</b>
                             </p>
                             <p className="col-12 mt-2 overflow-auto">
@@ -1358,27 +1384,28 @@ const NormalDistributionCalculator = () => {
                             const mainAnsF = result.tech_ulf - result.tech_llf;
 
                             return (
-                              <div>
-                                <p className="text-[18px] font-bold text-blue-600">
+                              <div className="text-center">
+                                <p className="text-[14px] md:text-[18px] font-bold text-blue-600">
                                   {data?.payload?.tech_lang_keys["12"]}
                                 </p>
+                                <div className="flex justify-center">
+                                  <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
+                                    <strong>
+                                      P({result.tech_llf} ≤ X ≥{" "}
+                                      {result.tech_ulf}) = {formData.tech_f}
+                                    </strong>
+                                  </p>
+                                </div>
 
-                                <p className="lg:text-[20px] md:text-[20px] text-[16px] bg-[#2845F5] text-white px-3 overflow-auto py-2 rounded-lg d-inline-block my-3">
-                                  <strong>
-                                    P({result.tech_llf} ≤ X ≥ {result.tech_ulf})
-                                    = {formData.tech_f}
-                                  </strong>
-                                </p>
-
-                                <p className="col-12 mt-3 text-[18px] font-bold">
+                                <p className="col-12 mt-3 text-[14px] md:text-[18px] font-bold">
                                   {data?.payload?.tech_lang_keys[13]}:
                                 </p>
 
-                                <p className="col-12 mt-2 text-[18px] font-bold">
+                                <p className="col-12 mt-2 text-[14px] md:text-[18px] font-bold">
                                   {data?.payload?.tech_lang_keys[14]} 1:
                                 </p>
 
-                                <p className="col-12 mt-2 overflow-auto">
+                                <p className="col-12 mt-2 text-center overflow-auto">
                                   {data?.payload?.tech_lang_keys[15]}{" "}
                                   <b>
                                     P({result.tech_llf} ≤ X ≥ {result.tech_ulf})
@@ -1389,7 +1416,9 @@ const NormalDistributionCalculator = () => {
                                 <div className="text-center">
                                   <div className="flex justify-center">
                                     <img
-                                      src={`/images/z_score/${result?.tech_z_url}.png`}
+                                      src={`/images/z_score/${
+                                        result?.tech_z_urlf ?? "default"
+                                      }.png`}
                                       alt="Z-Score Graph"
                                       className="img_set"
                                       width="57%"
@@ -1398,11 +1427,11 @@ const NormalDistributionCalculator = () => {
                                   </div>
                                 </div>
 
-                                <p className="col-12 mt-2 text-[18px] font-bold">
+                                <p className="col-12 mt-2 text-[14px] md:text-[18px] font-bold">
                                   {data?.payload?.tech_lang_keys[14]} 2:
                                 </p>
 
-                                <p className="col-12 mt-2 overflow-auto text-[18px]">
+                                <p className="col-12 mt-2 overflow-auto text-[14px] md:text-[18px]">
                                   {data?.payload?.tech_lang_keys[17]}{" "}
                                   <b>μ = {formData.tech_mean}</b>{" "}
                                   {data?.payload?.tech_lang_keys[18]}{" "}
@@ -1410,7 +1439,7 @@ const NormalDistributionCalculator = () => {
                                   {data?.payload?.tech_lang_keys[19]}:
                                 </p>
 
-                                <p className="col-12 mt-2 overflow-auto">
+                                <p className="col-12 mt-2 text-center overflow-auto">
                                   P({result.tech_llf} ≤ X ≥ {result.tech_ulf}) =
                                   P({result.tech_llf} - {formData.tech_mean} ≤ X
                                   - μ ≥ {result.tech_ulf} - {formData.tech_mean}
@@ -1418,7 +1447,7 @@ const NormalDistributionCalculator = () => {
                                   ≥ {ansF2} / {formData.tech_deviation})
                                 </p>
 
-                                <p className="col-12 mt-2 overflow-auto text-[18px]">
+                                <p className="col-12 mt-2 overflow-auto text-[14px] md:text-[18px]">
                                   {data?.payload?.tech_lang_keys[17]}{" "}
                                   <b>Z = x - μ / σ</b>,
                                   {`${result.tech_llf} - ${formData.tech_mean} / ${formData.tech_deviation} = ${finalF1}`}{" "}
@@ -1427,16 +1456,16 @@ const NormalDistributionCalculator = () => {
                                   {data?.payload?.tech_lang_keys[19]}:
                                 </p>
 
-                                <p className="col-12 mt-2 overflow-auto">
+                                <p className="col-12 mt-2 text-center overflow-auto">
                                   P({result.tech_llf} ≤ X ≥ {result.tech_ulf}) =
                                   P({finalF1} ≤ Z ≥ {finalF2})
                                 </p>
 
-                                <p className="col-12 mt-2 text-[18px] font-bold">
+                                <p className="col-12 mt-2 text-[14px] md:text-[18px] font-bold">
                                   {data?.payload?.tech_lang_keys[14]} 3:
                                 </p>
 
-                                <p className="col-12 mt-2 overflow-auto text-[18px]">
+                                <p className="col-12 mt-2 overflow-auto text-[14px] md:text-[18px]">
                                   {data?.payload?.tech_lang_keys[20]}{" "}
                                   <b>{data?.payload?.tech_lang_keys[21]}</b>{" "}
                                   {data?.payload?.tech_lang_keys[22]}:

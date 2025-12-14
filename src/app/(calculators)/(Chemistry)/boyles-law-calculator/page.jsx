@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useBoylesLawCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useBoylesLawCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const BoyleLawCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -101,11 +101,11 @@ const BoyleLawCalculator = () => {
         tech_amount: formData.tech_amount,
         tech_R: formData.tech_R,
       }).unwrap();
-      setResult(response); // Assuming the response'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -262,7 +262,7 @@ const BoyleLawCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
             <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2 gap-1  md:gap-4">
               <div className="relative">
                 <label htmlFor="tech_find" className="label">
@@ -628,20 +628,20 @@ const BoyleLawCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg flex items-center justify-center">
                     <div className="w-full rounded-lg mt-3">
-                      <div className="w-full">
+                      <div className="w-full text-[]">
                         {(result.tech_method == "1" ||
                           result.tech_method == "3") && (
                           <div className="bordered rounded-lg px-3 py-2 bg-sky">
                             <strong>{result.tech_content} = </strong>
-                            <strong className="text-[#119154] text-[16px] md:text-[25px]">
+                            <strong className="text-green-800 text-[16px] md:text-[25px]">
                               {Number(result.tech_ans).toFixed(2)}{" "}
-                              <span className="text-[#119154]">(m³)</span>
+                              <span className="text-green-800">(m³)</span>
                             </strong>
                           </div>
                         )}
@@ -650,9 +650,9 @@ const BoyleLawCalculator = () => {
                           result.tech_method == "4") && (
                           <div className="bordered rounded-lg px-3 py-2 bg-sky">
                             <strong>{result.tech_content} = </strong>
-                            <strong className="text-[#119154] text-[16px] md:text-[25px]">
+                            <strong className="text-green-800 text-[16px] md:text-[25px]">
                               {Number(result.tech_ans).toFixed(2)}{" "}
-                              <span className="text-[#119154]">(Pa)</span>
+                              <span className="text-green-800">(Pa)</span>
                             </strong>
                           </div>
                         )}
@@ -661,9 +661,9 @@ const BoyleLawCalculator = () => {
                           <>
                             <div className="bordered rounded-lg px-3 py-2 bg-sky">
                               <strong>{result.tech_content} = </strong>
-                              <strong className="text-[#119154] text-[16px] md:text-[25px]">
+                              <strong className="text-green-800 text-[16px] md:text-[25px]">
                                 {result.tech_pooran}{" "}
-                                <span className="text-[#119154]">(K)</span>
+                                <span className="text-green-800">(K)</span>
                               </strong>
                             </div>
                             <p className="mt-3 mb-2">
@@ -705,7 +705,7 @@ const BoyleLawCalculator = () => {
                               <strong>{result.tech_content}</strong>
                             </p>
                             <p>
-                              <strong className="text-[#119154] text-[16px] md:text-[25px]">
+                              <strong className="text-green-800 text-[20px] md:text-[25px]">
                                 {result.tech_final}
                               </strong>
                             </p>
@@ -721,7 +721,7 @@ const BoyleLawCalculator = () => {
                               <strong>
                                 {data?.payload?.tech_lang_keys[5]} (t) ={" "}
                               </strong>
-                              <strong className="text-[#119154] text-[16px] md:text-[25px]">
+                              <strong className="text-green-800 text-[16px] md:text-[25px]">
                                 {result.tech_temp} K
                               </strong>
                             </div>
@@ -729,7 +729,7 @@ const BoyleLawCalculator = () => {
                               <strong>
                                 {data?.payload?.tech_lang_keys[6]} (n) ={" "}
                               </strong>
-                              <strong className="text-[#119154] text-[16px] md:text-[25px]">
+                              <strong className="text-green-800 text-[16px] md:text-[25px]">
                                 {result.tech_n} mol
                               </strong>
                             </div>

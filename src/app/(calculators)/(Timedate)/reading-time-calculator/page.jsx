@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useReadingtimeCalculationMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useReadingtimeCalculationMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -13,7 +14,6 @@ import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeed
 import Calculator from "../../Calculator";
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const ReadingTimeCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -41,7 +41,6 @@ const ReadingTimeCalculator = () => {
   useEffect(() => {
     handleFetchDetails();
   }, [url]);
-
 
   const [formData, setFormData] = useState({
     tech_reading_speed: "0.25",
@@ -97,11 +96,11 @@ const ReadingTimeCalculator = () => {
         tech_reading_unit: formData.tech_reading_unit,
         tech_period_unit: formData.tech_period_unit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
-      toast.success("Calculate Successfully");
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
+      toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error calculating");
-      toast.error("Error calculating");
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -138,16 +137,16 @@ const ReadingTimeCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg shadow-md space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
 
-          <div className="lg:w-[80%] md:w-[97%] w-full mx-auto ">
+          <div className="lg:w-[70%] md:w-[90%] w-full mx-auto ">
             <p className=" w-full">{data?.payload?.tech_lang_keys["1"]}</p>
-            <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2  gap-4">
+            <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2  gap-4 mx-2">
               <div className="space-y-2 relative mt-2">
                 <label htmlFor="tech_reading_speed" className="label">
                   {data?.payload?.tech_lang_keys["2"]}:
@@ -177,12 +176,12 @@ const ReadingTimeCalculator = () => {
                 <label htmlFor="read_pages" className="text-blue text-sm">
                   {data?.payload?.tech_lang_keys["3"]}:
                 </label>
-                <div className="flex flex-wrap">
-                  <div className="lg:w-2/3 p relative pr-1">
+                <div className="grid grid-cols-12 gap-2 flex-wrap">
+                  <div className="col-span-8 relative ">
                     <div className="col-span-12 mx-auto relative">
                       <label
-                        htmlFor="tech_read_pages"
-                        className="label"
+                        htmlFor="tech_read_pages "
+                        className="label hidden md:flex"
                       ></label>
                       <input
                         type="number"
@@ -194,13 +193,14 @@ const ReadingTimeCalculator = () => {
                         value={formData.tech_read_pages}
                         onChange={handleChange}
                       />
-                      <span className="absolute right-[-10] top-7 transform -translate-y-1/2 text-blue px-2">
-                        pgs
-                      </span>
+                      <span className="input_unit">pgs</span>
                     </div>
                   </div>
-                  <div className="lg:w-1/3 mt-2">
-                    <label htmlFor="tech_book_unit" className="label"></label>
+                  <div className="col-span-4 mt-2">
+                    <label
+                      htmlFor="tech_book_unit"
+                      className="label hidden md:flex"
+                    ></label>
                     <select
                       className="input"
                       aria-label="select"
@@ -240,7 +240,7 @@ const ReadingTimeCalculator = () => {
                 </label>
                 <div className="">
                   <select
-                    className="input mt-2"
+                    className="input my-2"
                     aria-label="select"
                     name="tech_total_unit"
                     id="tech_total_unit"
@@ -260,31 +260,29 @@ const ReadingTimeCalculator = () => {
                 </div>
               </div>
             </div>
-
             <p className="mt-4 w-full">{data?.payload?.tech_lang_keys["7"]}</p>
-
             <div className="grid grid-cols-1 mt-4  lg:grid-cols-2 md:grid-cols-2  gap-4">
               <div className="space-y-2">
-                <div className="flex flex-wrap">
-                  <div className="lg:w-2/3 relative pr-1">
+                <div className="grid grid-cols-12 gap-2 flex-wrap ">
+                  <div className="col-span-8 relative pr-1">
                     <label htmlFor="tech_daily_reading" className="label">
                       {data?.payload?.tech_lang_keys["8"]}:
                     </label>
-                    <input
-                      type="number"
-                      step="any"
-                      name="tech_daily_reading"
-                      id="tech_daily_reading"
-                      className="input my-2"
-                      aria-label="input"
-                      value={formData.tech_daily_reading}
-                      onChange={handleChange}
-                    />
-                    <span className="absolute right-2 top-13 transform -translate-y-1/2 text-blue px-2">
-                      pgs
-                    </span>
+                    <div className=" relative pr-1">
+                      <input
+                        type="number"
+                        step="any"
+                        name="tech_daily_reading"
+                        id="tech_daily_reading"
+                        className="input my-2"
+                        aria-label="input"
+                        value={formData.tech_daily_reading}
+                        onChange={handleChange}
+                      />
+                      <span className="input_unit">pgs</span>
+                    </div>
                   </div>
-                  <div className="lg:w-1/3 mt-2">
+                  <div className="col-span-4 mt-2">
                     <label htmlFor="tech_time_unit" className="label">
                       .
                     </label>
@@ -306,14 +304,13 @@ const ReadingTimeCalculator = () => {
                   </div>
                 </div>
               </div>
-
               <div className="space-y-2">
                 <label htmlFor="tech_reading_unit" className="label">
                   {data?.payload?.tech_lang_keys["9"]} (
                   {data?.payload?.tech_lang_keys["6"]}):
                 </label>
                 <select
-                  className="input mt-2"
+                  className="input my-2"
                   aria-label="select"
                   name="tech_reading_unit"
                   id="tech_reading_unit"
@@ -340,7 +337,6 @@ const ReadingTimeCalculator = () => {
                   </option>
                 </select>
               </div>
-
               <div className="space-y-2">
                 <label htmlFor="tech_period_unit" className="label">
                   {data?.payload?.tech_lang_keys["10"]} (
@@ -391,7 +387,7 @@ const ReadingTimeCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={calculateDeadlineLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -416,15 +412,32 @@ const ReadingTimeCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full  rounded-lg mt-3">
                       <div className="my-2">
-                        <div className="lg:w-2/3 font-sans text-lg">
-                          <table className="w-full table-auto lg:text-[16px] md:text-[16px] text-[14px]">
+                        <div className="lg:w-2/3 overflow-auto md:text-[18px] text-[16px]">
+                          {/* <table className="w-full table-auto">
+                                          <tr>
+                                              <td className="w-3/5 border-b py-2 font-semibold">{ data?.payload?.tech_lang_keys['20'] } :</td>
+                                              <td className="border-b py-2">{ result?.tech_answer }</td>
+                                          </tr>
+                                          @if (isset(result?.tech_total_daily_reading))
+                                          <tr>
+                                              <td className="border-b py-2 font-semibold">{ data?.payload?.tech_lang_keys['21'] } :</td>
+                                              <td className="border-b py-2">{ result?.tech_total_daily_reading }</td>
+                                          </tr>
+                                          <tr>
+                                              <td className="border-b py-2 font-semibold">{ data?.payload?.tech_lang_keys['22'] } :</td>
+                                              <td className="border-b py-2">{ result?.tech_period_spent }</td>
+                                          </tr>
+                                          @endif
+                                      </table> */}
+
+                          <table className="w-full table-auto">
                             <tbody>
                               <tr>
                                 <td className="w-3/5 border-b py-2 font-semibold">

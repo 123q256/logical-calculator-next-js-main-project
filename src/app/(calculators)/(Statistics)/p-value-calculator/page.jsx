@@ -500,23 +500,23 @@ const PvalueCalculator = () => {
                       
                     </div>  */}
               <div className="col-span-12">
-                <label className="pe-2" htmlFor="custom_value">
+                <label className="pe-2 cursor-pointer" htmlFor="custom_value">
                   <input
                     type="radio"
                     name="tech_conversionType"
                     value="custom_value"
                     id="custom_value"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     onChange={handleChange}
                     checked={formData.tech_conversionType === "custom_value"}
                   />
                   <span>Custom</span>
                 </label>
-                <label htmlFor="fixed_value">
+                <label className="cursor-pointer" htmlFor="fixed_value">
                   <input
                     type="radio"
                     name="tech_conversionType"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     value="fixed_value"
                     id="fixed_value"
                     onChange={handleChange}
@@ -540,13 +540,13 @@ const PvalueCalculator = () => {
                               name="tech_level"
                               value=".01"
                               id=".01"
-                              className="mr-2 border"
+                              className="mr-2 border cursor-pointer"
                               onChange={handleChange}
                               checked={formData.tech_level === ".01"}
                             />
                             <label
-                              htmlFor="tech_degree_freedom"
-                              className="label"
+                              htmlFor=".01"
+                              className="label cursor-pointer"
                             >
                               0.01
                             </label>
@@ -559,13 +559,13 @@ const PvalueCalculator = () => {
                               name="tech_level"
                               value=".05"
                               id=".05"
-                              className="mr-2 border"
+                              className="mr-2 border cursor-pointer"
                               onChange={handleChange}
                               checked={formData.tech_level === ".05"}
                             />
                             <label
-                              htmlFor="tech_degree_freedom"
-                              className="label"
+                              htmlFor=".05"
+                              className="label cursor-pointer"
                             >
                               0.05
                             </label>
@@ -578,13 +578,13 @@ const PvalueCalculator = () => {
                               name="tech_level"
                               value=".10"
                               id=".10"
-                              className="mr-2 border"
+                              className="mr-2 border cursor-pointer"
                               onChange={handleChange}
                               checked={formData.tech_level === ".10"}
                             />
                             <label
-                              htmlFor="tech_degree_freedom"
-                              className="label"
+                              htmlFor=".10"
+                              className="label cursor-pointer"
                             >
                               0.10
                             </label>
@@ -636,18 +636,18 @@ const PvalueCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
-              <div className=" w-full h-[30px] bg-gray-200 animate-pulse rounded-[10px] mb-4"></div>
-              <div className="w-[75%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[50%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[25%] h-[20px] bg-gray-200 animate-pulse rounded-[10px]"></div>
+              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
+              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
           </div>
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 ">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -659,7 +659,7 @@ const PvalueCalculator = () => {
                         </p>
                         <p className="text-[25px] md:text-[32px] bg-[#2845F5] text-[#fff] px-3 py-2 rounded-[10px] inline-block my-3">
                           <strong className="text-blue" id="testResult">
-                            {result?.tech_p}
+                            {result?.tech_p ?? 0}
                           </strong>
                         </p>
                       </div>
