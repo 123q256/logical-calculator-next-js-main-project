@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import "katex/dist/katex.min.css";
 import { InlineMath, BlockMath } from "react-katex";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useSpeedDistanceTimeCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useSpeedDistanceTimeCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -16,7 +17,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const SpeedDistanceTimeCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -90,11 +90,11 @@ const SpeedDistanceTimeCalculator = () => {
         tech_third: formData.tech_third,
         tech_t_unit: formData.tech_t_unit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -207,15 +207,15 @@ const SpeedDistanceTimeCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
 
-          <div className="lg:w-[50%] md:w-[60%] w-full mx-auto ">
-            <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2 mt-3  gap-4">
+          <div className="lg:w-[50%] md:w-[80%] w-full mx-auto ">
+            <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2 mt-3 gap-1  md:gap-4">
               <div className="col-span-12 ">
                 <label htmlFor="tech_operations" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -439,7 +439,7 @@ const SpeedDistanceTimeCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -450,18 +450,18 @@ const SpeedDistanceTimeCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
                   <div className="rounded-lg flex items-center justify-center">
                     <div className="w-full mt-3">
                       {result?.tech_select == 3 && (
                         <>
-                          <div className="w-full md:w-[60%] lg:w-[60%] mt-2 overflow-auto">
-                            <table className="lg:text-[18px] md:text-[18px] text-[16px]">
+                          <div className="w-full md:w-[80%] lg:w-[60%] overflow-auto mt-2">
+                            <table className="w-full text-[16px] md:text-[18px]">
                               <tbody>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[5]}
                                     </strong>
@@ -472,7 +472,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[5]}
                                     </strong>
@@ -485,11 +485,11 @@ const SpeedDistanceTimeCalculator = () => {
                             </table>
                           </div>
 
-                          <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
-                            <table className="lg:text-[18px] md:text-[18px] text-[16px]">
+                          <div className="w-full md:w-[80%] lg:w-[60%] overflow-auto mt-2">
+                            <table className="w-full text-[16px] md:text-[18px]">
                               <tbody>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[10]}
                                     </strong>
@@ -500,7 +500,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[11]}
                                     </strong>
@@ -511,7 +511,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[12]}
                                     </strong>
@@ -523,10 +523,10 @@ const SpeedDistanceTimeCalculator = () => {
                                 </tr>
                               </tbody>
                             </table>
-                            <table className="lg:text-[18px] md:text-[18px] text-[16px]">
+                            <table className="w-full text-[16px] md:text-[18px]">
                               <tbody>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[13]}
                                     </strong>
@@ -537,7 +537,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[14]}
                                     </strong>
@@ -548,7 +548,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[15]}
                                     </strong>
@@ -566,11 +566,11 @@ const SpeedDistanceTimeCalculator = () => {
 
                       {result?.tech_select == 4 && (
                         <>
-                          <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
-                            <table className="lg:text-[18px] md:text-[18px] text-[16px]">
+                          <div className="w-full md:w-[80%] lg:w-[60%] overflow-auto mt-2">
+                            <table className="w-full text-[16px] md:text-[18px]">
                               <tbody>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[6]}
                                     </strong>
@@ -581,7 +581,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[6]}
                                     </strong>
@@ -593,11 +593,11 @@ const SpeedDistanceTimeCalculator = () => {
                               </tbody>
                             </table>
                           </div>
-                          <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
-                            <table className="lg:text-[18px] md:text-[18px] text-[16px]">
+                          <div className="w-full md:w-[80%] lg:w-[60%] overflow-auto mt-2">
+                            <table className="w-full text-[16px] md:text-[18px]">
                               <tbody>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[10]}
                                     </strong>
@@ -608,7 +608,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[11]}
                                     </strong>
@@ -619,7 +619,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[12]}
                                     </strong>
@@ -631,10 +631,10 @@ const SpeedDistanceTimeCalculator = () => {
                                 </tr>
                               </tbody>
                             </table>
-                            <table className="lg:text-[18px] md:text-[18px] text-[16px]">
+                            <table className="w-full text-[16px] md:text-[18px]">
                               <tbody>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[13]}
                                     </strong>
@@ -645,7 +645,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[14]}
                                     </strong>
@@ -656,7 +656,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[15]}
                                     </strong>
@@ -674,11 +674,11 @@ const SpeedDistanceTimeCalculator = () => {
 
                       {result?.tech_select == 5 && (
                         <>
-                          <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
-                            <table className="lg:text-[18px] md:text-[18px] text-[16px]">
+                          <div className="w-full md:w-[80%] lg:w-[60%] overflow-auto mt-2">
+                            <table className="w-full text-[16px] md:text-[18px]">
                               <tbody>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[7]}
                                     </strong>
@@ -689,7 +689,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[7]}
                                     </strong>
@@ -699,7 +699,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[7]}
                                     </strong>
@@ -709,7 +709,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[7]}
                                     </strong>
@@ -727,11 +727,11 @@ const SpeedDistanceTimeCalculator = () => {
                             </table>
                           </div>
 
-                          <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
-                            <table className="lg:text-[18px] md:text-[18px] text-[16px]">
+                          <div className="w-full md:w-[80%] lg:w-[60%] overflow-auto mt-2">
+                            <table className="w-full text-[16px] md:text-[18px]">
                               <tbody>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[27]}
                                     </strong>
@@ -744,7 +744,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[28]}
                                     </strong>
@@ -755,7 +755,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys[29]}
                                     </strong>
@@ -766,10 +766,10 @@ const SpeedDistanceTimeCalculator = () => {
                                 </tr>
                               </tbody>
                             </table>
-                            <table className="lg:text-[18px] md:text-[18px] text-[16px]">
+                            <table className="w-full text-[16px] md:text-[18px]">
                               <tbody>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys["25"]}
                                     </strong>
@@ -779,7 +779,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       {data?.payload?.tech_lang_keys["26"]}
                                     </strong>
@@ -789,7 +789,7 @@ const SpeedDistanceTimeCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="40%">
+                                  <td className="py-2 border-b">
                                     <strong>hh:mm:ss</strong>
                                   </td>
                                   <td className="py-2 border-b">

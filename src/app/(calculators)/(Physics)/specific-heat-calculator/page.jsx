@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import "katex/dist/katex.min.css";
 import { BlockMath, InlineMath } from "react-katex";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useSpecificHeatCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useSpecificHeatCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -16,7 +17,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const SpecificHeatCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -106,11 +106,11 @@ const SpecificHeatCalculator = () => {
         tech_c_unit: formData.tech_c_unit,
         tech_sub: formData.tech_sub,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -273,8 +273,8 @@ const SpecificHeatCalculator = () => {
               {formError}
             </p>
           )}
-          <div className="lg:w-[70%] md:w-[80%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3  gap-4">
+          <div className="lg:w-[70%] md:w-[90%] w-full mx-auto ">
+            <div className="grid grid-cols-12 mt-3 gap-1 md:gap-4">
               <div className="col-span-12 px-2">
                 <label htmlFor="tech_find" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -308,7 +308,6 @@ const SpecificHeatCalculator = () => {
                   </select>
                 </div>
               </div>
-
               {(formData.tech_find == "energy" ||
                 formData.tech_find == "specific_heat" ||
                 formData.tech_find == "mass") && (
@@ -319,13 +318,13 @@ const SpecificHeatCalculator = () => {
                         {data?.payload?.tech_lang_keys[7]}:
                       </strong>
                       <div className="col-span-12 px-2 mb-1  md:flex items-center">
-                        <label className="pe-2" htmlFor="change">
+                        <label className="pe-2 cursor-pointer" htmlFor="change">
                           <input
                             type="radio"
                             name="tech_by"
                             value="change"
                             id="change"
-                            className="mr-2 border"
+                            className="mr-2 border cursor-pointer"
                             onChange={handleChange}
                             checked={formData.tech_by === "change"}
                           />
@@ -335,13 +334,13 @@ const SpecificHeatCalculator = () => {
                             {data?.payload?.tech_lang_keys["19"]} (ΔT)
                           </span>
                         </label>
-                        <label className="pe-2" htmlFor="i_f_t">
+                        <label className="pe-2 cursor-pointer" htmlFor="i_f_t">
                           <input
                             type="radio"
                             name="tech_by"
                             value="i_f_t"
                             id="i_f_t"
-                            className="mr-2 border"
+                            className="mr-2 border cursor-pointer"
                             onChange={handleChange}
                             checked={formData.tech_by === "i_f_t"}
                           />
@@ -361,7 +360,7 @@ const SpecificHeatCalculator = () => {
                 formData.tech_find === "itemp" ||
                 formData.tech_find === "ftemp") && (
                 <>
-                  <div className="col-span-6 px-2" id="q">
+                  <div className="col-span-12 md:col-span-6 px-2" id="q">
                     <label htmlFor="tech_q" className="label">
                       {data?.payload?.tech_lang_keys["2"]} (Q):
                     </label>
@@ -415,7 +414,7 @@ const SpecificHeatCalculator = () => {
                 (formData.tech_find == "mass" && formData.tech_by == "i_f_t") ||
                 formData.tech_find == "ftemp") && (
                 <>
-                  <div className="col-span-6 px-2" id="it">
+                  <div className="col-span-12 md:col-span-6 px-2" id="it">
                     <label htmlFor="tech_it" className="label">
                       {data?.payload?.tech_lang_keys["5"]}{" "}
                       {data?.payload?.tech_lang_keys["19"]}:
@@ -464,7 +463,7 @@ const SpecificHeatCalculator = () => {
                 (formData.tech_find == "mass" && formData.tech_by == "i_f_t") ||
                 formData.tech_find == "itemp") && (
                 <>
-                  <div className="col-span-6 px-2" id="ft">
+                  <div className="col-span-12 md:col-span-6 px-2" id="ft">
                     <label htmlFor="tech_ft" className="label">
                       {data?.payload?.tech_lang_keys["6"]}{" "}
                       {data?.payload?.tech_lang_keys["19"]}:
@@ -512,7 +511,7 @@ const SpecificHeatCalculator = () => {
                 formData.tech_find === "mass") &&
                 formData.tech_by === "change" && ( // Add your second condition here
                   <>
-                    <div className="col-span-6 px-2" id="dt">
+                    <div className="col-span-12 md:col-span-6 px-2" id="dt">
                       <label htmlFor="tech_dt" className="label">
                         {data?.payload?.tech_lang_keys["8"]}{" "}
                         {data?.payload?.tech_lang_keys["10"]}{" "}
@@ -555,13 +554,12 @@ const SpecificHeatCalculator = () => {
                     </div>
                   </>
                 )}
-
               {(formData.tech_find == "energy" ||
                 formData.tech_find == "specific_heat" ||
                 formData.tech_find == "itemp" ||
                 formData.tech_find == "ftemp") && (
                 <>
-                  <div className="col-span-6 px-2" id="m">
+                  <div className="col-span-12 md:col-span-6 px-2" id="m">
                     <label htmlFor="tech_m" className="label">
                       {data?.payload?.tech_lang_keys["4"]} (m):
                     </label>
@@ -618,7 +616,7 @@ const SpecificHeatCalculator = () => {
                 formData.tech_find == "itemp" ||
                 formData.tech_find == "ftemp") && (
                 <>
-                  <div className="col-span-6 px-2" id="c">
+                  <div className="col-span-12 md:col-span-6 px-2" id="c">
                     <label htmlFor="tech_c" className="label">
                       {data?.payload?.tech_lang_keys["11"]}{" "}
                       {data?.payload?.tech_lang_keys["22"]} (c):
@@ -667,8 +665,7 @@ const SpecificHeatCalculator = () => {
                   </div>
                 </>
               )}
-
-              <div className="col-span-6 px-2" id="sub">
+              <div className="col-span-12 md:col-span-6 px-2" id="sub">
                 <label htmlFor="tech_subs" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
                 </label>
@@ -838,7 +835,7 @@ const SpecificHeatCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -849,22 +846,22 @@ const SpecificHeatCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="w-full overflow-auto">
-                        <div className="col s12 padding_20 padding_10_mbl form-bg overflow-auto">
+                      <div className="w-full text-[16px] md:text-[18px]">
+                        <div className="col s12 padding_20 padding_10_mbl form-bg">
                           {result?.tech_q ? (
                             <>
                               <div className="text-center">
-                                <p className="text-[18px]">
+                                <p className="text-[16px] md:text-[18px]">
                                   <strong>
                                     {data?.payload?.tech_lang_keys[2]}
                                   </strong>
                                 </p>
-                                <p className="text-[21px] bg-sky-100 px-3 py-2 rounded d-inline-block my-3">
+                                <p className="text-[21px] bg-sky bordered rounded-lg px-3 py-2 rounded d-inline-block my-3">
                                   <strong className="text-blue">
                                     {result?.tech_q} J
                                   </strong>
@@ -874,7 +871,7 @@ const SpecificHeatCalculator = () => {
                           ) : result?.tech_c1 ? (
                             <>
                               <div className="col-lg-8 mt-2 overflow-auto">
-                                <table className="w-full text-[18px]">
+                                <table className="w-full text-[16px] md:text-[18px]">
                                   <tbody>
                                     <tr>
                                       <td className="text-blue py-2 border-b">
@@ -893,7 +890,7 @@ const SpecificHeatCalculator = () => {
                                 <strong>Result in other units:</strong>
                               </p>
                               <div className="col-lg-8 mt-2 overflow-auto">
-                                <table className="w-full text-[18px]">
+                                <table className="w-full text-[16px] md:text-[18px]">
                                   <tbody>
                                     <tr>
                                       <td className="text-blue py-2 border-b">
@@ -950,12 +947,12 @@ const SpecificHeatCalculator = () => {
                           ) : result?.tech_m ? (
                             <>
                               <div className="text-center">
-                                <p className="text-[18px]">
+                                <p className="text-[16px] md:text-[18px]">
                                   <strong>
                                     {data?.payload?.tech_lang_keys[4]}
                                   </strong>
                                 </p>
-                                <p className="text-[21px] bg-sky-100 px-3 py-2  my-3">
+                                <p className="text-[21px] bg-sky bordered rounded-lg px-3 py-2  my-3">
                                   <strong className="text-blue">
                                     {result?.tech_m} kg
                                   </strong>
@@ -965,12 +962,12 @@ const SpecificHeatCalculator = () => {
                           ) : result?.tech_it ? (
                             <>
                               <div className="text-center">
-                                <p className="text-[18px]">
+                                <p className="text-[16px] md:text-[18px]">
                                   <strong>
                                     {data?.payload?.tech_lang_keys[5]}
                                   </strong>
                                 </p>
-                                <p className="text-[21px] bg-sky-100 px-3 py-2  my-3">
+                                <p className="text-[21px] bg-sky bordered rounded-lg px-3 py-2  my-3">
                                   <strong className="text-blue">
                                     {result?.tech_it} K
                                   </strong>
@@ -980,12 +977,12 @@ const SpecificHeatCalculator = () => {
                           ) : result?.tech_ft ? (
                             <>
                               <div className="text-center">
-                                <p className="text-[18px]">
+                                <p className="text-[16px] md:text-[18px]">
                                   <strong>
                                     {data?.payload?.tech_lang_keys[6]}
                                   </strong>
                                 </p>
-                                <p className="text-[21px] bg-sky-100 px-3 py-2  my-3">
+                                <p className="text-[21px] bg-sky bordered rounded-lg px-3 py-2  my-3">
                                   <strong className="text-blue">
                                     {result?.tech_ft} K
                                   </strong>
@@ -1005,471 +1002,477 @@ const SpecificHeatCalculator = () => {
                             </>
                           ) : null}
                         </div>
-                        <p className="col-12 mt-3 text-[18px]">
+                        <p className="col-12 mt-3 text-[16px] md:text-[18px]">
                           <strong className="text-blue">
                             {data?.payload?.tech_lang_keys["16"]}
                           </strong>
                         </p>
-                        {result?.tech_q ? (
-                          <>
-                            <p className="col-12 mt-3">
-                              <strong>
-                                {data?.payload?.tech_lang_keys["2"]}{" "}
-                                {data?.payload?.tech_lang_keys["17"]}
-                              </strong>
-                            </p>
+                        <div className="overflow-auto text-[16px] md:text-[18px]">
+                          {result?.tech_q ? (
+                            <>
+                              <p className="col-12 mt-3">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["2"]}{" "}
+                                  {data?.payload?.tech_lang_keys["17"]}
+                                </strong>
+                              </p>
 
-                            <BlockMath math="Q = m c \Delta T" />
+                              <BlockMath math="Q = m c \Delta T" />
 
-                            <p className="col-12 mt-3">
-                              <strong>
-                                {data?.payload?.tech_lang_keys["18"]}
-                              </strong>
-                            </p>
+                              <p className="col-12 mt-3">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["18"]}
+                                </strong>
+                              </p>
 
-                            <BlockMath
-                              math={`m = ${data?.payload?.tech_lang_keys["4"]}`}
-                            />
-                            <BlockMath
-                              math={`c = ${data?.payload?.tech_lang_keys["11"]} ${data?.payload?.tech_lang_keys["13"]}`}
-                            />
-
-                            {result?.tech_check === "q_i_f" ? (
-                              <>
-                                <BlockMath
-                                  math={`T_i = ${data?.payload?.tech_lang_keys["5"]} ${data?.payload?.tech_lang_keys["19"]}`}
-                                />
-                                <BlockMath
-                                  math={`T_f = ${data?.payload?.tech_lang_keys["6"]} ${data?.payload?.tech_lang_keys["19"]}`}
-                                />
-                                <BlockMath
-                                  math={`Q = ${result?.tech_q1},\\ c = ${result?.tech_c1},\\ T_i = ${result?.tech_it1},\\ T_f = ${result?.tech_ft1}`}
-                                />
-                              </>
-                            ) : (
-                              <>
-                                <BlockMath
-                                  math={`\\Delta T = ${data?.payload?.tech_lang_keys["8"]} ${data?.payload?.tech_lang_keys["20"]} ${data?.payload?.tech_lang_keys["19"]}`}
-                                />
-                                <BlockMath
-                                  math={`Q = ${result?.tech_q1},\\ c = ${result?.tech_c1},\\ \\Delta T = ${result?.tech_dt1}`}
-                                />
-                              </>
-                            )}
-
-                            {result?.tech_check === "q_i_f" && (
-                              <>
-                                <p className="col-12 mt-3">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys["1"]}{" "}
-                                    {data?.payload?.tech_lang_keys["8"]}{" "}
-                                    {data?.payload?.tech_lang_keys["20"]}{" "}
-                                    {data?.payload?.tech_lang_keys["23"]}
-                                  </strong>
-                                </p>
-                                <BlockMath math="\\Delta T = T_f - T_i" />
-                                <BlockMath
-                                  math={`\\Delta T = ${result?.tech_ft1} - ${result?.tech_it1}`}
-                                />
-                                <BlockMath
-                                  math={`\\Delta T = ${
-                                    result?.tech_ft1 - result?.tech_it1
-                                  }`}
-                                />
-                              </>
-                            )}
-
-                            <p className="col-12 mt-3">
-                              <strong>
-                                {data?.payload?.tech_lang_keys["21"]}
-                              </strong>
-                            </p>
-
-                            <BlockMath math="Q = m c \Delta T" />
-                            <BlockMath
-                              math={`Q = (${result?.tech_m1})(${result?.tech_c1})(${result?.tech_dt1})`}
-                            />
-                            <BlockMath
-                              math={`Q = (${result?.tech_s})(${result?.tech_dt1})`}
-                            />
-                            <BlockMath math={`Q = ${result?.tech_q}`} />
-                          </>
-                        ) : result?.tech_c1 ? (
-                          <>
-                            <p className="col-12 mt-3">
-                              <strong>
-                                {data?.payload?.tech_lang_keys["3"]}{" "}
-                                {data?.payload?.tech_lang_keys["17"]}
-                              </strong>
-                            </p>
-                            <div className="col-12 mt-3">
-                              <BlockMath math={`c = \\dfrac{Q}{m \\Delta T}`} />
-                            </div>
-
-                            <p className="col-12 mt-3">
-                              <strong>
-                                {data?.payload?.tech_lang_keys["18"]}
-                              </strong>
-                            </p>
-                            <div className="col-12 mt-3">
                               <BlockMath
-                                math={`Q = \\text{${data?.payload?.tech_lang_keys["2"]}}`}
+                                math={`m = ${data?.payload?.tech_lang_keys["4"]}`}
                               />
-                            </div>
-                            <div className="col-12 mt-3">
                               <BlockMath
-                                math={`m = \\text{${data?.payload?.tech_lang_keys["4"]}}`}
+                                math={`c = ${data?.payload?.tech_lang_keys["11"]} ${data?.payload?.tech_lang_keys["13"]}`}
                               />
-                            </div>
 
-                            {result?.tech_check === "c_i_f" ? (
-                              <>
-                                <div className="col-12 mt-3">
+                              {result?.tech_check === "q_i_f" ? (
+                                <>
                                   <BlockMath
-                                    math={`T_i = \\text{${data?.payload?.tech_lang_keys["5"]} ${data?.payload?.tech_lang_keys["19"]}}`}
+                                    math={`T_i = ${data?.payload?.tech_lang_keys["5"]} ${data?.payload?.tech_lang_keys["19"]}`}
                                   />
-                                </div>
-                                <div className="col-12 mt-3">
                                   <BlockMath
-                                    math={`T_f = \\text{${data?.payload?.tech_lang_keys["6"]} ${data?.payload?.tech_lang_keys["19"]}}`}
+                                    math={`T_f = ${data?.payload?.tech_lang_keys["6"]} ${data?.payload?.tech_lang_keys["19"]}`}
                                   />
-                                </div>
-                                <div className="col-12 mt-3">
                                   <BlockMath
-                                    math={`Q = ${result?.tech_q1},\\ m = ${result?.tech_m1},\\ T_i = ${result?.tech_it1},\\ T_f = ${result?.tech_ft1}`}
+                                    math={`Q = ${result?.tech_q1},\\ c = ${result?.tech_c1},\\ T_i = ${result?.tech_it1},\\ T_f = ${result?.tech_ft1}`}
                                   />
-                                </div>
-                              </>
-                            ) : (
-                              <>
-                                <div className="col-12 mt-3">
+                                </>
+                              ) : (
+                                <>
                                   <BlockMath
-                                    math={`\\Delta T = \\text{${data?.payload?.tech_lang_keys["8"]} ${data?.payload?.tech_lang_keys["20"]} ${data?.payload?.tech_lang_keys["19"]}}`}
+                                    math={`\\Delta T = ${data?.payload?.tech_lang_keys["8"]} ${data?.payload?.tech_lang_keys["20"]} ${data?.payload?.tech_lang_keys["19"]}`}
                                   />
-                                </div>
-                                <div className="col-12 mt-3">
                                   <BlockMath
-                                    math={`Q = ${result?.tech_q1},\\ m = ${result?.tech_m1},\\ \\Delta T = ${result?.tech_dt1}`}
+                                    math={`Q = ${result?.tech_q1},\\ c = ${result?.tech_c1},\\ \\Delta T = ${result?.tech_dt1}`}
                                   />
-                                </div>
-                              </>
-                            )}
+                                </>
+                              )}
 
-                            {result?.tech_check === "c_i_f" && (
-                              <>
-                                <p className="col-12 mt-3">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys["1"]}{" "}
-                                    {data?.payload?.tech_lang_keys["8"]}{" "}
-                                    {data?.payload?.tech_lang_keys["20"]}{" "}
-                                    {data?.payload?.tech_lang_keys["23"]}
-                                  </strong>
-                                </p>
-                                <div className="col-12 mt-3">
-                                  <BlockMath math={`\\Delta T = T_f - T_i`} />
-                                </div>
-                                <div className="col-12 mt-3">
+                              {result?.tech_check === "q_i_f" && (
+                                <>
+                                  <p className="col-12 mt-3">
+                                    <strong>
+                                      {data?.payload?.tech_lang_keys["1"]}{" "}
+                                      {data?.payload?.tech_lang_keys["8"]}{" "}
+                                      {data?.payload?.tech_lang_keys["20"]}{" "}
+                                      {data?.payload?.tech_lang_keys["23"]}
+                                    </strong>
+                                  </p>
+                                  <BlockMath math="\\Delta T = T_f - T_i" />
                                   <BlockMath
                                     math={`\\Delta T = ${result?.tech_ft1} - ${result?.tech_it1}`}
                                   />
-                                </div>
-                                <div className="col-12 mt-3">
                                   <BlockMath
                                     math={`\\Delta T = ${
                                       result?.tech_ft1 - result?.tech_it1
                                     }`}
                                   />
-                                </div>
-                              </>
-                            )}
+                                </>
+                              )}
 
-                            <p className="col-12 mt-3">
-                              <strong>
-                                {data?.payload?.tech_lang_keys["21"]}
-                              </strong>
-                            </p>
-                            <div className="col-12 mt-3">
-                              <BlockMath math={`c = \\dfrac{Q}{m \\Delta T}`} />
-                            </div>
-                            <div className="col-12 mt-3">
+                              <p className="col-12 mt-3">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["21"]}
+                                </strong>
+                              </p>
+
+                              <BlockMath math="Q = m c \Delta T" />
                               <BlockMath
-                                math={`c = \\dfrac{${result?.tech_q1}}{(${result?.tech_m1})(${result?.tech_dt1})}`}
+                                math={`Q = (${result?.tech_m1})(${result?.tech_c1})(${result?.tech_dt1})`}
                               />
-                            </div>
-                            <div className="col-12 mt-3">
                               <BlockMath
-                                math={`c = \\dfrac{${result?.tech_q1}}{${result?.tech_s}}`}
+                                math={`Q = (${result?.tech_s})(${result?.tech_dt1})`}
                               />
-                            </div>
-                            <div className="col-12 mt-3">
-                              <BlockMath math={`c = ${result?.tech_c1}`} />
-                            </div>
-                          </>
-                        ) : result?.tech_m ? (
-                          <>
-                            <p className="col-12 mt-3">
-                              <strong>
-                                {data?.payload?.tech_lang_keys["4"]}{" "}
-                                {data?.payload?.tech_lang_keys["17"]}
-                              </strong>
-                            </p>
+                              <BlockMath math={`Q = ${result?.tech_q}`} />
+                            </>
+                          ) : result?.tech_c1 ? (
+                            <>
+                              <p className="col-12 mt-3">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["3"]}{" "}
+                                  {data?.payload?.tech_lang_keys["17"]}
+                                </strong>
+                              </p>
+                              <div className="col-12 mt-3">
+                                <BlockMath
+                                  math={`c = \\dfrac{Q}{m \\Delta T}`}
+                                />
+                              </div>
 
-                            <p className="col-12 mt-3">
-                              <BlockMath math="m = \dfrac{Q}{c \Delta T}" />
-                            </p>
+                              <p className="col-12 mt-3">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["18"]}
+                                </strong>
+                              </p>
+                              <div className="col-12 mt-3">
+                                <BlockMath
+                                  math={`Q = \\text{${data?.payload?.tech_lang_keys["2"]}}`}
+                                />
+                              </div>
+                              <div className="col-12 mt-3">
+                                <BlockMath
+                                  math={`m = \\text{${data?.payload?.tech_lang_keys["4"]}}`}
+                                />
+                              </div>
 
-                            <p className="col-12 mt-3">
-                              <strong>
-                                {data?.payload?.tech_lang_keys["18"]}
-                              </strong>
-                            </p>
+                              {result?.tech_check === "c_i_f" ? (
+                                <>
+                                  <div className="col-12 mt-3">
+                                    <BlockMath
+                                      math={`T_i = \\text{${data?.payload?.tech_lang_keys["5"]} ${data?.payload?.tech_lang_keys["19"]}}`}
+                                    />
+                                  </div>
+                                  <div className="col-12 mt-3">
+                                    <BlockMath
+                                      math={`T_f = \\text{${data?.payload?.tech_lang_keys["6"]} ${data?.payload?.tech_lang_keys["19"]}}`}
+                                    />
+                                  </div>
+                                  <div className="col-12 mt-3">
+                                    <BlockMath
+                                      math={`Q = ${result?.tech_q1},\\ m = ${result?.tech_m1},\\ T_i = ${result?.tech_it1},\\ T_f = ${result?.tech_ft1}`}
+                                    />
+                                  </div>
+                                </>
+                              ) : (
+                                <>
+                                  <div className="col-12 mt-3">
+                                    <BlockMath
+                                      math={`\\Delta T = \\text{${data?.payload?.tech_lang_keys["8"]} ${data?.payload?.tech_lang_keys["20"]} ${data?.payload?.tech_lang_keys["19"]}}`}
+                                    />
+                                  </div>
+                                  <div className="col-12 mt-3">
+                                    <BlockMath
+                                      math={`Q = ${result?.tech_q1},\\ m = ${result?.tech_m1},\\ \\Delta T = ${result?.tech_dt1}`}
+                                    />
+                                  </div>
+                                </>
+                              )}
 
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`Q = ${data?.payload?.tech_lang_keys["2"]}`}
-                              />
-                            </p>
+                              {result?.tech_check === "c_i_f" && (
+                                <>
+                                  <p className="col-12 mt-3">
+                                    <strong>
+                                      {data?.payload?.tech_lang_keys["1"]}{" "}
+                                      {data?.payload?.tech_lang_keys["8"]}{" "}
+                                      {data?.payload?.tech_lang_keys["20"]}{" "}
+                                      {data?.payload?.tech_lang_keys["23"]}
+                                    </strong>
+                                  </p>
+                                  <div className="col-12 mt-3">
+                                    <BlockMath math={`\\Delta T = T_f - T_i`} />
+                                  </div>
+                                  <div className="col-12 mt-3">
+                                    <BlockMath
+                                      math={`\\Delta T = ${result?.tech_ft1} - ${result?.tech_it1}`}
+                                    />
+                                  </div>
+                                  <div className="col-12 mt-3">
+                                    <BlockMath
+                                      math={`\\Delta T = ${
+                                        result?.tech_ft1 - result?.tech_it1
+                                      }`}
+                                    />
+                                  </div>
+                                </>
+                              )}
 
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`c = ${data?.payload?.tech_lang_keys["11"]} ${data?.payload?.tech_lang_keys["13"]}`}
-                              />
-                            </p>
+                              <p className="col-12 mt-3">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["21"]}
+                                </strong>
+                              </p>
+                              <div className="col-12 mt-3">
+                                <BlockMath
+                                  math={`c = \\dfrac{Q}{m \\Delta T}`}
+                                />
+                              </div>
+                              <div className="col-12 mt-3">
+                                <BlockMath
+                                  math={`c = \\dfrac{${result?.tech_q1}}{(${result?.tech_m1})(${result?.tech_dt1})}`}
+                                />
+                              </div>
+                              <div className="col-12 mt-3">
+                                <BlockMath
+                                  math={`c = \\dfrac{${result?.tech_q1}}{${result?.tech_s}}`}
+                                />
+                              </div>
+                              <div className="col-12 mt-3">
+                                <BlockMath math={`c = ${result?.tech_c1}`} />
+                              </div>
+                            </>
+                          ) : result?.tech_m ? (
+                            <>
+                              <p className="col-12 mt-3">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["4"]}{" "}
+                                  {data?.payload?.tech_lang_keys["17"]}
+                                </strong>
+                              </p>
 
-                            {isInitialFinal ? (
-                              <>
-                                <p className="col-12 mt-3">
-                                  <BlockMath
-                                    math={`T_i = ${data?.payload?.tech_lang_keys["5"]} ${data?.payload?.tech_lang_keys["19"]}`}
-                                  />
-                                </p>
-                                <p className="col-12 mt-3">
-                                  <BlockMath
-                                    math={`T_f = ${data?.payload?.tech_lang_keys["6"]} ${data?.payload?.tech_lang_keys["19"]}`}
-                                  />
-                                </p>
-                                <p className="col-12 mt-3">
-                                  <BlockMath
-                                    math={`Q = ${result?.tech_q1},\\ c = ${result?.tech_c1},\\ T_i = ${result?.tech_it1},\\ T_f = ${result?.tech_ft1}`}
-                                  />
-                                </p>
-                              </>
-                            ) : (
-                              <>
-                                <p className="col-12 mt-3">
-                                  <BlockMath
-                                    math={`\\Delta T = ${data?.payload?.tech_lang_keys["8"]} ${data?.payload?.tech_lang_keys["20"]} ${data?.payload?.tech_lang_keys["19"]}`}
-                                  />
-                                </p>
-                                <p className="col-12 mt-3">
-                                  <BlockMath
-                                    math={`Q = ${result?.tech_q1},\\ c = ${result?.tech_c1},\\ \\Delta T = ${result?.tech_dt1}`}
-                                  />
-                                </p>
-                              </>
-                            )}
+                              <p className="col-12 mt-3">
+                                <BlockMath math="m = \dfrac{Q}{c \Delta T}" />
+                              </p>
 
-                            {isInitialFinal && (
-                              <>
-                                <p className="col-12 mt-3">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys["1"]}{" "}
-                                    {data?.payload?.tech_lang_keys["8"]}{" "}
-                                    {data?.payload?.tech_lang_keys["20"]}{" "}
-                                    {data?.payload?.tech_lang_keys["23"]}
-                                  </strong>
-                                </p>
-                                <p className="col-12 mt-3">
-                                  <BlockMath math="\\Delta T = T_f - T_i" />
-                                </p>
-                                <p className="col-12 mt-3">
-                                  <BlockMath
-                                    math={`\\Delta T = ${result?.tech_ft1} - ${result?.tech_it1}`}
-                                  />
-                                </p>
-                                <p className="col-12 mt-3">
-                                  <BlockMath math={`\\Delta T = ${deltaT}`} />
-                                </p>
-                              </>
-                            )}
+                              <p className="col-12 mt-3">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["18"]}
+                                </strong>
+                              </p>
 
-                            <p className="col-12 mt-3">
-                              <strong>
-                                {data?.payload?.tech_lang_keys["21"]}
-                              </strong>
-                            </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`Q = ${data?.payload?.tech_lang_keys["2"]}`}
+                                />
+                              </p>
 
-                            <p className="col-12 mt-3">
-                              <BlockMath math="m = \dfrac{Q}{c \Delta T}" />
-                            </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`c = ${data?.payload?.tech_lang_keys["11"]} ${data?.payload?.tech_lang_keys["13"]}`}
+                                />
+                              </p>
 
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`m = \\dfrac{${result?.tech_q1}}{(${result?.tech_c1})(${result?.tech_dt1})}`}
-                              />
-                            </p>
+                              {isInitialFinal ? (
+                                <>
+                                  <p className="col-12 mt-3">
+                                    <BlockMath
+                                      math={`T_i = ${data?.payload?.tech_lang_keys["5"]} ${data?.payload?.tech_lang_keys["19"]}`}
+                                    />
+                                  </p>
+                                  <p className="col-12 mt-3">
+                                    <BlockMath
+                                      math={`T_f = ${data?.payload?.tech_lang_keys["6"]} ${data?.payload?.tech_lang_keys["19"]}`}
+                                    />
+                                  </p>
+                                  <p className="col-12 mt-3">
+                                    <BlockMath
+                                      math={`Q = ${result?.tech_q1},\\ c = ${result?.tech_c1},\\ T_i = ${result?.tech_it1},\\ T_f = ${result?.tech_ft1}`}
+                                    />
+                                  </p>
+                                </>
+                              ) : (
+                                <>
+                                  <p className="col-12 mt-3">
+                                    <BlockMath
+                                      math={`\\Delta T = ${data?.payload?.tech_lang_keys["8"]} ${data?.payload?.tech_lang_keys["20"]} ${data?.payload?.tech_lang_keys["19"]}`}
+                                    />
+                                  </p>
+                                  <p className="col-12 mt-3">
+                                    <BlockMath
+                                      math={`Q = ${result?.tech_q1},\\ c = ${result?.tech_c1},\\ \\Delta T = ${result?.tech_dt1}`}
+                                    />
+                                  </p>
+                                </>
+                              )}
 
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`m = \\dfrac{${result?.tech_q1}}{${result?.tech_s}}`}
-                              />
-                            </p>
+                              {isInitialFinal && (
+                                <>
+                                  <p className="col-12 mt-3">
+                                    <strong>
+                                      {data?.payload?.tech_lang_keys["1"]}{" "}
+                                      {data?.payload?.tech_lang_keys["8"]}{" "}
+                                      {data?.payload?.tech_lang_keys["20"]}{" "}
+                                      {data?.payload?.tech_lang_keys["23"]}
+                                    </strong>
+                                  </p>
+                                  <p className="col-12 mt-3">
+                                    <BlockMath math="\\Delta T = T_f - T_i" />
+                                  </p>
+                                  <p className="col-12 mt-3">
+                                    <BlockMath
+                                      math={`\\Delta T = ${result?.tech_ft1} - ${result?.tech_it1}`}
+                                    />
+                                  </p>
+                                  <p className="col-12 mt-3">
+                                    <BlockMath math={`\\Delta T = ${deltaT}`} />
+                                  </p>
+                                </>
+                              )}
 
-                            <p className="col-12 mt-3">
-                              <BlockMath math={`m = ${result?.tech_m}`} />
-                            </p>
-                          </>
-                        ) : result?.tech_it ? (
-                          <>
-                            <p className="col-12 mt-3">
-                              <strong>
-                                {data?.payload?.tech_lang_keys["5"]}{" "}
-                                {data?.payload?.tech_lang_keys["23"]}{" "}
-                                {data?.payload?.tech_lang_keys["17"]}
-                              </strong>
-                            </p>
-                            <p className="col-12 mt-3">
-                              <BlockMath math="T_i = \dfrac{Q}{m c} - T_f" />
-                            </p>
+                              <p className="col-12 mt-3">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["21"]}
+                                </strong>
+                              </p>
 
-                            <p className="col-12 mt-3">
-                              <strong>
-                                {data?.payload?.tech_lang_keys["18"]}
-                              </strong>
-                            </p>
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`Q = ${data?.payload?.tech_lang_keys["2"]}`}
-                              />
-                            </p>
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`m = ${data?.payload?.tech_lang_keys["4"]}`}
-                              />
-                            </p>
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`c = ${data?.payload?.tech_lang_keys["11"]} ${data?.payload?.tech_lang_keys["13"]}`}
-                              />
-                            </p>
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`T_f = ${data?.payload?.tech_lang_keys["6"]} ${data?.payload?.tech_lang_keys["19"]}`}
-                              />
-                            </p>
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`Q = ${result?.tech_q1},\\ m = ${result?.tech_m1},\\ c = ${result?.tech_c1},\\ T_f = ${result?.tech_ft1}`}
-                              />
-                            </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath math="m = \dfrac{Q}{c \Delta T}" />
+                              </p>
 
-                            <p className="col-12 mt-3">
-                              <strong>
-                                {data?.payload?.tech_lang_keys["21"]}
-                              </strong>
-                            </p>
-                            <p className="col-12 mt-3">
-                              <BlockMath math="T_i = \dfrac{Q}{m c} - T_f" />
-                            </p>
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`T_i = \\dfrac{${result?.tech_q1}}{(${result?.tech_m1})(${result?.tech_c1})} - ${result?.tech_ft1}`}
-                              />
-                            </p>
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`T_i = \\dfrac{${result?.tech_q1}}{${result?.tech_s}} - ${result?.tech_ft1}`}
-                              />
-                            </p>
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`T_i = ${result?.tech_s1} - ${result?.tech_ft1}`}
-                              />
-                            </p>
-                            <p className="col-12 mt-3">
-                              <BlockMath math={`T_i = ${result?.tech_it}`} />
-                            </p>
-                          </>
-                        ) : result?.tech_ft ? (
-                          <>
-                            <p className="col-12 mt-3">
-                              <strong>
-                                {data?.payload?.tech_lang_keys["6"]}{" "}
-                                {data?.payload?.tech_lang_keys["19"]}{" "}
-                                {data?.payload?.tech_lang_keys["17"]}
-                              </strong>
-                            </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`m = \\dfrac{${result?.tech_q1}}{(${result?.tech_c1})(${result?.tech_dt1})}`}
+                                />
+                              </p>
 
-                            <p className="col-12 mt-3">
-                              <BlockMath math="T_f = \dfrac{Q}{m c} + T_i" />
-                            </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`m = \\dfrac{${result?.tech_q1}}{${result?.tech_s}}`}
+                                />
+                              </p>
 
-                            <p className="col-12 mt-3">
-                              <strong>
-                                {data?.payload?.tech_lang_keys["18"]}
-                              </strong>
-                            </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath math={`m = ${result?.tech_m}`} />
+                              </p>
+                            </>
+                          ) : result?.tech_it ? (
+                            <>
+                              <p className="col-12 mt-3">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["5"]}{" "}
+                                  {data?.payload?.tech_lang_keys["23"]}{" "}
+                                  {data?.payload?.tech_lang_keys["17"]}
+                                </strong>
+                              </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath math="T_i = \dfrac{Q}{m c} - T_f" />
+                              </p>
 
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`Q = ${data?.payload?.tech_lang_keys["2"]}`}
-                              />
-                            </p>
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`m = ${data?.payload?.tech_lang_keys["4"]}`}
-                              />
-                            </p>
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`c = ${data?.payload?.tech_lang_keys["11"]} ${data?.payload?.tech_lang_keys["13"]}`}
-                              />
-                            </p>
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`T_i = ${data?.payload?.tech_lang_keys["5"]} ${data?.payload?.tech_lang_keys["19"]}`}
-                              />
-                            </p>
+                              <p className="col-12 mt-3">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["18"]}
+                                </strong>
+                              </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`Q = ${data?.payload?.tech_lang_keys["2"]}`}
+                                />
+                              </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`m = ${data?.payload?.tech_lang_keys["4"]}`}
+                                />
+                              </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`c = ${data?.payload?.tech_lang_keys["11"]} ${data?.payload?.tech_lang_keys["13"]}`}
+                                />
+                              </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`T_f = ${data?.payload?.tech_lang_keys["6"]} ${data?.payload?.tech_lang_keys["19"]}`}
+                                />
+                              </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`Q = ${result?.tech_q1},\\ m = ${result?.tech_m1},\\ c = ${result?.tech_c1},\\ T_f = ${result?.tech_ft1}`}
+                                />
+                              </p>
 
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`Q = ${result?.tech_q1},\\ m = ${result?.tech_m1},\\ c = ${result?.tech_c1},\\ T_i = ${result?.tech_it1}`}
-                              />
-                            </p>
+                              <p className="col-12 mt-3">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["21"]}
+                                </strong>
+                              </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath math="T_i = \dfrac{Q}{m c} - T_f" />
+                              </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`T_i = \\dfrac{${result?.tech_q1}}{(${result?.tech_m1})(${result?.tech_c1})} - ${result?.tech_ft1}`}
+                                />
+                              </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`T_i = \\dfrac{${result?.tech_q1}}{${result?.tech_s}} - ${result?.tech_ft1}`}
+                                />
+                              </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`T_i = ${result?.tech_s1} - ${result?.tech_ft1}`}
+                                />
+                              </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath math={`T_i = ${result?.tech_it}`} />
+                              </p>
+                            </>
+                          ) : result?.tech_ft ? (
+                            <>
+                              <p className="col-12 mt-3">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["6"]}{" "}
+                                  {data?.payload?.tech_lang_keys["19"]}{" "}
+                                  {data?.payload?.tech_lang_keys["17"]}
+                                </strong>
+                              </p>
 
-                            <p className="col-12 mt-3">
-                              <strong>
-                                {data?.payload?.tech_lang_keys["21"]}
-                              </strong>
-                            </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath math="T_f = \dfrac{Q}{m c} + T_i" />
+                              </p>
 
-                            <p className="col-12 mt-3">
-                              <BlockMath math="T_f = \dfrac{Q}{m c} + T_i" />
-                            </p>
+                              <p className="col-12 mt-3">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["18"]}
+                                </strong>
+                              </p>
 
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`T_f = \\dfrac{${result?.tech_q1}}{(${result?.tech_m1}) (${result?.tech_c1})} + ${result?.tech_it1}`}
-                              />
-                            </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`Q = ${data?.payload?.tech_lang_keys["2"]}`}
+                                />
+                              </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`m = ${data?.payload?.tech_lang_keys["4"]}`}
+                                />
+                              </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`c = ${data?.payload?.tech_lang_keys["11"]} ${data?.payload?.tech_lang_keys["13"]}`}
+                                />
+                              </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`T_i = ${data?.payload?.tech_lang_keys["5"]} ${data?.payload?.tech_lang_keys["19"]}`}
+                                />
+                              </p>
 
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`T_f = \\dfrac{${result?.tech_q1}}{${result?.tech_s}} + ${result?.tech_it1}`}
-                              />
-                            </p>
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`Q = ${result?.tech_q1},\\ m = ${result?.tech_m1},\\ c = ${result?.tech_c1},\\ T_i = ${result?.tech_it1}`}
+                                />
+                              </p>
 
-                            <p className="col-12 mt-3">
-                              <BlockMath
-                                math={`T_f = ${result?.tech_s1} + ${result?.tech_it1}`}
-                              />
-                            </p>
+                              <p className="col-12 mt-3">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys["21"]}
+                                </strong>
+                              </p>
 
-                            <p className="col-12 mt-3">
-                              <BlockMath math={`T_f = ${result?.tech_ft}`} />
-                            </p>
-                          </>
-                        ) : null}
+                              <p className="col-12 mt-3">
+                                <BlockMath math="T_f = \dfrac{Q}{m c} + T_i" />
+                              </p>
+
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`T_f = \\dfrac{${result?.tech_q1}}{(${result?.tech_m1}) (${result?.tech_c1})} + ${result?.tech_it1}`}
+                                />
+                              </p>
+
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`T_f = \\dfrac{${result?.tech_q1}}{${result?.tech_s}} + ${result?.tech_it1}`}
+                                />
+                              </p>
+
+                              <p className="col-12 mt-3">
+                                <BlockMath
+                                  math={`T_f = ${result?.tech_s1} + ${result?.tech_it1}`}
+                                />
+                              </p>
+
+                              <p className="col-12 mt-3">
+                                <BlockMath math={`T_f = ${result?.tech_ft}`} />
+                              </p>
+                            </>
+                          ) : null}
+                        </div>
                       </div>
                     </div>
                   </div>

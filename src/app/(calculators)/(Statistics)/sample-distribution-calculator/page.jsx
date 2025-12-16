@@ -26,9 +26,10 @@ ChartJS.register(
   Legend
 );
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useSampleDistributionCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useSampleDistributionCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -37,7 +38,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const SamplingDistributionCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -109,11 +109,11 @@ const SamplingDistributionCalculator = () => {
         tech_x1: formData.tech_x1,
         tech_x2: formData.tech_x2,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -164,15 +164,15 @@ const SamplingDistributionCalculator = () => {
     return "";
   }
 
-  const u = result?.tech_mean;
-  const o = result?.tech_deviation;
-  const n = result?.tech_size;
-  const x1 = result?.tech_x1;
-  const x2 = result?.tech_x2;
-  const sd = result?.tech_sd;
-  const zl = result?.tech_zl;
+  const u = formData?.tech_mean;
+  const o = formData?.tech_deviation;
+  const n = formData?.tech_size;
+  const x1 = formData?.tech_x1;
+  const x2 = formData?.tech_x2;
+  const sd = formData?.tech_sd;
+  const zl = formData?.tech_zl;
   const pr2 = result?.tech_pr2;
-  const probability = result?.tech_probability;
+  const probability = formData?.tech_probability;
   const standardError = result?.tech_standard_error;
 
   let res = "",
@@ -410,41 +410,41 @@ const SamplingDistributionCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="w-full text-center">
-                        <div className="text-[20px] font-bold text-center justify-center flex">
+                        <div className="text-[20px] font-bold">
                           <BlockMath math={`Pr(${res})`} />
                         </div>
-                        <div className="flex justify-center">
-                          <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
-                            <strong className="text-blue">
-                              {sigFig(ans, 4)}
-                            </strong>
-                          </p>
-                        </div>
+                         <div className="flex justify-center">
+                            <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
+                              <strong className="text-blue">
+                                 {sigFig(ans, 4)}
+                              </strong>
+                            </p>
+                          </div>
                       </div>
 
                       <p className="w-full mt-3 text-[20px]">
                         {data?.payload?.tech_lang_keys["statement1"]}:
                       </p>
 
-                      <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
+                      <div className="w-full md:w-[60%] lg:w-[60%] mt-2 overflow-auto md:text-[18px] text-[16px]">
                         <table className="w-full">
                           <tbody>
                             <tr>

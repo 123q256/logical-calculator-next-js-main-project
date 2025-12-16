@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useQuarterMileCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useQuarterMileCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const QuarterMileCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -94,11 +94,11 @@ const QuarterMileCalculator = () => {
         tech_trap: formData.tech_trap,
         tech_et: formData.tech_et,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -217,7 +217,7 @@ const QuarterMileCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[40%] md:w-[60%] w-full mx-auto ">
+          <div className="lg:w-[40%] md:w-[70%] w-full mx-auto ">
             <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2 mt-3  gap-4">
               <div className="col-span-12 equation">
                 <label htmlFor="tech_equation" className="label">
@@ -269,7 +269,6 @@ const QuarterMileCalculator = () => {
                   </select>
                 </div>
               </div>
-
               {formData.tech_selection == "1" && (
                 <>
                   {(formData.tech_equation == "1" ||
@@ -380,7 +379,6 @@ const QuarterMileCalculator = () => {
                   )}
                 </>
               )}
-
               <div className="col-span-12 weight">
                 <label htmlFor="tech_weight" className="label">
                   {data?.payload?.tech_lang_keys["16"]}
@@ -421,7 +419,6 @@ const QuarterMileCalculator = () => {
                   )}
                 </div>
               </div>
-
               {formData.tech_selection == "2" && (
                 <>
                   <div className="col-span-12 mph ">
@@ -484,30 +481,30 @@ const QuarterMileCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="w-full md:w-[80%] lg:w-[60%] overflow-auto mt-2">
-                        <table className="w-full lg:text-[18px] md:text-[18px] text-[16px]">
+                      <div className="w-full md:w-[80%] overflow-auto mt-2">
+                        <table className="w-full text-[16px] md:text-[18px]">
                           <tbody>
                             {result?.tech_one_eight && result?.tech_sixty && (
                               <>
                                 <tr>
-                                  <td className="py-2 border-b" width="70%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       60 {data?.payload?.tech_lang_keys["12"]}
                                     </strong>
@@ -517,7 +514,7 @@ const QuarterMileCalculator = () => {
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td className="py-2 border-b" width="70%">
+                                  <td className="py-2 border-b">
                                     <strong>
                                       1/8 {data?.payload?.tech_lang_keys["13"]}
                                     </strong>
@@ -531,7 +528,7 @@ const QuarterMileCalculator = () => {
 
                             {result?.tech_elapsed_time && (
                               <tr>
-                                <td className="py-2 border-b" width="70%">
+                                <td className="py-2 border-b">
                                   <strong>
                                     1/4 {data?.payload?.tech_lang_keys["14"]}
                                   </strong>
@@ -545,7 +542,7 @@ const QuarterMileCalculator = () => {
 
                             {result?.tech_trap_speed && (
                               <tr>
-                                <td className="py-2 border-b" width="70%">
+                                <td className="py-2 border-b">
                                   <strong>
                                     1/4 {data?.payload?.tech_lang_keys["13"]}
                                   </strong>
@@ -559,7 +556,7 @@ const QuarterMileCalculator = () => {
 
                             {result?.tech_final_value && (
                               <tr>
-                                <td className="py-2 border-b" width="70%">
+                                <td className="py-2 border-b">
                                   <strong>
                                     1/4 {data?.payload?.tech_lang_keys["13"]}
                                   </strong>

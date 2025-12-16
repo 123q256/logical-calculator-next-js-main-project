@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useAccelerationcalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useAccelerationcalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const AccelerationCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -44,21 +44,21 @@ const AccelerationCalculator = () => {
   }, [url]);
 
   const [formData, setFormData] = useState({
-    velo_value: "1", //  1 2 3
-    iv: 3,
-    ivU: "m/s",
-    fv: 5,
-    fvU: "m/s",
-    ct: 5,
-    ctU: "sec",
-    acc: 5,
-    accU: "sec",
-    cdis: 5,
-    cdisU: "m",
-    mass: 4,
-    masU: "kg",
-    force: 4,
-    forceU: "MN",
+    tech_velo_value: "1", //  1 2 3
+    tech_iv: 3,
+    tech_ivU: "m/s",
+    tech_fv: 5,
+    tech_fvU: "m/s",
+    tech_ct: 5,
+    tech_ctU: "sec",
+    tech_acc: 5,
+    tech_accU: "sec",
+    tech_cdis: 5,
+    tech_cdisU: "m",
+    tech_mass: 4,
+    tech_masU: "kg",
+    tech_force: 4,
+    tech_forceU: "MN",
   });
 
   const [result, setResult] = useState(null);
@@ -80,7 +80,7 @@ const AccelerationCalculator = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.velo_value) {
+    if (!formData.tech_velo_value) {
       setFormError("Please fill in input.");
       return;
     }
@@ -88,44 +88,46 @@ const AccelerationCalculator = () => {
     setFormError("");
     try {
       const response = await calculateEbitCalculator({
-        velo_value: formData.velo_value,
-        iv: formData.iv,
-        ivU: formData.ivU,
-        fv: formData.fv,
-        fvU: formData.fvU,
-        ct: formData.ct,
-        ctU: formData.ctU,
-        cdis: formData.cdis,
-        cdisU: formData.cdisU,
-        mass: formData.mass,
-        masU: formData.masU,
-        force: formData.force,
-        forceU: formData.forceU,
+        tech_velo_value: formData.tech_velo_value,
+        tech_iv: formData.tech_iv,
+        tech_ivU: formData.tech_ivU,
+        tech_fv: formData.tech_fv,
+        tech_fvU: formData.tech_fvU,
+        tech_ct: formData.tech_ct,
+        tech_ctU: formData.tech_ctU,
+        tech_cdis: formData.tech_cdis,
+        tech_cdisU: formData.tech_cdisU,
+        tech_mass: formData.tech_mass,
+        tech_masU: formData.tech_masU,
+        tech_force: formData.tech_force,
+        tech_forceU: formData.tech_forceU,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      velo_value: "1", //  1 2 3
-      iv: 3,
-      ivU: "m/s",
-      fv: 5,
-      fvU: "m/s",
-      ct: 5,
-      ctU: "sec",
-      cdis: 5,
-      cdisU: "m",
-      mass: 4,
-      masU: "kg",
-      force: 4,
-      forceU: "MN",
+      tech_velo_value: "1", //  1 2 3
+      tech_iv: 3,
+      tech_ivU: "m/s",
+      tech_fv: 5,
+      tech_fvU: "m/s",
+      tech_ct: 5,
+      tech_ctU: "sec",
+      tech_acc: 5,
+      tech_accU: "sec",
+      tech_cdis: 5,
+      tech_cdisU: "m",
+      tech_mass: 4,
+      tech_masU: "kg",
+      tech_force: 4,
+      tech_forceU: "MN",
     });
     setResult(null);
     setFormError(null);
@@ -153,7 +155,7 @@ const AccelerationCalculator = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const setUnitHandler = (unit) => {
-    setFormData((prev) => ({ ...prev, ivU: unit }));
+    setFormData((prev) => ({ ...prev, tech_ivU: unit }));
     setDropdownVisible(false);
   };
 
@@ -165,7 +167,7 @@ const AccelerationCalculator = () => {
   const [dropdownVisible1, setDropdownVisible1] = useState(false);
 
   const setUnitHandler1 = (unit) => {
-    setFormData((prev) => ({ ...prev, fvU: unit }));
+    setFormData((prev) => ({ ...prev, tech_fvU: unit }));
     setDropdownVisible1(false);
   };
 
@@ -177,7 +179,7 @@ const AccelerationCalculator = () => {
   const [dropdownVisible2, setDropdownVisible2] = useState(false);
 
   const setUnitHandler2 = (unit) => {
-    setFormData((prev) => ({ ...prev, ctU: unit }));
+    setFormData((prev) => ({ ...prev, tech_ctU: unit }));
     setDropdownVisible2(false);
   };
 
@@ -189,7 +191,7 @@ const AccelerationCalculator = () => {
   const [dropdownVisible3, setDropdownVisible3] = useState(false);
 
   const setUnitHandler3 = (unit) => {
-    setFormData((prev) => ({ ...prev, cdisU: unit }));
+    setFormData((prev) => ({ ...prev, tech_cdisU: unit }));
     setDropdownVisible3(false);
   };
 
@@ -201,7 +203,7 @@ const AccelerationCalculator = () => {
   const [dropdownVisible4, setDropdownVisible4] = useState(false);
 
   const setUnitHandler4 = (unit) => {
-    setFormData((prev) => ({ ...prev, masU: unit }));
+    setFormData((prev) => ({ ...prev, tech_masU: unit }));
     setDropdownVisible4(false);
   };
 
@@ -213,7 +215,7 @@ const AccelerationCalculator = () => {
   const [dropdownVisible5, setDropdownVisible5] = useState(false);
 
   const setUnitHandler5 = (unit) => {
-    setFormData((prev) => ({ ...prev, forceU: unit }));
+    setFormData((prev) => ({ ...prev, tech_forceU: unit }));
     setDropdownVisible5(false);
   };
 
@@ -223,8 +225,8 @@ const AccelerationCalculator = () => {
 
   // ressuyl
 
-  const [initialValue, setInitialValue] = useState(result?.ans || 0);
-  const [convertedValue, setConvertedValue] = useState(result?.ans || 0);
+  const [initialValue, setInitialValue] = useState(result?.tech_ans || 0);
+  const [convertedValue, setConvertedValue] = useState(result?.tech_ans || 0);
   const [selectedUnit, setSelectedUnit] = useState("m/s²");
 
   const conversionFactors = {
@@ -234,8 +236,8 @@ const AccelerationCalculator = () => {
   };
 
   useEffect(() => {
-    setInitialValue(result?.ans || 0);
-    setConvertedValue(result?.ans || 0);
+    setInitialValue(result?.tech_ans || 0);
+    setConvertedValue(result?.tech_ans || 0);
   }, [result]);
 
   const handleChange1 = (e) => {
@@ -300,20 +302,20 @@ const AccelerationCalculator = () => {
             <div className="col-span-12 mx-auto mt-2  w-full">
               <input
                 type="hidden"
-                name="velo_value"
+                name="tech_velo_value"
                 id="calculator_time"
-                value={formData.velo_value}
+                value={formData.tech_velo_value}
               />
               <div className="flex flex-wrap items-center bg-blue-100 border border-blue-500 text-center rounded-lg px-1">
                 {/* Date Cal Tab */}
                 <div className="lg:w-1/3 w-full px-2 py-1">
                   <div
                     className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab  ${
-                      formData.velo_value === "1" ? "tagsUnit" : ""
+                      formData.tech_velo_value === "1" ? "tagsUnit" : ""
                     }`}
                     id="1"
                     onClick={() => {
-                      setFormData({ ...formData, velo_value: "1" });
+                      setFormData({ ...formData, tech_velo_value: "1" });
                       setResult(null);
                       setFormError(null);
                     }}
@@ -326,11 +328,11 @@ const AccelerationCalculator = () => {
                 <div className="lg:w-1/3 w-full px-2 py-1">
                   <div
                     className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab ${
-                      formData.velo_value === "2" ? "tagsUnit" : ""
+                      formData.tech_velo_value === "2" ? "tagsUnit" : ""
                     }`}
                     id="2"
                     onClick={() => {
-                      setFormData({ ...formData, velo_value: "2" });
+                      setFormData({ ...formData, tech_velo_value: "2" });
                       setResult(null);
                       setFormError(null);
                     }}
@@ -342,11 +344,11 @@ const AccelerationCalculator = () => {
                 <div className="lg:w-1/3 w-full px-2 py-1">
                   <div
                     className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab ${
-                      formData.velo_value === "3" ? "tagsUnit" : ""
+                      formData.tech_velo_value === "3" ? "tagsUnit" : ""
                     }`}
                     id="3"
                     onClick={() => {
-                      setFormData({ ...formData, velo_value: "3" });
+                      setFormData({ ...formData, tech_velo_value: "3" });
                       setResult(null);
                       setFormError(null);
                     }}
@@ -358,20 +360,21 @@ const AccelerationCalculator = () => {
             </div>
           </div>
           <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3  gap-4">
-              {(formData.velo_value == "1" || formData.velo_value == "2") && (
+            <div className="grid grid-cols-12 mt-3 gap-1  md:gap-4">
+              {(formData.tech_velo_value == "1" ||
+                formData.tech_velo_value == "2") && (
                 <>
-                  <div className="lg:col-span-6 md:col-span-6 col-span-12 Ivelocity  ">
+                  <div className="col-span-12 md:col-span-6 Ivelocity  ">
                     <label htmlFor="iv" className="label">
                       {data?.payload?.tech_lang_keys["iv"]} (V<sub>0</sub>)
                     </label>
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="iv"
+                        name="tech_iv"
                         step="any"
                         className="mt-1 input"
-                        value={formData.iv}
+                        value={formData.tech_iv}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -379,7 +382,7 @@ const AccelerationCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown}
                       >
-                        {formData.ivU} ▾
+                        {formData.tech_ivU} ▾
                       </label>
                       {dropdownVisible && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -405,19 +408,20 @@ const AccelerationCalculator = () => {
                   </div>
                 </>
               )}
-              {(formData.velo_value == "1" || formData.velo_value == "1") && (
+              {(formData.tech_velo_value == "1" ||
+                formData.tech_velo_value == "1") && (
                 <>
-                  <div className="lg:col-span-6 md:col-span-6 col-span-12 Fvelocity ">
+                  <div className="col-span-12 md:col-span-6 Fvelocity ">
                     <label htmlFor="fv" className="label">
                       {data?.payload?.tech_lang_keys["fv"]} (V<sub>f</sub>)
                     </label>
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="fv"
+                        name="tech_fv"
                         step="any"
                         className="mt-1 input"
-                        value={formData.fv}
+                        value={formData.tech_fv}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -425,7 +429,7 @@ const AccelerationCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown1}
                       >
-                        {formData.fvU} ▾
+                        {formData.tech_fvU} ▾
                       </label>
                       {dropdownVisible1 && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -451,19 +455,20 @@ const AccelerationCalculator = () => {
                   </div>
                 </>
               )}
-              {(formData.velo_value == "1" || formData.velo_value == "2") && (
+              {(formData.tech_velo_value == "1" ||
+                formData.tech_velo_value == "2") && (
                 <>
-                  <div className="lg:col-span-6 md:col-span-6 col-span-12 time ">
+                  <div className="col-span-12 md:col-span-6 time ">
                     <label htmlFor="ct" className="label">
                       {data?.payload?.tech_lang_keys["time"]} (t)
                     </label>
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="ct"
+                        name="tech_ct"
                         step="any"
                         className="mt-1 input"
-                        value={formData.ct}
+                        value={formData.tech_ct}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -471,7 +476,7 @@ const AccelerationCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown2}
                       >
-                        {formData.ctU} ▾
+                        {formData.tech_ctU} ▾
                       </label>
                       {dropdownVisible2 && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -494,19 +499,19 @@ const AccelerationCalculator = () => {
                   </div>
                 </>
               )}
-              {formData.velo_value == "2" && (
+              {formData.tech_velo_value == "2" && (
                 <>
-                  <div className="lg:col-span-6 md:col-span-6 col-span-12  displacement">
+                  <div className="col-span-12 md:col-span-6  displacement">
                     <label htmlFor="cdis" className="label">
                       {data?.payload?.tech_lang_keys["disp"]} (∆x)
                     </label>
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="cdis"
+                        name="tech_cdis"
                         step="any"
                         className="mt-1 input"
-                        value={formData.cdis}
+                        value={formData.tech_cdis}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -514,7 +519,7 @@ const AccelerationCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown3}
                       >
-                        {formData.cdisU} ▾
+                        {formData.tech_cdisU} ▾
                       </label>
                       {dropdownVisible3 && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -541,19 +546,19 @@ const AccelerationCalculator = () => {
                   </div>
                 </>
               )}
-              {formData.velo_value == "3" && (
+              {formData.tech_velo_value == "3" && (
                 <>
-                  <div className="lg:col-span-6 md:col-span-6 col-span-12 force">
+                  <div className="col-span-12 md:col-span-6 force">
                     <label htmlFor="mass" className="label">
                       {data?.payload?.tech_lang_keys["mass"]}
                     </label>
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="mass"
+                        name="tech_mass"
                         step="any"
                         className="mt-1 input"
-                        value={formData.mass}
+                        value={formData.tech_mass}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -561,7 +566,7 @@ const AccelerationCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown4}
                       >
-                        {formData.masU} ▾
+                        {formData.tech_masU} ▾
                       </label>
                       {dropdownVisible4 && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -591,19 +596,19 @@ const AccelerationCalculator = () => {
                   </div>
                 </>
               )}
-              {formData.velo_value == "3" && (
+              {formData.tech_velo_value == "3" && (
                 <>
-                  <div className="lg:col-span-6 md:col-span-6 col-span-12 force">
+                  <div className="col-span-12 md:col-span-6 force">
                     <label htmlFor="force" className="label">
                       {data?.payload?.tech_lang_keys["net"]}
                     </label>
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="force"
+                        name="tech_force"
                         step="any"
                         className="mt-1 input"
-                        value={formData.force}
+                        value={formData.tech_force}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -611,7 +616,7 @@ const AccelerationCalculator = () => {
                         className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown5}
                       >
-                        {formData.forceU} ▾
+                        {formData.tech_forceU} ▾
                       </label>
                       {dropdownVisible5 && (
                         <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
@@ -656,26 +661,26 @@ const AccelerationCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6 result">
+           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="text-center">
-                        <p className="md:text-[32px] text-[20px] bg-[#2845F5] text-white inline-block p-2 rounded-[10px] ">
-                          <strong className="text-white px-2" id="acel_result">
+                      <div className="text-center overflow-auto">
+                        <p className="text-[20px] bg-gray bordered  md:text-[32px]  inline-block p-2 rounded-[10px] mx-2">
+                          <strong className="text-blue" id="acel_result">
                             {convertedValue}
                           </strong>
                           <select
@@ -683,7 +688,7 @@ const AccelerationCalculator = () => {
                             name="acel_unit"
                             value={selectedUnit}
                             onChange={handleChange1}
-                            className="inline border-0 text-black text-[16px] w-[90px] mx-2 result_select_dropdown"
+                            className="inline border-0 text-blue text-[16px] w-[70px] result_select_dropdown"
                           >
                             <option value="m/s²">m/s²</option>
                             <option value="g">g</option>

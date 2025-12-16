@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { InlineMath, BlockMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useWireSizeCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useWireSizeCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -16,7 +17,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const WireSizeCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -106,11 +106,11 @@ const WireSizeCalculator = () => {
         tech_wd_units: formData.tech_wd_units,
         tech_wt_units: formData.tech_wt_units,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -324,7 +324,7 @@ const WireSizeCalculator = () => {
                 <>
                   <div className="col-span-12 wire_size" id="wire_sizes">
                     <div className="grid grid-cols-12 gap-4">
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12">
+                      <div className="col-span-12 md:col-span-6">
                         <label htmlFor="tech_type" className="label">
                           {data?.payload?.tech_lang_keys["1"]}:
                         </label>
@@ -346,7 +346,7 @@ const WireSizeCalculator = () => {
                           </select>
                         </div>
                       </div>
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12">
+                      <div className="col-span-12 md:col-span-6">
                         <label htmlFor="tech_s_voltage" className="label">
                           {data?.payload?.tech_lang_keys["5"]}
                         </label>
@@ -386,7 +386,7 @@ const WireSizeCalculator = () => {
                           )}
                         </div>
                       </div>
-                      <div className="col-span-6">
+                      <div className="col-span-12 md:col-span-6">
                         <label htmlFor="tech_voltage_drop" className="label">
                           {data?.payload?.tech_lang_keys["6"]}:
                         </label>
@@ -405,7 +405,7 @@ const WireSizeCalculator = () => {
                           <span className="input_unit">%</span>
                         </div>
                       </div>
-                      <div className="col-span-6">
+                      <div className="col-span-12 md:col-span-6">
                         <label htmlFor="tech_c_units" className="label">
                           {data?.payload?.tech_lang_keys["7"]}:
                         </label>
@@ -439,7 +439,7 @@ const WireSizeCalculator = () => {
                           </select>
                         </div>
                       </div>
-                      <div className="col-span-6">
+                      <div className="col-span-12 md:col-span-6">
                         <label htmlFor="tech_current" className="label">
                           {data?.payload?.tech_lang_keys["8"]}
                         </label>
@@ -478,7 +478,7 @@ const WireSizeCalculator = () => {
                           )}
                         </div>
                       </div>
-                      <div className="col-span-6">
+                      <div className="col-span-12 md:col-span-6">
                         <label htmlFor="tech_wire_length" className="label">
                           {data?.payload?.tech_lang_keys["9"]}
                         </label>
@@ -521,7 +521,7 @@ const WireSizeCalculator = () => {
                           )}
                         </div>
                       </div>
-                      <div className="col-span-6">
+                      <div className="col-span-12 md:col-span-6">
                         <label htmlFor="tech_w_temp" className="label">
                           {data?.payload?.tech_lang_keys["10"]}
                         </label>
@@ -568,7 +568,7 @@ const WireSizeCalculator = () => {
               {formData.tech_unit_type == "wire_diameter" && (
                 <>
                   <div
-                    className="lg:col-span-6 md:col-span-6 col-span-12 wire_diameter "
+                    className="col-span-12 md:col-span-6 wire_diameter "
                     id="wire_diameters"
                   >
                     <div className="grid grid-cols-12 gap-4">
@@ -654,7 +654,7 @@ const WireSizeCalculator = () => {
               {formData.tech_unit_type == "wire_gauge" && (
                 <>
                   <div
-                    className="lg:col-span-6 md:col-span-6 col-span-12 wire_gauge "
+                    className="col-span-12 md:col-span-6 wire_gauge "
                     id="wire_gauges"
                   >
                     <div className="grid grid-cols-12 gap-4">
@@ -718,7 +718,7 @@ const WireSizeCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -729,18 +729,18 @@ const WireSizeCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="w-full  text-[18px] overflow-auto">
+                      <div className="w-full  text-[14px] md:text-[18px] overflow-auto">
                         <>
                           {result?.tech_type == "single_phase" && (
                             <>
                               <div className="w-full mt-2 overflow-auto">
-                                <table className="w-full text-[16px]">
+                                <table className="w-full text-[14px] md:text-[18px]">
                                   <tbody>
                                     <tr>
                                       <td className="py-2 border-b" width="70%">
@@ -768,12 +768,10 @@ const WireSizeCalculator = () => {
                                     </tr>
                                   </tbody>
                                 </table>
-
                                 <p className="w-full mt-3">
                                   {data?.payload?.tech_lang_keys["16"]}
                                 </p>
-
-                                <table className="w-full text-[16px]">
+                                <table className="w-full text-[14px] md:text-[18px]">
                                   <tbody>
                                     <tr>
                                       <td className="py-2 border-b" width="70%">
@@ -834,17 +832,14 @@ const WireSizeCalculator = () => {
                                   </tbody>
                                 </table>
                               </div>
-
                               <p className="mt-2">
                                 {data?.payload?.tech_lang_keys[21]}
                               </p>
-
                               <p className="mt-2">
                                 <InlineMath
                                   math={`A(m^2)=\\dfrac{I(A) \\times \\rho(\\Omega·m) \\times L(m)}{V_V}`}
                                 />
                               </p>
-
                               <p className="mt-2">Where:</p>
                               <p className="mt-2">
                                 A = {data?.payload?.tech_lang_keys[22]}
@@ -947,8 +942,8 @@ const WireSizeCalculator = () => {
                           )}
                           {result?.tech_type == "three_phase" && (
                             <>
-                              <div className="w-full md:w-[80%] lg:w-[60%] overfow-auto mt-2">
-                                <table className="w-full text-[16px]">
+                              <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
+                                <table className="w-full text-[14px] md:text-[18px]">
                                   <tbody>
                                     <tr>
                                       <td className="py-2 border-b" width="70%">
@@ -975,12 +970,10 @@ const WireSizeCalculator = () => {
                                     </tr>
                                   </tbody>
                                 </table>
-
                                 <p className="w-full mt-3">
                                   {data?.payload?.tech_lang_keys["16"]}
                                 </p>
-
-                                <table className="w-full text-[16px]">
+                                <table className="w-full text-[14px] md:text-[18px]">
                                   <tbody>
                                     <tr>
                                       <td className="py-2 border-b" width="70%">
@@ -1037,15 +1030,12 @@ const WireSizeCalculator = () => {
                                   </tbody>
                                 </table>
                               </div>
-
                               <p className="mt-2">
                                 {data?.payload?.tech_lang_keys["21"]}
                               </p>
-
                               <BlockMath
                                 math={`A(m^2) = \\dfrac{ \\sqrt{3} \\times \\rho(\\Omega \\cdot m) \\times L(m) \\times I(A) }{ V_V }`}
                               />
-
                               <p className="mt-2">Where:</p>
                               <p className="mt-2">
                                 A = {data?.payload?.tech_lang_keys["22"]}
@@ -1102,15 +1092,12 @@ const WireSizeCalculator = () => {
                                   result?.tech_s_voltage
                                 } }`}
                               />
-
                               <BlockMath
                                 math={`= \\dfrac{ ${result?.tech_res} }{ ${result?.tech_v} }`}
                               />
-
                               <BlockMath
                                 math={`= ${result?.tech_am} \\times 10^6`}
                               />
-
                               <BlockMath
                                 math={`= ${Number(
                                   result?.tech_three_phase
@@ -1129,87 +1116,89 @@ const WireSizeCalculator = () => {
                               </p>
                             </>
                           )}
-                          ;
-                          {result?.submit == "wire_diameter" && (
+                          {result?.tech_submit == "wire_diameter" && (
                             <div className="w-full mt-2">
                               <p className="w-full mt-3">
                                 {data?.payload?.tech_lang_keys["12"]}
                               </p>
-
-                              <table className="w-full text-[16px]">
-                                <tbody>
-                                  <tr>
-                                    <td className="py-2 border-b" width="70%">
-                                      <strong>
-                                        {data?.payload?.tech_lang_keys[44]}
-                                      </strong>
-                                    </td>
-                                    <td className="py-2 border-b">
-                                      {Number(result?.tech_inches).toFixed(4)}{" "}
-                                      in
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className="py-2 border-b">
-                                      <strong>
-                                        {data?.payload?.tech_lang_keys[45]}
-                                      </strong>
-                                    </td>
-                                    <td className="py-2 border-b">
-                                      {Number(result?.tech_mm).toFixed(4)} mm
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-
+                              <div className="overflow-auto w-full">
+                                <table className="w-full text-[14px] md:text-[18px]">
+                                  <tbody>
+                                    <tr>
+                                      <td className="py-2 border-b" width="70%">
+                                        <strong>
+                                          {data?.payload?.tech_lang_keys[44]}
+                                        </strong>
+                                      </td>
+                                      <td className="py-2 border-b">
+                                        {Number(result?.tech_inches).toFixed(4)}{" "}
+                                        in
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td className="py-2 border-b">
+                                        <strong>
+                                          {data?.payload?.tech_lang_keys[45]}
+                                        </strong>
+                                      </td>
+                                      <td className="py-2 border-b">
+                                        {Number(result?.tech_mm).toFixed(4)} mm
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
                               <p className="w-full mt-3">
                                 {data?.payload?.tech_lang_keys["15"]}
                               </p>
-
-                              <table className="w-full text-[16px]">
-                                <tbody>
-                                  <tr>
-                                    <td className="py-2 border-b">
-                                      <strong>kcmil</strong>
-                                    </td>
-                                    <td className="py-2 border-b">
-                                      {Number(result?.tech_kcmil).toFixed(4)}{" "}
-                                      kcmil
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className="py-2 border-b">
-                                      <strong>
-                                        {data?.payload?.tech_lang_keys[45]}
-                                      </strong>
-                                    </td>
-                                    <td className="py-2 border-b">
-                                      {Number(result?.tech_sqinches).toFixed(4)}{" "}
-                                      in<sup>2</sup>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className="py-2 border-b">
-                                      <strong>
-                                        {data?.payload?.tech_lang_keys[47]}
-                                      </strong>
-                                    </td>
-                                    <td className="py-2 border-b">
-                                      {Number(result?.tech_mm2).toFixed(4)} mm
-                                      <sup>2</sup>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
+                              <div className="overflow-auto w-full">
+                                <table className="w-full text-[14px] md:text-[18px]">
+                                  <tbody>
+                                    <tr>
+                                      <td className="py-2 border-b">
+                                        <strong>kcmil</strong>
+                                      </td>
+                                      <td className="py-2 border-b">
+                                        {Number(result?.tech_kcmil).toFixed(4)}{" "}
+                                        kcmil
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td className="py-2 border-b">
+                                        <strong>
+                                          {data?.payload?.tech_lang_keys[45]}
+                                        </strong>
+                                      </td>
+                                      <td className="py-2 border-b">
+                                        {Number(result?.tech_sqinches).toFixed(
+                                          4
+                                        )}{" "}
+                                        in<sup>2</sup>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td className="py-2 border-b">
+                                        <strong>
+                                          {data?.payload?.tech_lang_keys[47]}
+                                        </strong>
+                                      </td>
+                                      <td className="py-2 border-b">
+                                        {Number(result?.tech_mm2).toFixed(4)} mm
+                                        <sup>2</sup>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
                             </div>
                           )}
-                          {result?.submit == "wire_gauge" && (
-                            <div className="w-full mt-2">
+                          {result?.tech_submit == "wire_gauge" && (
+                            <div className="w-full mt-2 overflow-auto">
                               <p className="w-full mt-3">
                                 {data?.payload?.tech_lang_keys["13"]}
                               </p>
 
-                              <table className="w-full text-[16px]">
+                              <table className="w-full text-[14px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="py-2 border-b" width="70%">
@@ -1242,7 +1231,7 @@ const WireSizeCalculator = () => {
                                 {data?.payload?.tech_lang_keys["15"]}
                               </p>
 
-                              <table className="w-full text-[16px]">
+                              <table className="w-full text-[14px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="py-2 border-b">

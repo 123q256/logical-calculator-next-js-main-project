@@ -3,9 +3,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useDensityCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useDensityCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -124,11 +125,11 @@ const DensityCalculator = () => {
         tech_sllqd: formData.tech_sllqd,
         tech_slastr: formData.tech_slastr,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -753,118 +754,74 @@ const DensityCalculator = () => {
                     )}
 
                     {/* <div className="col-span-12 md:col-span-6 lg:col-span-6" id="dens_blk_lgn">
-                                <label htmlFor="tech_lgn" className="label">
-                                  {data?.payload?.tech_lang_keys["11"]}:
-                                    </label>
-                                <div className="grid grid-cols-12 gap-4">
-                                    <div className="col-span-6  "> 
-                                        <input
-                                              type="number"
-                                              step="any"
-                                              name="tech_lgn"
-                                              id="tech_lgn"
-                                              className="input"
-                                              aria-label="input"
-                                              placeholder="00"
-                                              value={formData.tech_lgn}
-                                              onChange={handleChange}
-                                            />
-                                    </div>
-                                    <div className="col-span-6 "> 
-                                    <select
-                                        className="input"
-                                        aria-label="select"
-                                        name="tech_sllgn"
-                                        id="tech_sllgn"
-                                        value={formData.tech_sllgn}
-                                        onChange={handleChange}
-                                      >
-                                        {[
-                                          { name: "cm", val: "cm" },
-                                          { name: "mm", val: "mm" },
-                                          { name: "m", val: "m" },
-                                          { name: "in", val: "in" },
-                                          { name: "ft", val: "ft" },
-                                          { name: "yd", val: "yd" }
-                                        ].map((unit, index) => (
-                                          <option key={index} value={unit.val}>
-                                            {unit.name}
-                                          </option>
-                                        ))}
-                                      </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-span-12 md:col-span-6 lg:col-span-6" id="dens_blk_wdt">
-                                <label htmlFor="tech_lgn" className="label">
-                                  {data?.payload?.tech_lang_keys["12"]}:
-                                    </label>
-                                <div className="grid grid-cols-12 gap-4">
-                                    <div className="col-span-6  "> 
-                                        <input
-                                              type="number"
-                                              step="any"
-                                              name="tech_wdt"
-                                              id="tech_wdt"
-                                              className="input "
-                                              aria-label="input"
-                                              placeholder="00"
-                                              value={formData.tech_wdt}
-                                              onChange={handleChange}
-                                            />
-
-                                    </div>
-                                    <div className="col-span-6 "> 
-                                    <select
-                                    className="input"
-                                    aria-label="select"
-                                    name="tech_slwdt"
-                                    id="tech_slwdt"
-                                    value={formData.tech_slwdt}
-                                    onChange={handleChange}
-                                  >
-                                    {[
-                                      { name: "cm", val: "cm" },
-                                      { name: "mm", val: "mm" },
-                                      { name: "m", val: "m" },
-                                      { name: "in", val: "in" },
-                                      { name: "ft", val: "ft" },
-                                      { name: "yd", val: "yd" }
-                                    ].map((unit, index) => (
-                                      <option key={index} value={unit.val}>
-                                        {unit.name}
-                                      </option>
-                                    ))}
-                                  </select>
-
+                                    <label htmlFor="tech_lgn" className="label">
+                                      {data?.payload?.tech_lang_keys["11"]}:
+                                        </label>
+                                    <div className="grid grid-cols-12 gap-4">
+                                        <div className="col-span-6  "> 
+                                            <input
+                                                  type="number"
+                                                  step="any"
+                                                  name="tech_lgn"
+                                                  id="tech_lgn"
+                                                  className="input"
+                                                  aria-label="input"
+                                                  placeholder="00"
+                                                  value={formData.tech_lgn}
+                                                  onChange={handleChange}
+                                                />
+                                        </div>
+                                        <div className="col-span-6 "> 
+                                        <select
+                                            className="input"
+                                            aria-label="select"
+                                            name="tech_sllgn"
+                                            id="tech_sllgn"
+                                            value={formData.tech_sllgn}
+                                            onChange={handleChange}
+                                          >
+                                            {[
+                                              { name: "cm", val: "cm" },
+                                              { name: "mm", val: "mm" },
+                                              { name: "m", val: "m" },
+                                              { name: "in", val: "in" },
+                                              { name: "ft", val: "ft" },
+                                              { name: "yd", val: "yd" }
+                                            ].map((unit, index) => (
+                                              <option key={index} value={unit.val}>
+                                                {unit.name}
+                                              </option>
+                                            ))}
+                                          </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="col-span-12 md:col-span-6 lg:col-span-6" id="dens_blk_hgt">
-                              <label htmlFor="tech_lgn" className="label">
-                                  {data?.payload?.tech_lang_keys["13"]}:
-                                  </label>
-                                <div className="grid grid-cols-12 gap-4">
-                                    <div className="col-span-6  "> 
-                                        <input
-                                              type="number"
-                                              step="any"
-                                              name="tech_hgt"
-                                              id="tech_hgt"
-                                              className="input"
-                                              aria-label="input"
-                                              placeholder="00"
-                                              value={formData.tech_hgt}
-                                              onChange={handleChange}
-                                            />
-                                    </div>
-                                    <div className="col-span-6"> 
-                                      <select
+                                <div className="col-span-12 md:col-span-6 lg:col-span-6" id="dens_blk_wdt">
+                                    <label htmlFor="tech_lgn" className="label">
+                                      {data?.payload?.tech_lang_keys["12"]}:
+                                        </label>
+                                    <div className="grid grid-cols-12 gap-4">
+                                        <div className="col-span-6  "> 
+                                            <input
+                                                  type="number"
+                                                  step="any"
+                                                  name="tech_wdt"
+                                                  id="tech_wdt"
+                                                  className="input "
+                                                  aria-label="input"
+                                                  placeholder="00"
+                                                  value={formData.tech_wdt}
+                                                  onChange={handleChange}
+                                                />
+
+                                        </div>
+                                        <div className="col-span-6 "> 
+                                        <select
                                         className="input"
                                         aria-label="select"
-                                        name="tech_slhgt"
-                                        id="tech_slhgt"
-                                        value={formData.tech_slhgt}
+                                        name="tech_slwdt"
+                                        id="tech_slwdt"
+                                        value={formData.tech_slwdt}
                                         onChange={handleChange}
                                       >
                                         {[
@@ -881,52 +838,95 @@ const DensityCalculator = () => {
                                         ))}
                                       </select>
 
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="col-span-12 md:col-span-6 lg:col-span-6" id="dens_adv_vol">
-                              <label htmlFor="tech_sladvol" className="label">
-                              {data?.payload?.tech_lang_keys["9"]}:
-                            </label>
-                              <div className="mt-2">
-                                <select
-                                  className="input"
-                                  aria-label="select"
-                                  name="tech_sladvol"
-                                  id="tech_sladvol"
-                                  value={formData.tech_sladvol}
-                                  onChange={handleChange}
-                                >
-                                  <option value="m³">m³</option>
-                                  <option value="mm³">mm³</option>
-                                  <option value="cm³">cm³</option>
-                                  <option value="dm³">dm³</option>
-                                  <option value="cu_in">cu in</option>
-                                  <option value="cu_ft">cu ft</option>
-                                  <option value="cu_yd">cu yd</option>
-                                  <option value="ml">ml</option>
-                                  <option value="cl">cl</option>
-                                  <option value="liters">liters</option>
-                                  <option value="hl">hl</option>
-                                  <option value="US_gal">US gal</option>
-                                  <option value="UK_gal">UK gal</option>
-                                  <option value="US_fl_oz">US fl oz</option>
-                                  <option value="UK_fl_oz">UK fl oz</option>
-                                  <option value="cups">cups</option>
-                                  <option value="tbsp">tbsp</option>
-                                  <option value="tsp">tsp</option>
-                                  <option value="US_qt">US qt</option>
-                                  <option value="UK_qt">UK qt</option>
-                                  <option value="US_pt">US pt</option>
-                                  <option value="UK_pt">UK pt</option>
-                                </select>
-                              </div>
+                                <div className="col-span-12 md:col-span-6 lg:col-span-6" id="dens_blk_hgt">
+                                  <label htmlFor="tech_lgn" className="label">
+                                      {data?.payload?.tech_lang_keys["13"]}:
+                                      </label>
+                                    <div className="grid grid-cols-12 gap-4">
+                                        <div className="col-span-6  "> 
+                                            <input
+                                                  type="number"
+                                                  step="any"
+                                                  name="tech_hgt"
+                                                  id="tech_hgt"
+                                                  className="input"
+                                                  aria-label="input"
+                                                  placeholder="00"
+                                                  value={formData.tech_hgt}
+                                                  onChange={handleChange}
+                                                />
+                                        </div>
+                                        <div className="col-span-6"> 
+                                          <select
+                                            className="input"
+                                            aria-label="select"
+                                            name="tech_slhgt"
+                                            id="tech_slhgt"
+                                            value={formData.tech_slhgt}
+                                            onChange={handleChange}
+                                          >
+                                            {[
+                                              { name: "cm", val: "cm" },
+                                              { name: "mm", val: "mm" },
+                                              { name: "m", val: "m" },
+                                              { name: "in", val: "in" },
+                                              { name: "ft", val: "ft" },
+                                              { name: "yd", val: "yd" }
+                                            ].map((unit, index) => (
+                                              <option key={index} value={unit.val}>
+                                                {unit.name}
+                                              </option>
+                                            ))}
+                                          </select>
 
-                            </div> */}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-span-12 md:col-span-6 lg:col-span-6" id="dens_adv_vol">
+                                  <label htmlFor="tech_sladvol" className="label">
+                                  {data?.payload?.tech_lang_keys["9"]}:
+                                </label>
+                                  <div className="mt-2">
+                                    <select
+                                      className="input"
+                                      aria-label="select"
+                                      name="tech_sladvol"
+                                      id="tech_sladvol"
+                                      value={formData.tech_sladvol}
+                                      onChange={handleChange}
+                                    >
+                                      <option value="m³">m³</option>
+                                      <option value="mm³">mm³</option>
+                                      <option value="cm³">cm³</option>
+                                      <option value="dm³">dm³</option>
+                                      <option value="cu_in">cu in</option>
+                                      <option value="cu_ft">cu ft</option>
+                                      <option value="cu_yd">cu yd</option>
+                                      <option value="ml">ml</option>
+                                      <option value="cl">cl</option>
+                                      <option value="liters">liters</option>
+                                      <option value="hl">hl</option>
+                                      <option value="US_gal">US gal</option>
+                                      <option value="UK_gal">UK gal</option>
+                                      <option value="US_fl_oz">US fl oz</option>
+                                      <option value="UK_fl_oz">UK fl oz</option>
+                                      <option value="cups">cups</option>
+                                      <option value="tbsp">tbsp</option>
+                                      <option value="tsp">tsp</option>
+                                      <option value="US_qt">US qt</option>
+                                      <option value="UK_qt">UK qt</option>
+                                      <option value="US_pt">US pt</option>
+                                      <option value="UK_pt">UK pt</option>
+                                    </select>
+                                  </div>
+
+                                </div> */}
                   </div>
                 </div>
               </div>
-
               {/* Clickable header with arrow */}
               <div
                 className="col-span-12 cursor-pointer current_gpa flex items-center justify-center my-3 gap-3 select-none mt-5"
@@ -947,7 +947,6 @@ const DensityCalculator = () => {
                   }`}
                 />
               </div>
-
               {/* The sliding content */}
               <div
                 ref={contentRef}
@@ -958,7 +957,7 @@ const DensityCalculator = () => {
                 }}
                 className="col-span-12 "
               >
-                <div className="grid grid-cols-12 gap-4 bordered rounded-lg pb-2 p-3">
+                <div className="grid grid-cols-12 gap-4 bordered pb-2 p-3">
                   {/* Unit Selector */}
                   <div className="col-span-12" id="dens_lok_unt">
                     <p className="label">
@@ -1288,7 +1287,7 @@ const DensityCalculator = () => {
                     {data?.payload?.tech_lang_keys["res"]}
                   </p>
                   <div
-                    className="col-span-12 ps-2 text-center mt-3 bg-sky p-2 bordered rounded-lg"
+                    className="col-span-12 ps-2 text-center mt-3 bg-sky bordered rounded-lg p-2"
                     id="dens_lok_ans"
                   >
                     <p className="text-[18px] pt-2">
@@ -1307,6 +1306,7 @@ const DensityCalculator = () => {
               </div>
             </div>
           </div>
+
           <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
@@ -1321,7 +1321,7 @@ const DensityCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -1332,7 +1332,7 @@ const DensityCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -1341,7 +1341,7 @@ const DensityCalculator = () => {
                       <div className="w-full">
                         <div className="col s12 s12 dnsty_wrap">
                           <div className="text-center">
-                            <p className="text-[18px] font-semibold">
+                            <p className="text-[16px] md:text-[18px] font-semibold">
                               {result?.tech_anstitle === "m" ? (
                                 <span>
                                   {data?.payload?.tech_lang_keys["6"]}
@@ -1356,7 +1356,7 @@ const DensityCalculator = () => {
                                 </span>
                               ) : null}
                             </p>
-                            <p className="md:text-[25px] text-[18px] bg-[#2845F5] text-white rounded-lg px-3 py-2 inline-block my-3 wrap_dnst">
+                            <p className="text-[20px] md:text-[25px] bg-[#2845F5] text-[#fff] rounded-lg px-3 py-2 inline-block my-3 wrap_dnst">
                               <strong className="text-blue">
                                 {result?.tech_ansval}
                               </strong>
@@ -1403,12 +1403,12 @@ const DensityCalculator = () => {
                                   )}
                                 </div> */}
 
-                              {/* <p className="font-s-18 font-semibold">
+                              {/* <p className="text-[16px] md:text-[18px] font-semibold">
                                   {data?.payload?.tech_lang_keys["82"]}
                                 </p> */}
 
-                              <div className="col-lg-8 text-[16px] overflow-auto">
-                                <table className="w-100 disp_tbl">
+                              <div className="col-lg-8 text-[16px] md:text-[18px]">
+                                <table className="w-full disp_tbl">
                                   <tbody>
                                     {/* <tr>
                                         <td className="border-b py-2 font-semibold">
@@ -1435,13 +1435,13 @@ const DensityCalculator = () => {
                                           :
                                         </td>
                                         <td className="border-b py-2">{result?.tech_ansval2}</td>
-                                      </tr> */}
+                                     </tr> */}
                                     <tr>
                                       <td className="border-b py-2 font-semibold">
                                         {data?.payload?.tech_lang_keys["81"]}:
                                       </td>
                                       <td className="border-b py-2">
-                                        {result?.ansval3}
+                                        {result?.tech_ansval3}
                                       </td>
                                     </tr>
                                   </tbody>
@@ -1450,18 +1450,18 @@ const DensityCalculator = () => {
                             </>
                           ) : (
                             <>
-                              <p className="text-[16px] font-semibold">
+                              <p className="text-[16px] md:text-[18px] font-semibold">
                                 {data?.payload?.tech_lang_keys["82"]}:
                               </p>
-                              <div className="col-lg-8 text-[16px] overflow-auto">
-                                <table className="w-100 disp_tbl">
+                              <div className="col-lg-8 text-[16px] md:text-[18px]">
+                                <table className="w-full disp_tbl">
                                   <tbody>
                                     <tr>
                                       <td className="border-b py-2 font-semibold">
                                         {data?.payload?.tech_lang_keys["6"]}:
                                       </td>
                                       <td className="border-b py-2">
-                                        {result?.tech_mass}
+                                        {result?.tech_tech_mass}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1469,7 +1469,7 @@ const DensityCalculator = () => {
                                         {data?.payload?.tech_lang_keys["11"]}:
                                       </td>
                                       <td className="border-b py-2">
-                                        {result?.tech_lngt}
+                                        {result?.tech_tech_lngt}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1477,7 +1477,7 @@ const DensityCalculator = () => {
                                         {data?.payload?.tech_lang_keys["12"]}:
                                       </td>
                                       <td className="border-b py-2">
-                                        {result?.tech_wdth}
+                                        {result?.tech_tech_wdth}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1485,7 +1485,7 @@ const DensityCalculator = () => {
                                         {data?.payload?.tech_lang_keys["13"]}:
                                       </td>
                                       <td className="border-b py-2">
-                                        {result?.tech_hgth}
+                                        {result?.tech_tech_hgth}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1493,7 +1493,7 @@ const DensityCalculator = () => {
                                         {data?.payload?.tech_lang_keys["5"]}:
                                       </td>
                                       <td className="border-b py-2">
-                                        {result?.tech_vlme}
+                                        {result?.tech_tech_vlme}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1501,7 +1501,7 @@ const DensityCalculator = () => {
                                         {data?.payload?.tech_lang_keys["81"]}:
                                       </td>
                                       <td className="border-b py-2">
-                                        {result?.ansval3}
+                                        {result?.tech_ansval3}
                                       </td>
                                     </tr>
                                   </tbody>

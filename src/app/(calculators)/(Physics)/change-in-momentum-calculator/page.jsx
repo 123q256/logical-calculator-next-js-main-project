@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import "katex/dist/katex.min.css";
 import { BlockMath } from "react-katex";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useChangeInMomentumCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useChangeInMomentumCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -16,7 +17,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const ChangeInMomentumCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -46,19 +46,20 @@ const ChangeInMomentumCalculator = () => {
   }, [url]);
 
   const [formData, setFormData] = useState({
-    tech_operation: "1", // 1 2 3
-    tech_mass: 12,
-    tech_mass_unit: "tons(t)",
-    tech_i_velocity: 1200,
+    tech_operation: "1", //  1 2 3
+    tech_mass: "1200",
+    tech_mass_unit: "u",
+    tech_i_velocity: "1200",
     tech_i_velocity_unit: "m/s",
-    tech_f_velocity: 1200,
+    tech_f_velocity: "1200",
     tech_f_velocity_unit: "m/s",
-    tech_chnage_velocity: "1200",
-    tech_c_velocity_unit: "knots",
-    tech_force: 1200,
-    tech_force_unit: "N",
-    tech_time: 15,
-    tech_time_unit: "sec",
+    tech_c_velocity: "1200",
+    tech_c_velocity_unit: "m/s",
+    tech_force: "1200",
+    tech_force_unit: "GN",
+    tech_time: "15",
+    tech_time_unit: "min",
+    tech_submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -95,37 +96,39 @@ const ChangeInMomentumCalculator = () => {
         tech_i_velocity_unit: formData.tech_i_velocity_unit,
         tech_f_velocity: formData.tech_f_velocity,
         tech_f_velocity_unit: formData.tech_f_velocity_unit,
-        tech_chnage_velocity: formData.tech_chnage_velocity,
+        tech_c_velocity: formData.tech_c_velocity,
         tech_c_velocity_unit: formData.tech_c_velocity_unit,
         tech_force: formData.tech_force,
         tech_force_unit: formData.tech_force_unit,
         tech_time: formData.tech_time,
         tech_time_unit: formData.tech_time_unit,
+        tech_submit: formData.tech_submit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_operation: "1", // 1 2 3
-      tech_mass: 12,
-      tech_mass_unit: "tons(t)",
-      tech_i_velocity: 1200,
+      tech_operation: "1", //  1 2 3
+      tech_mass: "1200",
+      tech_mass_unit: "u",
+      tech_i_velocity: "1200",
       tech_i_velocity_unit: "m/s",
-      tech_f_velocity: 1200,
+      tech_f_velocity: "1200",
       tech_f_velocity_unit: "m/s",
-      tech_chnage_velocity: "1200",
-      tech_c_velocity_unit: "knots",
-      tech_force: 1200,
-      tech_force_unit: "N",
-      tech_time: 15,
-      tech_time_unit: "sec",
+      tech_c_velocity: "1200",
+      tech_c_velocity_unit: "m/s",
+      tech_force: "1200",
+      tech_force_unit: "GN",
+      tech_time: "15",
+      tech_time_unit: "min",
+      tech_submit: "calculate",
     });
     setResult(null);
     setFormError(null);
@@ -264,7 +267,7 @@ const ChangeInMomentumCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[50%] md:w-[50%] w-full mx-auto ">
+          <div className="lg:w-[50%] md:w-[80%] w-full mx-auto ">
             <div className="grid grid-cols-12 mt-3 gap-1 md:gap-4">
               <div className="col-span-12  mt-lg-2" id="optional">
                 <label htmlFor="tech_operation" className="label">
@@ -294,10 +297,7 @@ const ChangeInMomentumCalculator = () => {
               <div className="col-span-12  px-2 mt-0 mt-lg-2">
                 {formData.tech_operation == "1" && (
                   <>
-                    <div
-                      className="col s12 font_s28 black-text txt"
-                      id="math_s"
-                    >
+                    <div className="col s12 font_s28 black-text txt" id="math_s">
                       <b className="col s12 center">
                         <BlockMath math="\Delta P = m(V_f - V_i)" />
                       </b>
@@ -306,19 +306,16 @@ const ChangeInMomentumCalculator = () => {
                 )}
                 {formData.tech_operation == "2" && (
                   <>
-                    <p className="col s12 font_s28 black-text txt " id="math_d">
+                    <div className="col s12 font_s28 black-text txt " id="math_d">
                       <b className="col s12 center">
                         <BlockMath math="\Delta P = m \Delta V" />
                       </b>
-                    </p>
+                    </div>
                   </>
                 )}
                 {formData.tech_operation == "3" && (
                   <>
-                    <div
-                      className="col s12 font_s28 black-text txt "
-                      id="math_t"
-                    >
+                    <div className="col s12 font_s28 black-text txt " id="math_t">
                       <b className="col s12 center">
                         <BlockMath math="\Delta P = F \cdot T" />
                       </b>
@@ -474,16 +471,16 @@ const ChangeInMomentumCalculator = () => {
               {formData.tech_operation == "2" && (
                 <>
                   <div className="col-span-12 md:col-span-6 chnage_velocity ">
-                    <label htmlFor="tech_chnage_velocity" className="label">
+                    <label htmlFor="tech_c_velocity" className="label">
                       {data?.payload?.tech_lang_keys["7"]}
                     </label>
                     <div className="relative w-full ">
                       <input
                         type="number"
-                        name="tech_chnage_velocity"
+                        name="tech_c_velocity"
                         step="any"
                         className="mt-1 input"
-                        value={formData.tech_chnage_velocity}
+                        value={formData.tech_c_velocity}
                         placeholder="00"
                         onChange={handleChange}
                       />
@@ -622,18 +619,18 @@ const ChangeInMomentumCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -652,10 +649,7 @@ const ChangeInMomentumCalculator = () => {
                                   </td>
                                   <td className="py-2 border-b">
                                     {" "}
-                                    {Number(
-                                      result?.tech_initial_momentum
-                                    ).toFixed(2)}{" "}
-                                    Ns
+                                    {result?.tech_initial_momentum} Ns
                                   </td>
                                 </tr>
                                 <tr>
@@ -666,10 +660,7 @@ const ChangeInMomentumCalculator = () => {
                                   </td>
                                   <td className="py-2 border-b">
                                     {" "}
-                                    {Number(
-                                      result?.tech_final_momentum
-                                    ).toFixed(2)}{" "}
-                                    Ns
+                                    {result?.tech_final_momentum} Ns
                                   </td>
                                 </tr>
                                 <tr>
@@ -680,10 +671,7 @@ const ChangeInMomentumCalculator = () => {
                                   </td>
                                   <td className="py-2 border-b">
                                     {" "}
-                                    {Number(
-                                      result?.tech_change_momentum_val
-                                    ).toFixed(2)}{" "}
-                                    Ns
+                                    {result?.tech_change_momentum_val} Ns
                                   </td>
                                 </tr>
                               </tbody>
@@ -695,10 +683,8 @@ const ChangeInMomentumCalculator = () => {
                           <div className="w-full text-center text-[25px]">
                             <p>{data?.payload?.tech_lang_keys[12]}</p>
                             <p className="my-3">
-                              <strong className="bg-sky-100 px-3 py-2 ">
-                                {Number(
-                                  result?.tech_change_momentum_val
-                                ).toFixed(2)}
+                              <strong className="bg-[#2845F5] text-[#fff] rounded-lg px-3 py-2 ">
+                                {result?.tech_change_momentum_val}
                               </strong>
                             </p>
                           </div>

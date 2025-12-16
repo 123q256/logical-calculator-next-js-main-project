@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useDisplacementCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useDisplacementCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const DisplacementCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -178,11 +178,11 @@ const DisplacementCalculator = () => {
         tech_timi_9: formData.tech_timi_9,
         tech_sltimi_9: formData.tech_sltimi_9,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -381,13 +381,16 @@ const DisplacementCalculator = () => {
           )}
 
           <div className="w-full lg:w-8/12 justify-center mx-auto mt-3">
-            <div className="w-full grid grid-cols-12 gap-2 mt-3">
+            <div className="w-full grid grid-cols-12 gap-1 md:gap-2 mt-3">
               <div className="col-span-12">
                 <div className="grid grid-cols-12 gap-1">
-                  <div className="lg:col-span-10 md:col-span-10 col-span-9">
+                  <p className="col-span-12">
+                    {" "}
                     <label htmlFor="tech_known" className="label">
                       {data?.payload?.tech_lang_keys["1"]}:
-                    </label>
+                    </label>{" "}
+                  </p>
+                  <div className="col-span-8 md:col-span-10">
                     <div className="mt-2">
                       <select
                         className="input"
@@ -412,10 +415,7 @@ const DisplacementCalculator = () => {
                       </select>
                     </div>
                   </div>
-                  <div className="lg:col-span-2 md:col-span-2 col-span-3">
-                    <label htmlFor="tech_sldsp" className="label">
-                      &nbsp;
-                    </label>
+                  <div className="col-span-4 md:col-span-2">
                     <div className="mt-2">
                       <select
                         className="input"
@@ -440,7 +440,10 @@ const DisplacementCalculator = () => {
                 <div className="w-full grid grid-cols-12 gap-2 mt-3 rounded-md ">
                   {formData.tech_known == "1" && (
                     <>
-                      <div className="col-span-6" id="disp_blk_av">
+                      <div
+                        className="col-span-12 md:col-span-6"
+                        id="disp_blk_av"
+                      >
                         <label htmlFor="tech_av" className="label">
                           {data?.payload?.tech_lang_keys["6"]}
                         </label>
@@ -455,7 +458,7 @@ const DisplacementCalculator = () => {
                             onChange={handleChange}
                           />
                           <label
-                            className="absolute cursor-pointer text-sm underline right-6 top-4"
+                            className="absolute cursor-pointer [16px] md:text-[18px] underline right-6 top-3"
                             onClick={toggleDropdown01}
                           >
                             {formData.tech_slav} ▾
@@ -488,7 +491,10 @@ const DisplacementCalculator = () => {
                     formData.tech_known == "2" ||
                     formData.tech_known == "3") && (
                     <>
-                      <div className="col-span-6 " id="disp_blk_tm">
+                      <div
+                        className="col-span-12 md:col-span-6 "
+                        id="disp_blk_tm"
+                      >
                         <label htmlFor="tech_tm" className="label">
                           {data?.payload?.tech_lang_keys["7"]}
                         </label>
@@ -503,7 +509,7 @@ const DisplacementCalculator = () => {
                             onChange={handleChange}
                           />
                           <label
-                            className="absolute cursor-pointer text-sm underline right-6 top-4"
+                            className="absolute cursor-pointer [16px] md:text-[18px] underline right-6 top-3"
                             onClick={toggleDropdown11}
                           >
                             {formData.tech_sltm} ▾
@@ -532,7 +538,10 @@ const DisplacementCalculator = () => {
                   {(formData.tech_known == "2" ||
                     formData.tech_known == "3") && (
                     <>
-                      <div className=" col-span-6" id="disp_blk_iv">
+                      <div
+                        className=" col-span-12 md:col-span-6"
+                        id="disp_blk_iv"
+                      >
                         <label htmlFor="tech_iv" className="label">
                           {data?.payload?.tech_lang_keys["8"]}
                         </label>
@@ -547,7 +556,7 @@ const DisplacementCalculator = () => {
                             onChange={handleChange}
                           />
                           <label
-                            className="absolute cursor-pointer text-sm underline right-6 top-4"
+                            className="absolute cursor-pointer [16px] md:text-[18px] underline right-6 top-3"
                             onClick={toggleDropdown12}
                           >
                             {formData.tech_sliv} ▾
@@ -578,7 +587,10 @@ const DisplacementCalculator = () => {
                   )}
                   {formData.tech_known == "3" && (
                     <>
-                      <div className="col-span-6 " id="disp_blk_fv">
+                      <div
+                        className="col-span-12 md:col-span-6 "
+                        id="disp_blk_fv"
+                      >
                         <label htmlFor="tech_fv" className="label">
                           {data?.payload?.tech_lang_keys["9"]}
                         </label>
@@ -593,7 +605,7 @@ const DisplacementCalculator = () => {
                             onChange={handleChange}
                           />
                           <label
-                            className="absolute cursor-pointer text-sm underline right-6 top-4"
+                            className="absolute cursor-pointer [16px] md:text-[18px] underline right-6 top-3"
                             onClick={toggleDropdown13}
                           >
                             {formData.tech_slfv} ▾
@@ -624,7 +636,10 @@ const DisplacementCalculator = () => {
                   )}
                   {formData.tech_known == "2" && (
                     <>
-                      <div className="col-span-6 " id="disp_blk_acc">
+                      <div
+                        className="col-span-12 md:col-span-6 "
+                        id="disp_blk_acc"
+                      >
                         <label htmlFor="tech_acc" className="label">
                           {data?.payload?.tech_lang_keys["10"]}{" "}
                         </label>
@@ -640,7 +655,7 @@ const DisplacementCalculator = () => {
                             onChange={handleChange}
                           />
                           <label
-                            className="absolute cursor-pointer text-sm underline right-6 top-4"
+                            className="absolute cursor-pointer [16px] md:text-[18px] underline right-6 top-3"
                             onClick={toggleDropdown14}
                           >
                             {formData.tech_slacc} ▾
@@ -677,7 +692,7 @@ const DisplacementCalculator = () => {
                         return (
                           <React.Fragment key={index}>
                             {/* Velocity Input */}
-                            <div className="col-span-6">
+                            <div className="col-span-12 md:col-span-6">
                               <label
                                 htmlFor={`tech_vloc_${index}`}
                                 className="label"
@@ -695,7 +710,7 @@ const DisplacementCalculator = () => {
                                   onChange={handleChange}
                                 />
                                 <label
-                                  className="absolute cursor-pointer text-sm underline right-6 top-4"
+                                  className="absolute cursor-pointer [16px] md:text-[18px] underline right-6 top-3"
                                   onClick={() => toggleDropdown(`v${index}`)}
                                 >
                                   {formData[`tech_slvloc_${index}`] || "unit"} ▾
@@ -722,7 +737,7 @@ const DisplacementCalculator = () => {
                               </div>
                             </div>
                             {/* Time Input */}
-                            <div className="col-span-6">
+                            <div className="col-span-12 md:col-span-6">
                               <label
                                 htmlFor={`tech_timi_${index}`}
                                 className="label"
@@ -740,7 +755,7 @@ const DisplacementCalculator = () => {
                                   onChange={handleChange}
                                 />
                                 <label
-                                  className="absolute cursor-pointer text-sm underline right-6 top-4"
+                                  className="absolute cursor-pointer [16px] md:text-[18px] underline right-6 top-3"
                                   onClick={() => toggleDropdown(`t${index}`)}
                                 >
                                   {formData[`tech_sltimi_${index}`] || "unit"} ▾
@@ -790,7 +805,7 @@ const DisplacementCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -801,16 +816,16 @@ const DisplacementCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
                   <div className="rounded-lg flex items-center justify-center">
                     <div className="w-full  rounded-lg mt-4">
-                      <div className="w-full text-[18px] mt-4">
+                      <div className="w-full text-xl mt-4">
                         {formData?.tech_known != null &&
                           formData?.tech_known != "" && (
                             <div className="w-full md:w-[80%] lg:w-[60%]  mt-2">
-                              <table className="w-full text-lg border-separate ">
+                              <table className="w-full text-lg border-separate  [16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="py-2 border-b  font-semibold">
@@ -853,11 +868,11 @@ const DisplacementCalculator = () => {
                         )}
                         {formData?.tech_known == "4" && (
                           <>
-                            <div className="lg:w-1/2 mt-2">
-                              <p className="mt-2 font-semibold text-[18px]">
+                            <div className="lg:w-1/2 mt-2 overflow-auto">
+                              <p className="mt-2 font-semibold text-lg">
                                 {data?.payload?.tech_lang_keys["13"]}
                               </p>
-                              <table className="w-full text-[18px] border-separate ">
+                              <table className="w-full text-lg border-separate  [16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="py-2 border-b font-semibold">

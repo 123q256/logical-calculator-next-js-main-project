@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useElectricFieldCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useElectricFieldCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -135,11 +136,11 @@ const ElectricFieldCalculator = () => {
         tech_distance1: formData.tech_distance1,
         tech_distance_unit: formData.tech_distance_unit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -315,8 +316,8 @@ const ElectricFieldCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
-            <div className="grid grid-cols-12  gap-4">
+          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
+            <div className="grid grid-cols-12 gap-1 md:gap-4">
               <div className="col-span-12 md:col-span-6 lg:col-span-6">
                 <label htmlFor="tech_selection" className="label">
                   {data?.payload?.tech_lang_keys["1"]} a:
@@ -540,7 +541,6 @@ const ElectricFieldCalculator = () => {
                   </div>
                 </>
               )}
-
               {formData.tech_selection == "2" && (
                 <>
                   <div className="col-span-12">
@@ -603,7 +603,7 @@ const ElectricFieldCalculator = () => {
                                 <img
                                   src="/images/delete_btn.png"
                                   alt="delete"
-                                  className="h-4 w-4"
+                                  className="h-4 w-4 cursor-pointer"
                                   onClick={() => removeRow(index)}
                                 />
                               </div>
@@ -665,7 +665,7 @@ const ElectricFieldCalculator = () => {
                     <div className="col-12 d-flex px-2 mt-5">
                       <button
                         type="button"
-                        className="bg-[#2845F5] cursor-pointer text-white border rounded px-4 py-2 me-2"
+                        className="bg-[#2845F5] text-[#fff] border rounded px-4 py-2 me-2 cursor-pointer"
                         onClick={addRow}
                       >
                         <strong className="text-blue">
@@ -693,7 +693,7 @@ const ElectricFieldCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -704,7 +704,7 @@ const ElectricFieldCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -713,61 +713,69 @@ const ElectricFieldCalculator = () => {
                       <div className="w-full ">
                         {result?.tech_answer && (
                           <div className="text-center overflow-auto">
-                            <p className="text-[18px]">
+                            <p className="text-[16px] md:text-[18px]">
                               <strong>
                                 {data?.payload?.tech_lang_keys[5]}
                               </strong>
                             </p>
-                            <p className="text-[21px] bg-sky bordered rounded-lg px-3 py-3 my-3">
-                              <strong className="text-blue">
-                                {result?.tech_answer} (N/C)
-                              </strong>
-                            </p>
+                            <div className="flex justify-center">
+                              <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
+                                <strong className="text-blue">
+                                  {result?.tech_answer} (N/C)
+                                </strong>
+                              </p>
+                            </div>
                           </div>
                         )}
 
                         {result?.tech_answer1 && (
                           <div className="text-center overflow-auto">
-                            <p className="text-[18px]">
+                            <p className="text-[16px] md:text-[18px]">
                               <strong>
                                 {data?.payload?.tech_lang_keys[6]}
                               </strong>
                             </p>
-                            <p className="text-[21px] bg-sky bordered rounded-lg px-3 py-3 my-3">
-                              <strong className="text-blue">
-                                {result?.tech_answer1} (m)
-                              </strong>
-                            </p>
+                            <div className="flex justify-center">
+                              <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
+                                <strong className="text-blue">
+                                  {result?.tech_answer1} (m)
+                                </strong>
+                              </p>
+                            </div>
                           </div>
                         )}
 
                         {result?.tech_answer2 && (
                           <div className="text-center overflow-auto">
-                            <p className="text-[18px]">
+                            <p className="text-[16px] md:text-[18px]">
                               <strong>
                                 {data?.payload?.tech_lang_keys[7]}
                               </strong>
                             </p>
-                            <p className="text-[21px] bg-sky bordered rounded-lg px-3 py-3 my-3">
-                              <strong className="text-blue">
-                                {result?.tech_answer2} (c)
-                              </strong>
-                            </p>
+                            <div className="flex justify-center">
+                              <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
+                                <strong className="text-blue">
+                                  {result?.tech_answer2} (c)
+                                </strong>
+                              </p>
+                            </div>
                           </div>
                         )}
 
                         {result?.tech_answer3 && (
                           <div className="text-center overflow-auto">
-                            <p className="text-[18px]">
+                            <p className="text-[16px] md:text-[18px]">
                               <strong>
                                 {data?.payload?.tech_lang_keys[5]}
                               </strong>
                             </p>
-                            <p className="text-[21px] bg-sky bordered rounded-lg px-3 py-3 my-3">
-                              <strong className="text-blue">
-                                {result?.tech_answer3} (N/C)
-                              </strong>
-                            </p>
+                            <div className="flex justify-center">
+                              <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
+                                <strong className="text-blue">
+                                  {result?.tech_answer3} (N/C)
+                                </strong>
+                              </p>
+                            </div>
                           </div>
                         )}
                       </div>

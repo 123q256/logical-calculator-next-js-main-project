@@ -87,9 +87,10 @@ const KinAnsTbl = ({
   </>
 );
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useKinematicsCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useKinematicsCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -98,7 +99,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const KinematicsCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -130,15 +130,16 @@ const KinematicsCalculator = () => {
   const [formData, setFormData] = useState({
     tech_known: "1",
     tech_cdis: "",
-    tech_cdisU: "cm",
-    tech_iv: "",
-    tech_ivU: "m/s",
-    tech_fv: "",
-    tech_fvU: "m/s",
+    tech_cdisU: "m",
+    tech_iv: "1",
+    tech_ivU: "mi/s",
+    tech_fv: "2",
+    tech_fvU: "km/s",
     tech_ct: "",
-    tech_ctU: "sec",
-    tech_cac: "",
+    tech_ctU: "min",
+    tech_cac: "3",
     tech_cacU: "m/s²",
+    tech_submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -193,22 +194,23 @@ const KinematicsCalculator = () => {
     try {
       const response = await calculateEbitCalculator({
         tech_known: formData.tech_known,
-        tech_cdis: Number(formData.tech_cdis),
+        tech_cdis: formData.tech_cdis,
         tech_cdisU: formData.tech_cdisU,
-        tech_iv: Number(formData.tech_iv),
+        tech_iv: formData.tech_iv,
         tech_ivU: formData.tech_ivU,
-        tech_fv: Number(formData.tech_fv),
+        tech_fv: formData.tech_fv,
         tech_fvU: formData.tech_fvU,
-        tech_ct: Number(formData.tech_ct),
+        tech_ct: formData.tech_ct,
         tech_ctU: formData.tech_ctU,
-        tech_cac: Number(formData.tech_cac),
+        tech_cac: formData.tech_cac,
         tech_cacU: formData.tech_cacU,
+        tech_submit: formData.tech_submit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -217,15 +219,16 @@ const KinematicsCalculator = () => {
     setFormData({
       tech_known: "1",
       tech_cdis: "",
-      tech_cdisU: "cm",
-      tech_iv: "",
-      tech_ivU: "m/s",
-      tech_fv: "",
-      tech_fvU: "m/s",
+      tech_cdisU: "m",
+      tech_iv: "1",
+      tech_ivU: "mi/s",
+      tech_fv: "2",
+      tech_fvU: "km/s",
       tech_ct: "",
-      tech_ctU: "m/s",
-      tech_cac: "",
+      tech_ctU: "min",
+      tech_cac: "3",
       tech_cacU: "m/s²",
+      tech_submit: "calculate",
     });
     setResult(null);
     setFormError(null);
@@ -433,7 +436,7 @@ const KinematicsCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown}
                       >
                         {formData.tech_cdisU} ▾
@@ -488,7 +491,7 @@ const KinematicsCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown1}
                       >
                         {formData.tech_ivU} ▾
@@ -542,7 +545,7 @@ const KinematicsCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown2}
                       >
                         {formData.tech_fvU} ▾
@@ -596,7 +599,7 @@ const KinematicsCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown3}
                       >
                         {formData.tech_ctU} ▾
@@ -647,7 +650,7 @@ const KinematicsCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown4}
                       >
                         {formData.tech_cacU} ▾
@@ -689,7 +692,7 @@ const KinematicsCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -700,7 +703,7 @@ const KinematicsCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 

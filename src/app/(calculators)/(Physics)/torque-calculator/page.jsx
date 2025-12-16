@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useTorqueCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useTorqueCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const TorqueCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -126,11 +126,11 @@ const TorqueCalculator = () => {
         tech_by: formData.tech_by,
         tech_bz: formData.tech_bz,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -331,7 +331,6 @@ const TorqueCalculator = () => {
               {formError}
             </p>
           )}
-
           <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
             <div className="grid grid-cols-1  gap-4">
               <div className="space-y-2">
@@ -546,13 +545,13 @@ const TorqueCalculator = () => {
             )}
             {formData.tech_to == "2" && (
               <>
-                <div className="grid grid-cols-12 gap-4 mt-3">
+                <div className="grid grid-cols-12 gap-1 md:gap-4  mt-3">
                   <p className="col-span-12 px-2">
                     <strong>Note:</strong> Please! enter any five values to know
                     the sixth one.
                   </p>
                 </div>
-                <div className="grid grid-cols-12 gap-4  mt-1">
+                <div className="grid grid-cols-12  gap-1 md:gap-4  mt-1">
                   <div className="col-span-12 md:col-span-6">
                     <label htmlFor="tech_loop" className="label">
                       {data?.payload?.tech_lang_keys["loop"]}:
@@ -788,15 +787,14 @@ const TorqueCalculator = () => {
                 </div>
               </>
             )}
-
             {formData.tech_to == "3" && (
               <>
-                <div className="grid grid-cols-12  gap-4 my-3">
+                <div className="grid grid-cols-12   gap-1 md:gap-4 my-3">
                   <p className="col-span-12 px-2">
                     <strong>{data?.payload?.tech_lang_keys["av"]}, r:</strong>
                   </p>
                 </div>
-                <div className="grid grid-cols-12  gap-4 ">
+                <div className="grid grid-cols-12   gap-1 md:gap-4 ">
                   <div className="col-span-4 ">
                     <div className=" relative">
                       <input
@@ -846,14 +844,14 @@ const TorqueCalculator = () => {
                     </div>
                   </div>
                 </div>
-                <div className="grid grid-cols-1 mt-3  gap-4 ">
+                <div className="grid grid-cols-1 mt-3   gap-1 md:gap-4 ">
                   <div className="space-y-2">
                     <p className="col-12">
                       <strong>{data?.payload?.tech_lang_keys["bv"]}, F:</strong>
                     </p>
                   </div>
                 </div>
-                <div className="grid grid-cols-12  gap-4 ">
+                <div className="grid grid-cols-12   gap-1 md:gap-4 ">
                   <div className="col-span-4 ">
                     <div className=" relative">
                       <input
@@ -921,7 +919,7 @@ const TorqueCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -932,45 +930,45 @@ const TorqueCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6 result">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg flex items-center justify-center">
-                    <div className="w-full bg-light-blue p-3 rounded-lg mt-3">
+                    <div className="w-full bg-light-blue md:p-3 rounded-lg mt-3">
                       <div className="lg:w-7/12 mt-2">
                         {formData?.tech_to == 1 && (
-                          <table className="w-full text-[16px]">
+                          <table className="w-full text-[16px] md:text-[18px]">
                             <tbody>
                               <tr>
-                                <td className="py-2 border-b border-[#99EA48] w-7/10">
+                                <td className="py-2 border-b w-7/10">
                                   {data?.payload?.tech_lang_keys["dis"]}
                                 </td>
-                                <td className="py-2 border-b border-[#99EA48]">
+                                <td className="py-2 border-b">
                                   <strong>{result?.tech_dis}</strong>
                                 </td>
                               </tr>
                               <tr>
-                                <td className="py-2 border-b border-[#99EA48] w-7/10">
+                                <td className="py-2 border-b w-7/10">
                                   {data?.payload?.tech_lang_keys["for"]}
                                 </td>
-                                <td className="py-2 border-b border-[#99EA48]">
+                                <td className="py-2 border-b">
                                   <strong>{result?.tech_force}</strong>
                                 </td>
                               </tr>
                               <tr>
-                                <td className="py-2 border-b border-[#99EA48] w-7/10">
+                                <td className="py-2 border-b w-7/10">
                                   {data?.payload?.tech_lang_keys["ang"]}
                                 </td>
-                                <td className="py-2 border-b border-[#99EA48]">
+                                <td className="py-2 border-b">
                                   <strong>{result?.tech_angle}</strong>
                                 </td>
                               </tr>
                               <tr>
-                                <td className="py-2 border-b border-[#99EA48] w-7/10">
+                                <td className="py-2 border-b w-7/10">
                                   {data?.payload?.tech_lang_keys["tor"]}
                                 </td>
-                                <td className="py-2 border-b border-[#99EA48]">
+                                <td className="py-2 border-b">
                                   <strong>{result?.tech_tor}</strong>
                                 </td>
                               </tr>
@@ -979,53 +977,53 @@ const TorqueCalculator = () => {
                         )}
 
                         {formData?.tech_to == 2 && (
-                          <table className="w-full text-[16px]">
+                          <table className="w-full text-[16px] md:text-[18px]">
                             <tbody>
                               <tr>
-                                <td className="py-2 border-b border-[#99EA48] w-7/10">
+                                <td className="py-2 border-b w-7/10">
                                   {data?.payload?.tech_lang_keys["loop"]}
                                 </td>
-                                <td className="py-2 border-b border-[#99EA48]">
+                                <td className="py-2 border-b">
                                   <strong>{result?.tech_loop}</strong>
                                 </td>
                               </tr>
                               <tr>
-                                <td className="py-2 border-b border-[#99EA48] w-7/10">
+                                <td className="py-2 border-b w-7/10">
                                   {data?.payload?.tech_lang_keys["ang"]}
                                 </td>
-                                <td className="py-2 border-b border-[#99EA48]">
+                                <td className="py-2 border-b">
                                   <strong>{result?.tech_angle}</strong>
                                 </td>
                               </tr>
                               <tr>
-                                <td className="py-2 border-b border-[#99EA48] w-7/10">
+                                <td className="py-2 border-b w-7/10">
                                   {data?.payload?.tech_lang_keys["cur"]}
                                 </td>
-                                <td className="py-2 border-b border-[#99EA48]">
+                                <td className="py-2 border-b">
                                   <strong>{result?.tech_current}</strong>
                                 </td>
                               </tr>
                               <tr>
-                                <td className="py-2 border-b border-[#99EA48] w-7/10">
+                                <td className="py-2 border-b w-7/10">
                                   {data?.payload?.tech_lang_keys["area"]}
                                 </td>
-                                <td className="py-2 border-b border-[#99EA48]">
+                                <td className="py-2 border-b">
                                   <strong>{result?.tech_area}</strong>
                                 </td>
                               </tr>
                               <tr>
-                                <td className="py-2 border-b border-[#99EA48] w-7/10">
+                                <td className="py-2 border-b w-7/10">
                                   {data?.payload?.tech_lang_keys["mag"]}
                                 </td>
-                                <td className="py-2 border-b border-[#99EA48]">
+                                <td className="py-2 border-b">
                                   <strong>{result?.tech_mag}</strong>
                                 </td>
                               </tr>
                               <tr>
-                                <td className="py-2 border-b border-[#99EA48] w-7/10">
+                                <td className="py-2 border-b w-7/10">
                                   {data?.payload?.tech_lang_keys["tor"]}
                                 </td>
-                                <td className="py-2 border-b border-[#99EA48]">
+                                <td className="py-2 border-b">
                                   <strong>{result?.tech_tor}</strong>
                                 </td>
                               </tr>

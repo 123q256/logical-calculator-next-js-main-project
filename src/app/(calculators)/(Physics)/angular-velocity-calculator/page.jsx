@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useAngularVelocityCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useAngularVelocityCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -16,7 +17,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const AngularVelocityCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -110,11 +110,11 @@ const AngularVelocityCalculator = () => {
         tech_rds_m: formData.tech_rds_m,
         tech_rds_m1: formData.tech_rds_m1,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -276,7 +276,7 @@ const AngularVelocityCalculator = () => {
             </p>
           )}
           <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
-            <div className="grid grid-cols-12  mt-3  gap-2">
+            <div className="grid grid-cols-12  mt-3 gap-1  md:gap-2">
               <div className="col-span-12 mx-auto px-2">
                 <label htmlFor="tech_method" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -311,38 +311,38 @@ const AngularVelocityCalculator = () => {
                         {data?.payload?.tech_lang_keys[5]}:
                       </strong>
                       <div className="col-12 px-2 mb-3 mt-3 d-flex align-items-center">
-                        <label className="pe-2" htmlFor="ang_vel">
+                        <label className="pe-2 cursor-pointer" htmlFor="ang_vel">
                           <input
                             type="radio"
                             name="tech_g"
                             value="ang_vel"
                             id="ang_vel"
-                            className="mr-2 border"
+                            className="mr-2 border cursor-pointer"
                             onChange={handleChange}
                             checked={formData.tech_g === "ang_vel"}
                           />
                           <span>{data?.payload?.tech_lang_keys["6"]}</span>
                         </label>
 
-                        <label className="pe-2" htmlFor="ang_chnge">
+                        <label className="pe-2 cursor-pointer" htmlFor="ang_chnge">
                           <input
                             type="radio"
                             name="tech_g"
                             value="ang_chnge"
                             id="ang_chnge"
-                            className="mr-2 border"
+                            className="mr-2 border cursor-pointer"
                             onChange={handleChange}
                             checked={formData.tech_g === "ang_chnge"}
                           />
                           <span>{data?.payload?.tech_lang_keys["7"]}</span>
                         </label>
-                        <label className="pe-2" htmlFor="time">
+                        <label className="pe-2 cursor-pointer" htmlFor="time">
                           <input
                             type="radio"
                             name="tech_g"
                             value="time"
                             id="time"
-                            className="mr-2 border"
+                            className="mr-2 border cursor-pointer"
                             onChange={handleChange}
                             checked={formData.tech_g === "time"}
                           />
@@ -361,38 +361,38 @@ const AngularVelocityCalculator = () => {
                         {data?.payload?.tech_lang_keys[5]}:
                       </strong>
                       <div className="col-12 px-2 mb-3 mt-3 d-flex align-items-center">
-                        <label className="pe-2" htmlFor="ang_vel1">
+                        <label className="pe-2 cursor-pointer" htmlFor="ang_vel1">
                           <input
                             type="radio"
                             name="tech_gg"
                             value="ang_vel1"
                             id="ang_vel1"
-                            className="mr-2 border"
+                            className="mr-2 border cursor-pointer"
                             onChange={handleChange}
                             checked={formData.tech_gg === "ang_vel1"}
                           />
                           <span>{data?.payload?.tech_lang_keys["6"]}</span>
                         </label>
 
-                        <label className="pe-2" htmlFor="velocity">
+                        <label className="pe-2 cursor-pointer" htmlFor="velocity">
                           <input
                             type="radio"
                             name="tech_gg"
                             value="velocity"
                             id="velocity"
-                            className="mr-2 border"
+                            className="mr-2 border cursor-pointer"
                             onChange={handleChange}
                             checked={formData.tech_gg === "velocity"}
                           />
                           <span>{data?.payload?.tech_lang_keys["9"]}</span>
                         </label>
-                        <label className="pe-2" htmlFor="radius">
+                        <label className="pe-2 cursor-pointer" htmlFor="radius">
                           <input
                             type="radio"
                             name="tech_gg"
                             value="radius"
                             id="radius"
-                            className="mr-2 border"
+                            className="mr-2 border cursor-pointer"
                             onChange={handleChange}
                             checked={formData.tech_gg === "radius"}
                           />
@@ -407,10 +407,7 @@ const AngularVelocityCalculator = () => {
               {((formData.tech_g == "ang_vel" && formData.tech_method == "0") ||
                 (formData.tech_g == "time" && formData.tech_method == "0")) && (
                 <>
-                  <div
-                    className="lg:col-span-6 md:col-span-6 col-span-12"
-                    id="ac"
-                  >
+                  <div className="col-span-6" id="ac">
                     <label htmlFor="tech_ac" className="label">
                       {data?.payload?.tech_lang_keys["7"]} (Δα):
                     </label>
@@ -425,7 +422,7 @@ const AngularVelocityCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown}
                       >
                         {formData.tech_ac1} ▾
@@ -461,10 +458,7 @@ const AngularVelocityCalculator = () => {
                 (formData.tech_g == "ang_chnge" &&
                   formData.tech_method == "0")) && (
                 <>
-                  <div
-                    className="lg:col-span-6 md:col-span-6 col-span-12"
-                    id="t"
-                  >
+                  <div className="col-span-6" id="t">
                     <label htmlFor="tech_t" className="label">
                       {data?.payload?.tech_lang_keys["8"]} (t):
                     </label>
@@ -479,7 +473,7 @@ const AngularVelocityCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown1}
                       >
                         {formData.tech_t1} ▾
@@ -517,10 +511,7 @@ const AngularVelocityCalculator = () => {
                 (formData.tech_gg == "radius" &&
                   formData.tech_method == "1")) && (
                 <>
-                  <div
-                    className="lg:col-span-6 md:col-span-6 col-span-12"
-                    id="av"
-                  >
+                  <div className="col-span-6" id="av">
                     <label htmlFor="tech_av" className="label">
                       {data?.payload?.tech_lang_keys["6"]} (ω)
                     </label>
@@ -535,7 +526,7 @@ const AngularVelocityCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown2}
                       >
                         {formData.tech_av1} ▾
@@ -566,10 +557,7 @@ const AngularVelocityCalculator = () => {
                 (formData.tech_gg == "radius" &&
                   formData.tech_method == "1")) && (
                 <>
-                  <div
-                    className="lg:col-span-6 md:col-span-6 col-span-12"
-                    id="vel"
-                  >
+                  <div className="col-span-6" id="vel">
                     <label htmlFor="tech_vel" className="label">
                       {data?.payload?.tech_lang_keys["9"]} (v):
                     </label>
@@ -584,7 +572,7 @@ const AngularVelocityCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown3}
                       >
                         {formData.tech_vel1} ▾
@@ -618,10 +606,7 @@ const AngularVelocityCalculator = () => {
                 (formData.tech_gg == "velocity" &&
                   formData.tech_method == "1")) && (
                 <>
-                  <div
-                    className="lg:col-span-6 md:col-span-6 col-span-12"
-                    id="rds"
-                  >
+                  <div className="col-span-6" id="rds">
                     <label htmlFor="tech_rad" className="label">
                       {data?.payload?.tech_lang_keys["10"]} (r):
                     </label>
@@ -636,7 +621,7 @@ const AngularVelocityCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown4}
                       >
                         {formData.tech_rad1} ▾
@@ -670,10 +655,7 @@ const AngularVelocityCalculator = () => {
               )}
               {formData.tech_method == "2" && (
                 <>
-                  <div
-                    className="lg:col-span-6 md:col-span-6 col-span-12"
-                    id="rpm"
-                  >
+                  <div className="col-span-6" id="rpm">
                     <label htmlFor="tech_rpm" className="label">
                       {data?.payload?.tech_lang_keys["11"]}:
                     </label>
@@ -695,10 +677,7 @@ const AngularVelocityCalculator = () => {
               )}
               {formData.tech_method == "2" && (
                 <>
-                  <div
-                    className="lg:col-span-6 md:col-span-6 col-span-12"
-                    id="rds_m"
-                  >
+                  <div className="col-span-6" id="rds_m">
                     <label htmlFor="tech_rds_m" className="label">
                       {data?.payload?.tech_lang_keys["10"]}:
                     </label>
@@ -713,7 +692,7 @@ const AngularVelocityCalculator = () => {
                         onChange={handleChange}
                       />
                       <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-3"
+                        className="absolute cursor-pointer text-sm underline right-6 top-4"
                         onClick={toggleDropdown5}
                       >
                         {formData.tech_rds_m1} ▾
@@ -744,6 +723,7 @@ const AngularVelocityCalculator = () => {
               )}
             </div>
           </div>
+
           <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
@@ -758,26 +738,26 @@ const AngularVelocityCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="w-full">
-                        <div className="w-full md:w-[90%] lg:w-[70%] mt-2 overflow-auto">
-                          <table className="w-full text-[16px]">
+                        <div className="w-full md:w-[70%] lg:w-[70%] mt-2 overflow-auto">
+                          <table className="w-full text-[16px] md:text-[18px]">
                             <tbody>
                               <tr>
                                 <td className="text-blue py-2 border-b">
@@ -825,8 +805,8 @@ const AngularVelocityCalculator = () => {
                         <p className="w-full mt-3">
                           <strong>{data?.payload?.tech_lang_keys["12"]}</strong>
                         </p>
-                        <div className="w-full md:w-[90%] lg:w-[70%] mt-2 overflow-auto">
-                          <table className="w-full text-[16px]">
+                        <div className="w-full md:w-[70%] lg:w-[70%] overflow-auto">
+                          <table className="w-full text-[16px] md:text-[18px]">
                             <tbody>
                               {(result?.tech_ang_vel ||
                                 result?.tech_ang_vel1) && (
@@ -1310,12 +1290,13 @@ const AngularVelocityCalculator = () => {
                             </tbody>
                           </table>
                         </div>
-                        <div className="overflow-auto">
-                          <p className="w-full   mt-3 text-[18px]">
-                            <strong className="text-blue">
-                              {data?.payload?.tech_lang_keys["42"]}:
-                            </strong>
-                          </p>
+
+                        <p className="w-full   mt-3 text-[16px] md:text-[18px]">
+                          <strong className="text-blue">
+                            {data?.payload?.tech_lang_keys["42"]}:
+                          </strong>
+                        </p>
+                        <div className="overflow-auto method2-results">
                           {result?.tech_ang_vel && (
                             <>
                               <p className="w-full mt-3">

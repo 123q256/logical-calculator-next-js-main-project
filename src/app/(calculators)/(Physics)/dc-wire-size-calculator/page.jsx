@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { InlineMath, BlockMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useDcWireSizeCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useDcWireSizeCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -16,7 +17,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const DcWireSizeCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -46,21 +46,22 @@ const DcWireSizeCalculator = () => {
   }, [url]);
 
   const [formData, setFormData] = useState({
-    tech_unit_type: "wire_size", // wire_size wire_diameter   wire_gauge
-    tech_type: "single_phase",
-    tech_s_voltage: "5.771",
+    tech_wire: "wire_size", // wire_size wire_diameter   wire_gauge
+    tech_type: "single_phase", // single_phase  three_phase
+    tech_s_voltage: "120",
     tech_sv_units: "mV",
     tech_voltage_drop: "3",
     tech_c_units: "copper",
-    tech_current: "1200",
-    tech_current_unit: "A",
-    tech_wire_length: "1200",
+    tech_current: "25",
+    tech_current_unit: "mV",
+    tech_wire_length: "25",
     tech_wl_units: "cm",
-    tech_w_temp: "1200",
-    tech_wire_gauge: "2000-kcmil",
+    tech_w_temp: "25",
     tech_wt_units: "°C",
+    tech_wire_gauge: "3",
     tech_wire_diameter: "5.771",
     tech_wd_units: "in",
+    tech_submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -82,7 +83,7 @@ const DcWireSizeCalculator = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.tech_unit_type) {
+    if (!formData.tech_wire) {
       setFormError("Please fill in input.");
       return;
     }
@@ -90,7 +91,7 @@ const DcWireSizeCalculator = () => {
     setFormError("");
     try {
       const response = await calculateEbitCalculator({
-        tech_unit_type: formData.tech_unit_type,
+        tech_wire: formData.tech_wire,
         tech_type: formData.tech_type,
         tech_s_voltage: formData.tech_s_voltage,
         tech_sv_units: formData.tech_sv_units,
@@ -101,37 +102,39 @@ const DcWireSizeCalculator = () => {
         tech_wire_length: formData.tech_wire_length,
         tech_wl_units: formData.tech_wl_units,
         tech_w_temp: formData.tech_w_temp,
+        tech_wt_units: formData.tech_wt_units,
         tech_wire_gauge: formData.tech_wire_gauge,
         tech_wire_diameter: formData.tech_wire_diameter,
         tech_wd_units: formData.tech_wd_units,
-        tech_wt_units: formData.tech_wt_units,
+        tech_submit: formData.tech_submit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_unit_type: "wire_size", // wire_size wire_diameter   wire_gauge
-      tech_type: "single_phase",
-      tech_s_voltage: "5.771",
+      tech_wire: "wire_size", // wire_size wire_diameter   wire_gauge
+      tech_type: "single_phase", // single_phase  three_phase
+      tech_s_voltage: "120",
       tech_sv_units: "mV",
       tech_voltage_drop: "3",
       tech_c_units: "copper",
-      tech_current: "1200",
-      tech_current_unit: "A",
-      tech_wire_length: "1200",
+      tech_current: "25",
+      tech_current_unit: "mV",
+      tech_wire_length: "25",
       tech_wl_units: "cm",
-      tech_w_temp: "1200",
-      tech_wire_gauge: "2000-kcmil",
+      tech_w_temp: "25",
       tech_wt_units: "°C",
+      tech_wire_gauge: "3",
       tech_wire_diameter: "5.771",
       tech_wd_units: "in",
+      tech_submit: "calculate",
     });
     setResult(null);
     setFormError(null);
@@ -259,20 +262,20 @@ const DcWireSizeCalculator = () => {
           <div className="lg:w-[90%] md:w-[100%] w-full mx-auto ">
             <input
               type="hidden"
-              name="tech_unit_type"
+              name="tech_wire"
               id="calculator_time"
-              value={formData.tech_unit_type}
+              value={formData.tech_wire}
             />
             <div className="flex flex-wrap items-center bg-blue-100 border border-blue-500 text-center rounded-lg px-1">
               {/* Date Cal Tab */}
               <div className="lg:w-1/3 w-full px-2 py-1">
                 <div
                   className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab  ${
-                    formData.tech_unit_type === "wire_size" ? "tagsUnit" : ""
+                    formData.tech_wire === "wire_size" ? "tagsUnit" : ""
                   }`}
                   id="wire_size"
                   onClick={() => {
-                    setFormData({ ...formData, tech_unit_type: "wire_size" });
+                    setFormData({ ...formData, tech_wire: "wire_size" });
                     setResult(null);
                     setFormError(null);
                   }}
@@ -284,16 +287,11 @@ const DcWireSizeCalculator = () => {
               <div className="lg:w-1/3 w-full px-2 py-1">
                 <div
                   className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab ${
-                    formData.tech_unit_type === "wire_diameter"
-                      ? "tagsUnit"
-                      : ""
+                    formData.tech_wire === "wire_diameter" ? "tagsUnit" : ""
                   }`}
                   id="wire_diameter"
                   onClick={() => {
-                    setFormData({
-                      ...formData,
-                      tech_unit_type: "wire_diameter",
-                    });
+                    setFormData({ ...formData, tech_wire: "wire_diameter" });
                     setResult(null);
                     setFormError(null);
                   }}
@@ -304,11 +302,11 @@ const DcWireSizeCalculator = () => {
               <div className="lg:w-1/3 w-full px-2 py-1">
                 <div
                   className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab ${
-                    formData.tech_unit_type === "wire_gauge" ? "tagsUnit" : ""
+                    formData.tech_wire === "wire_gauge" ? "tagsUnit" : ""
                   }`}
                   id="wire_gauge"
                   onClick={() => {
-                    setFormData({ ...formData, tech_unit_type: "wire_gauge" });
+                    setFormData({ ...formData, tech_wire: "wire_gauge" });
                     setResult(null);
                     setFormError(null);
                   }}
@@ -317,12 +315,12 @@ const DcWireSizeCalculator = () => {
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-12 mt-4 gap-4">
-              {formData.tech_unit_type == "wire_size" && (
+            <div className="grid grid-cols-12 mt-4 gap-1 md:gap-4">
+              {formData.tech_wire == "wire_size" && (
                 <>
                   <div className="col-span-12 wire_size" id="wire_sizes">
-                    <div className="grid grid-cols-12 gap-4">
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12">
+                    <div className="grid grid-cols-12 gap-1 md:gap-4">
+                      <div className="col-span-12 md:col-span-6">
                         <label htmlFor="tech_type" className="label">
                           {data?.payload?.tech_lang_keys["1"]}:
                         </label>
@@ -344,7 +342,7 @@ const DcWireSizeCalculator = () => {
                           </select>
                         </div>
                       </div>
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12">
+                      <div className="col-span-12 md:col-span-6">
                         <label htmlFor="tech_s_voltage" className="label">
                           {data?.payload?.tech_lang_keys["5"]}
                         </label>
@@ -384,7 +382,7 @@ const DcWireSizeCalculator = () => {
                           )}
                         </div>
                       </div>
-                      <div className="col-span-6">
+                      <div className="col-span-12 md:col-span-6">
                         <label htmlFor="tech_voltage_drop" className="label">
                           {data?.payload?.tech_lang_keys["6"]}:
                         </label>
@@ -403,7 +401,7 @@ const DcWireSizeCalculator = () => {
                           <span className="input_unit">%</span>
                         </div>
                       </div>
-                      <div className="col-span-6">
+                      <div className="col-span-12 md:col-span-6">
                         <label htmlFor="tech_c_units" className="label">
                           {data?.payload?.tech_lang_keys["7"]}:
                         </label>
@@ -437,7 +435,7 @@ const DcWireSizeCalculator = () => {
                           </select>
                         </div>
                       </div>
-                      <div className="col-span-6">
+                      <div className="col-span-12 md:col-span-6">
                         <label htmlFor="tech_current" className="label">
                           {data?.payload?.tech_lang_keys["8"]}
                         </label>
@@ -476,7 +474,7 @@ const DcWireSizeCalculator = () => {
                           )}
                         </div>
                       </div>
-                      <div className="col-span-6">
+                      <div className="col-span-12 md:col-span-6">
                         <label htmlFor="tech_wire_length" className="label">
                           {data?.payload?.tech_lang_keys["9"]}
                         </label>
@@ -519,7 +517,7 @@ const DcWireSizeCalculator = () => {
                           )}
                         </div>
                       </div>
-                      <div className="col-span-6">
+                      <div className="col-span-12 md:col-span-6">
                         <label htmlFor="tech_w_temp" className="label">
                           {data?.payload?.tech_lang_keys["10"]}
                         </label>
@@ -563,13 +561,13 @@ const DcWireSizeCalculator = () => {
                 </>
               )}
 
-              {formData.tech_unit_type == "wire_diameter" && (
+              {formData.tech_wire == "wire_diameter" && (
                 <>
                   <div
-                    className="lg:col-span-6 md:col-span-6 col-span-12 wire_diameter "
+                    className="col-span-12 md:col-span-6 wire_diameter "
                     id="wire_diameters"
                   >
-                    <div className="grid grid-cols-12 gap-4">
+                    <div className="grid grid-cols-12 gap-1 md:gap-4">
                       <div className="col-span-12 ">
                         <label htmlFor="tech_wire_gauge" className="label">
                           {data?.payload?.tech_lang_keys["11"]}:
@@ -649,13 +647,13 @@ const DcWireSizeCalculator = () => {
                   </div>
                 </>
               )}
-              {formData.tech_unit_type == "wire_gauge" && (
+              {formData.tech_wire == "wire_gauge" && (
                 <>
                   <div
-                    className="lg:col-span-6 md:col-span-6 col-span-12 wire_gauge "
+                    className="col-span-12 md:col-span-6 wire_gauge "
                     id="wire_gauges"
                   >
-                    <div className="grid grid-cols-12 gap-4">
+                    <div className="grid grid-cols-12 gap-1 md:gap-4">
                       <div className="col-span-12">
                         <label htmlFor="tech_wire_diameter" className="label">
                           {data?.payload?.tech_lang_keys["12"]}
@@ -716,7 +714,7 @@ const DcWireSizeCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -727,17 +725,17 @@ const DcWireSizeCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="row">
+                      <div className="row text-[16px] md:text-[18px]">
                         {result?.tech_type === "single_phase" && (
                           <>
                             <div className="col-lg-6 mt-2">
-                              <table className="w-full text-[16px]">
+                              <table className="w-full text-[16px] md:text-[16px] overflow-auto">
                                 <tbody>
                                   <tr>
                                     <td className="py-2 border-b">
@@ -766,8 +764,7 @@ const DcWireSizeCalculator = () => {
                                 </tbody>
                               </table>
                             </div>
-
-                            <p className="col-12 my-3 text-[18px]">
+                            <p className="col-12 my-3 text-[16px] md:text-[18px]">
                               {data?.payload?.tech_lang_keys[16]}
                             </p>
 
@@ -777,23 +774,23 @@ const DcWireSizeCalculator = () => {
                                 style={{ borderCollapse: "collapse" }}
                               >
                                 <thead>
-                                  <tr className="bg-[#2845F5] text-white">
-                                    <td className="p-2 border text-center">
+                                  <tr className="bg-[#2845F5] text-[#fff]">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         {data?.payload?.tech_lang_keys[17]}
                                       </strong>
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         {data?.payload?.tech_lang_keys["18"]}
                                       </strong>
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         {data?.payload?.tech_lang_keys["19"]}
                                       </strong>
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         {data?.payload?.tech_lang_keys["20"]}
                                       </strong>
@@ -802,13 +799,13 @@ const DcWireSizeCalculator = () => {
                                 </thead>
                                 <tbody>
                                   <tr className="">
-                                    <td className="text-center p-2 border">
+                                    <td className="text-center p-2 border-b">
                                       {Number(
                                         result?.tech_single_phase
                                       ).toFixed(2) * 0.000001}{" "}
                                       m²
                                     </td>
-                                    <td className="text-center p-2 border">
+                                    <td className="text-center p-2 border-b">
                                       {Number(
                                         Number(
                                           result?.tech_single_phase
@@ -816,7 +813,7 @@ const DcWireSizeCalculator = () => {
                                       ).toFixed(2)}{" "}
                                       in²
                                     </td>
-                                    <td className="text-center p-2 border">
+                                    <td className="text-center p-2 border-b">
                                       {Number(
                                         Number(
                                           result?.tech_single_phase
@@ -824,7 +821,7 @@ const DcWireSizeCalculator = () => {
                                       ).toFixed(2)}{" "}
                                       cmil
                                     </td>
-                                    <td className="text-center p-2 border">
+                                    <td className="text-center p-2 border-b">
                                       {Number(
                                         Number(
                                           result?.tech_single_phase
@@ -837,7 +834,7 @@ const DcWireSizeCalculator = () => {
                               </table>
                             </div>
                             <div className="overflow-auto">
-                              <p className="w-full mt-3 text-[18px]">
+                              <p className="w-full mt-3 text-[16px] md:text-[18px]">
                                 {data?.payload?.tech_lang_keys[21]}
                               </p>
                               <BlockMath math="A(m^2)= \dfrac{I(A) \times ρ(Ω·m) \times L(m)}{V_V}" />
@@ -859,7 +856,7 @@ const DcWireSizeCalculator = () => {
                               </p>
                               <p className="w-full mt-2">V = Source voltage</p>
 
-                              <p className="w-full my-3 text-[18px]">
+                              <p className="w-full my-3 text-[16px] md:text-[18px]">
                                 {data?.payload?.tech_lang_keys["27"]}
                               </p>
                               <p className="w-full mt-2">
@@ -883,7 +880,7 @@ const DcWireSizeCalculator = () => {
                                 {result?.tech_voltage_drop} %
                               </p>
 
-                              <p className="w-full my-3 text-[18px]">
+                              <p className="w-full my-3 text-[16px] md:text-[18px]">
                                 {data?.payload?.tech_lang_keys[32]}
                               </p>
 
@@ -926,10 +923,10 @@ const DcWireSizeCalculator = () => {
                             </div>
                           </>
                         )}
-                        {result?.tech_submit == "three_phase" && (
+                        {result?.tech_type == "three_phase" && (
                           <>
-                            <div className="col-lg-6 mt-2 overflow-auto">
-                              <table className="w-full text-[16px]">
+                            <div className="col-lg-6 mt-2">
+                              <table className="w-full font-s-18">
                                 <tbody>
                                   <tr>
                                     <td className="py-2 border-b">
@@ -958,7 +955,7 @@ const DcWireSizeCalculator = () => {
                               </table>
                             </div>
 
-                            <p className="w-full my-3 text-[18px]">
+                            <p className="w-full my-3 text-[16px] md:text-[18px]">
                               {data?.payload?.tech_lang_keys["16"]}
                             </p>
 
@@ -968,23 +965,23 @@ const DcWireSizeCalculator = () => {
                                 style={{ borderCollapse: "collapse" }}
                               >
                                 <thead>
-                                  <tr className="bg-[#2845F5] text-white">
-                                    <td className="p-2 border text-center">
+                                  <tr className="bg-[#2845F5] text-[#fff]">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         {data?.payload?.tech_lang_keys["17"]}
                                       </strong>
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         {data?.payload?.tech_lang_keys["18"]}
                                       </strong>
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         {data?.payload?.tech_lang_keys["19"]}
                                       </strong>
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         {data?.payload?.tech_lang_keys["20"]}
                                       </strong>
@@ -993,25 +990,25 @@ const DcWireSizeCalculator = () => {
                                 </thead>
                                 <tbody>
                                   <tr className="bg-sky">
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       {Number(result?.tech_three_phase).toFixed(
                                         2
                                       ) * 0.000001}{" "}
                                       m²
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       {Number(
                                         result?.tech_three_phase * 0.00155
                                       ).toFixed(2)}{" "}
                                       in²
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       {Number(
                                         result?.tech_three_phase * 1973.6
                                       ).toFixed(2)}{" "}
                                       cmil
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       {Number(
                                         result?.tech_three_phase * 1.9736
                                       ).toFixed(2)}{" "}
@@ -1022,7 +1019,7 @@ const DcWireSizeCalculator = () => {
                               </table>
                             </div>
                             <div className="overflow-auto">
-                              <p className="w-full my-3 text-[18px]">
+                              <p className="w-full my-3 text-[16px] md:text-[18px]">
                                 {data?.payload?.tech_lang_keys["21"]}
                               </p>
 
@@ -1048,7 +1045,7 @@ const DcWireSizeCalculator = () => {
                               </p>
                               <p className="w-full mt-2">V = Source voltage</p>
 
-                              <p className="w-full my-3 text-[18px]">
+                              <p className="w-full my-3 text-[16px] md:text-[18px]">
                                 {data?.payload?.tech_lang_keys["27"]}
                               </p>
                               <p className="w-full mt-2">
@@ -1072,7 +1069,7 @@ const DcWireSizeCalculator = () => {
                                 {result?.tech_voltage_drop} %
                               </p>
 
-                              <p className="w-full my-3 text-[18px]">
+                              <p className="w-full my-3 text-[16px] md:text-[18px]">
                                 {data?.payload?.tech_lang_keys["32"]}
                               </p>
 
@@ -1112,23 +1109,23 @@ const DcWireSizeCalculator = () => {
                         )}
                         {result?.tech_submit == "wire_diameter" && (
                           <>
-                            <p className="w-full my-3 text-[18px]">
+                            <p className="w-full my-3 text-[16px] md:text-[18px]">
                               {data?.payload?.tech_lang_keys[12]}
                             </p>
 
                             <div className="w-full overflow-auto">
                               <table
-                                className="w-full text-[16px]"
+                                className="w-full"
                                 style={{ borderCollapse: "collapse" }}
                               >
                                 <thead>
-                                  <tr className="bg-[#2845F5] text-white">
-                                    <td className="p-2 border text-center">
+                                  <tr className="bg-[#2845F5] text-[#fff]">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         {data?.payload?.tech_lang_keys["44"]}
                                       </strong>
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         {data?.payload?.tech_lang_keys["45"]}
                                       </strong>
@@ -1137,11 +1134,11 @@ const DcWireSizeCalculator = () => {
                                 </thead>
                                 <tbody>
                                   <tr className="bg-sky">
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       {Number(result?.tech_inches).toFixed(2)}{" "}
                                       in
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       {Number(result?.tech_mm).toFixed(2)} mm
                                     </td>
                                   </tr>
@@ -1149,28 +1146,28 @@ const DcWireSizeCalculator = () => {
                               </table>
                             </div>
 
-                            <p className="w-full my-3 text-[18px]">
+                            <p className="w-full my-3 text-[16px] md:text-[18px]">
                               {data?.payload?.tech_lang_keys[15]}
                             </p>
 
                             <div className="w-full overflow-auto">
                               <table
-                                className="w-full text-[16px]"
+                                className="w-full"
                                 style={{ borderCollapse: "collapse" }}
                               >
                                 <thead>
-                                  <tr className="bg-[#2845F5] text-white">
-                                    <td className="p-2 border text-center">
+                                  <tr className="bg-[#2845F5] text-[#fff]">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         kcmil
                                       </strong>
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         {data?.payload?.tech_lang_keys["46"]}
                                       </strong>
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         {data?.payload?.tech_lang_keys["47"]}
                                       </strong>
@@ -1179,15 +1176,15 @@ const DcWireSizeCalculator = () => {
                                 </thead>
                                 <tbody>
                                   <tr className="bg-sky">
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       {Number(result?.tech_kcmil).toFixed(2)}{" "}
                                       kcmil
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       {Number(result?.tech_sqinches).toFixed(2)}{" "}
                                       in<sup className="text-blue">2</sup>
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       {Number(result?.tech_mm2).toFixed(2)} mm
                                       <sup className="text-blue">2</sup>
                                     </td>
@@ -1199,26 +1196,26 @@ const DcWireSizeCalculator = () => {
                         )}
                         {result?.tech_submit == "wire_gauge" && (
                           <>
-                            <p className="w-full my-3 text-[18px]">
+                            <p className="w-full my-3 text-[16px] md:text-[18px]">
                               {data?.payload?.tech_lang_keys[13]}
                             </p>
 
                             <div className="w-full overflow-auto">
                               <table
-                                className="w-full text-[16px]"
+                                className="w-full"
                                 style={{ borderCollapse: "collapse" }}
                               >
                                 <thead>
-                                  <tr className="bg-[#2845F5] text-white">
-                                    <td className="p-2 border text-center">
+                                  <tr className="bg-[#2845F5] text-[#fff]">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">AWG</strong>
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         {data?.payload?.tech_lang_keys["48"]}
                                       </strong>
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         {data?.payload?.tech_lang_keys["49"]}
                                       </strong>
@@ -1227,13 +1224,13 @@ const DcWireSizeCalculator = () => {
                                 </thead>
                                 <tbody>
                                   <tr className="bg-sky">
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       {result?.tech_d_data[1]} AWG
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       {result?.tech_d_data[0]} in
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       {result?.tech_d_data[2]?.mm} mm
                                     </td>
                                   </tr>
@@ -1241,28 +1238,28 @@ const DcWireSizeCalculator = () => {
                               </table>
                             </div>
 
-                            <p className="w-full my-3 text-[18px]">
+                            <p className="w-full my-3 text-[16px] md:text-[18px]">
                               {data?.payload?.tech_lang_keys[15]}
                             </p>
 
                             <div className="w-full overflow-auto">
                               <table
-                                className="w-full text-[16px]"
+                                className="w-full"
                                 style={{ borderCollapse: "collapse" }}
                               >
                                 <thead>
-                                  <tr className="bg-[#2845F5] text-white">
-                                    <td className="p-2 border text-center">
+                                  <tr className="bg-[#2845F5] text-[#fff]">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         kcmil
                                       </strong>
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         {data?.payload?.tech_lang_keys["46"]}
                                       </strong>
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       <strong className="text-blue">
                                         {data?.payload?.tech_lang_keys["47"]}
                                       </strong>
@@ -1271,16 +1268,16 @@ const DcWireSizeCalculator = () => {
                                 </thead>
                                 <tbody>
                                   <tr className="bg-sky">
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       {result?.tech_d_data[2]?.kcmil} kcmil
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       {Number(result?.tech_square_in).toFixed(
                                         2
                                       )}{" "}
                                       in<sup>2</sup>
                                     </td>
-                                    <td className="p-2 border text-center">
+                                    <td className="p-2 border-b text-center">
                                       {result?.tech_d_data[2]?.["mm²"]} mm
                                       <sup>2</sup>
                                     </td>

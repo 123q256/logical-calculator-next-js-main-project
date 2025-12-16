@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { BlockMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useImpulseCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useImpulseCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -16,7 +17,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const ImpulseCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -96,11 +96,11 @@ const ImpulseCalculator = () => {
         tech_force_ans_units: formData.tech_force_ans_units,
         tech_time_ans_units: formData.tech_time_ans_units,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -199,8 +199,8 @@ const ImpulseCalculator = () => {
               {formError}
             </p>
           )}
-          <div className="lg:w-[50%] md:w-[70%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3  gap-4">
+          <div className="lg:w-[50%] md:w-[80%] w-full mx-auto ">
+            <div className="grid grid-cols-12 mt-3 gap-1  md:gap-4">
               <div className="col-span-12">
                 <label htmlFor="tech_calculation" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -256,7 +256,7 @@ const ImpulseCalculator = () => {
               {(formData.tech_calculation == "2" ||
                 formData.tech_calculation == "3") && (
                 <>
-                  <div className="col-span-6 impulse ">
+                  <div className="col-span-12 md:col-span-6 impulse ">
                     <label htmlFor="tech_impulse" className="label">
                       {data?.payload?.tech_lang_keys["4"]} (J)
                     </label>
@@ -308,7 +308,7 @@ const ImpulseCalculator = () => {
               {(formData.tech_calculation == "1" ||
                 formData.tech_calculation == "3") && (
                 <>
-                  <div className="col-span-6 force">
+                  <div className="col-span-12 md:col-span-6 force">
                     <label htmlFor="tech_force" className="label">
                       {data?.payload?.tech_lang_keys["5"]} (f)
                     </label>
@@ -358,7 +358,7 @@ const ImpulseCalculator = () => {
               {(formData.tech_calculation == "1" ||
                 formData.tech_calculation == "2") && (
                 <>
-                  <div className="col-span-6 time">
+                  <div className="col-span-12 md:col-span-6 time">
                     <label htmlFor="tech_time" className="label">
                       {data?.payload?.tech_lang_keys["6"]} (t)
                     </label>
@@ -401,7 +401,7 @@ const ImpulseCalculator = () => {
               )}
               {formData.tech_calculation == "1" && (
                 <>
-                  <div className="col-span-6 impulse_units">
+                  <div className="col-span-12 md:col-span-6 impulse_units">
                     <label htmlFor="tech_impulse_ans_units" className="label">
                       {data?.payload?.tech_lang_keys["7"]}:
                     </label>
@@ -432,7 +432,7 @@ const ImpulseCalculator = () => {
               )}
               {formData.tech_calculation == "2" && (
                 <>
-                  <div className="col-span-6 force_units ">
+                  <div className="col-span-12 md:col-span-6 force_units ">
                     <label htmlFor="tech_force_ans_units" className="label">
                       {data?.payload?.tech_lang_keys["8"]}:
                     </label>
@@ -460,7 +460,7 @@ const ImpulseCalculator = () => {
               )}
               {formData.tech_calculation == "3" && (
                 <>
-                  <div className="col-span-6 time_units ">
+                  <div className="col-span-12 md:col-span-6 time_units ">
                     <label htmlFor="tech_time_ans_units" className="label">
                       {data?.payload?.tech_lang_keys["8"]}:
                     </label>
@@ -509,13 +509,13 @@ const ImpulseCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="w-full text-center lg:text-[18px] md:text-[18px] text-[16px]">
+                      <div className="w-full text-center text-[18px]">
                         <p>{data?.payload?.tech_lang_keys[4]}</p>
                         {result?.tech_calculation == "1" ? (
                           <>
@@ -543,7 +543,7 @@ const ImpulseCalculator = () => {
                           </>
                         )}
                         <p className="my-3">
-                          <strong className="bg-[#2845F5] rounded-lg text-white px-3 py-2 md:text-[25px] text-[18px]">
+                          <strong className="bg-[#2845F5] text-[#fff] rounded-lg px-3 py-2 text-[20px] md:text-[25px]">
                             {Number(result?.tech_answer).toFixed(3)}{" "}
                             {result?.tech_unit_ans}
                           </strong>

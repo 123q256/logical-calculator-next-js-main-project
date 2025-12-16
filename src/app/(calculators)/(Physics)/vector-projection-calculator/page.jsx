@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import "katex/dist/katex.min.css";
 import { BlockMath } from "react-katex";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useVectorProjectionCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useVectorProjectionCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -16,7 +17,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const VectorProjectionCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -118,11 +118,11 @@ const VectorProjectionCalculator = () => {
         tech_2bb: formData.tech_2bb,
         tech_3bb: formData.tech_3bb,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -209,14 +209,14 @@ const VectorProjectionCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
 
-          <div className="lg:w-[70%] md:w-[98%] w-full mx-auto ">
+          <div className="lg:w-[70%] md:w-[70%] w-full mx-auto ">
             <div className="grid grid-cols-12 mt-3  gap-4">
               {/* one */}
 
@@ -270,7 +270,7 @@ const VectorProjectionCalculator = () => {
                           {data?.payload?.tech_lang_keys[2]} (a)
                         </strong>
                       </p>
-                      <div className="lg:col-span-4 md:col-span-4 col-span-6">
+                      <div className="col-span-4 ">
                         <div className=" relative">
                           <input
                             type="number"
@@ -286,7 +286,7 @@ const VectorProjectionCalculator = () => {
                           <span className="input_unit">i</span>
                         </div>
                       </div>
-                      <div className="lg:col-span-4 md:col-span-4 col-span-6">
+                      <div className="col-span-4 ">
                         <div className=" relative">
                           <input
                             type="number"
@@ -304,7 +304,7 @@ const VectorProjectionCalculator = () => {
                       </div>
                       {formData.tech_dem == "3" && (
                         <>
-                          <div className="lg:col-span-4 md:col-span-4 col-span-6 third_one">
+                          <div className="col-span-4  third_one">
                             <div className=" relative">
                               <input
                                 type="number"
@@ -329,14 +329,14 @@ const VectorProjectionCalculator = () => {
 
               {formData.tech_vector_representation == "point" && (
                 <>
-                  <div className="lg:col-span-8 md:col-span-8 col-span-12 a_one">
+                  <div className="col-span-8 a_one">
                     <div className="grid grid-cols-12 gap-4">
                       <p className="col-span-12">
                         <strong className="label">
                           {data?.payload?.tech_lang_keys[2]} (a)
                         </strong>
                       </p>
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12 ">
+                      <div className="col-span-6 ">
                         <label htmlFor="tech_1a" className="label">
                           {data?.payload?.tech_lang_keys[6]}:
                         </label>
@@ -354,7 +354,7 @@ const VectorProjectionCalculator = () => {
                           />
                         </div>
                       </div>
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12  ">
+                      <div className="col-span-6 ">
                         <label htmlFor="tech_2a" className="label">
                           &nbsp;
                         </label>
@@ -376,7 +376,7 @@ const VectorProjectionCalculator = () => {
                   </div>
                   {formData.tech_dem == "3" && (
                     <>
-                      <div className="md:col-span-4 col-span-12  a_two">
+                      <div className="col-span-4  a_two">
                         <p className="col-12 mx-2 mt-2">&nbsp;</p>
                         <div className="w-full py-2">
                           <label htmlFor="tech_3a" className="label">
@@ -400,9 +400,9 @@ const VectorProjectionCalculator = () => {
                     </>
                   )}
 
-                  <div className="lg:col-span-8 md:col-span-8 col-span-12 a_three">
+                  <div className="col-span-8 a_three">
                     <div className="grid grid-cols-12 gap-4">
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12  ">
+                      <div className="col-span-6 ">
                         <label htmlFor="tech_1b" className="label">
                           {data?.payload?.tech_lang_keys[7]}:
                         </label>
@@ -420,7 +420,7 @@ const VectorProjectionCalculator = () => {
                           />
                         </div>
                       </div>
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12  ">
+                      <div className="col-span-6 ">
                         <label htmlFor="tech_2b" className="label">
                           &nbsp;
                         </label>
@@ -442,7 +442,7 @@ const VectorProjectionCalculator = () => {
                   </div>
                   {formData.tech_dem == "3" && (
                     <>
-                      <div className="md:col-span-4 col-span-12 px-2 a_four">
+                      <div className="col-span-4 px-2 a_four">
                         <div className="w-full ">
                           <label htmlFor="tech_3b" className="label">
                             &nbsp;
@@ -471,7 +471,7 @@ const VectorProjectionCalculator = () => {
 
               <div className="col-span-12 ">
                 <div className="grid grid-cols-12 mt-3  gap-4">
-                  <div className="lg:col-span-6 md:col-span-6 col-span-12 ">
+                  <div className="col-span-6 ">
                     <label htmlFor="tech_vector_b" className="label">
                       {data?.payload?.tech_lang_keys["2"]} (B){" "}
                       {data?.payload?.tech_lang_keys["3"]}
@@ -505,7 +505,7 @@ const VectorProjectionCalculator = () => {
                           {data?.payload?.tech_lang_keys[8]} (b)
                         </strong>
                       </p>
-                      <div className="lg:col-span-4 md:col-span-4 col-span-6 ">
+                      <div className="col-span-4 ">
                         <div className=" relative">
                           <input
                             type="number"
@@ -521,7 +521,7 @@ const VectorProjectionCalculator = () => {
                           <span className="input_unit">i</span>
                         </div>
                       </div>
-                      <div className="lg:col-span-4 md:col-span-4 col-span-6 ">
+                      <div className="col-span-4 ">
                         <div className=" relative">
                           <input
                             type="number"
@@ -539,7 +539,7 @@ const VectorProjectionCalculator = () => {
                       </div>
                       {formData.tech_dem == "3" && (
                         <>
-                          <div className="lg:col-span-4 md:col-span-4 col-span-6  tw">
+                          <div className="col-span-4  tw">
                             <div className=" relative">
                               <input
                                 type="number"
@@ -564,14 +564,14 @@ const VectorProjectionCalculator = () => {
 
               {formData.tech_vector_b == "point" && (
                 <>
-                  <div className="lg:col-span-8 md:col-span-8 col-span-12 b_one">
+                  <div className="col-span-8 b_one">
                     <div className="grid grid-cols-12 gap-4">
                       <p className="col-span-12">
                         <strong className="label">
                           {data?.payload?.tech_lang_keys[8]} (b)
                         </strong>
                       </p>
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12  ">
+                      <div className="col-span-6 ">
                         <label htmlFor="1aa" className="label">
                           {data?.payload?.tech_lang_keys[6]} (A):
                         </label>
@@ -589,7 +589,7 @@ const VectorProjectionCalculator = () => {
                           />
                         </div>
                       </div>
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12  ">
+                      <div className="col-span-6 ">
                         <label htmlFor="tech_2aa" className="label">
                           &nbsp;
                         </label>
@@ -611,10 +611,8 @@ const VectorProjectionCalculator = () => {
                   </div>
                   {formData.tech_dem == "3" && (
                     <>
-                      <div className="md:col-span-4 col-span-12 px-2 b_two">
-                        <p className="lg:col-span-6 md:col-span-6 col-span-12 ">
-                          &nbsp;
-                        </p>
+                      <div className="col-span-4 px-2 b_two">
+                        <p className="col-span-6">&nbsp;</p>
                         <div className="w-full mt-3 ">
                           <label htmlFor="tech_3aa" className="label">
                             &nbsp;
@@ -637,9 +635,9 @@ const VectorProjectionCalculator = () => {
                     </>
                   )}
 
-                  <div className="lg:col-span-8 md:col-span-8 col-span-12 b_three">
+                  <div className="col-span-8 b_three">
                     <div className="grid grid-cols-12 gap-4">
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12  ">
+                      <div className="col-span-6 ">
                         <label htmlFor="tech_1bb" className="label">
                           {data?.payload?.tech_lang_keys[7]} (B):
                         </label>
@@ -657,7 +655,7 @@ const VectorProjectionCalculator = () => {
                           />
                         </div>
                       </div>
-                      <div className="lg:col-span-6 md:col-span-6 col-span-12  ">
+                      <div className="col-span-6 ">
                         <label htmlFor="tech_2bb" className="label">
                           &nbsp;
                         </label>
@@ -679,7 +677,7 @@ const VectorProjectionCalculator = () => {
                   </div>
                   {formData.tech_dem == "3" && (
                     <>
-                      <div className="md:col-span-4 col-span-12 px-2 b_four">
+                      <div className="col-span-4 px-2 b_four">
                         <div className="w-full ">
                           <label htmlFor="tech_3bb" className="label">
                             &nbsp;
@@ -720,7 +718,7 @@ const VectorProjectionCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -731,13 +729,13 @@ const VectorProjectionCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="w-full overflow-auto">
+                      <div className="w-full text-[16px] md:text-[18px] overflow-auto method2-results">
                         {result?.tech_dem == "3" && (
                           <>
                             {result?.tech_vector_representation == "coor" &&
@@ -746,7 +744,7 @@ const VectorProjectionCalculator = () => {
                                   <p className="col-12 text-[18px] mt-2 text-center text-blue">
                                     {data?.payload?.tech_lang_keys["9"]}
                                   </p>
-                                  <p className="col-12 mt-2 text-center font-s-20">
+                                  <div className="col-12 mt-2 text-center font-s-20">
                                     <BlockMath
                                       math={` 
                                             \\operatorname{proj}_{\\vec{u}} \\vec{v} = 
@@ -766,25 +764,25 @@ const VectorProjectionCalculator = () => {
                                             \\right)
                                           `}
                                     />
-                                  </p>
+                                  </div>
 
                                   <p className="col-12 text-[18px] mt-2 text-center text-blue">
                                     {data?.payload?.tech_lang_keys["12"]}{" "}
                                     {data?.payload?.tech_lang_keys["14"]}
                                   </p>
-                                  <p className="col-12 mt-2 text-center font-s-20">
+                                  <div className="col-12 mt-2 text-center font-s-20">
                                     <BlockMath
                                       math={`\\left| \\operatorname{proj}_{\\vec{u}} \\vec{v} \\right| = \\frac{${result?.tech_vector_unit}}{\\sqrt{${result?.tech_vector_u}}}`}
                                     />
-                                  </p>
+                                  </div>
 
-                                  <p className="col-12 mt-2">
+                                  <div className="col-12 mt-2">
                                     <BlockMath
                                       math={`\\operatorname{proj}_{\\vec{u}} \\vec{v} = \\frac{\\vec{v} \\cdot \\vec{u}}{\\lVert \\vec{u} \\rVert^2} \\vec{u}`}
                                     />
-                                  </p>
+                                  </div>
 
-                                  <p className="col-12 mt-2">
+                                  <div className="col-12 mt-2">
                                     <BlockMath
                                       math={`\\vec v \\cdot \\vec u = ${result?.tech_vector_unit}`}
                                     />
@@ -803,7 +801,7 @@ const VectorProjectionCalculator = () => {
                                     <BlockMath
                                       math={`|\\vec u| = \\sqrt{${result?.tech_vector_u}}`}
                                     />
-                                  </p>
+                                  </div>
 
                                   <p className="text-center">
                                     <span className="text-center">
@@ -820,23 +818,23 @@ const VectorProjectionCalculator = () => {
                                     </span>
                                   </p>
 
-                                  <p className="col-12 mt-2">
+                                  <div className="col-12 mt-2">
                                     <BlockMath
                                       math={`\\operatorname{proj}_{\\vec{u}} \\vec{v} = 
                                               \\frac{${result?.tech_vector_unit}}{(\\sqrt{${result?.tech_vector_u}})^2}
                                               \\Bigg(${result?.tech_ax}, ${result?.tech_ay}, ${result?.tech_az}\\Bigg)`}
                                     />
-                                  </p>
+                                  </div>
 
-                                  <p className="col-12 mt-2">
+                                  <div className="col-12 mt-2">
                                     <BlockMath
                                       math={`\\operatorname{proj}_{\\vec{u}} \\vec{v} = 
                                               \\frac{${result?.tech_call0}}{${result?.tech_call1}}
                                               \\Bigg(${result?.tech_ax}, ${result?.tech_ay}, ${result?.tech_az}\\Bigg)`}
                                     />
-                                  </p>
+                                  </div>
 
-                                  <p className="col-12 mt-2">
+                                  <div className="col-12 mt-2">
                                     <BlockMath
                                       math={`${
                                         data?.payload?.tech_lang_keys["13"]
@@ -857,14 +855,14 @@ const VectorProjectionCalculator = () => {
                                                 }}{${result?.tech_call1}}
                                               \\Bigg)`}
                                     />
-                                  </p>
+                                  </div>
 
-                                  <p className="col-12 mt-2">
+                                  <div className="col-12 mt-2">
                                     <BlockMath
                                       math={`\\left| \\operatorname{proj}_{\\vec{u}} \\vec{v} \\right| = 
                                               \\frac{${result?.tech_vector_unit}}{\\sqrt{${result?.tech_vector_u}}}`}
                                     />
-                                  </p>
+                                  </div>
                                 </>
                               )}
                             {result?.tech_vector_representation == "coor" &&
@@ -873,7 +871,7 @@ const VectorProjectionCalculator = () => {
                                   <p className="col-12 text-[18px] mt-2 text-center text-blue">
                                     {data?.payload?.tech_lang_keys["9"]}
                                   </p>
-                                  <p className="col-12 mt-2 text-center font-s-20">
+                                  <div className="col-12 mt-2 text-center font-s-20">
                                     <BlockMath
                                       math={`\\operatorname{proj}_{\\vec{u}} \\vec{v} = \\Bigg(
                                               \\frac{${
@@ -890,24 +888,24 @@ const VectorProjectionCalculator = () => {
                                               }}{${result?.tech_call1}}
                                             \\Bigg)`}
                                     />
-                                  </p>
+                                  </div>
 
                                   <p className="col-12 text-[18px] mt-2 text-center text-blue">
                                     {data?.payload?.tech_lang_keys["10"]}
                                   </p>
-                                  <p className="col-12 mt-2 text-center font-s-20">
+                                  <div className="col-12 mt-2 text-center font-s-20">
                                     <BlockMath
                                       math={`|\\operatorname{proj}_{\\vec{u}} \\vec{v}| = \\frac{${result?.tech_vector_unit}}{\\sqrt{${result?.tech_vector_u}}}`}
                                     />
-                                  </p>
+                                  </div>
 
-                                  <p className="col-12 mt-2">
+                                  <div className="col-12 mt-2">
                                     <BlockMath
                                       math={`\\operatorname{proj}_{\\vec{u}} \\vec{v} = \\frac{\\vec{v} \\cdot \\vec{u}}{||\\vec{u}||^2} \\vec{u}`}
                                     />
-                                  </p>
+                                  </div>
 
-                                  <p className="col-12 mt-2">
+                                  <div className="col-12 mt-2">
                                     <BlockMath
                                       math={`\\vec v \\cdot \\vec u = ${result?.tech_vector_unit}`}
                                     />
@@ -926,7 +924,7 @@ const VectorProjectionCalculator = () => {
                                     <BlockMath
                                       math={`|\\vec u| = \\sqrt{${result?.tech_vector_u}}`}
                                     />
-                                  </p>
+                                  </div>
 
                                   <p className="text-center">
                                     <span className="text-center">
@@ -943,7 +941,7 @@ const VectorProjectionCalculator = () => {
                                     </span>
                                   </p>
 
-                                  <p className="col-12 mt-2">
+                                  <div className="col-12 mt-2">
                                     <BlockMath
                                       math={`
                                           \\operatorname{proj}_{\\vec{u}} \\vec{v} = 
@@ -951,9 +949,9 @@ const VectorProjectionCalculator = () => {
                                           \\Big(${result?.tech_ax}, ${result?.tech_ay}, ${result?.tech_az}\\Big)
                                         `}
                                     />
-                                  </p>
+                                  </div>
 
-                                  <p className="col-12 mt-2">
+                                  <div className="col-12 mt-2">
                                     <BlockMath
                                       math={`
                                           \\operatorname{proj}_{\\vec{u}} \\vec{v} = 
@@ -992,7 +990,7 @@ const VectorProjectionCalculator = () => {
                                           |\\operatorname{proj}_{\\vec{u}} \\vec{v}| = \\frac{${result?.tech_vector_unit}}{\\sqrt{${result?.tech_vector_u}}}
                                         `}
                                     />
-                                  </p>
+                                  </div>
                                 </>
                               )}
                             {result?.tech_vector_representation == "coor" &&

@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useVelocityCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useVelocityCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const VelocityCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -134,11 +134,11 @@ const VelocityCalculator = () => {
         tech_acc_unit: formData.tech_acc_unit,
         tech_circle_unit_result: formData.tech_circle_unit_result,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -491,7 +491,6 @@ const VelocityCalculator = () => {
 
           <div className=" w-full mx-auto ">
             <div className="grid grid-cols-12 gap-2">
-              <div className="md:col-span-1 md:flex hidden"></div>
               <div className="col-span-12 md:col-span-10  mx-auto mt-2  w-full">
                 <input
                   type="hidden"
@@ -551,10 +550,10 @@ const VelocityCalculator = () => {
               </div>
             </div>
           </div>
-          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
             {formData.tech_velo_value == "1" && (
               <>
-                <div className="grid grid-cols-12 lg:gap-4 gap-2 distance_co mt-3">
+                <div className="grid grid-cols-12 gap-4 distance_co mt-3">
                   <div className="col-span-12">
                     <label htmlFor="tech_dem" className="label">
                       {data?.payload?.tech_lang_keys["to_calc"] ??
@@ -1022,7 +1021,6 @@ const VelocityCalculator = () => {
                         )}
                       </div>
                     </div>
-
                     {/* Tech ATY */}
                     <div className="col-span-6 px-2">
                       <div className="flex justify-between">
@@ -1031,7 +1029,7 @@ const VelocityCalculator = () => {
                           <div className="col-span-12 px-2 text-right">
                             <img
                               src="/images/delete_btn.png"
-                              className="w-4 h-4"
+                              className="w-4 h-4 cursor-pointer"
                               onClick={() => removeRow(index)}
                             />
                           </div>
@@ -1096,7 +1094,7 @@ const VelocityCalculator = () => {
                   <button
                     type="button"
                     onClick={addRow}
-                    className="bg-black hover:bg-[#2845F5] border-none text-white px-4 py-2 rounded-lg"
+                    className="bg-[#2845F5] text-[#fff] cursor-pointer px-4 py-2 rounded-lg"
                   >
                     + Add Row
                   </button>
@@ -1119,31 +1117,31 @@ const VelocityCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator  space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
-              <div className=" w-full h-[30px] bg-gray-200 animate-pulse rounded-[10px] mb-4"></div>
-              <div className="w-[75%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[50%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[25%] h-[20px] bg-gray-200 animate-pulse rounded-[10px]"></div>
+              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
+              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 ">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg flex items-center justify-center">
-                    <div className="w-full bg-light-blue p-3 rounded-lg mt-3">
+                    <div className="w-full bg-light-blue md:p-3 rounded-lg mt-3">
                       <div className="text-center">
                         <p className="text-[18px] font-bold">
                           {result?.tech_ans_t}
                         </p>
 
-                        <div className="inline-flex items-center bg-white rounded-lg my-3 px-3 py-2 space-x-3 justify-center">
-                          <strong className="text-white bordered bg-[#2845F5] px-3 py-1 rounded-lg lg:text-[25px] md:text-[20px] text-[18px]">
-                            {!isNaN(convertedValue) ? convertedValue : "0"}
+                        <div className="flex items-center  rounded-lg my-3 px-3 py-2 space-x-3 justify-center">
+                          <strong className="bg-[#2845F5] text-[#fff] px-3 py-1 rounded-lg text-[25px]">
+                            {convertedValue}
                           </strong>
                           <select
                             className="input  text-[16px] px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"

@@ -272,6 +272,7 @@ const AnovaCalculator = () => {
   const fa = msa / mse;
   const fb = msbxx / mse;
   const fab = msab / mse;
+
   const round = (num) => Math.round(num * 10000) / 10000;
 
   // majax
@@ -405,7 +406,7 @@ const AnovaCalculator = () => {
                         type="button"
                         id="add"
                         onClick={handleAddGroup}
-                        className="bg-[#1A1A1A] text-[#fff] hover:bg-[#2845F5] cursor-pointer  px-4 py-2 me-2"
+                        className="bg-[#2845F5] text-[#fff] border radius-5 px-4 py-2 me-2"
                       >
                         <strong className="text-blue">
                           {data?.payload?.tech_lang_keys["5"]}{" "}
@@ -416,7 +417,7 @@ const AnovaCalculator = () => {
                         type="button"
                         id="del"
                         onClick={handleDeleteGroup}
-                        className="bg-[#1A1A1A] text-[#fff] hover:bg-[#2845F5] cursor-pointer px-4 py-2"
+                        className="bg-[#2845F5] text-[#fff] border radius-5 px-4 py-2"
                       >
                         <strong className="text-blue">
                           {data?.payload?.tech_lang_keys["6"]}{" "}
@@ -443,6 +444,7 @@ const AnovaCalculator = () => {
                                 <td key={cIdx}>
                                   <input
                                     type="text"
+                                    placeholder="1,2,3,4, etc"
                                     className="input border "
                                     name={`td_${rIdx}_${cIdx}`} // 🔥 Important
                                     value={val}
@@ -453,7 +455,6 @@ const AnovaCalculator = () => {
                                         e.target.value
                                       )
                                     }
-                                    placeholder="1,2,3"
                                   />
                                 </td>
                               ))}
@@ -480,28 +481,28 @@ const AnovaCalculator = () => {
                       <button
                         type="button"
                         onClick={addRow}
-                        className="bg-[#1A1A1A] text-[#fff] hover:bg-[#2845F5] cursor-pointer rounded-lg px-4 py-2"
+                        className="bg-[#2845F5] text-[#fff] border px-4 py-2"
                       >
                         Add Row
                       </button>
                       <button
                         type="button"
                         onClick={deleteRow}
-                        className="bg-[#1A1A1A] text-[#fff] hover:bg-[#2845F5] cursor-pointer rounded-lg px-4 py-2"
+                        className="bg-[#2845F5] text-[#fff] border px-4 py-2"
                       >
                         Delete Row
                       </button>
                       <button
                         type="button"
                         onClick={addColumn}
-                        className="bg-[#1A1A1A] text-[#fff] hover:bg-[#2845F5] cursor-pointer rounded-lg px-4 py-2"
+                        className="bg-[#2845F5] text-[#fff] border px-4 py-2"
                       >
                         Add Column
                       </button>
                       <button
                         type="button"
                         onClick={deleteColumn}
-                        className="bg-[#1A1A1A] text-[#fff] hover:bg-[#2845F5] cursor-pointer rounded-lg px-4 py-2"
+                        className="bg-[#2845F5] text-[#fff] border px-4 py-2"
                       >
                         Delete Column
                       </button>
@@ -528,16 +529,16 @@ const AnovaCalculator = () => {
         {roundToTheNearestLoading ? (
           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
-              <div className=" w-full h-[30px] bg-gray-200 animate-pulse rounded-[10px] mb-4"></div>
-              <div className="w-[75%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[50%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[25%] h-[20px] bg-gray-200 animate-pulse rounded-[10px]"></div>
+              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
+              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
           </div>
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg pace-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -546,7 +547,7 @@ const AnovaCalculator = () => {
                       <div className="w-full text-[14px] md:text-[18px]">
                         {formData?.tech_type == "one_way" ? (
                           <>
-                            <div className="w-full mt-2 px-2 overflow-auto">
+                            <div className="w-full mt-2 px-2">
                               <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
@@ -571,101 +572,101 @@ const AnovaCalculator = () => {
                             </div>
 
                             <div
-                              className="w-full mt-3 overflow-auto "
+                              className="w-full mt-3 overflow-auto"
                               dangerouslySetInnerHTML={{ __html: table }}
                             />
                             <div
-                              className="w-full mt-3 overflow-auto "
+                              className="w-full mt-3 overflow-auto"
                               dangerouslySetInnerHTML={{ __html: table1 }}
                             />
                             <div
-                              className="w-full mt-3 overflow-auto "
+                              className="w-full mt-3 overflow-auto"
                               dangerouslySetInnerHTML={{ __html: table2 }}
                             />
 
                             <div className="w-full mt-3 overflow-auto">
-                              <table className="w-full bordered border-collapse">
+                              <table className="w-full border-collapse">
                                 <thead>
                                   <tr className="bg-[#2845F5] text-[#fff]">
                                     <td
                                       colSpan={6}
-                                      className="p-2 border-b text-center text-blue"
+                                      className="p-2 border text-center text-blue"
                                     >
                                       {data?.payload?.tech_lang_keys["25"]}{" "}
                                       {data?.payload?.tech_lang_keys["13"]}
                                     </td>
                                   </tr>
                                   <tr className="bg-[#2845F5] text-[#fff]">
-                                    <td className="p-2 border-b text-center text-blue">
+                                    <td className="p-2 border text-center text-blue">
                                       {data?.payload?.tech_lang_keys["14"]}
                                     </td>
-                                    <td className="p-2 border-b text-center text-blue">
+                                    <td className="p-2 border text-center text-blue">
                                       {data?.payload?.tech_lang_keys["15"]} (DF)
                                     </td>
-                                    <td className="p-2 border-b text-center text-blue">
+                                    <td className="p-2 border text-center text-blue">
                                       {data?.payload?.tech_lang_keys["16"]} (SS)
                                     </td>
-                                    <td className="p-2 border-b text-center text-blue">
+                                    <td className="p-2 border text-center text-blue">
                                       {data?.payload?.tech_lang_keys["17"]} (MS)
                                     </td>
-                                    <td className="p-2 border-b text-center text-blue">
+                                    <td className="p-2 border text-center text-blue">
                                       F-{data?.payload?.tech_lang_keys["18"]}
                                     </td>
-                                    <td className="p-2 border-b text-center text-blue">
+                                    <td className="p-2 border text-center text-blue">
                                       P-{data?.payload?.tech_lang_keys["11"]}
                                     </td>
                                   </tr>
                                 </thead>
-                                <tbody className="bg-white">
-                                  <tr>
-                                    <td className="p-2 bordered text-center text-blue">
+                                <tbody>
+                                  <tr className="bg-white">
+                                    <td className="p-2 border text-center text-blue">
                                       {data?.payload?.tech_lang_keys["19"]}
                                     </td>
-                                    <td className="p-2 bordered text-center">
+                                    <td className="p-2 border text-center">
                                       {dfb}
                                     </td>
-                                    <td className="p-2 bordered text-center">
+                                    <td className="p-2 border text-center">
                                       {ssb}
                                     </td>
-                                    <td className="p-2 bordered text-center">
+                                    <td className="p-2 border text-center">
                                       {msb}
                                     </td>
-                                    <td className="p-2 bordered text-center">
+                                    <td className="p-2 border text-center">
                                       {f}
                                     </td>
-                                    <td className="p_value p-2 bordered text-center"></td>
+                                    <td className="p_value p-2 border text-center"></td>
                                   </tr>
-                                  <tr>
-                                    <td className="p-2 bordered text-center text-blue">
+                                  <tr className="bg-white">
+                                    <td className="p-2 border text-center text-blue">
                                       {data?.payload?.tech_lang_keys["20"]}
                                     </td>
-                                    <td className="p-2 bordered text-center">
+                                    <td className="p-2 border text-center">
                                       {dfw}
                                     </td>
-                                    <td className="p-2 bordered text-center">
+                                    <td className="p-2 border text-center">
                                       {ssw}
                                     </td>
-                                    <td className="p-2 bordered text-center">
+                                    <td className="p-2 border text-center">
                                       {msw}
                                     </td>
                                     <td
                                       colSpan={2}
-                                      className="p-2 bordered text-center"
+                                      className="p-2 border text-center"
                                     ></td>
                                   </tr>
-                                  <tr>
-                                    <td className="p-2 bordered text-center text-blue">
+                                  <tr className="bg-white">
+                                    <td className="p-2 border text-center text-blue">
                                       {data?.payload?.tech_lang_keys["21"]}
                                     </td>
-                                    <td className="p-2 bordered text-center">
+                                    <td className="p-2 border text-center">
                                       {dfb + dfw}
                                     </td>
-                                    <td className="p-2 bordered text-center">
+                                    <td className="p-2 border text-center">
                                       {ssb + ssw}
                                     </td>
                                     <td
                                       colSpan={3}
-                                      className="p-2 bordered text-center"
+                                      className="p-2 border text-center"
                                     ></td>
                                   </tr>
                                 </tbody>
@@ -820,134 +821,134 @@ const AnovaCalculator = () => {
 
                               <div className="w-full mt-3 overflow-auto">
                                 <table
-                                  className="w-full"
+                                  className="w-full bordered"
                                   style={{ borderCollapse: "collapse" }}
                                 >
-                                  <thead className="bg-[#2845F5] text-[#fff]">
+                                  <thead className="bg-[#2845F5] ">
                                     <tr>
                                       <th
-                                        className="p-2 bordered text-center text-blue"
+                                        className="p-2 bordered text-center text-[#fff]"
                                         colSpan="6"
                                       >
                                         {data?.payload?.tech_lang_keys["25"]}{" "}
                                         {data?.payload?.tech_lang_keys["13"]}
                                       </th>
                                     </tr>
-                                    <tr >
-                                      <td className="p-2 border_black text-center text-blue">
+                                    <tr className="bg-white">
+                                      <td className="p-2 bordered text-center text-blue">
                                         {data?.payload?.tech_lang_keys["14"]}
                                       </td>
-                                      <td className="p-2 border_black text-center text-blue">
+                                      <td className="p-2 bordered text-center text-blue">
                                         {data?.payload?.tech_lang_keys["15"]}{" "}
                                         (DF)
                                       </td>
-                                      <td className="p-2 border_black text-center text-blue">
+                                      <td className="p-2 bordered text-center text-blue">
                                         {data?.payload?.tech_lang_keys["16"]}{" "}
                                         (SS)
                                       </td>
-                                      <td className="p-2 border_black text-center text-blue">
+                                      <td className="p-2 bordered text-center text-blue">
                                         {data?.payload?.tech_lang_keys["17"]}{" "}
                                         (MS)
                                       </td>
-                                      <td className="p-2 border_black text-center text-blue">
+                                      <td className="p-2 bordered text-center text-blue">
                                         F-{data?.payload?.tech_lang_keys["18"]}
                                       </td>
-                                      <td className="p-2 border_black text-center text-blue">
+                                      <td className="p-2 bordered text-center text-blue">
                                         P-{data?.payload?.tech_lang_keys["11"]}
                                       </td>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     <tr className="bg-white">
-                                      <td className="p-2 border_black text-center text-blue">
+                                      <td className="p-2 bordered text-center text-blue">
                                         A
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 bordered text-center">
                                         <InlineMath math={`a - 1 = ${dfa}`} />
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 bordered text-center">
                                         <InlineMath math={`${round(ssa)}`} />
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 bordered text-center">
                                         <InlineMath math={`${round(msa)}`} />
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 bordered text-center">
                                         <InlineMath math={`${round(fa)}`} />
                                       </td>
-                                      <td className="p-2 border_black text-center p_value1"></td>
+                                      <td className="p-2 border edtext-center p_value1"></td>
                                     </tr>
                                     <tr className="bg-white">
-                                      <td className="p-2 border_black text-center text-blue">
+                                      <td className="p-2 bordered text-center text-blue">
                                         B
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 bordered text-center">
                                         <InlineMath math={`b - 1 = ${dfb}`} />
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 bordered text-center">
                                         <InlineMath math={`${round(ssbxx)}`} />
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 bordered text-center">
                                         <InlineMath math={`${round(msbxx)}`} />
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 bordered text-center">
                                         <InlineMath math={`${round(fb)}`} />
                                       </td>
-                                      <td className="p-2 border_black text-center p_value2"></td>
+                                      <td className="p-2 bordered text-center p_value2"></td>
                                     </tr>
                                     <tr className="bg-white">
-                                      <td className="p-2 border_black text-center text-blue">
+                                      <td className="p-2 bordered text-center text-blue">
                                         AB
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 bordered text-center">
                                         <InlineMath
                                           math={`(a - 1)(b - 1) = ${dfab}`}
                                         />
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 bordered text-center">
                                         <InlineMath math={`${round(ssab)}`} />
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 bordered text-center">
                                         <InlineMath math={`${round(msab)}`} />
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 bordered text-center">
                                         <InlineMath math={`${round(fab)}`} />
                                       </td>
-                                      <td className="p-2 border_black text-center p_value3"></td>
+                                      <td className="p-2 bordered text-center p_value3"></td>
                                     </tr>
                                     <tr className="bg-white">
-                                      <td className="p-2 border_black text-center text-blue">
+                                      <td className="p-2 bordered text-center text-blue">
                                         {data?.payload?.tech_lang_keys["34"]} (
                                         {data?.payload?.tech_lang_keys["35"]})
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 bordered text-center">
                                         <InlineMath math={`n - ab = ${dfe}`} />
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 bordered text-center">
                                         <InlineMath math={`${round(sse)}`} />
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 bordered text-center">
                                         <InlineMath math={`${round(mse)}`} />
                                       </td>
                                       <td
                                         colSpan="2"
-                                        className="p-2 border_black text-center"
+                                        className="p-2 bordered text-center"
                                       ></td>
                                     </tr>
                                     <tr className="bg-white">
-                                      <td className="p-2 border_black text-center text-blue">
+                                      <td className="p-2 bordered text-center text-blue">
                                         {data?.payload?.tech_lang_keys["21"]}
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 border text-center">
                                         <InlineMath
                                           math={`n - 1 = ${df_total}`}
                                         />
                                       </td>
-                                      <td className="p-2 border_black text-center">
+                                      <td className="p-2 bordered text-center">
                                         <InlineMath math={`${round(sst)}`} />
                                       </td>
                                       <td
                                         colSpan="3"
-                                        className="p-2 border_black text-center"
+                                        className="p-2 bordered text-center"
                                       ></td>
                                     </tr>
                                   </tbody>

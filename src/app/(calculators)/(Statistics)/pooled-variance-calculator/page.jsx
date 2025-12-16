@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import "katex/dist/katex.min.css";
 import { BlockMath } from "react-katex";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { usePooledVarianceCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  usePooledVarianceCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -16,7 +17,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const PooledVarianceCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -94,11 +94,11 @@ const PooledVarianceCalculator = () => {
         tech_g1: formData.tech_g1,
         tech_g2: formData.tech_g2,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -181,7 +181,7 @@ const PooledVarianceCalculator = () => {
           )}
 
           <div className="lg:w-[70%] md:w-[90%] w-full mx-auto ">
-            <div className="grid grid-cols-12   mt-3 gap-2 md:gap-4">
+            <div className="grid grid-cols-12   mt-3  gap-1 md:gap-4">
               <div className="col-span-6">
                 <label htmlFor="tech_type" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -228,26 +228,26 @@ const PooledVarianceCalculator = () => {
               </div>
               <div className="col-span-12  text-center flex items-center">
                 <div className="d-flex align-items-center">
-                  <label className="pe-2" htmlFor="sum">
+                  <label className="pe-2 cursor-pointer" htmlFor="sum">
                     <input
                       type="radio"
                       name="tech_option"
                       value="sum"
                       id="sum"
-                      className="mr-2 border"
+                      className="mr-2 border cursor-pointer"
                       onChange={handleChange}
                       checked={formData.tech_option === "sum"}
                     />
                     <span>{data?.payload?.tech_lang_keys["3"]}</span>
                   </label>
 
-                  <label className="pe-2" htmlFor="raw">
+                  <label className="pe-2 cursor-pointer" htmlFor="raw">
                     <input
                       type="radio"
                       name="tech_option"
                       value="raw"
                       id="raw"
-                      className="mr-2 border"
+                      className="mr-2 border cursor-pointer"
                       onChange={handleChange}
                       checked={formData.tech_option === "raw"}
                     />
@@ -394,7 +394,7 @@ const PooledVarianceCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -405,16 +405,16 @@ const PooledVarianceCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="w-full">
-                        {result?.tech_type && (
+                        {result?.type && (
                           <>
-                            {result?.tech_type == "equal" ? (
+                            {result?.type == "equal" ? (
                               <>
                                 <div className="text-center">
                                   <p className="text-[18px]">
@@ -426,9 +426,9 @@ const PooledVarianceCalculator = () => {
                                 {formData?.tech_option == "sum" && (
                                   <>
                                     <div className="text-center">
-                                      <p className="text-[21px] bg-[#2845F5] px-3 py-2 rounded-lg inline-block my-3">
-                                        <strong className="text-white">
-                                          {result?.tech_sp2}
+                                      <p className="text-[21px] bg-[#2845F5] text-[#fff] rounded-lg px-3 py-2 rounded-[10px] inline-block my-3">
+                                        <strong>
+                                          {result?.sp2}
                                         </strong>
                                       </p>
 
@@ -449,7 +449,7 @@ const PooledVarianceCalculator = () => {
                                               </td>
                                               <td className="py-2 border-b">
                                                 <strong className="text-blue">
-                                                  {result?.tech_sp}
+                                                  {result?.sp}
                                                 </strong>
                                               </td>
                                             </tr>
@@ -463,7 +463,7 @@ const PooledVarianceCalculator = () => {
                                               </td>
                                               <td className="py-2 border-b">
                                                 <strong className="text-blue">
-                                                  {result?.tech_sqrsp2}
+                                                  {result?.sqrsp2}
                                                 </strong>
                                               </td>
                                             </tr>
@@ -478,114 +478,104 @@ const PooledVarianceCalculator = () => {
                                               </td>
                                               <td className="py-2 border-b">
                                                 <strong className="text-blue">
-                                                  {result?.tech_n1 +
-                                                    result?.tech_n2 -
-                                                    2}
+                                                  {result?.n1 + result?.n2 - 2}
                                                 </strong>
                                               </td>
                                             </tr>
                                           </tbody>
                                         </table>
                                       </div>
-                                      <div className="overflow-auto">
-                                        <p className="w-full mt-3 text-[18px] text-left font-bold">
-                                          {data?.payload?.tech_lang_keys["14"]}
-                                        </p>
-                                        <BlockMath
-                                          math={`S_p^2 = \\dfrac{(n -1)S_1^2 + (n_2 - 1)S_2^2}{n_1 + n_2 - 2}`}
-                                        />
-                                        <BlockMath
-                                          math={`S_p^2 = \\dfrac{(${result?.tech_n1} -1)(${result?.tech_s1})^2 + (${result?.tech_n2} - 1)(${result?.tech_s2})^2}{${result?.tech_n1} + ${result?.tech_n2} - 2}`}
-                                        />
-                                        <BlockMath
-                                          math={`S_p^2 = \\dfrac{(${result?.tech_n1_1})(${result?.tech_ps1}) + (${result?.tech_n2_1})(${result?.tech_ps2})}{${result?.tech_devi}}`}
-                                        />
-                                        <BlockMath
-                                          math={`S_p^2 = \\dfrac{${result?.tech_n1s1} + ${result?.tech_n2s2}}{${result?.tech_devi}}`}
-                                        />
-                                        <BlockMath
-                                          math={`S_p^2 = \\dfrac{${result?.tech_res}}{${result?.tech_devi}}`}
-                                        />
-                                        <BlockMath
-                                          math={`S_p^2 = ${result?.tech_sp2}`}
-                                        />
-                                        <p className="w-full mt-3 text-[18px] text-left font-bold">
-                                          {data?.payload?.tech_lang_keys["15"]}
-                                        </p>
-                                        <BlockMath
-                                          math={`S_p^2 = ${result?.tech_sp2}`}
-                                        />
 
-                                        <p className="w-full mt-3 text-left font-bold">
-                                          {data?.payload?.tech_lang_keys["16"]}
-                                        </p>
-                                        <BlockMath
-                                          math={`\\sqrt{(S_p)^2} = \\sqrt{${result?.tech_sp2}}`}
-                                        />
-                                        <BlockMath
-                                          math={`S_p = ${result?.tech_sqrsp2}`}
-                                        />
+                                      <p className="w-full mt-3 text-[18px]">
+                                        {data?.payload?.tech_lang_keys["14"]}
+                                      </p>
+                                      <BlockMath
+                                        math={`S_p^2 = \\dfrac{(n -1)S_1^2 + (n_2 - 1)S_2^2}{n_1 + n_2 - 2}`}
+                                      />
+                                      <BlockMath
+                                        math={`S_p^2 = \\dfrac{(${result?.n1} -1)(${result?.s1})^2 + (${result?.n2} - 1)(${result?.s2})^2}{${result?.n1} + ${result?.n2} - 2}`}
+                                      />
+                                      <BlockMath
+                                        math={`S_p^2 = \\dfrac{(${result?.n1_1})(${result?.ps1}) + (${result?.n2_1})(${result?.ps2})}{${result?.devi}}`}
+                                      />
+                                      <BlockMath
+                                        math={`S_p^2 = \\dfrac{${result?.n1s1} + ${result?.n2s2}}{${result?.devi}}`}
+                                      />
+                                      <BlockMath
+                                        math={`S_p^2 = \\dfrac{${result?.res}}{${result?.devi}}`}
+                                      />
+                                      <BlockMath
+                                        math={`S_p^2 = ${result?.sp2}`}
+                                      />
 
-                                        <p className="w-full mt-3 text-[18px] text-left font-bold">
-                                          {data?.payload?.tech_lang_keys["12"]}
-                                        </p>
-                                        <BlockMath
-                                          math={`SE = S_{\\bar x_1 - \\bar x_2} = S_p \\sqrt{\\dfrac{1}{n_1} + \\dfrac{1}{n_2}}`}
-                                        />
-                                        <BlockMath
-                                          math={`SE = ${result?.tech_sqrsp2} \\sqrt{\\dfrac{1}{${result?.tech_n1}} + \\dfrac{1}{${result?.tech_n2}}}`}
-                                        />
-                                        <BlockMath
-                                          math={`SE = ${
-                                            result?.tech_sqrsp2
-                                          } \\sqrt{${1 / result?.tech_n1} + ${
-                                            1 / result?.tech_n2
-                                          }}`}
-                                        />
-                                        <BlockMath
-                                          math={`SE = ${result?.tech_sqrsp2} \\sqrt{${result?.tech_devn1} + ${result?.tech_devn2}}`}
-                                        />
-                                        <BlockMath
-                                          math={`SE = ${result?.tech_sqrsp2} \\sqrt{${result?.tech_devres}}`}
-                                        />
-                                        <BlockMath
-                                          math={`SE = ${result?.tech_sqrsp2} * ${result?.tech_sqrdevres}`}
-                                        />
-                                        <BlockMath
-                                          math={`SE = ${result?.tech_sp}`}
-                                        />
+                                      <p className="w-full mt-3 text-[18px]">
+                                        {data?.payload?.tech_lang_keys["15"]}
+                                      </p>
+                                      <BlockMath
+                                        math={`S_p^2 = ${result?.sp2}`}
+                                      />
 
-                                        <p className="w-full mt-3 text-[18px] text-left font-bold">
-                                          {data?.payload?.tech_lang_keys["13"]}
-                                        </p>
-                                        <BlockMath
-                                          math={`df = n_1 + n_2 - 2`}
-                                        />
-                                        <BlockMath
-                                          math={`df = ${result?.tech_n1} + ${result?.tech_n2} - 2`}
-                                        />
-                                        <BlockMath
-                                          math={`df = ${
-                                            result?.tech_n1 + result?.tech_n2
-                                          } - 2`}
-                                        />
-                                        <BlockMath
-                                          math={`df = ${
-                                            result?.tech_n1 +
-                                            result?.tech_n2 -
-                                            2
-                                          }`}
-                                        />
-                                      </div>
+                                      <p className="w-full mt-3">
+                                        {data?.payload?.tech_lang_keys["16"]}
+                                      </p>
+                                      <BlockMath
+                                        math={`\\sqrt{(S_p)^2} = \\sqrt{${result?.sp2}}`}
+                                      />
+                                      <BlockMath
+                                        math={`S_p = ${result?.sqrsp2}`}
+                                      />
+
+                                      <p className="w-full mt-3 text-[18px]">
+                                        {data?.payload?.tech_lang_keys["12"]}
+                                      </p>
+                                      <BlockMath
+                                        math={`SE = S_{\\bar x_1 - \\bar x_2} = S_p \\sqrt{\\dfrac{1}{n_1} + \\dfrac{1}{n_2}}`}
+                                      />
+                                      <BlockMath
+                                        math={`SE = ${result?.sqrsp2} \\sqrt{\\dfrac{1}{${result?.n1}} + \\dfrac{1}{${result?.n2}}}`}
+                                      />
+                                      <BlockMath
+                                        math={`SE = ${result?.sqrsp2} \\sqrt{${
+                                          1 / result?.n1
+                                        } + ${1 / result?.n2}}`}
+                                      />
+                                      <BlockMath
+                                        math={`SE = ${result?.sqrsp2} \\sqrt{${result?.devn1} + ${result?.devn2}}`}
+                                      />
+                                      <BlockMath
+                                        math={`SE = ${result?.sqrsp2} \\sqrt{${result?.devres}}`}
+                                      />
+                                      <BlockMath
+                                        math={`SE = ${result?.sqrsp2} * ${result?.sqrdevres}`}
+                                      />
+                                      <BlockMath math={`SE = ${result?.sp}`} />
+
+                                      <p className="w-full mt-3 text-[18px]">
+                                        {data?.payload?.tech_lang_keys["13"]}
+                                      </p>
+                                      <BlockMath math={`df = n_1 + n_2 - 2`} />
+                                      <BlockMath
+                                        math={`df = ${result?.n1} + ${result?.n2} - 2`}
+                                      />
+                                      <BlockMath
+                                        math={`df = ${
+                                          result?.n1 + result?.n2
+                                        } - 2`}
+                                      />
+                                      <BlockMath
+                                        math={`df = ${
+                                          result?.n1 + result?.n2 - 2
+                                        }`}
+                                      />
                                     </div>
                                   </>
                                 )}
                                 {formData?.tech_option == "raw" && (
                                   <>
                                     <div className="text-center">
-                                      <p className="text-[21px] bg-[#2845F5] px-3 py-2 rounded-lg d-inline-block my-3">
-                                        <strong className="text-white">
-                                          {result?.tech_pvres}
+                                      <p className="text-[21px] bg-[#2845F5] text-[#fff] rounded-lg px-3 py-2 radius-10 d-inline-block my-3">
+                                        <strong >
+                                          {result?.pvres}
                                         </strong>
                                       </p>
                                     </div>
@@ -608,9 +598,7 @@ const PooledVarianceCalculator = () => {
                                             </td>
                                             <td className="py-2 border-b">
                                               <strong className="text-blue">
-                                                {result?.tech_sqrpvres.toFixed(
-                                                  4
-                                                )}
+                                                {result?.sqrpvres.toFixed(4)}
                                               </strong>
                                             </td>
                                           </tr>
@@ -624,7 +612,7 @@ const PooledVarianceCalculator = () => {
                                             </td>
                                             <td className="py-2 border-b">
                                               <strong className="text-blue">
-                                                {result?.tech_seres.toFixed(4)}
+                                                {result?.seres.toFixed(4)}
                                               </strong>
                                             </td>
                                           </tr>
@@ -639,9 +627,7 @@ const PooledVarianceCalculator = () => {
                                             </td>
                                             <td className="py-2 border-b">
                                               <strong className="text-blue">
-                                                {result?.tech_i +
-                                                  result?.tech_i1 -
-                                                  2}
+                                                {result?.i + result?.i1 - 2}
                                               </strong>
                                             </td>
                                           </tr>
@@ -649,28 +635,28 @@ const PooledVarianceCalculator = () => {
                                       </table>
                                     </div>
 
-                                    <p className="w-full mt-3 text-[18px]  text-left font-bold">
+                                    <p className="w-full mt-3 text-[18px]">
                                       {data?.payload?.tech_lang_keys["18"]}:
                                     </p>
-                                    <p className="w-full mt-3 text-left font-bold">
+                                    <p className="w-full mt-3">
                                       {data?.payload?.tech_lang_keys["19"]} ={" "}
-                                      {result?.tech_countn}
+                                      {result?.countn}
                                     </p>
-                                    <p className="w-full mt-3 text-left font-bold">
+                                    <p className="w-full mt-3">
                                       {data?.payload?.tech_lang_keys["20"]} ={" "}
-                                      {result?.tech_sum}
+                                      {result?.sum}
                                     </p>
-                                    <p className="w-full mt-3 text-left font-bold">
+                                    <p className="w-full mt-3">
                                       {data?.payload?.tech_lang_keys["21"]} ={" "}
-                                      {(
-                                        result?.tech_sum / result?.tech_countn
-                                      ).toFixed(4)}
+                                      {(result?.sum / result?.countn).toFixed(
+                                        4
+                                      )}
                                     </p>
 
                                     <div
                                       className="w-full mt-2 overflow-auto"
                                       dangerouslySetInnerHTML={{
-                                        __html: result?.tech_table,
+                                        __html: result?.table,
                                       }}
                                     />
 
@@ -682,50 +668,48 @@ const PooledVarianceCalculator = () => {
                                       math={`= \\frac{\\Sigma(x_i - \\bar x)^2}{n - 1}`}
                                     />
                                     <BlockMath
-                                      math={`= \\frac{${result?.tech_ar_sum}}{${result?.tech_i} - 1}`}
+                                      math={`= \\frac{${result?.ar_sum}}{${result?.i} - 1}`}
                                     />
                                     <BlockMath
-                                      math={`= \\frac{${result?.tech_ar_sum}}{${
-                                        result?.tech_i - 1
+                                      math={`= \\frac{${result?.ar_sum}}{${
+                                        result?.i - 1
                                       }}`}
                                     />
-                                    <BlockMath math={`= ${result?.tech_v}`} />
+                                    <BlockMath math={`= ${result?.v}`} />
 
                                     <BlockMath
                                       math={`\\text{Standard Deviation}`}
                                     />
                                     <BlockMath math={`S = \\sqrt{S^2}`} />
                                     <BlockMath
-                                      math={`= \\sqrt{${result?.tech_v}}`}
+                                      math={`= \\sqrt{${result?.v}}`}
                                     />
                                     <BlockMath
-                                      math={`= ${result?.tech_vsqrt.toFixed(
-                                        4
-                                      )}`}
+                                      math={`= ${result?.vsqrt.toFixed(4)}`}
                                     />
 
-                                    <p className="w-full mt-3 text-[18px] text-left font-bold">
+                                    <p className="w-full mt-3 text-[18px]">
                                       {data?.payload?.tech_lang_keys["22"]}:
                                     </p>
-                                    <p className="w-full mt-3 text-left font-bold">
+                                    <p className="w-full mt-3">
                                       {data?.payload?.tech_lang_keys["19"]} ={" "}
-                                      {result?.tech_countn1}
+                                      {result?.countn1}
                                     </p>
-                                    <p className="w-full mt-3 text-left font-bold">
+                                    <p className="w-full mt-3">
                                       {data?.payload?.tech_lang_keys["20"]} ={" "}
-                                      {result?.tech_sum1}
+                                      {result?.sum1}
                                     </p>
-                                    <p className="w-full mt-3 text-left font-bold">
+                                    <p className="w-full mt-3">
                                       {data?.payload?.tech_lang_keys["21"]} ={" "}
-                                      {(
-                                        result?.tech_sum1 / result?.tech_countn1
-                                      ).toFixed(4)}
+                                      {(result?.sum1 / result?.countn1).toFixed(
+                                        4
+                                      )}
                                     </p>
 
                                     <div
                                       className="w-full mt-2 overflow-auto"
                                       dangerouslySetInnerHTML={{
-                                        __html: result?.tech_table1,
+                                        __html: result?.table1,
                                       }}
                                     />
 
@@ -737,32 +721,30 @@ const PooledVarianceCalculator = () => {
                                       math={`= \\frac{\\Sigma(x_i - \\bar x)^2}{n - 1}`}
                                     />
                                     <BlockMath
-                                      math={`= \\frac{${result?.tech_ar_sum1}}{${result?.tech_i1} - 1}`}
+                                      math={`= \\frac{${result?.ar_sum1}}{${result?.i1} - 1}`}
                                     />
                                     <BlockMath
-                                      math={`= \\frac{${
-                                        result?.tech_ar_sum1
-                                      }}{${result?.tech_i1 - 1}}`}
+                                      math={`= \\frac{${result?.ar_sum1}}{${
+                                        result?.i1 - 1
+                                      }}`}
                                     />
-                                    <BlockMath math={`= ${result?.tech_v1}`} />
+                                    <BlockMath math={`= ${result?.v1}`} />
 
                                     <BlockMath
                                       math={`\\text{Standard Deviation}`}
                                     />
                                     <BlockMath math={`S = \\sqrt{S^2}`} />
                                     <BlockMath
-                                      math={`= \\sqrt{${result?.tech_v1}}`}
+                                      math={`= \\sqrt{${result?.v1}}`}
                                     />
-                                    <BlockMath
-                                      math={`= ${result?.tech_vsqrt1}`}
-                                    />
+                                    <BlockMath math={`= ${result?.vsqrt1}`} />
 
                                     <BlockMath math={`\\text{Now we have}`} />
                                     <BlockMath
-                                      math={`S_1 = ${result?.tech_vsqrt} \\quad ; \\quad n_1 = ${result?.tech_i}`}
+                                      math={`S_1 = ${result?.vsqrt} \\quad ; \\quad n_1 = ${result?.i}`}
                                     />
                                     <BlockMath
-                                      math={`S_2 = ${result?.tech_vsqrt1} \\quad ; \\quad n_2 = ${result?.tech_i1}`}
+                                      math={`S_2 = ${result?.vsqrt1} \\quad ; \\quad n_2 = ${result?.i1}`}
                                     />
 
                                     <BlockMath
@@ -773,52 +755,42 @@ const PooledVarianceCalculator = () => {
                                     />
                                     <BlockMath
                                       math={`= \\frac{(${
-                                        result?.tech_i
-                                      } - 1)(${result?.tech_vsqrt.toFixed(
+                                        result?.i
+                                      } - 1)(${result?.vsqrt.toFixed(
                                         4
                                       )})^2 + (${
-                                        result?.tech_i1
-                                      } - 1)(${result?.tech_vsqrt1.toFixed(
-                                        4
-                                      )})^2}{${
-                                        result?.tech_i + result?.tech_i1 - 2
+                                        result?.i1
+                                      } - 1)(${result?.vsqrt1.toFixed(4)})^2}{${
+                                        result?.i + result?.i1 - 2
                                       }}`}
                                     />
                                     <BlockMath
-                                      math={`= \\frac{(${result?.tech_vrres})(${
-                                        result?.tech_s12
-                                      }) + (${result?.tech_vrres1})(${
-                                        result?.tech_s22
-                                      })}{${
-                                        result?.tech_i + result?.tech_i1 - 2
-                                      }}`}
+                                      math={`= \\frac{(${result?.vrres})(${
+                                        result?.s12
+                                      }) + (${result?.vrres1})(${
+                                        result?.s22
+                                      })}{${result?.i + result?.i1 - 2}}`}
                                     />
                                     <BlockMath
-                                      math={`= \\frac{${
-                                        result?.tech_ress12
-                                      } + ${result?.tech_ress22}}{${
-                                        result?.tech_i + result?.tech_i1 - 2
-                                      }}`}
+                                      math={`= \\frac{${result?.ress12} + ${
+                                        result?.ress22
+                                      }}{${result?.i + result?.i1 - 2}}`}
                                     />
                                     <BlockMath
-                                      math={`= \\frac{${result?.tech_pv}}{${
-                                        result?.tech_i + result?.tech_i1 - 2
+                                      math={`= \\frac{${result?.pv}}{${
+                                        result?.i + result?.i1 - 2
                                       }}`}
                                     />
-                                    <BlockMath
-                                      math={`= ${result?.tech_pvres}`}
-                                    />
+                                    <BlockMath math={`= ${result?.pvres}`} />
 
                                     <BlockMath
                                       math={`\\text{Pooled Standard Deviation}`}
                                     />
                                     <BlockMath math={`S_p = \\sqrt{S_p^2}`} />
                                     <BlockMath
-                                      math={`= \\sqrt{${result?.tech_pvres}}`}
+                                      math={`= \\sqrt{${result?.pvres}}`}
                                     />
-                                    <BlockMath
-                                      math={`= ${result?.tech_sqrpvres}`}
-                                    />
+                                    <BlockMath math={`= ${result?.sqrpvres}`} />
 
                                     <BlockMath
                                       math={`\\text{Standard Error}`}
@@ -827,48 +799,42 @@ const PooledVarianceCalculator = () => {
                                       math={`SE = S_{\\bar x_1 - \\bar x_2} = S_p \\sqrt{\\frac{1}{n_1} + \\frac{1}{n_2}}`}
                                     />
                                     <BlockMath
-                                      math={`= ${result?.tech_sqrpvres} \\sqrt{\\frac{1}{${result?.tech_i}} + \\frac{1}{${result?.tech_i1}}}`}
+                                      math={`= ${result?.sqrpvres} \\sqrt{\\frac{1}{${result?.i}} + \\frac{1}{${result?.i1}}}`}
                                     />
                                     <BlockMath
-                                      math={`= ${result?.tech_sqrpvres} \\sqrt{${result?.tech_devn1} + ${result?.tech_devn12}}`}
+                                      math={`= ${result?.sqrpvres} \\sqrt{${result?.devn1} + ${result?.devn12}}`}
                                     />
                                     <BlockMath
-                                      math={`= ${result?.tech_sqrpvres} \\sqrt{${result?.tech_resdev}}`}
+                                      math={`= ${result?.sqrpvres} \\sqrt{${result?.resdev}}`}
                                     />
                                     <BlockMath
-                                      math={`= ${result?.tech_sqrpvres} * ${result?.tech_sqrresdev}`}
+                                      math={`= ${result?.sqrpvres} * ${result?.sqrresdev}`}
                                     />
-                                    <BlockMath
-                                      math={`= ${result?.tech_seres}`}
-                                    />
+                                    <BlockMath math={`= ${result?.seres}`} />
 
                                     <BlockMath
                                       math={`\\text{Degree of Freedom}`}
                                     />
                                     <BlockMath math={`df = n_1 + n_2 - 2`} />
                                     <BlockMath
-                                      math={`= ${result?.tech_i} + ${result?.tech_i1} - 2`}
+                                      math={`= ${result?.i} + ${result?.i1} - 2`}
                                     />
                                     <BlockMath
-                                      math={`= ${
-                                        result?.tech_i + result?.tech_i1
-                                      } - 2`}
+                                      math={`= ${result?.i + result?.i1} - 2`}
                                     />
                                     <BlockMath
-                                      math={`= ${
-                                        result?.tech_i + result?.tech_i1 - 2
-                                      }`}
+                                      math={`= ${result?.i + result?.i1 - 2}`}
                                     />
                                   </>
                                 )}
                               </>
-                            ) : result?.tech_type == "unequal" ? (
+                            ) : result?.type == "unequal" ? (
                               <>
                                 {formData?.tech_option == "sum" && (
                                   <>
                                     <div className="text-center">
-                                      <p className="text-[18px] bg-[#2845F5] px-3 py-2 rounded-lg inline-block my-3">
-                                        <strong className="text-white">
+                                      <p className="text-[18px] bg-[#2845F5] text-[#fff] rounded-lg px-3 py-2 rounded-[10px] inline-block my-3">
+                                        <strong >
                                           {data?.payload?.tech_lang_keys["23"]}
                                         </strong>
                                       </p>
@@ -877,7 +843,7 @@ const PooledVarianceCalculator = () => {
                                         {data?.payload?.tech_lang_keys["10"]}
                                       </p>
 
-                                      <div className="lg:col-span-8 mt-2 overflow-auto">
+                                      <div className="lg:col-span-8 mt-2 overflow-auto text-[14px] md:text-[18px]">
                                         <table className="w-full">
                                           <tbody>
                                             <tr>
@@ -890,7 +856,7 @@ const PooledVarianceCalculator = () => {
                                               </td>
                                               <td className="py-2 border-b">
                                                 <strong className="text-blue">
-                                                  {result?.tech_seround}
+                                                  {result?.seround}
                                                 </strong>
                                               </td>
                                             </tr>
@@ -904,7 +870,7 @@ const PooledVarianceCalculator = () => {
                                               </td>
                                               <td className="py-2 border-b">
                                                 <strong className="text-blue">
-                                                  {result?.tech_devs1sm}
+                                                  {result?.devs1sm}
                                                 </strong>
                                               </td>
                                             </tr>
@@ -912,82 +878,81 @@ const PooledVarianceCalculator = () => {
                                         </table>
                                       </div>
                                       {/* SE Calculation */}
-                                      <div className="overflow-auto">
-                                        <p className="w-full mt-3 text-[18px] text-left font-bold">
+                                      <div className="lg:col-span-8 mt-2 overflow-auto text-[14px] md:text-[18px]">
+                                        <p className="w-full mt-3 text-[18px]">
                                           {data?.payload?.tech_lang_keys["12"]}
                                         </p>
                                         <BlockMath
                                           math={`SE = S_{\\bar x_1 - \\bar x_2} = \\sqrt{\\dfrac{S_1^2}{n_1} + \\dfrac{S_2^2}{n_2}}`}
                                         />
                                         <BlockMath
-                                          math={`= ${result?.tech_sqrsp2} \\sqrt{\\dfrac{(${result?.tech_s1})^2}{${result?.tech_n1}} + \\dfrac{(${result?.tech_s2})^2}{${result?.tech_n2}}}`}
+                                          math={`= ${result?.sqrsp2} \\sqrt{\\dfrac{(${result?.s1})^2}{${result?.n1}} + \\dfrac{(${result?.s2})^2}{${result?.n2}}}`}
                                         />
                                         <BlockMath
-                                          math={`= ${result?.tech_sqrsp2} \\sqrt{\\dfrac{${result?.tech_ps1}}{${result?.tech_n1}} + \\dfrac{${result?.tech_ps2}}{${result?.tech_n2}}}`}
+                                          math={`= ${result?.sqrsp2} \\sqrt{\\dfrac{${result?.ps1}}{${result?.n1}} + \\dfrac{${result?.ps2}}{${result?.n2}}}`}
                                         />
                                         <BlockMath
-                                          math={`= ${result?.tech_sqrsp2} \\sqrt{${result?.tech_devs1n1} + ${result?.tech_devs2n2}}`}
+                                          math={`= ${result?.sqrsp2} \\sqrt{${result?.devs1n1} + ${result?.devs2n2}}`}
                                         />
                                         <BlockMath
-                                          math={`= ${result?.tech_sqrsp2} \\sqrt{${result?.tech_se}}`}
+                                          math={`= ${result?.sqrsp2} \\sqrt{${result?.se}}`}
                                         />
                                         <BlockMath
-                                          math={`= ${result?.tech_seround}`}
+                                          math={`= ${result?.seround}`}
                                         />
-
+                                      </div>
+                                      <div className="lg:col-span-8 mt-2 overflow-auto text-[14px] md:text-[18px]">
                                         {/* DF Calculation */}
-                                        <p className="w-full mt-3 text-[18px] text-left">
+                                        <p className="w-full mt-3 text-[18px]">
                                           {data?.payload?.tech_lang_keys["24"]}
                                         </p>
                                         <BlockMath
                                           math={`df = \\dfrac{(\\dfrac{S_1^2}{n_1} + \\dfrac{S_2^2}{n_2})^2}{\\dfrac{S_1^4}{n_1^2(n_1 - 1)} + \\dfrac{S_2^4}{n_2^2(n_2 - 1)}}`}
                                         />
                                         <BlockMath
-                                          math={`= \\dfrac{(\\dfrac{${result?.tech_s1}^2}{${result?.tech_n1}} + \\dfrac{${result?.tech_s2}^2}{${result?.tech_n2}})^2}{\\dfrac{${result?.tech_s1}^4}{${result?.tech_n1}^2(${result?.tech_n1}-1)} + \\dfrac{${result?.tech_s2}^4}{${result?.tech_n2}^2(${result?.tech_n2}-1)}}`}
+                                          math={`= \\dfrac{(\\dfrac{${result?.s1}^2}{${result?.n1}} + \\dfrac{${result?.s2}^2}{${result?.n2}})^2}{\\dfrac{${result?.s1}^4}{${result?.n1}^2(${result?.n1}-1)} + \\dfrac{${result?.s2}^4}{${result?.n2}^2(${result?.n2}-1)}}`}
                                         />
                                         <BlockMath
-                                          math={`= \\dfrac{(\\dfrac{${result?.tech_ps1}}{${result?.tech_n1}} + \\dfrac{${result?.tech_ps2}}{${result?.tech_n2}})^2}{\\dfrac{${result?.tech_ps14}}{${result?.tech_pn1}(${result?.tech_devn1})} + \\dfrac{${result?.tech_ps24}}{${result?.tech_pn2}(${result?.tech_devn2})}}`}
+                                          math={`= \\dfrac{(\\dfrac{${result?.ps1}}{${result?.n1}} + \\dfrac{${result?.ps2}}{${result?.n2}})^2}{\\dfrac{${result?.ps14}}{${result?.pn1}(${result?.devn1})} + \\dfrac{${result?.ps24}}{${result?.pn2}(${result?.devn2})}}`}
                                         />
                                         <BlockMath
                                           math={`= \\dfrac{(\\dfrac{${
-                                            result?.tech_ps1
-                                          }}{${result?.tech_n1}} + \\dfrac{${
-                                            result?.tech_ps2
-                                          }}{${result?.tech_n2}})^2}{\\dfrac{${
-                                            result?.tech_ps14
+                                            result?.ps1
+                                          }}{${result?.n1}} + \\dfrac{${
+                                            result?.ps2
+                                          }}{${result?.n2}})^2}{\\dfrac{${
+                                            result?.ps14
                                           }}{${
-                                            result?.tech_pn1 *
-                                            result?.tech_devn1
-                                          }} + \\dfrac{${result?.tech_ps24}}{${
-                                            result?.tech_pn2 *
-                                            result?.tech_devn2
+                                            result?.pn1 * result?.devn1
+                                          }} + \\dfrac{${result?.ps24}}{${
+                                            result?.pn2 * result?.devn2
                                           }}}`}
                                         />
                                         <BlockMath
                                           math={`= \\dfrac{(${
-                                            result?.tech_devs1n1
-                                          } + ${result?.tech_devs2n2})^2}{${
-                                            result?.tech_devpspn
-                                          } + ${Number(
-                                            result?.tech_psmpn
-                                          ).toFixed(4)}}`}
+                                            result?.devs1n1
+                                          } + ${result?.devs2n2})^2}{${
+                                            result?.devpspn
+                                          } + ${Number(result?.psmpn).toFixed(
+                                            4
+                                          )}}`}
                                         />
                                         <BlockMath
                                           math={`= \\dfrac{(${
-                                            result?.tech_devs1s2
+                                            result?.devs1s2
                                           })^2}{${Number(
-                                            result?.tech_devpsmp
+                                            result?.devpsmp
                                           ).toFixed(4)}}`}
                                         />
                                         <BlockMath
                                           math={`= \\dfrac{${Number(
-                                            result?.tech_powdevs1s2
+                                            result?.powdevs1s2
                                           ).toFixed(4)}}{${Number(
-                                            result?.tech_devpsmp
+                                            result?.devpsmp
                                           ).toFixed(4)}}`}
                                         />
                                         <BlockMath
-                                          math={`= ${result?.tech_devs1sm}`}
+                                          math={`= ${result?.devs1sm}`}
                                         />
                                       </div>
                                     </div>
@@ -997,8 +962,8 @@ const PooledVarianceCalculator = () => {
                                   <>
                                     <div>
                                       <div className="text-center">
-                                        <p className="text-[18px] bg-[#2845F5] px-3 py-2 rounded-lg d-inline-block my-3">
-                                          <strong className="text-white">
+                                        <p className="text-[18px] bg-[#2845F5] text-[#fff] rounded-lg px-3 py-2 radius-10 d-inline-block my-3">
+                                          <strong >
                                             {
                                               data?.payload?.tech_lang_keys[
                                                 "23"
@@ -1025,7 +990,7 @@ const PooledVarianceCalculator = () => {
                                               </td>
                                               <td className="py-2 border-b">
                                                 <strong className="text-blue">
-                                                  {result?.tech_sqrresdev}
+                                                  {result?.sqrresdev}
                                                 </strong>
                                               </td>
                                             </tr>
@@ -1039,40 +1004,39 @@ const PooledVarianceCalculator = () => {
                                               </td>
                                               <td className="py-2 border-b">
                                                 <strong className="text-blue">
-                                                  {result?.tech_dftres}
+                                                  {result?.dftres}
                                                 </strong>
                                               </td>
                                             </tr>
                                           </tbody>
                                         </table>
                                       </div>
-                                      <div className="overflow-auto">
-                                        <p className="w-full mt-3  text-left font-bold">
-                                          {data?.payload?.tech_lang_keys["18"]}:
-                                        </p>
-                                        <p className="w-full mt-3 text-left font-bold">
-                                          {data?.payload?.tech_lang_keys["19"]}{" "}
-                                          = {result?.tech_countn}
-                                        </p>
-                                        <p className="w-full mt-3 text-left font-bold">
-                                          {data?.payload?.tech_lang_keys["20"]}{" "}
-                                          = {result?.tech_sum}
-                                        </p>
-                                        <p className="w-full mt-3 text-left font-bold">
-                                          {data?.payload?.tech_lang_keys["21"]}{" "}
-                                          ={" "}
-                                          {result?.tech_sum /
-                                            result?.tech_countn}
-                                        </p>
 
-                                        <div
-                                          className="w-full mt-2 overflow-auto"
-                                          dangerouslySetInnerHTML={{
-                                            __html: result?.tech_table,
-                                          }}
-                                        />
+                                      <p className="w-full mt-3 text-[18px]">
+                                        {data?.payload?.tech_lang_keys["18"]}:
+                                      </p>
+                                      <p className="w-full mt-3">
+                                        {data?.payload?.tech_lang_keys["19"]} ={" "}
+                                        {result?.countn}
+                                      </p>
+                                      <p className="w-full mt-3">
+                                        {data?.payload?.tech_lang_keys["20"]} ={" "}
+                                        {result?.sum}
+                                      </p>
+                                      <p className="w-full mt-3">
+                                        {data?.payload?.tech_lang_keys["21"]} ={" "}
+                                        {result?.sum / result?.countn}
+                                      </p>
 
-                                        {/* Variance */}
+                                      <div
+                                        className="w-full mt-2 overflow-auto"
+                                        dangerouslySetInnerHTML={{
+                                          __html: result?.table,
+                                        }}
+                                      />
+
+                                      {/* Variance */}
+                                      <div className="lg:col-span-8 mt-2 overflow-auto text-[14px] md:text-[18px]">
                                         <BlockMath math={`\\text{Variance}`} />
                                         <BlockMath
                                           math={`S^2 = \\dfrac{SS}{n - 1}`}
@@ -1081,16 +1045,14 @@ const PooledVarianceCalculator = () => {
                                           math={`= \\dfrac{\\Sigma(x_i - \\bar x)^2}{n -1}`}
                                         />
                                         <BlockMath
-                                          math={`= \\dfrac{${result?.tech_ar_sum}}{${result?.tech_i} - 1}`}
+                                          math={`= \\dfrac{${result?.ar_sum}}{${result?.i} - 1}`}
                                         />
                                         <BlockMath
-                                          math={`= \\dfrac{${
-                                            result?.tech_ar_sum
-                                          }}{${result?.tech_i - 1}}`}
+                                          math={`= \\dfrac{${result?.ar_sum}}{${
+                                            result?.i - 1
+                                          }}`}
                                         />
-                                        <BlockMath
-                                          math={`= ${result?.tech_v}`}
-                                        />
+                                        <BlockMath math={`= ${result?.v}`} />
 
                                         {/* Standard Deviation */}
                                         <BlockMath
@@ -1098,58 +1060,55 @@ const PooledVarianceCalculator = () => {
                                         />
                                         <BlockMath math={`S = \\sqrt{S^2}`} />
                                         <BlockMath
-                                          math={`= \\sqrt{${result?.tech_v}}`}
+                                          math={`= \\sqrt{${result?.v}}`}
                                         />
                                         <BlockMath
-                                          math={`= ${result?.tech_vsqrt}`}
+                                          math={`= ${result?.vsqrt}`}
                                         />
+                                      </div>
 
-                                        {/* Repeat for second group */}
-                                        <p className="w-full mt-3 text-[18px] text-left font-bold">
-                                          {data?.payload?.tech_lang_keys["22"]}:
-                                        </p>
-                                        <p className="w-full mt-3 text-left font-bold">
-                                          {data?.payload?.tech_lang_keys["19"]}{" "}
-                                          = {result?.tech_countn1}
-                                        </p>
-                                        <p className="w-full mt-3 text-left font-bold">
-                                          {data?.payload?.tech_lang_keys["20"]}{" "}
-                                          = {result?.tech_sum1}
-                                        </p>
-                                        <p className="w-full mt-3 text-left font-bold">
-                                          {data?.payload?.tech_lang_keys["21"]}{" "}
-                                          ={" "}
-                                          {result?.tech_sum1 /
-                                            result?.tech_countn1}
-                                        </p>
+                                      {/* Repeat for second group */}
+                                      <p className="w-full mt-3 text-[18px]">
+                                        {data?.payload?.tech_lang_keys["22"]}:
+                                      </p>
+                                      <p className="w-full mt-3">
+                                        {data?.payload?.tech_lang_keys["19"]} ={" "}
+                                        {result?.countn1}
+                                      </p>
+                                      <p className="w-full mt-3">
+                                        {data?.payload?.tech_lang_keys["20"]} ={" "}
+                                        {result?.sum1}
+                                      </p>
+                                      <p className="w-full mt-3">
+                                        {data?.payload?.tech_lang_keys["21"]} ={" "}
+                                        {result?.sum1 / result?.countn1}
+                                      </p>
 
-                                        <div
-                                          className="w-full mt-2 overflow-auto"
-                                          dangerouslySetInnerHTML={{
-                                            __html: result?.tech_table1,
-                                          }}
-                                        />
-
+                                      <div
+                                        className="w-full mt-2 overflow-auto"
+                                        dangerouslySetInnerHTML={{
+                                          __html: result?.table1,
+                                        }}
+                                      />
+                                      <div className="lg:col-span-8 mt-2 overflow-auto text-[14px] md:text-[18px]">
                                         {/* Variance 2 */}
                                         <BlockMath math={`\\text{Variance}`} />
                                         <BlockMath
                                           math={`S^2 = \\dfrac{${
-                                            result?.tech_ar_sum1
-                                          }}{${result?.tech_i1 - 1}}`}
+                                            result?.ar_sum1
+                                          }}{${result?.i1 - 1}}`}
                                         />
-                                        <BlockMath
-                                          math={`= ${result?.tech_v1}`}
-                                        />
+                                        <BlockMath math={`= ${result?.v1}`} />
 
                                         {/* Standard Deviation 2 */}
                                         <BlockMath
                                           math={`\\text{Standard Deviation}`}
                                         />
                                         <BlockMath
-                                          math={`S = \\sqrt{${result?.tech_v1}}`}
+                                          math={`S = \\sqrt{${result?.v1}}`}
                                         />
                                         <BlockMath
-                                          math={`= ${result?.tech_vsqrt1}`}
+                                          math={`= ${result?.vsqrt1}`}
                                         />
 
                                         {/* Standard Error */}
@@ -1157,32 +1116,30 @@ const PooledVarianceCalculator = () => {
                                           math={`\\text{Now we have}`}
                                         />
                                         <BlockMath
-                                          math={`S_1 = ${result?.tech_vsqrt} \\quad ; \\quad n_1 = ${result?.tech_i}`}
+                                          math={`S_1 = ${result?.vsqrt} \\quad ; \\quad n_1 = ${result?.i}`}
                                         />
                                         <BlockMath
-                                          math={`S_2 = ${result?.tech_vsqrt1} \\quad ; \\quad n_2 = ${result?.tech_i1}`}
+                                          math={`S_2 = ${result?.vsqrt1} \\quad ; \\quad n_2 = ${result?.i1}`}
                                         />
 
                                         <BlockMath
                                           math={`\\text{Standard Error}`}
                                         />
                                         <BlockMath
-                                          math={`SE = \\sqrt{\\dfrac{${result?.tech_s12}}{${result?.tech_i}} + \\dfrac{${result?.tech_s22}}{${result?.tech_i1}}}`}
+                                          math={`SE = \\sqrt{\\dfrac{${result?.s12}}{${result?.i}} + \\dfrac{${result?.s22}}{${result?.i1}}}`}
                                         />
                                         <BlockMath
-                                          math={`= \\sqrt{${result?.tech_vsqi?.toFixed(
+                                          math={`= \\sqrt{${result?.vsqi?.toFixed(
                                             4
-                                          )} + ${result?.tech_vsqi1?.toFixed(
-                                            4
-                                          )}}`}
+                                          )} + ${result?.vsqi1?.toFixed(4)}}`}
                                         />
                                         <BlockMath
-                                          math={`= \\sqrt{${result?.tech_resdev?.toFixed(
+                                          math={`= \\sqrt{${result?.resdev?.toFixed(
                                             4
                                           )}}`}
                                         />
                                         <BlockMath
-                                          math={`= ${result?.tech_sqrresdev}`}
+                                          math={`= ${result?.sqrresdev}`}
                                         />
 
                                         {/* Degrees of Freedom */}
@@ -1190,25 +1147,21 @@ const PooledVarianceCalculator = () => {
                                           math={`\\text{DF (t-distribution)}`}
                                         />
                                         <BlockMath
-                                          math={`df = \\dfrac{(${result?.tech_vsqi?.toFixed(
+                                          math={`df = \\dfrac{(${result?.vsqi?.toFixed(
                                             4
-                                          )} + ${result?.tech_vsqi1?.toFixed(
+                                          )} + ${result?.vsqi1?.toFixed(
                                             4
-                                          )})^2}{${result?.tech_devn1?.toFixed(
+                                          )})^2}{${result?.devn1?.toFixed(
                                             4
-                                          )} + ${result?.tech_devn12?.toFixed(
-                                            4
-                                          )}}`}
+                                          )} + ${result?.devn12?.toFixed(4)}}`}
                                         />
                                         <BlockMath
-                                          math={`= \\dfrac{${result?.tech_powdft?.toFixed(
+                                          math={`= \\dfrac{${result?.powdft?.toFixed(
                                             4
-                                          )}}{${result?.tech_dft1?.toFixed(
-                                            4
-                                          )}}`}
+                                          )}}{${result?.dft1?.toFixed(4)}}`}
                                         />
                                         <BlockMath
-                                          math={`= ${result?.tech_dftres}`}
+                                          math={`= ${result?.dftres}`}
                                         />
                                       </div>
                                     </div>

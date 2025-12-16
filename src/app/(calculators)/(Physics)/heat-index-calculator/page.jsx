@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useHeatIndexCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useHeatIndexCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,6 +15,7 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
+import "../../../../components/styles/CssHeatIndexCalculator.css";
 
 const HeatIndexCalculator = () => {
   const pathname = usePathname();
@@ -88,11 +90,11 @@ const HeatIndexCalculator = () => {
         tech_dew_point: formData.tech_dew_point,
         tech_dew_point_unit: formData.tech_dew_point_unit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -876,10 +878,9 @@ const HeatIndexCalculator = () => {
                   </select>
                 </div>
               </div>
-
               {(formData.tech_find == "1" || formData.tech_find == "2") && (
                 <>
-                  <div className="md:col-span-6 col-span-12 at">
+                  <div className="col-span-12 md:col-span-6 at">
                     <label htmlFor="tech_temp" className="label">
                       {data?.payload?.tech_lang_keys["4"]}
                     </label>
@@ -922,7 +923,7 @@ const HeatIndexCalculator = () => {
               )}
               {(formData.tech_find == "1" || formData.tech_find == "3") && (
                 <>
-                  <div className="md:col-span-6 col-span-12 rh">
+                  <div className="col-span-12 md:col-span-6 rh">
                     <label htmlFor="tech_hum" className="label">
                       {data?.payload?.tech_lang_keys["3"]}
                     </label>
@@ -965,7 +966,7 @@ const HeatIndexCalculator = () => {
               )}
               {(formData.tech_find == "2" || formData.tech_find == "3") && (
                 <>
-                  <div className="md:col-span-6 col-span-12  dp">
+                  <div className="col-span-12 md:col-span-6  dp">
                     <label htmlFor="tech_dew_point" className="label">
                       {data?.payload?.tech_lang_keys["5"]}
                     </label>
@@ -1023,7 +1024,7 @@ const HeatIndexCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -1034,14 +1035,14 @@ const HeatIndexCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
-                    <div className="w-full p-3 radius-10 mt-3 ">
-                      <div className="w-full overfow-auto mt-2">
-                        <table className="w-full text-[16px]">
+                    <div className="w-full md:p-3 radius-10 mt-3 ">
+                      <div className="w-full  mt-2 overflow-auto">
+                        <table className="w-full text-[16px] md:text-[18px]">
                           <tbody>
                             <tr>
                               <td className="py-2 border-b" width="50%">
@@ -1085,7 +1086,7 @@ const HeatIndexCalculator = () => {
                       </div>
 
                       <div className="w-full  mt-2 my-3 overflow-auto">
-                        <table className="w-full text-[16px]">
+                        <table className="w-full text-[16px] md:text-[18px]">
                           <tbody>
                             {result?.tech_dp !== undefined &&
                               result?.tech_dp !== null &&
@@ -1154,12 +1155,12 @@ const HeatIndexCalculator = () => {
                         </table>
                       </div>
 
-                      <div className="w-full overflow-auto">
-                        <p className="center  ">
+                      <div className="w-full  overflow-auto">
+                        <p className="col  center ">
                           Heat Index Chart (Apparent Temperature)
                         </p>
-                        <div className="dk o overflow-auto">
-                          <table className="table tablesx w-full text-[16px]">
+                        <div className="w-full overflow-auto">
+                          <table className="table w-full md:text-[18px] text-[16px]">
                             <tbody>
                               <tr>
                                 <td rowSpan="2" className="p nela">
@@ -1167,7 +1168,7 @@ const HeatIndexCalculator = () => {
                                     {data?.payload?.tech_lang_keys["8"]} (°F)
                                   </strong>
                                 </td>
-                                <td colspan="13" className="p nela">
+                                <td colSpan="13" className="p nela">
                                   <strong>
                                     {data?.payload?.tech_lang_keys["6"]} (%)
                                   </strong>
@@ -1353,7 +1354,7 @@ const HeatIndexCalculator = () => {
                               <tr>
                                 <td className="p nela">106</td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d14}
                                 >
                                   124
@@ -1434,13 +1435,13 @@ const HeatIndexCalculator = () => {
                               <tr>
                                 <td className="p nela">104</td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d13}
                                 >
                                   119
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d29}
                                 >
                                   124
@@ -1515,19 +1516,19 @@ const HeatIndexCalculator = () => {
                               <tr>
                                 <td className="p nela">102</td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d12}
                                 >
                                   114
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d28}
                                 >
                                   119
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d44}
                                 >
                                   124
@@ -1596,25 +1597,25 @@ const HeatIndexCalculator = () => {
                               <tr>
                                 <td className="p nela">100</td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d11}
                                 >
                                   109
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d27}
                                 >
                                   114
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d43}
                                 >
                                   118
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d59}
                                 >
                                   124
@@ -1677,31 +1678,31 @@ const HeatIndexCalculator = () => {
                               <tr>
                                 <td className="p nela">98</td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d10}
                                 >
                                   105
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d26}
                                 >
                                   109
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d42}
                                 >
                                   113
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d58}
                                 >
                                   117
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d74}
                                 >
                                   123
@@ -1761,37 +1762,37 @@ const HeatIndexCalculator = () => {
                                   101
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d25}
                                 >
                                   104
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d41}
                                 >
                                   108
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d57}
                                 >
                                   112
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d73}
                                 >
                                   116
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d89}
                                 >
                                   121
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d105}
                                 >
                                   126
@@ -1845,31 +1846,31 @@ const HeatIndexCalculator = () => {
                                   102
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d56}
                                 >
                                   106
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d72}
                                 >
                                   110
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d88}
                                 >
                                   114
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d104}
                                 >
                                   119
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d120}
                                 >
                                   124
@@ -1920,37 +1921,37 @@ const HeatIndexCalculator = () => {
                                   101
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d71}
                                 >
                                   105
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d87}
                                 >
                                   108
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d103}
                                 >
                                   112
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d119}
                                 >
                                   116
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d135}
                                 >
                                   121
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d151}
                                 >
                                   126
@@ -1995,37 +1996,37 @@ const HeatIndexCalculator = () => {
                                   103
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d102}
                                 >
                                   106
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d118}
                                 >
                                   109
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d134}
                                 >
                                   113
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d150}
                                 >
                                   117
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d166}
                                 >
                                   122
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d182}
                                 >
                                   127
@@ -2064,31 +2065,31 @@ const HeatIndexCalculator = () => {
                                   103
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d133}
                                 >
                                   106
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d149}
                                 >
                                   110
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d165}
                                 >
                                   113
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d181}
                                 >
                                   117
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d197}
                                 >
                                   121
@@ -2127,19 +2128,19 @@ const HeatIndexCalculator = () => {
                                   102
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d164}
                                 >
                                   105
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d180}
                                 >
                                   108
                                 </td>
                                 <td
-                                  className="oc text-[#FF0000]"
+                                  className="oc text-white"
                                   style={styles.d196}
                                 >
                                   112
@@ -2272,21 +2273,21 @@ const HeatIndexCalculator = () => {
                                 </td>
                               </tr>
                               <tr>
-                                <td className="p gr" colspan="2">
+                                <td className="p gr" colSpan="2">
                                   <strong>
                                     {data?.payload?.tech_lang_keys["9"]}:
                                   </strong>
                                 </td>
-                                <td className="p kkc font_size16" colspan="3">
+                                <td className="p kkc font_size16" colSpan="3">
                                   {data?.payload?.tech_lang_keys["10"]}
                                 </td>
-                                <td className="p kc  font_size16" colspan="3">
+                                <td className="p kc  font_size16" colSpan="3">
                                   {data?.payload?.tech_lang_keys["11"]}
                                 </td>
-                                <td className="p oc  font_size16" colspan="3">
+                                <td className="p oc  font_size16" colSpan="3">
                                   {data?.payload?.tech_lang_keys["12"]}
                                 </td>
-                                <td className="p rc  font_size16" colspan="3">
+                                <td className="p rc  font_size16" colSpan="3">
                                   {data?.payload?.tech_lang_keys["13"]}
                                 </td>
                               </tr>

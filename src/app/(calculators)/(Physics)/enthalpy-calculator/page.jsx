@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import "katex/dist/katex.min.css";
 import { InlineMath, BlockMath } from "react-katex";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useEnthalpyCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useEnthalpyCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -16,7 +17,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const EnthalpyCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -146,11 +146,11 @@ const EnthalpyCalculator = () => {
         tech_pF: formData.tech_pF,
         tech_pF_values: formData.tech_pF_values,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -728,7 +728,7 @@ const EnthalpyCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[70%] md:w-[90%] w-full mx-auto ">
+          <div className="lg:w-[70%] md:w-[80%] w-full mx-auto ">
             <div className="grid grid-cols-12 mt-3  gap-4">
               <div className="col-span-12 flex">
                 <div className="w-full py-2">
@@ -740,13 +740,13 @@ const EnthalpyCalculator = () => {
                       {data?.payload?.tech_lang_keys["1"]}:
                     </label>
                     <p className="mb-1 mb-lg-0">
-                      <label className="pe-2" htmlFor="enthalpyFormula">
+                      <label className="pe-2 cursor-pointer" htmlFor="enthalpyFormula">
                         <input
                           type="radio"
                           name="tech_calEnthalpy"
                           value="enthalpyFormula"
                           id="enthalpyFormula"
-                          className="mr-2 border"
+                          className="mr-2 border cursor-pointer"
                           onChange={handleChange}
                           checked={
                             formData.tech_calEnthalpy === "enthalpyFormula"
@@ -756,13 +756,13 @@ const EnthalpyCalculator = () => {
                       </label>
                     </p>
                     <p>
-                      <label className="pe-2" htmlFor="reactionScheme">
+                      <label className="pe-2 cursor-pointer" htmlFor="reactionScheme">
                         <input
                           type="radio"
                           name="tech_calEnthalpy"
                           value="reactionScheme"
                           id="reactionScheme"
-                          className="mr-2 border"
+                          className="mr-2 border cursor-pointer"
                           onChange={handleChange}
                           checked={
                             formData.tech_calEnthalpy === "reactionScheme"
@@ -774,7 +774,7 @@ const EnthalpyCalculator = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-span-6 hidden" id="calFrom">
+              <div className="col-span-12 md:col-span-6 hidden" id="calFrom">
                 <label htmlFor="tech_calFrom" className="label">
                   {data?.payload?.tech_lang_keys["5"]}:
                 </label>
@@ -796,7 +796,7 @@ const EnthalpyCalculator = () => {
                   </select>
                 </div>
               </div>
-              <div className="col-span-6 hidden" id="calFrom1">
+              <div className="col-span-12 md:col-span-6 hidden" id="calFrom1">
                 <label htmlFor="tech_calFrom1" className="label">
                   {data?.payload?.tech_lang_keys["4"]}:
                 </label>
@@ -843,7 +843,7 @@ const EnthalpyCalculator = () => {
                 <>
                   <div className="col-span-12 inp_wrap">
                     <div className="grid grid-cols-12 mt-3  gap-4">
-                      <div className="col-span-6" id="q1">
+                      <div className="col-span-12 md:col-span-6" id="q1">
                         <label htmlFor="tech_q1" className="label">
                           {data?.payload?.tech_lang_keys["8"]}
                         </label>
@@ -888,7 +888,7 @@ const EnthalpyCalculator = () => {
                           )}
                         </div>
                       </div>
-                      <div className="col-span-6" id="q2">
+                      <div className="col-span-12 md:col-span-6" id="q2">
                         <label htmlFor="tech_q2" className="label">
                           {data?.payload?.tech_lang_keys["9"]}
                         </label>
@@ -933,7 +933,7 @@ const EnthalpyCalculator = () => {
                           )}
                         </div>
                       </div>
-                      <div className="col-span-6" id="v1">
+                      <div className="col-span-12 md:col-span-6" id="v1">
                         <label htmlFor="tech_v1" className="label">
                           {data?.payload?.tech_lang_keys["10"]}
                         </label>
@@ -990,7 +990,7 @@ const EnthalpyCalculator = () => {
                           )}
                         </div>
                       </div>
-                      <div className="col-span-6" id="v2">
+                      <div className="col-span-12 md:col-span-6" id="v2">
                         <label htmlFor="tech_v2" className="label">
                           {data?.payload?.tech_lang_keys["11"]}
                         </label>
@@ -1047,7 +1047,10 @@ const EnthalpyCalculator = () => {
                           )}
                         </div>
                       </div>
-                      <div className="col-span-6 hidden" id="changeQ">
+                      <div
+                        className="col-span-12 md:col-span-6 hidden"
+                        id="changeQ"
+                      >
                         <label htmlFor="tech_changeQ" className="label">
                           {data?.payload?.tech_lang_keys["12"]}
                         </label>
@@ -1092,7 +1095,10 @@ const EnthalpyCalculator = () => {
                           )}
                         </div>
                       </div>
-                      <div className="col-span-6 hidden" id="changeV">
+                      <div
+                        className="col-span-12 md:col-span-6 hidden"
+                        id="changeV"
+                      >
                         <label htmlFor="tech_changeV" className="label">
                           {data?.payload?.tech_lang_keys["13"]}
                         </label>
@@ -1149,7 +1155,7 @@ const EnthalpyCalculator = () => {
                           )}
                         </div>
                       </div>
-                      <div className="col-span-6" id="p">
+                      <div className="col-span-12 md:col-span-6" id="p">
                         <label htmlFor="tech_p" className="label">
                           {data?.payload?.tech_lang_keys["14"]}
                         </label>
@@ -1206,7 +1212,7 @@ const EnthalpyCalculator = () => {
                   <strong className="col-span-12  heading mb-2 mb-lg-0">
                     {data?.payload?.tech_lang_keys["16"]}
                   </strong>
-                  <div className="col-span-6 " id="a_n">
+                  <div className="col-span-12 md:col-span-6 " id="a_n">
                     <label htmlFor="tech_a_n" className="label">
                       a<sub className="text-blue">n</sub>{" "}
                       {data?.payload?.tech_lang_keys["15"]}:
@@ -1225,7 +1231,7 @@ const EnthalpyCalculator = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-6 " id="rA">
+                  <div className="col-span-12 md:col-span-6 " id="rA">
                     <label htmlFor="tech_rA" className="label">
                       {data?.payload?.tech_lang_keys["16"]}
                     </label>
@@ -1261,7 +1267,7 @@ const EnthalpyCalculator = () => {
                       )}
                     </div>
                   </div>
-                  <div className="col-span-6 " id="b_n">
+                  <div className="col-span-12 md:col-span-6 " id="b_n">
                     <label htmlFor="tech_b_n" className="label">
                       b<sub className="text-blue">n</sub>{" "}
                       {data?.payload?.tech_lang_keys["15"]}:
@@ -1280,7 +1286,7 @@ const EnthalpyCalculator = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-6 " id="rB">
+                  <div className="col-span-12 md:col-span-6 " id="rB">
                     <label htmlFor="tech_rB" className="label">
                       {data?.payload?.tech_lang_keys["16"]} B
                     </label>
@@ -1317,7 +1323,7 @@ const EnthalpyCalculator = () => {
                     </div>
                   </div>
 
-                  <div className="col-span-6 " id="c_n">
+                  <div className="col-span-12 md:col-span-6 " id="c_n">
                     <label htmlFor="tech_c_n" className="label">
                       c<sub className="text-blue">n</sub>{" "}
                       {data?.payload?.tech_lang_keys["15"]}:
@@ -1336,7 +1342,7 @@ const EnthalpyCalculator = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-6 " id="rC">
+                  <div className="col-span-12 md:col-span-6 " id="rC">
                     <label htmlFor="tech_rC" className="label">
                       {data?.payload?.tech_lang_keys["16"]} C
                     </label>
@@ -1375,7 +1381,7 @@ const EnthalpyCalculator = () => {
                   <strong className="col-span-12  heading mt-1 mb-2 mb-lg-0">
                     {data?.payload?.tech_lang_keys["17"]}
                   </strong>
-                  <div className="col-span-6 " id="d_n">
+                  <div className="col-span-12 md:col-span-6 " id="d_n">
                     <label htmlFor="tech_d_n" className="label">
                       d<sub className="text-blue">n</sub>{" "}
                       {data?.payload?.tech_lang_keys["15"]}:
@@ -1394,7 +1400,7 @@ const EnthalpyCalculator = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-6 " id="pD">
+                  <div className="col-span-12 md:col-span-6 " id="pD">
                     <label htmlFor="tech_pD" className="label">
                       {data?.payload?.tech_lang_keys["17"]} D
                     </label>
@@ -1430,7 +1436,7 @@ const EnthalpyCalculator = () => {
                       )}
                     </div>
                   </div>
-                  <div className="col-span-6 " id="e_n">
+                  <div className="col-span-12 md:col-span-6 " id="e_n">
                     <label htmlFor="tech_e_n" className="label">
                       e<sub className="text-blue">n</sub>{" "}
                       {data?.payload?.tech_lang_keys["15"]}:
@@ -1449,7 +1455,7 @@ const EnthalpyCalculator = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-6 " id="pE">
+                  <div className="col-span-12 md:col-span-6 " id="pE">
                     <label htmlFor="tech_pE" className="label">
                       {data?.payload?.tech_lang_keys["17"]} E
                     </label>
@@ -1486,7 +1492,7 @@ const EnthalpyCalculator = () => {
                     </div>
                   </div>
 
-                  <div className="col-span-6 " id="f_n">
+                  <div className="col-span-12 md:col-span-6 " id="f_n">
                     <label htmlFor="tech_f_n" className="label">
                       f<sub className="text-blue">n</sub>{" "}
                       {data?.payload?.tech_lang_keys["15"]}:
@@ -1505,7 +1511,7 @@ const EnthalpyCalculator = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-span-6 " id="pF">
+                  <div className="col-span-12 md:col-span-6 " id="pF">
                     <label htmlFor="tech_pF" className="label">
                       {data?.payload?.tech_lang_keys["17"]} F
                     </label>
@@ -1560,28 +1566,28 @@ const EnthalpyCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="w-full md:w-[80%] lg:w-[60%] overflow-auto">
-                        <table className="w-full text-[16px]">
+                      <div className="w-full md:w-[80%] lg:w-[60%] ">
+                        <table className="w-full ">
                           <tbody>
                             <tr>
-                              <td className="py-2 border-b" width="50%">
+                              <td className="py-2 border-b">
                                 {data?.payload?.tech_lang_keys[18]}
                               </td>
                               <td className="py-2 border-b text-end circle_result">
@@ -1594,7 +1600,7 @@ const EnthalpyCalculator = () => {
                                   name="tech_resultUnit1"
                                   value={tech_resultUnit1}
                                   onChange={handleChange1}
-                                  className="d-inline border-0 text-blue text-[16px] w-[90px] result_select_dropdown"
+                                  className="d-inline border-0 text-blue text-[16px] w-[70px] result_select_dropdown"
                                 >
                                   <option value="J">J</option>
                                   <option value="kJ">kJ</option>
@@ -1627,7 +1633,7 @@ const EnthalpyCalculator = () => {
                                       name="tech_resultUnit2"
                                       value={tech_resultUnit2}
                                       onChange={handleChange2}
-                                      className="d-inline border-0 border-none text-blue text-[16px] w-[90px] result_select_dropdown"
+                                      className="d-inline border-0 border-none text-blue text-[16px] w-[70px] result_select_dropdown"
                                     >
                                       <option value="J">J</option>
                                       <option value="kJ">kJ</option>
@@ -1661,7 +1667,7 @@ const EnthalpyCalculator = () => {
                                       name="tech_resultUnit3"
                                       value={tech_resultUnit3}
                                       onChange={handleChange3}
-                                      className="d-inline border-0 border-none text-blue text-[16px] w-[90px] result_select_dropdown"
+                                      className="d-inline border-0 border-none text-blue text-[16px] w-[70px] result_select_dropdown"
                                     >
                                       <option value="J">J</option>
                                       <option value="kJ">kJ</option>
@@ -1680,8 +1686,7 @@ const EnthalpyCalculator = () => {
                           </tbody>
                         </table>
                       </div>
-
-                      <div className="w-full overflow-auto">
+                      <div className="w-full overflow-auto method2-results">
                         <div className="mt-2">
                           {formData?.tech_calEnthalpy === "enthalpyFormula" ? (
                             <>
@@ -1690,9 +1695,9 @@ const EnthalpyCalculator = () => {
                                   {data?.payload?.tech_lang_keys["19"]}:
                                 </strong>
                               </p>
-                              <div className="mt-2">
+                              <p className="mt-2">
                                 {data?.payload?.tech_lang_keys["20"]}
-                              </div>
+                              </p>
                               <div className="mt-2">
                                 <BlockMath
                                   math={
@@ -1703,9 +1708,9 @@ const EnthalpyCalculator = () => {
 
                               {result?.tech_check === "byStandard" ? (
                                 <>
-                                  <div className="mt-2">
+                                  <p className="mt-2">
                                     {data?.payload?.tech_lang_keys["21"]}
-                                  </div>
+                                  </p>
                                   <div className="mt-2">
                                     <BlockMath
                                       math={
@@ -1713,20 +1718,20 @@ const EnthalpyCalculator = () => {
                                       }
                                     />
                                   </div>
-                                  <div className="mt-2">
+                                  <p className="mt-2">
                                     {data?.payload?.tech_lang_keys["22"]}
-                                  </div>
-                                  <div className="mt-2">
+                                  </p>
+                                  <p className="mt-2">
                                     Q₁ = {result?.tech_q1}, Q₂ ={" "}
                                     {result?.tech_q2}, V₁ = {result?.tech_v1},
                                     V₂ = {result?.tech_v2}, p = {result?.tech_p}
                                     , ΔH = ?
-                                  </div>
-                                  <div className="mt-2">
+                                  </p>
+                                  <p className="mt-2">
                                     <strong>
                                       {data?.payload?.tech_lang_keys["23"]}
                                     </strong>
-                                  </div>
+                                  </p>
                                   <div className="mt-2">
                                     <BlockMath
                                       math={
@@ -1758,25 +1763,25 @@ const EnthalpyCalculator = () => {
                                       })`}
                                     />
                                   </div>
-                                  <div className="mt-2">
+                                  <p className="mt-2">
                                     ΔH = <strong>{result?.tech_ans}</strong>
-                                  </div>
+                                  </p>
                                 </>
                               ) : result?.tech_check === "byChange" ? (
                                 <>
-                                  <div className="mt-2">
+                                  <p className="mt-2">
                                     {data?.payload?.tech_lang_keys["22"]}
-                                  </div>
-                                  <div className="mt-2">
+                                  </p>
+                                  <p className="mt-2">
                                     ΔQ = {result?.tech_changeQ}, ΔV ={" "}
                                     {result?.tech_changeV}, p = {result?.tech_p}
                                     , ΔH = ?
-                                  </div>
-                                  <div className="mt-2">
+                                  </p>
+                                  <p className="mt-2">
                                     <strong>
                                       {data?.payload?.tech_lang_keys["23"]}
                                     </strong>
-                                  </div>
+                                  </p>
                                   <div className="mt-2">
                                     <BlockMath
                                       math={
@@ -1807,24 +1812,22 @@ const EnthalpyCalculator = () => {
                           ) : formData?.tech_calEnthalpy ===
                             "reactionScheme" ? (
                             <>
-                              <div className="mt-2">
+                              <p className="mt-2">
                                 <strong>
                                   {data?.payload?.tech_lang_keys["24"]}:
                                 </strong>
-                              </div>
-                              <div className="mt-2">
+                              </p>
+                              <p className="mt-2">
                                 <strong>
                                   {data?.payload?.tech_lang_keys["25"]}:
                                 </strong>
-                              </div>
-                              <div className="mt-2">
-                                {result?.tech_reaction}
-                              </div>
-                              <div className="mt-2">
+                              </p>
+                              <p className="mt-2">{result?.tech_reaction}</p>
+                              <p className="mt-2">
                                 <strong>
                                   {data?.payload?.tech_lang_keys["26"]}:
                                 </strong>
-                              </div>
+                              </p>
                               <div className="mt-2">
                                 {result?.tech_text_vals?.map((val, i) => (
                                   <p key={i}>

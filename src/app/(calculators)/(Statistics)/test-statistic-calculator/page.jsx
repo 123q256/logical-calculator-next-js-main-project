@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useTestStatisticCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useTestStatisticCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const TestStatisticCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -104,11 +104,11 @@ const TestStatisticCalculator = () => {
         tech_sd_sec1: formData.tech_sd_sec1,
         tech_n_sec2: formData.tech_n_sec2,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -202,18 +202,18 @@ const TestStatisticCalculator = () => {
           )}
 
           <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
-            <div className="grid grid-cols-12  mt-3  gap-2">
+            <div className="grid grid-cols-12  mt-3 gap-1 md:gap-2">
               <label htmlFor="operations" className="col-span-12 label my-4">
                 Select Format
               </label>
               <div className="col-span-12 position-relative">
-                <label className="pe-2" htmlFor="data">
+                <label className="pe-2 cursor-pointer" htmlFor="data">
                   <input
                     type="radio"
                     name="tech_test_radio"
                     value="data"
                     id="data"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     onChange={handleChange}
                     checked={formData.tech_test_radio === "data"}
                   />
@@ -221,13 +221,13 @@ const TestStatisticCalculator = () => {
                 </label>
               </div>
               <div className="col-span-12 position-relative">
-                <label className="pe-2" htmlFor="sem">
+                <label className="pe-2 cursor-pointer" htmlFor="sem">
                   <input
                     type="radio"
                     name="tech_test_radio"
                     value="sem"
                     id="sem"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     onChange={handleChange}
                     checked={formData.tech_test_radio === "sem"}
                   />
@@ -235,28 +235,24 @@ const TestStatisticCalculator = () => {
                 </label>
               </div>
               <div className="col-span-12 position-relative">
-                <label className="pe-2" htmlFor="sd">
+                <label className="pe-2 cursor-pointer" htmlFor="sd">
                   <input
                     type="radio"
                     name="tech_test_radio"
                     value="sd"
                     id="sd"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     onChange={handleChange}
                     checked={formData.tech_test_radio === "sd"}
                   />
                   <span>Enter mean, SD and n</span>
                 </label>
               </div>
-
               <div className="col-span-12">
                 {formData.tech_test_radio === "data" && (
                   <>
-                    <div
-                      className="grid grid-cols-12  mt-3  lg:gap-8 md:gap-8 gap-1"
-                      id="section1"
-                    >
-                      <div className="col-span-6 px-2" id="div1">
+                    <div className="grid grid-cols-12  " id="section1">
+                      <div className="col-span-12 md:col-span-6 px-2" id="div1">
                         <label htmlFor="tech_row_data" className="label">
                           Group One
                         </label>
@@ -270,16 +266,16 @@ const TestStatisticCalculator = () => {
                             value={formData.tech_row_data || ""}
                             onChange={handleChange}
                             placeholder="78
-82
-86
-85
-73
-82"
+  82
+  86
+  85
+  73
+  82"
                             style={{ height: "300px" }} // 👈 inline style added here
                           />
                         </div>
                       </div>
-                      <div className="col-span-6 px-2" id="div1">
+                      <div className="col-span-12 md:col-span-6 px-2" id="div1">
                         <label htmlFor="tech_row_data1" className="label">
                           Group Two
                         </label>
@@ -293,11 +289,11 @@ const TestStatisticCalculator = () => {
                             value={formData.tech_row_data1 || ""}
                             onChange={handleChange}
                             placeholder="69
-50
-34
-18
-66
-55"
+  50
+  34
+  18
+  66
+  55"
                             style={{ height: "300px" }} // 👈 inline style added here
                           />
                         </div>
@@ -309,12 +305,9 @@ const TestStatisticCalculator = () => {
                   {formData.tech_test_radio === "sem" && (
                     <>
                       <div className="col " id="section2">
-                        <div className="grid grid-cols-12 mt-3 lg:gap-8 md:gap-8 gap-1">
-                          <div className="col-span-6">
-                            <div
-                              className="col-6 col-lg-12 px-2 my-3"
-                              id="div2"
-                            >
+                        <div className="grid grid-cols-12  ">
+                          <div className="col-span-12 md:col-span-6">
+                            <div className=" px-2 my-3" id="div2">
                               <label
                                 htmlFor="first"
                                 className="font-s-14 text-blue"
@@ -323,7 +316,7 @@ const TestStatisticCalculator = () => {
                                 Group 1
                               </label>
                             </div>
-                            <div className="col-6 col-lg-12 px-2" id="div3">
+                            <div className=" px-2" id="div3">
                               <label htmlFor="tech_mean" className="label">
                                 Mean (x̄)
                               </label>
@@ -341,7 +334,7 @@ const TestStatisticCalculator = () => {
                                 />
                               </div>
                             </div>
-                            <div className="col-6 col-lg-12 px-2" id="div4">
+                            <div className=" px-2" id="div4">
                               <label htmlFor="tech_sem" className="label">
                                 SEM
                               </label>
@@ -359,7 +352,7 @@ const TestStatisticCalculator = () => {
                                 />
                               </div>
                             </div>
-                            <div className="col-6 col-lg-12 px-2" id="div5">
+                            <div className=" px-2" id="div5">
                               <label htmlFor="tech_n" className="label">
                                 Sample Size (n)
                               </label>
@@ -378,11 +371,8 @@ const TestStatisticCalculator = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="col-span-6">
-                            <div
-                              className="col-6 col-lg-12 px-2 my-3"
-                              id="group2-container"
-                            >
+                          <div className="col-span-12 md:col-span-6">
+                            <div className=" px-2 my-3" id="group2-container">
                               <label
                                 htmlFor="group2"
                                 id="group2-label"
@@ -392,7 +382,7 @@ const TestStatisticCalculator = () => {
                               </label>
                             </div>
 
-                            <div className="col-6 col-lg-12 px-2" id="div3">
+                            <div className=" px-2" id="div3">
                               <label htmlFor="tech_mean1" className="label">
                                 Mean (x̄)
                               </label>
@@ -410,7 +400,7 @@ const TestStatisticCalculator = () => {
                                 />
                               </div>
                             </div>
-                            <div className="col-6 col-lg-12 px-2" id="div4">
+                            <div className=" px-2" id="div4">
                               <label htmlFor="tech_sem1" className="label">
                                 SEM
                               </label>
@@ -428,7 +418,7 @@ const TestStatisticCalculator = () => {
                                 />
                               </div>
                             </div>
-                            <div className="col-6 col-lg-12 px-2" id="div5">
+                            <div className=" px-2" id="div5">
                               <label htmlFor="tech_n1" className="label">
                                 Sample Size (n)
                               </label>
@@ -455,12 +445,9 @@ const TestStatisticCalculator = () => {
                   {formData.tech_test_radio === "sd" && (
                     <>
                       <div className="col " id="section3">
-                        <div className="grid grid-cols-12 mt-3 lg:gap-8 md:gap-8 gap-1">
-                          <div className="col-span-6">
-                            <div
-                              className="col-6 col-lg-12 px-2 my-3"
-                              id="div6"
-                            >
+                        <div className="grid grid-cols-12  ">
+                          <div className="col-span-12 md:col-span-6">
+                            <div className=" px-2 my-3" id="div6">
                               <label
                                 htmlFor="first"
                                 className="font-s-14 text-blue"
@@ -470,7 +457,7 @@ const TestStatisticCalculator = () => {
                                 Group 1
                               </label>
                             </div>
-                            <div className="col-6 col-lg-12 px-2" id="div7">
+                            <div className=" px-2" id="div7">
                               <label htmlFor="tech_mean_sec" className="label">
                                 Mean (x̄)
                               </label>
@@ -488,7 +475,7 @@ const TestStatisticCalculator = () => {
                                 />
                               </div>
                             </div>
-                            <div className="col-6 col-lg-12 px-2" id="div8">
+                            <div className=" px-2" id="div8">
                               <label htmlFor="tech_sd_sec" className="label">
                                 Standard Deviation (SD)
                               </label>
@@ -506,7 +493,7 @@ const TestStatisticCalculator = () => {
                                 />
                               </div>
                             </div>
-                            <div className="col-6 col-lg-12 px-2" id="div9">
+                            <div className=" px-2" id="div9">
                               <label htmlFor="tech_n_sec" className="label">
                                 Sample Size (n)
                               </label>
@@ -525,11 +512,8 @@ const TestStatisticCalculator = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="col-span-6">
-                            <div
-                              className="col-6 col-lg-12 px-2 my-3"
-                              id="group3-container"
-                            >
+                          <div className="col-span-12 md:col-span-6">
+                            <div className=" px-2 my-3" id="group3-container">
                               <label
                                 htmlFor="group3"
                                 id="group3-label"
@@ -538,7 +522,7 @@ const TestStatisticCalculator = () => {
                                 Group 2
                               </label>
                             </div>
-                            <div className="col-6 col-lg-12 px-2 " id="div7">
+                            <div className=" px-2 " id="div7">
                               <label htmlFor="tech_mean_sec1" className="label">
                                 Mean (x̄)
                               </label>
@@ -556,7 +540,7 @@ const TestStatisticCalculator = () => {
                                 />
                               </div>
                             </div>
-                            <div className="col-6 col-lg-12 px-2 " id="div8">
+                            <div className=" px-2 " id="div8">
                               <label htmlFor="tech_sd_sec1" className="label">
                                 Standard Deviation (SD)
                               </label>
@@ -574,7 +558,7 @@ const TestStatisticCalculator = () => {
                                 />
                               </div>
                             </div>
-                            <div className="col-6 col-lg-12 px-2 " id="div9">
+                            <div className=" px-2 " id="div9">
                               <label htmlFor="tech_n_sec2" className="label">
                                 Sample Size (n)
                               </label>
@@ -616,31 +600,31 @@ const TestStatisticCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
-              <div className=" w-full h-[30px] bg-gray-200 animate-pulse rounded-[10px] mb-4"></div>
-              <div className="w-[75%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[50%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[25%] h-[20px] bg-gray-200 animate-pulse rounded-[10px]"></div>
+              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
+              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
           </div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
-                    <div className="w-full mt-3">
+                    <div className="w-full mt-3 text-[14px] md:text-[16px]">
                       {result?.tech_test_radio == "data" ? (
                         <>
                           <div className="w-full">
-                            <div className="w-full md:w-[70%] lg:w-[70%] mt-2 overflow-auto">
+                            <div className="w-full md:w-[70%] lg:w-[70%] mt-2">
                               <p className="my-2">
                                 Values derived from inputs are:
                               </p>
-                              <table className="w-full text-[16px]">
+                              <table className="w-full md:text-[18px] text-[16px] overflow-auto">
                                 <tbody>
                                   <tr>
                                     <td className="py-2 border-b w-[70%]">
@@ -682,7 +666,7 @@ const TestStatisticCalculator = () => {
                           </div>
                           <div className="w-full mt-3">
                             <div className="w-full md:w-[70%] lg:w-[70%] mt-2 overflow-auto">
-                              <table className="w-full text-[16px] text-center">
+                              <table className="w-full md:text-[18px] text-[16px] text-center">
                                 <thead>
                                   <tr>
                                     <td className="py-2 border-b">
@@ -753,7 +737,7 @@ const TestStatisticCalculator = () => {
                               <p className="my-2">
                                 Values derived from inputs are:
                               </p>
-                              <table className="w-full text-[16px]">
+                              <table className="w-full md:text-[18px] text-[16px]">
                                 <tbody>
                                   <tr>
                                     <td className="py-2 border-b" width="70%">
@@ -797,7 +781,7 @@ const TestStatisticCalculator = () => {
                           </div>
                           <div className="w-full mt-3">
                             <div className="w-full md:w-[70%] lg:w-[70%] mt-2 overflow-auto">
-                              <table className="w-full text-[16px] text-center">
+                              <table className="w-full md:text-[18px] text-[16px] text-center">
                                 <thead>
                                   <tr>
                                     <td className="py-2 border-b">
@@ -868,104 +852,108 @@ const TestStatisticCalculator = () => {
                               <p className="my-2">
                                 Values derived from inputs are:
                               </p>
-                              <table className="w-full text-[16px]">
-                                <tr>
-                                  <td className="py-2 border-b" width="70%">
-                                    <strong>T-test</strong>
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {Number(result?.tech_tValue).toFixed(2)}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 border-b" width="70%">
-                                    <strong>Df</strong>
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {Number(result?.tech_df).toFixed(2)}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 border-b" width="70%">
-                                    <strong>
-                                      Standard Error of Difference
-                                    </strong>
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {Number(result?.tech_standardError).toFixed(
-                                      2
-                                    )}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 border-b" width="70%">
-                                    <strong>P value</strong>
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {Number(result?.tech_pValue).toFixed(5)}
-                                  </td>
-                                </tr>
+                              <table className="w-full md:text-[18px] text-[16px]">
+                                <tbody>
+                                  <tr>
+                                    <td className="py-2 border-b" width="70%">
+                                      <strong>T-test</strong>
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {Number(result?.tech_tValue).toFixed(2)}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="py-2 border-b" width="70%">
+                                      <strong>Df</strong>
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {Number(result?.tech_df).toFixed(2)}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="py-2 border-b" width="70%">
+                                      <strong>
+                                        Standard Error of Difference
+                                      </strong>
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {Number(
+                                        result?.tech_standardError
+                                      ).toFixed(2)}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="py-2 border-b" width="70%">
+                                      <strong>P value</strong>
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {Number(result?.tech_pValue).toFixed(5)}
+                                    </td>
+                                  </tr>
+                                </tbody>
                               </table>
                             </div>
                           </div>
                           <div className="w-full mt-3">
                             <div className="w-full md:w-[70%] lg:w-[70%] mt-2 overflow-auto">
-                              <table className="w-full text-[16px] text-center">
-                                <tr>
-                                  <td className="py-2 border-b">
-                                    <strong>Group</strong>
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    <strong>Group One</strong>
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    <strong>Group Two</strong>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 border-b">
-                                    <strong>Mean</strong>
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {Number(result?.tech_mean1).toFixed(2)}
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {Number(result?.tech_mean2).toFixed(2)}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 border-b">
-                                    <strong>SD</strong>
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {Number(result?.tech_sd1).toFixed(2)}
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {Number(result?.tech_sd2).toFixed(2)}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 border-b">
-                                    <strong>SEM</strong>
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {Number(result?.tech_sem1).toFixed(2)}
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {Number(result?.tech_sem2).toFixed(2)}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td className="py-2 border-b">
-                                    <strong>N</strong>
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {Number(result?.tech_n1).toFixed(2)}
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {Number(result?.tech_n2).toFixed(2)}
-                                  </td>
-                                </tr>
+                              <table className="w-full md:text-[18px] text-[16px] text-center">
+                                <tbody>
+                                  <tr>
+                                    <td className="py-2 border-b">
+                                      <strong>Group</strong>
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      <strong>Group One</strong>
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      <strong>Group Two</strong>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="py-2 border-b">
+                                      <strong>Mean</strong>
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {Number(result?.tech_mean1).toFixed(2)}
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {Number(result?.tech_mean2).toFixed(2)}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="py-2 border-b">
+                                      <strong>SD</strong>
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {Number(result?.tech_sd1).toFixed(2)}
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {Number(result?.tech_sd2).toFixed(2)}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="py-2 border-b">
+                                      <strong>SEM</strong>
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {Number(result?.tech_sem1).toFixed(2)}
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {Number(result?.tech_sem2).toFixed(2)}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td className="py-2 border-b">
+                                      <strong>N</strong>
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {Number(result?.tech_n1).toFixed(2)}
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {Number(result?.tech_n2).toFixed(2)}
+                                    </td>
+                                  </tr>
+                                </tbody>
                               </table>
                             </div>
                           </div>

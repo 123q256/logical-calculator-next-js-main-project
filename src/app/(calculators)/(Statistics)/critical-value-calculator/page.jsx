@@ -4,9 +4,10 @@ import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { jStat } from "jstat";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useCriticalValueCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useCriticalValueCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -15,7 +16,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const CriticalValueCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -83,11 +83,11 @@ const CriticalValueCalculator = () => {
         tech_second: formData.tech_second,
         tech_third: formData.tech_third,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -212,7 +212,7 @@ const CriticalValueCalculator = () => {
               value={formData.tech_calculator_name}
             />
             <div className="flex flex-wrap items-center bg-blue-100 border border-blue-500 text-center rounded-lg px-1">
-              <div className="lg:w-1/5 w-full px-1 py-1 t_val">
+              <div className="lg:w-1/5 w-full px-2 py-1 t_val">
                 <div
                   className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab  ${
                     formData.tech_calculator_name === "t_val" ? "tagsUnit" : ""
@@ -259,7 +259,7 @@ const CriticalValueCalculator = () => {
               </div>
               <div className="lg:w-1/5 w-full px-2 py-1 chi_val">
                 <div
-                  className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab ${
+                  className={`bg-white px-1 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab ${
                     formData.tech_calculator_name === "chi_val"
                       ? "tagsUnit"
                       : ""
@@ -294,7 +294,6 @@ const CriticalValueCalculator = () => {
               </div>
             </div>
           </div>
-
           <div className="lg:w-[90%] md:w-[90%] w-full mx-auto ">
             <div className="grid grid-cols-12 mt-3  gap-5">
               <div className="col-span-12 md:col-span-6 lg:col-span-6">
@@ -392,7 +391,7 @@ const CriticalValueCalculator = () => {
               {formData.tech_calculator_name == "t_val" && (
                 <>
                   <div className="col-span-12 md:col-span-6 lg:col-span-6">
-                    <p className="col-12 text-[18px] mt-4">
+                    <p className="col-12 text-[16px] md:text-[18px] mt-4">
                       <strong id="main_text" className="text-blue">
                         How Does T Critical Value Calculator Work?
                       </strong>
@@ -417,7 +416,7 @@ const CriticalValueCalculator = () => {
               {formData.tech_calculator_name == "z_val" && (
                 <>
                   <div className="col-span-12 md:col-span-6 lg:col-span-6">
-                    <p className="col-12 text-[18px] mt-4">
+                    <p className="col-12 text-[16px] md:text-[18px] mt-4">
                       <strong id="main_text" className="text-blue">
                         How Does Z Critical Value Calculator Work?
                       </strong>
@@ -438,7 +437,7 @@ const CriticalValueCalculator = () => {
               {formData.tech_calculator_name == "chi_val" && (
                 <>
                   <div className="col-span-12 md:col-span-6 lg:col-span-6">
-                    <p className="col-12 text-[18px] mt-4">
+                    <p className="col-12 text-[16px] md:text-[18px] mt-4">
                       <strong id="main_text" className="text-blue">
                         How Does This Calculator Work?
                       </strong>
@@ -462,7 +461,7 @@ const CriticalValueCalculator = () => {
               {formData.tech_calculator_name == "f_val" && (
                 <>
                   <div className="col-span-12 md:col-span-6 lg:col-span-6">
-                    <p className="col-12 text-[18px] mt-4">
+                    <p className="col-12 text-[16px] md:text-[18px] mt-4">
                       <strong id="main_text" className="text-blue">
                         How Does F Critical Value Calculator Work?
                       </strong>
@@ -485,7 +484,7 @@ const CriticalValueCalculator = () => {
               {formData.tech_calculator_name == "r_val" && (
                 <>
                   <div className="col-span-12 md:col-span-6 lg:col-span-6">
-                    <p className="col-12 text-[18px] mt-4">
+                    <p className="col-12 text-[16px] md:text-[18px] mt-4">
                       <strong id="main_text" className="text-blue">
                         How Does R Critical Value Calculator Work?
                       </strong>
@@ -523,7 +522,7 @@ const CriticalValueCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -534,7 +533,7 @@ const CriticalValueCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -543,8 +542,8 @@ const CriticalValueCalculator = () => {
                       <div className="w-full">
                         {isTVal && (
                           <>
-                            <div className="w-full md:w-[90%] lg:w-[70%] mt-2 overflow-auto">
-                              <table className="w-full text-[16px]">
+                            <div className="w-full md:w-[80%] lg:w-[70%] mt-2 overflow-auto">
+                              <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="py-2 border-b">
@@ -593,8 +592,8 @@ const CriticalValueCalculator = () => {
                         )}
 
                         {isZVal && (
-                          <div className="w-full md:w-[90%] lg:w-[70%] mt-2 overflow-auto">
-                            <table className="w-full text-[16px]">
+                          <div className="col-lg-10 mt-2 overflow-auto">
+                            <table className="w-full text-[16px] md:text-[18px]">
                               <tbody>
                                 <tr>
                                   <td className="py-2 border-b">Z Value</td>
@@ -646,8 +645,8 @@ const CriticalValueCalculator = () => {
                         )}
 
                         {(isChiVal || isFVal || isRVal) && (
-                          <div className="w-full md:w-[90%] lg:w-[70%] mt-2 overflow-auto">
-                            <table className="w-full text-[16px]">
+                          <div className="w-full md:w-[70%] lg:w-[70%] mt-2 overflow-auto">
+                            <table className="w-full text-[16px] md:text-[18px]">
                               <tbody>
                                 <tr>
                                   <td className="py-2 border-b">

@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useVoltageDropCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useVoltageDropCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const VoltageDropCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -165,11 +165,11 @@ const VoltageDropCalculator = () => {
         tech_insulation: formData.tech_insulation,
         tech_raceway: formData.tech_raceway,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -340,7 +340,7 @@ const VoltageDropCalculator = () => {
           )}
 
           <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3  gap-4">
+            <div className="grid grid-cols-12 mt-3 gap-1 md:gap-4">
               <div className="col-span-12 md:col-span-6 lg:col-span-6">
                 <label htmlFor="tech_calculate_unit" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -528,82 +528,82 @@ const VoltageDropCalculator = () => {
                 formData.tech_calculate_unit == "1") && (
                 <>
                   {/* <div className="col-span-12 md:col-span-6 lg:col-span-6 wire_size ">
-               <label htmlFor="tech_wire_size_unit" className="label">
-                      {data?.payload?.tech_lang_keys["20"]}:
-                    </label>
-                    <div className="mt-2">
-                      <select
-                        className="input"
-                        aria-label="select"
-                        name="tech_wire_size_unit"
-                        id="tech_wire_size_unit"
-                        value={formData.tech_wire_size_unit}
-                        onChange={handleChange}
-                      >
-                      <option value="600" >600 kcmil</option>
-                        <option value="500" >500 kcmil</option>
-                        <option value="400" >400 kcmil</option>
-                        <option value="350" >350 kcmil</option>
-                        <option value="300" >300 kcmil</option>
-                        <option value="250" >250 kcmil</option>
-                        <option value="4/0" >4/0 AWG (212 kcmil)</option>
-                        <option value="3/0" >3/0 AWG (168 kcmil)</option>
-                        <option value="2/0" >2/0 AWG (133 kcmil)</option>
-                        <option value="1/0" >1/0 AWG (106 kcmil)</option>
-                        <option value="1" >1 AWG (83.7 kcmil)</option>
-                        <option value="2" >2 AWG (66.4 kcmil)</option>
-                        <option value="3" >3 AWG (52.6 kcmil)</option>
-                        <option value="4" >4 AWG (41.7 kcmil)</option>
-                        <option value="5" >5 AWG (33.1 kcmil)</option>
-                        <option value="6" >6 AWG (26.3 kcmil)</option>
-                        <option value="7" >7 AWG (20.8 kcmil)</option>
-                        <option value="8" >8 AWG (16.5 kcmil)</option>
-                        <option value="9" >9 AWG (13.1 kcmil)</option>
-                        <option value="10" >10 AWG (10.4 kcmil)</option>
-                        <option value="11" >11 AWG (8.23 kcmil)</option>
-                        <option value="12" >12 AWG (6.53 kcmil)</option>
-                        <option value="13" >13 AWG (5.18 kcmil)</option>
-                        <option value="14" >14 AWG (4.11 kcmil)</option>
-                        <option value="15" >15 AWG (3.26 kcmil)</option>
-                        <option value="16" >16 AWG (2.58 kcmil)</option>
-                        <option value="17" >17 AWG (2.05 kcmil)</option>
-                        <option value="18" >18 AWG (1.62 kcmil)</option>
-                        <option value="19" >19 AWG (1.29 kcmil)</option>
-                        <option value="20" >20 AWG (1.02 kcmil)</option>
-                        <option value="21" >21 AWG (0.810 kcmil)</option>
-                        <option value="22" >22 AWG (0.642 kcmil)</option>
-                        <option value="23" >23 AWG (0.509 kcmil)</option>
-                        <option value="24" >24 AWG (0.404 kcmil)</option>
-                        <option value="25" >25 AWG (0.320 kcmil)</option>
-                        <option value="26" >26 AWG (0.254 kcmil)</option>
-                        <option value="27" >27 AWG (0.202 kcmil)</option>
-                        <option value="28" >28 AWG (0.160 kcmil)</option>
-                        <option value="29" >29 AWG (0.127 kcmil)</option>
-                        <option value="30" >30 AWG (0.101 kcmil)</option>
-                        <option value="31" >31 AWG (0.0797 kcmil)</option>
-                        <option value="32" >32 AWG (0.0632 kcmil)</option>
-                        <option value="33" >33 AWG (0.0501 kcmil)</option>
-                        <option value="34" >34 AWG (0.0398 kcmil)</option>
-                        <option value="35" >35 AWG (0.0315 kcmil)</option>
-                        <option value="36" >36 AWG (0.0250 kcmil)</option>
-                        <option value="37" >37 AWG (0.0198 kcmil)</option>
-                        <option value="38" >38 AWG (0.0157 kcmil)</option>
-                        <option value="39" >39 AWG (0.0125 kcmil)</option>
-                        <option value="40" >40 AWG (0.00989 kcmil)</option>
-                        <option value="41" ></option>
-                        <option value="42" ></option>
-                        <option value="43" ></option>
-                        <option value="44" ></option>
-                        <option value="45" ></option>
-                        <option value="46" ></option>
-                        <option value="47" ></option>
-                        <option value="48" ></option>
-                        <option value="49" ></option>
-                        <option value="50" ></option>
-                      </select>
-                    </div>
-              
-            </div> */}
+                  <label htmlFor="tech_wire_size_unit" className="label">
+                          {data?.payload?.tech_lang_keys["20"]}:
+                        </label>
+                        <div className="mt-2">
+                          <select
+                            className="input"
+                            aria-label="select"
+                            name="tech_wire_size_unit"
+                            id="tech_wire_size_unit"
+                            value={formData.tech_wire_size_unit}
+                            onChange={handleChange}
+                          >
+                          <option value="600" >600 kcmil</option>
+                            <option value="500" >500 kcmil</option>
+                            <option value="400" >400 kcmil</option>
+                            <option value="350" >350 kcmil</option>
+                            <option value="300" >300 kcmil</option>
+                            <option value="250" >250 kcmil</option>
+                            <option value="4/0" >4/0 AWG (212 kcmil)</option>
+                            <option value="3/0" >3/0 AWG (168 kcmil)</option>
+                            <option value="2/0" >2/0 AWG (133 kcmil)</option>
+                            <option value="1/0" >1/0 AWG (106 kcmil)</option>
+                            <option value="1" >1 AWG (83.7 kcmil)</option>
+                            <option value="2" >2 AWG (66.4 kcmil)</option>
+                            <option value="3" >3 AWG (52.6 kcmil)</option>
+                            <option value="4" >4 AWG (41.7 kcmil)</option>
+                            <option value="5" >5 AWG (33.1 kcmil)</option>
+                            <option value="6" >6 AWG (26.3 kcmil)</option>
+                            <option value="7" >7 AWG (20.8 kcmil)</option>
+                            <option value="8" >8 AWG (16.5 kcmil)</option>
+                            <option value="9" >9 AWG (13.1 kcmil)</option>
+                            <option value="10" >10 AWG (10.4 kcmil)</option>
+                            <option value="11" >11 AWG (8.23 kcmil)</option>
+                            <option value="12" >12 AWG (6.53 kcmil)</option>
+                            <option value="13" >13 AWG (5.18 kcmil)</option>
+                            <option value="14" >14 AWG (4.11 kcmil)</option>
+                            <option value="15" >15 AWG (3.26 kcmil)</option>
+                            <option value="16" >16 AWG (2.58 kcmil)</option>
+                            <option value="17" >17 AWG (2.05 kcmil)</option>
+                            <option value="18" >18 AWG (1.62 kcmil)</option>
+                            <option value="19" >19 AWG (1.29 kcmil)</option>
+                            <option value="20" >20 AWG (1.02 kcmil)</option>
+                            <option value="21" >21 AWG (0.810 kcmil)</option>
+                            <option value="22" >22 AWG (0.642 kcmil)</option>
+                            <option value="23" >23 AWG (0.509 kcmil)</option>
+                            <option value="24" >24 AWG (0.404 kcmil)</option>
+                            <option value="25" >25 AWG (0.320 kcmil)</option>
+                            <option value="26" >26 AWG (0.254 kcmil)</option>
+                            <option value="27" >27 AWG (0.202 kcmil)</option>
+                            <option value="28" >28 AWG (0.160 kcmil)</option>
+                            <option value="29" >29 AWG (0.127 kcmil)</option>
+                            <option value="30" >30 AWG (0.101 kcmil)</option>
+                            <option value="31" >31 AWG (0.0797 kcmil)</option>
+                            <option value="32" >32 AWG (0.0632 kcmil)</option>
+                            <option value="33" >33 AWG (0.0501 kcmil)</option>
+                            <option value="34" >34 AWG (0.0398 kcmil)</option>
+                            <option value="35" >35 AWG (0.0315 kcmil)</option>
+                            <option value="36" >36 AWG (0.0250 kcmil)</option>
+                            <option value="37" >37 AWG (0.0198 kcmil)</option>
+                            <option value="38" >38 AWG (0.0157 kcmil)</option>
+                            <option value="39" >39 AWG (0.0125 kcmil)</option>
+                            <option value="40" >40 AWG (0.00989 kcmil)</option>
+                            <option value="41" ></option>
+                            <option value="42" ></option>
+                            <option value="43" ></option>
+                            <option value="44" ></option>
+                            <option value="45" ></option>
+                            <option value="46" ></option>
+                            <option value="47" ></option>
+                            <option value="48" ></option>
+                            <option value="49" ></option>
+                            <option value="50" ></option>
+                          </select>
+                        </div>
+                  
+                </div> */}
                 </>
               )}
               {formData.tech_calculate_unit == "2" && (
@@ -1071,7 +1071,7 @@ const VoltageDropCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -1082,197 +1082,194 @@ const VoltageDropCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
-                  <div className="rounded-lg flex items-center justify-center">
-                    <div className="w-full mt-3">
-                      <div className="w-full md:w-[70%] lg:w-[70%] mt-2 overflow-auto">
-                        <table className="w-full lg:text-[18px] md:text-[18px] text-[16px]">
-                          <tbody>
-                            {result?.tech_voltage_drop_formula &&
-                              result.tech_voltage_drop_formula !== "" && (
-                                <tr>
-                                  <td className="py-2 border-b" width="50%">
-                                    <strong>
-                                      {data?.payload?.tech_lang_keys[36]}
-                                    </strong>
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {result.tech_voltage_drop_formula} (
-                                    {data?.payload?.tech_lang_keys[37]})
-                                  </td>
-                                </tr>
-                              )}
-
-                            {result?.tech_voltage_drop_percentage &&
-                              result.tech_voltage_drop_percentage !== "" && (
-                                <tr>
-                                  <td className="py-2 border-b" width="50%">
-                                    <strong>
-                                      {data?.payload?.tech_lang_keys[38]}
-                                    </strong>
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {result.tech_voltage_drop_percentage} (%)
-                                  </td>
-                                </tr>
-                              )}
-
-                            {result?.tech_wire_resistance &&
-                              result.tech_wire_resistance !== "" && (
-                                <tr>
-                                  <td className="py-2 border-b" width="50%">
-                                    <strong>
-                                      {data?.payload?.tech_lang_keys[39]}
-                                    </strong>
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {result.tech_wire_resistance} (Ω)
-                                  </td>
-                                </tr>
-                              )}
-
-                            {result?.tech_voltage &&
-                              result.tech_voltage !== "" && (
-                                <tr>
-                                  <td className="py-2 border-b" width="50%">
-                                    <strong>
-                                      {data?.payload?.tech_lang_keys[40]}
-                                    </strong>
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {result.tech_voltage -
-                                      result.tech_voltage_drop_formula}{" "}
-                                    ({data?.payload?.tech_lang_keys[37]})
-                                  </td>
-                                </tr>
-                              )}
-
-                            {result?.tech_wiresize &&
-                              result.tech_wiresize !== "" && (
-                                <tr>
-                                  <td className="py-2 border-b" width="50%">
-                                    <strong>
-                                      {data?.payload?.tech_lang_keys[20]}
-                                    </strong>
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {result.tech_wiresize}
-                                  </td>
-                                </tr>
-                              )}
-
-                            {result?.tech_final && result.tech_final !== "" && (
+                  <div className="rounded-lg flex items-center ">
+                    <div className="w-full md:w-[90%] lg:w-[70%] mt-2">
+                      <table className="w-full text-[16px] md:text-[18px] overflow-auto">
+                        <tbody>
+                          {result?.tech_voltage_drop_formula &&
+                            result.tech_voltage_drop_formula !== "" && (
                               <tr>
                                 <td className="py-2 border-b" width="50%">
                                   <strong>
-                                    {data?.payload?.tech_lang_keys[41]}
+                                    {data?.payload?.tech_lang_keys[36]}
                                   </strong>
                                 </td>
                                 <td className="py-2 border-b">
-                                  {result.tech_final}
+                                  {result.tech_voltage_drop_formula} (
+                                  {data?.payload?.tech_lang_keys[37]})
                                 </td>
                               </tr>
                             )}
 
-                            {result?.tech_vv && result.tech_vv !== "" && (
+                          {result?.tech_voltage_drop_percentage &&
+                            result.tech_voltage_drop_percentage !== "" && (
+                              <tr>
+                                <td className="py-2 border-b" width="50%">
+                                  <strong>
+                                    {data?.payload?.tech_lang_keys[38]}
+                                  </strong>
+                                </td>
+                                <td className="py-2 border-b">
+                                  {result.tech_voltage_drop_percentage} (%)
+                                </td>
+                              </tr>
+                            )}
+
+                          {result?.tech_wire_resistance &&
+                            result.tech_wire_resistance !== "" && (
+                              <tr>
+                                <td className="py-2 border-b" width="50%">
+                                  <strong>
+                                    {data?.payload?.tech_lang_keys[39]}
+                                  </strong>
+                                </td>
+                                <td className="py-2 border-b">
+                                  {result.tech_wire_resistance} (Ω)
+                                </td>
+                              </tr>
+                            )}
+
+                          {result?.tech_voltage &&
+                            result.tech_voltage !== "" && (
+                              <tr>
+                                <td className="py-2 border-b" width="50%">
+                                  <strong>
+                                    {data?.payload?.tech_lang_keys[40]}
+                                  </strong>
+                                </td>
+                                <td className="py-2 border-b">
+                                  {result.tech_voltage -
+                                    result.tech_voltage_drop_formula}{" "}
+                                  ({data?.payload?.tech_lang_keys[37]})
+                                </td>
+                              </tr>
+                            )}
+
+                          {result?.tech_wiresize &&
+                            result.tech_wiresize !== "" && (
+                              <tr>
+                                <td className="py-2 border-b" width="50%">
+                                  <strong>
+                                    {data?.payload?.tech_lang_keys[20]}
+                                  </strong>
+                                </td>
+                                <td className="py-2 border-b">
+                                  {result.tech_wiresize}
+                                </td>
+                              </tr>
+                            )}
+
+                          {result?.tech_final && result.tech_final !== "" && (
+                            <tr>
+                              <td className="py-2 border-b" width="50%">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys[41]}
+                                </strong>
+                              </td>
+                              <td className="py-2 border-b">
+                                {result.tech_final}
+                              </td>
+                            </tr>
+                          )}
+
+                          {result?.tech_vv && result.tech_vv !== "" && (
+                            <>
+                              <tr>
+                                <td className="py-2 border-b" width="50%">
+                                  <strong>
+                                    {data?.payload?.tech_lang_keys[42]}
+                                  </strong>
+                                </td>
+                                <td className="py-2 border-b">
+                                  {result.tech_vv} (ft)
+                                </td>
+                              </tr>
+                              <tr>
+                                <td className="py-2 border-b" width="50%">
+                                  <strong>
+                                    {data?.payload?.tech_lang_keys[42]}
+                                  </strong>
+                                </td>
+                                <td className="py-2 border-b">
+                                  {(result.tech_vv * 0.3048).toFixed(4)} (m)
+                                </td>
+                              </tr>
+                            </>
+                          )}
+
+                          {result?.tech_din &&
+                            result.tech_din !== "" &&
+                            result?.tech_dmm &&
+                            result.tech_dmm !== "" && (
                               <>
                                 <tr>
                                   <td className="py-2 border-b" width="50%">
                                     <strong>
-                                      {data?.payload?.tech_lang_keys[42]}
+                                      {data?.payload?.tech_lang_keys[43]}
                                     </strong>
                                   </td>
                                   <td className="py-2 border-b">
-                                    {result.tech_vv} (ft)
+                                    {result.tech_din} (ft)
                                   </td>
                                 </tr>
                                 <tr>
                                   <td className="py-2 border-b" width="50%">
                                     <strong>
-                                      {data?.payload?.tech_lang_keys[42]}
+                                      {data?.payload?.tech_lang_keys[43]}
                                     </strong>
                                   </td>
                                   <td className="py-2 border-b">
-                                    {(result.tech_vv * 0.3048).toFixed(4)} (m)
+                                    {(result.tech_dmm * 0.3048).toFixed(4)} (m)
                                   </td>
                                 </tr>
                               </>
                             )}
 
-                            {result?.tech_din &&
-                              result.tech_din !== "" &&
-                              result?.tech_dmm &&
-                              result.tech_dmm !== "" && (
-                                <>
-                                  <tr>
-                                    <td className="py-2 border-b" width="50%">
-                                      <strong>
-                                        {data?.payload?.tech_lang_keys[43]}
-                                      </strong>
-                                    </td>
-                                    <td className="py-2 border-b">
-                                      {result.tech_din} (ft)
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className="py-2 border-b" width="50%">
-                                      <strong>
-                                        {data?.payload?.tech_lang_keys[43]}
-                                      </strong>
-                                    </td>
-                                    <td className="py-2 border-b">
-                                      {(result.tech_dmm * 0.3048).toFixed(4)}{" "}
-                                      (m)
-                                    </td>
-                                  </tr>
-                                </>
-                              )}
-
-                            {result?.tech_amil &&
-                              result.tech_amil !== "" &&
-                              result?.tech_ain &&
-                              result.tech_ain !== "" &&
-                              result?.tech_amm &&
-                              result.tech_amm !== "" && (
-                                <>
-                                  <tr>
-                                    <td className="py-2 border-b" width="50%">
-                                      <strong>
-                                        {data?.payload?.tech_lang_keys[44]}
-                                      </strong>
-                                    </td>
-                                    <td className="py-2 border-b">
-                                      {result.tech_amil} (kmcil)
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className="py-2 border-b" width="50%">
-                                      <strong>
-                                        {data?.payload?.tech_lang_keys[44]}
-                                      </strong>
-                                    </td>
-                                    <td className="py-2 border-b">
-                                      {result.tech_ain} (in²)
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className="py-2 border-b" width="50%">
-                                      <strong>
-                                        {data?.payload?.tech_lang_keys[44]}
-                                      </strong>
-                                    </td>
-                                    <td className="py-2 border-b">
-                                      {result.tech_amm} (mm²)
-                                    </td>
-                                  </tr>
-                                </>
-                              )}
-                          </tbody>
-                        </table>
-                      </div>
+                          {result?.tech_amil &&
+                            result.tech_amil !== "" &&
+                            result?.tech_ain &&
+                            result.tech_ain !== "" &&
+                            result?.tech_amm &&
+                            result.tech_amm !== "" && (
+                              <>
+                                <tr>
+                                  <td className="py-2 border-b" width="50%">
+                                    <strong>
+                                      {data?.payload?.tech_lang_keys[44]}
+                                    </strong>
+                                  </td>
+                                  <td className="py-2 border-b">
+                                    {result.tech_amil} (kmcil)
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td className="py-2 border-b" width="50%">
+                                    <strong>
+                                      {data?.payload?.tech_lang_keys[44]}
+                                    </strong>
+                                  </td>
+                                  <td className="py-2 border-b">
+                                    {result.tech_ain} (in²)
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td className="py-2 border-b" width="50%">
+                                    <strong>
+                                      {data?.payload?.tech_lang_keys[44]}
+                                    </strong>
+                                  </td>
+                                  <td className="py-2 border-b">
+                                    {result.tech_amm} (mm²)
+                                  </td>
+                                </tr>
+                              </>
+                            )}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>

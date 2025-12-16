@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useMomentumCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useMomentumCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const MomentumCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -104,11 +104,11 @@ const MomentumCalculator = () => {
         tech_time: formData.tech_time,
         tech_unit_t: formData.tech_unit_t,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -261,7 +261,7 @@ const MomentumCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg shadow-md space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
@@ -312,7 +312,7 @@ const MomentumCalculator = () => {
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-12 mt-3  gap-4">
+              <div className="grid grid-cols-12 mt-3 gap-1 md:gap-4">
                 {formData.tech_type == "velocity" && (
                   <>
                     <div id="linear" className="col-span-12">
@@ -321,38 +321,38 @@ const MomentumCalculator = () => {
                           {data?.payload?.tech_lang_keys[3]}:
                         </strong>
                         <div className="col-span-12 mb-3 mt-3 flex items-center">
-                          <label className="pe-2" htmlFor="mom">
+                          <label className="pe-2 cursor-pointer" htmlFor="mom">
                             <input
                               type="radio"
                               name="tech_to_cal"
                               value="mom"
                               id="mom"
-                              className="mr-2 border"
+                              className="mr-2 border cursor-pointer"
                               onChange={handleChange}
                               checked={formData.tech_to_cal === "mom"}
                             />
                             <span>{data?.payload?.tech_lang_keys["4"]}</span>
                           </label>
 
-                          <label className="pe-2" htmlFor="mass">
+                          <label className="pe-2 cursor-pointer" htmlFor="mass">
                             <input
                               type="radio"
                               name="tech_to_cal"
                               value="mass"
                               id="mass"
-                              className="mr-2 border"
+                              className="mr-2 border cursor-pointer"
                               onChange={handleChange}
                               checked={formData.tech_to_cal === "mass"}
                             />
                             <span>{data?.payload?.tech_lang_keys["5"]}</span>
                           </label>
-                          <label className="pe-2" htmlFor="velo">
+                          <label className="pe-2 cursor-pointer" htmlFor="velo">
                             <input
                               type="radio"
                               name="tech_to_cal"
                               value="velo"
                               id="velo"
-                              className="mr-2 border"
+                              className="mr-2 border cursor-pointer"
                               onChange={handleChange}
                               checked={formData.tech_to_cal === "velo"}
                             />
@@ -362,7 +362,7 @@ const MomentumCalculator = () => {
                         {(formData.tech_to_cal === "mom" ||
                           formData.tech_to_cal === "velo") && (
                           <>
-                            <div className="col-span-6 mass">
+                            <div className="col-span-12 md:col-span-6 mass">
                               <label htmlFor="tech_mass" className="label">
                                 {data?.payload?.tech_lang_keys["5"]}
                               </label>
@@ -409,7 +409,7 @@ const MomentumCalculator = () => {
                         {(formData.tech_to_cal === "mom" ||
                           formData.tech_to_cal === "mass") && (
                           <>
-                            <div className="col-span-6 velocity">
+                            <div className="col-span-12 md:col-span-6 velocity">
                               <label htmlFor="tech_velocity" className="label">
                                 {data?.payload?.tech_lang_keys["6"]}
                               </label>
@@ -460,7 +460,7 @@ const MomentumCalculator = () => {
                         {(formData.tech_to_cal === "mass" ||
                           formData.tech_to_cal === "velo") && (
                           <>
-                            <div className="col-span-6  kin">
+                            <div className="col-span-12 md:col-span-6  kin">
                               <label htmlFor="tech_mom" className="label">
                                 {data?.payload?.tech_lang_keys["4"]}
                               </label>
@@ -509,7 +509,6 @@ const MomentumCalculator = () => {
                     </div>
                   </>
                 )}
-
                 {formData.tech_type == "rotational" && (
                   <>
                     <div id="rotational" className="col-span-12 ">
@@ -518,26 +517,26 @@ const MomentumCalculator = () => {
                           {data?.payload?.tech_lang_keys[3]}:
                         </strong>
                         <div className="col-span-12  mb-3 mt-3 flex items-center">
-                          <label className="pe-2" htmlFor="mom_t">
+                          <label className="pe-2 cursor-pointer" htmlFor="mom_t">
                             <input
                               type="radio"
                               name="tech_to_calr"
                               value="mom_t"
                               id="mom_t"
-                              className="mr-2 border"
+                              className="mr-2 border cursor-pointer"
                               onChange={handleChange}
                               checked={formData.tech_to_calr === "mom_t"}
                             />
                             <span>{data?.payload?.tech_lang_keys["4"]}</span>
                           </label>
 
-                          <label className="pe-2" htmlFor="force">
+                          <label className="pe-2 cursor-pointer" htmlFor="force">
                             <input
                               type="radio"
                               name="tech_to_calr"
                               value="force"
                               id="force"
-                              className="mr-2 border"
+                              className="mr-2 border cursor-pointer"
                               onChange={handleChange}
                               checked={formData.tech_to_calr === "force"}
                             />
@@ -545,13 +544,13 @@ const MomentumCalculator = () => {
                               {data?.payload?.tech_lang_keys["7"]} (F)
                             </span>
                           </label>
-                          <label className="pe-2" htmlFor="time_c">
+                          <label className="pe-2 cursor-pointer" htmlFor="time_c">
                             <input
                               type="radio"
                               name="tech_to_calr"
                               value="time_c"
                               id="time_c"
-                              className="mr-2 border"
+                              className="mr-2 border cursor-pointer"
                               onChange={handleChange}
                               checked={formData.tech_to_calr === "time_c"}
                             />
@@ -564,7 +563,7 @@ const MomentumCalculator = () => {
                         {(formData.tech_to_calr === "force" ||
                           formData.tech_to_calr === "time_c") && (
                           <>
-                            <div className="col-span-6   moment">
+                            <div className="col-span-12 md:col-span-6   moment">
                               <label htmlFor="tech_mom_t" className="label">
                                 {data?.payload?.tech_lang_keys["4"]} (p):
                               </label>
@@ -612,7 +611,7 @@ const MomentumCalculator = () => {
                         {(formData.tech_to_calr === "mom_t" ||
                           formData.tech_to_calr === "time_c") && (
                           <>
-                            <div className="col-span-6 ">
+                            <div className="col-span-12 md:col-span-6 ">
                               <label htmlFor="tech_force" className="label">
                                 {data?.payload?.tech_lang_keys["7"]} (F)
                               </label>
@@ -658,7 +657,7 @@ const MomentumCalculator = () => {
                         {(formData.tech_to_calr === "mom_t" ||
                           formData.tech_to_calr === "force") && (
                           <>
-                            <div className="col-span-6 a_velocity">
+                            <div className="col-span-12 md:col-span-6 a_velocity">
                               <label htmlFor="tech_time" className="label">
                                 {data?.payload?.tech_lang_keys["8"]} (ΔT):
                               </label>
@@ -708,6 +707,7 @@ const MomentumCalculator = () => {
               </div>
             </div>
           </div>
+
           <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
@@ -722,18 +722,18 @@ const MomentumCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
                   <div className="rounded-lg  flex items-center justify-center">
@@ -741,8 +741,8 @@ const MomentumCalculator = () => {
                       <div className="w-full">
                         {result?.tech_mom && (
                           <>
-                            <div className="w-full md:w-[60%] lg:w-[60%] overflow-auto mt-2">
-                              <table className="w-full text-[16px]">
+                            <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
+                              <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="text-blue py-2 border-b">
@@ -758,14 +758,14 @@ const MomentumCalculator = () => {
                               </table>
                             </div>
 
-                            <p className="col-12 mt-3 text-[18px]">
+                            <p className="col-12 mt-3 text-[16px] md:text-[18px]">
                               <strong>
                                 {data?.payload?.tech_lang_keys[9]}
                               </strong>
                             </p>
 
-                            <div className="w-full md:w-[60%] lg:w-[60%] overflow-auto mt-2">
-                              <table className="w-full text-[16px]">
+                            <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
+                              <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="text-blue py-2 border-b">
@@ -814,8 +814,8 @@ const MomentumCalculator = () => {
 
                         {result?.tech_mass && (
                           <>
-                            <div className="w-full md:w-[60%] lg:w-[60%] overflow-auto mt-2">
-                              <table className="w-full text-[16px]">
+                            <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
+                              <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="text-blue py-2 border-b">
@@ -829,14 +829,14 @@ const MomentumCalculator = () => {
                               </table>
                             </div>
 
-                            <p className="col-12 mt-3 text-[18px]">
+                            <p className="col-12 mt-3 text-[16px] md:text-[18px]">
                               <strong>
                                 {data?.payload?.tech_lang_keys[9]}
                               </strong>
                             </p>
 
-                            <div className="w-full md:w-[60%] lg:w-[60%] overflow-auto mt-2">
-                              <table className="w-full text-[16px]">
+                            <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
+                              <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="text-blue py-2 border-b">
@@ -885,8 +885,8 @@ const MomentumCalculator = () => {
 
                         {result?.tech_velo && (
                           <>
-                            <div className="w-full md:w-[60%] lg:w-[60%] overflow-auto mt-2">
-                              <table className="w-full text-[16px]">
+                            <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
+                              <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="text-blue py-2 border-b">
@@ -900,14 +900,14 @@ const MomentumCalculator = () => {
                               </table>
                             </div>
 
-                            <p className="col-12 mt-3 text-[18px]">
+                            <p className="col-12 mt-3 text-[16px] md:text-[18px]">
                               <strong>
                                 {data?.payload?.tech_lang_keys[9]}
                               </strong>
                             </p>
 
-                            <div className="w-full md:w-[60%] lg:w-[60%] overflow-auto mt-2">
-                              <table className="w-full text-[16px]">
+                            <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
+                              <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="text-blue py-2 border-b">
@@ -1008,8 +1008,8 @@ const MomentumCalculator = () => {
 
                         {result?.tech_momt && (
                           <>
-                            <div className="w-full md:w-[60%] lg:w-[60%] overflow-auto mt-2">
-                              <table className="w-full text-[16px]">
+                            <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
+                              <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="text-blue py-2 border-b">
@@ -1025,14 +1025,14 @@ const MomentumCalculator = () => {
                               </table>
                             </div>
 
-                            <p className="col-12 mt-3 text-[18px]">
+                            <p className="col-12 mt-3 text-[16px] md:text-[18px]">
                               <strong>
                                 {data?.payload?.tech_lang_keys[9]}
                               </strong>
                             </p>
 
-                            <div className="w-full md:w-[60%] lg:w-[60%] overflow-auto mt-2">
-                              <table className="w-full text-[16px]">
+                            <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
+                              <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="text-blue py-2 border-b">
@@ -1081,8 +1081,8 @@ const MomentumCalculator = () => {
 
                         {result?.tech_forcet && (
                           <>
-                            <div className="w-full md:w-[60%] lg:w-[60%] overflow-auto mt-2">
-                              <table className="w-full text-[16px]">
+                            <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
+                              <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="text-blue py-2 border-b">
@@ -1096,14 +1096,14 @@ const MomentumCalculator = () => {
                               </table>
                             </div>
 
-                            <p className="col-12 mt-3 text-[18px]">
+                            <p className="col-12 mt-3 text-[16px] md:text-[18px]">
                               <strong>
                                 {data?.payload?.tech_lang_keys[9]}
                               </strong>
                             </p>
 
-                            <div className="w-full md:w-[60%] lg:w-[60%] overflow-auto mt-2">
-                              <table className="w-full text-[16px]">
+                            <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
+                              <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="text-blue py-2 border-b">
@@ -1135,8 +1135,8 @@ const MomentumCalculator = () => {
 
                         {result?.tech_time && (
                           <>
-                            <div className="w-full md:w-[60%] lg:w-[60%] overflow-auto mt-2">
-                              <table className="w-full text-[16px]">
+                            <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
+                              <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="text-blue py-2 border-b">
@@ -1150,14 +1150,14 @@ const MomentumCalculator = () => {
                               </table>
                             </div>
 
-                            <p className="col-12 mt-3 text-[18px]">
+                            <p className="col-12 mt-3 text-[16px] md:text-[18px]">
                               <strong>
                                 {data?.payload?.tech_lang_keys[9]}
                               </strong>
                             </p>
 
-                            <div className="w-full md:w-[60%] lg:w-[60%] overflow-auto mt-2">
-                              <table className="w-full text-[16px]">
+                            <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
+                              <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="text-blue py-2 border-b">

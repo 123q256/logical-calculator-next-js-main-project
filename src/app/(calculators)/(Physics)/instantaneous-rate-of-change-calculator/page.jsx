@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useInstantaneousRateOfChangeCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useInstantaneousRateOfChangeCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -16,7 +17,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const InstantaneousRateOfChangeCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -82,11 +82,11 @@ const InstantaneousRateOfChangeCalculator = () => {
         tech_EnterEq: formData.tech_EnterEq,
         tech_x: formData.tech_x,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -224,7 +224,7 @@ const InstantaneousRateOfChangeCalculator = () => {
               value={formData.tech_hidden_val}
               onChange={handleChange}
             />
-            <div className="grid grid-cols-12 mt-3  gap-2">
+            <div className="grid grid-cols-12 mt-3 gap-1  md:gap-2">
               <div className="col-span-10 mt-lg-2">
                 <label htmlFor="tech_EnterEq" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -253,7 +253,7 @@ const InstantaneousRateOfChangeCalculator = () => {
                 >
                   <img
                     src="/images/keyboard.png"
-                    className="keyboardImg transform w-9 h-9"
+                    className="keyboardImg transform cursor-pointer w-9 h-9"
                     alt="keyboard"
                   />
                 </span>
@@ -268,7 +268,7 @@ const InstantaneousRateOfChangeCalculator = () => {
                     <button
                       key={index}
                       type="button"
-                      className="btn buttn px-2 py-2 mx-1 mb-2 bg-blue-700 text-white rounded-sm h-9 px-4 uppercase shadow-md hover:bg-blue-600"
+                      className="btn buttn px-2 py-2 mx-1 mb-2 bg-blue-700 text-white rounded-sm h-9 px-4 uppercase cursor-pointer shadow-md hover:bg-blue-600"
                       onClick={() => handleInsertSymbol(symbol)}
                     >
                       {symbol}
@@ -319,7 +319,7 @@ const InstantaneousRateOfChangeCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -330,13 +330,13 @@ const InstantaneousRateOfChangeCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="w-full text-[18px]">
+                      <div className="w-full text-[16px] md:text-[18px]">
                         <p className="mt-2">
                           {data?.payload?.tech_lang_keys["3"]}
                         </p>
