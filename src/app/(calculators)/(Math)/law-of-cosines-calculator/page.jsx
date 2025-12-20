@@ -6,9 +6,10 @@ import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useLawOfCosinesCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useLawOfCosinesCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -17,7 +18,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const LawOfCosinesCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -102,11 +102,11 @@ const LawOfCosinesCalculator = () => {
         tech_angle_c: formData.tech_angle_c,
         tech_angle_c_unit: formData.tech_angle_c_unit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -245,9 +245,9 @@ const LawOfCosinesCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
             <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
-              <div className="col-span-6">
+              <div className="col-span-12 md:col-span-6">
                 <div className="col-12 mt-0 mt-lg-2">
                   <label htmlFor="tech_cal" className="label">
                     {data?.payload?.tech_lang_keys["1"]}:
@@ -298,7 +298,7 @@ const LawOfCosinesCalculator = () => {
                       onChange={handleChange}
                     />
                     <label
-                      className="absolute cursor-pointer text-sm underline right-6 top-3"
+                      className="absolute cursor-pointer text-sm underline right-6 top-4"
                       onClick={toggleDropdown}
                     >
                       {formData.tech_side_a_unit} ▾
@@ -345,7 +345,7 @@ const LawOfCosinesCalculator = () => {
                       onChange={handleChange}
                     />
                     <label
-                      className="absolute cursor-pointer text-sm underline right-6 top-3"
+                      className="absolute cursor-pointer text-sm underline right-6 top-4"
                       onClick={toggleDropdown1}
                     >
                       {formData.tech_side_b_unit} ▾
@@ -392,7 +392,7 @@ const LawOfCosinesCalculator = () => {
                       onChange={handleChange}
                     />
                     <label
-                      className="absolute cursor-pointer text-sm underline right-6 top-3"
+                      className="absolute cursor-pointer text-sm underline right-6 top-4"
                       onClick={toggleDropdown2}
                     >
                       {formData.tech_side_c_unit} ▾
@@ -441,7 +441,7 @@ const LawOfCosinesCalculator = () => {
                           onChange={handleChange}
                         />
                         <label
-                          className="absolute cursor-pointer text-sm underline right-6 top-3"
+                          className="absolute cursor-pointer text-sm underline right-6 top-4"
                           onClick={toggleDropdown3}
                         >
                           {formData.tech_angle_a_unit} ▾
@@ -491,7 +491,7 @@ const LawOfCosinesCalculator = () => {
                           onChange={handleChange}
                         />
                         <label
-                          className="absolute cursor-pointer text-sm underline right-6 top-3"
+                          className="absolute cursor-pointer text-sm underline right-6 top-4"
                           onClick={toggleDropdown4}
                         >
                           {formData.tech_angle_b_unit} ▾
@@ -541,7 +541,7 @@ const LawOfCosinesCalculator = () => {
                           onChange={handleChange}
                         />
                         <label
-                          className="absolute cursor-pointer text-sm underline right-6 top-3"
+                          className="absolute cursor-pointer text-sm underline right-6 top-4"
                           onClick={toggleDropdown5}
                         >
                           {formData.tech_angle_c_unit} ▾
@@ -574,7 +574,7 @@ const LawOfCosinesCalculator = () => {
                   </>
                 )}
               </div>
-              <div className="col-span-6  flex items-center">
+              <div className="col-span-12 md:col-span-6  flex items-center">
                 <div className="">
                   <div className="col-12 text-[20px] text-center flex items-center justify-center">
                     {formData.tech_cal === "aa" && (
@@ -636,7 +636,7 @@ const LawOfCosinesCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -647,17 +647,17 @@ const LawOfCosinesCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
-                    <div className="w-full mt-3">
-                      <div className="w-full md:w-[60%] lg:w-[60%]  mt-2">
-                        <table className="w-full text-[18px]">
+                    <div className="w-full mt-3 overflow-auto method2-results">
+                      <div className="w-full md:w-[60%] lg:w-[60%]  mt-2 overflow-auto">
+                        <table className="w-full text-[16px] md:text-[18px] px-5">
                           <tbody>
                             <tr>
-                              <td className="py-2 border-b" width="60%">
+                              <td className="py-2 border-b">
                                 <strong>
                                   {formData?.tech_cal === "aa" &&
                                     `${data?.payload?.tech_lang_keys["2"]} A`}
@@ -697,7 +697,7 @@ const LawOfCosinesCalculator = () => {
                           </tbody>
                         </table>
                       </div>
-                      <div className="col-span-12  text-[16px]">
+                      <div className="col-span-12  text-[16px]  px-5">
                         <p className="mt-2">
                           <strong>{data?.payload?.tech_lang_keys["4"]}:</strong>
                         </p>

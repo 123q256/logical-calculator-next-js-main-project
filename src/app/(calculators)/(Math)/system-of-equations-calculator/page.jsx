@@ -368,30 +368,30 @@ const SystemOfEquationCalculator = () => {
             <div className="lg:w-[100%] w-full mx-auto ">
                 <div className="col-span-12">
                   {isLoading && (
-                    <div className="result_calculator rounded-lg p-6">
-                      <div className="animate-pulse space-y-4">
-                        <div className="h-6 bg-gray-300 rounded w-3/4"></div>
-                        <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-                        <div className="h-4 bg-gray-300 rounded w-2/3"></div>
-                      </div>
-                    </div>
+                  <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+            <div className="animate-pulse">
+              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
+              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
+            </div>
+          </div>
                   )}
                   {result !== null && !isLoading && (
 
-                  <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6">
+                  <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                     <ResultActions lang={data?.payload?.tech_lang_keys} />
                     
-                  
                       <div className="rounded-lg  flex items-center justify-center">
-                        <div className="w-full mt-3">
+                        <div className="w-full mt-3 method2-results">
                             <div className="w-full overflow-auto">
                                 {formData?.tech_operations==1 ? (
                                   <>
 
                                   <div className="w-full md:w-[60%] lg:w-[60%] mt-2">
                                       <table className="w-full text-[18px]">
-                                        <tbody>
-                                          <tr>
+                                          <tbody>
+                                              <tr>
                                               <td className="py-2 border-b" width="30%"><strong>x =</strong></td>
                                               <td className="py-2 border-b">{result?.tech_x}</td>
                                           </tr>
@@ -438,7 +438,7 @@ const SystemOfEquationCalculator = () => {
                                       <p>
                                         Apply Gauss-Jordan Elimination method: ({data?.payload?.tech_lang_keys[9]}{" "}
                                         <a 
-                                          href="https://calculator-logical.com/gaussian-elimination-calculator/" 
+                                          href="https://calculator-logical.com/gaussian-elimination-calculator" 
                                           className="text-blue-500 underline" 
                                           target="_blank"
                                         >
@@ -553,13 +553,13 @@ const SystemOfEquationCalculator = () => {
                                       {/* External links */}
                                       <p>
                                         ({data?.payload?.tech_lang_keys[9]}{" "}
-                                        <a href="https://calculator-logical.com/inverse-matrix-calculator/" className="text-blue-500 underline" target="_blank">
+                                        <a href="https://calculator-logical.com/inverse-matrix-calculator" className="text-blue-500 underline" target="_blank">
                                           Inverse Matrix Calculator
                                         </a>)
                                       </p>
                                       <p>
                                         ({data?.payload?.tech_lang_keys[9]}{" "}
-                                        <a href="https://calculator-logical.com/matrix-multiplication-calculator/" className="text-blue-500 underline" target="_blank">
+                                        <a href="https://calculator-logical.com/matrix-multiplication-calculator" className="text-blue-500 underline" target="_blank">
                                           Matrix Multiplication Calculator
                                         </a>)
                                       </p>
@@ -597,8 +597,8 @@ const SystemOfEquationCalculator = () => {
                                   {/* Determinant D */}
                                   <p>
                                     {data?.payload?.tech_lang_keys[10] ?? 'Determinant'} ({data?.payload?.tech_lang_keys[9] ?? 'Check'} 
-                                    <a href="https://calculator-logical.com/determinant-calculator/" className="text-blue-500" target="_blank" rel="noopener noreferrer">
-                                      {""} Determinant Calculator
+                                    <a href="https://calculator-logical.com/determinant-calculator" class="text-blue-500" target="_blank" rel="noopener noreferrer">
+                                      Determinant Calculator
                                     </a>)
                                   </p>
                                   <BlockMath
@@ -650,10 +650,10 @@ const SystemOfEquationCalculator = () => {
                                 ):(
                                   <>
                                   
-                                  <div className="w-full md:w-[60%] lg:w-[60%] mt-2">
-                                      <table className="w-full font-s-18">
-                                        <tbody>
-                                          <tr>
+                                  <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
+                                      <table className="w-full md:text-[18px] text-[16px]">
+                                       <tbody>
+                                           <tr>
                                               <td className="py-2 border-b" width="30%"><strong>x =</strong></td>
                                               <td className="py-2 border-b">{round(result?.tech_x, 3)}</td>
                                           </tr>
@@ -665,7 +665,7 @@ const SystemOfEquationCalculator = () => {
                                               <td className="py-2 border-b" width="30%"><strong>z =</strong></td>
                                               <td className="py-2 border-b">{round(result?.tech_z, 3)}</td>
                                           </tr>
-                                          </tbody>
+                                       </tbody>
                                       </table>
                                   </div>
                                   <p className="mt-3"><strong>{data?.payload?.tech_lang_keys[5]}</strong></p>
@@ -705,7 +705,7 @@ const SystemOfEquationCalculator = () => {
                                         <p>
                                           Apply Gauss-Jordan Elimination method: ({data?.payload?.tech_lang_keys[9]}{" "}
                                           <a 
-                                            href="https://calculator-logical.com/gaussian-elimination-calculator/" 
+                                            href="https://calculator-logical.com/gaussian-elimination-calculator" 
                                             className="text-blue-500 underline" 
                                             target="_blank"
                                           >
@@ -770,8 +770,8 @@ const SystemOfEquationCalculator = () => {
                                       `} />
 
                                     {/* Resulting inverse matrix */}
-                                    <p>{data?.payload?.tech_lang_keys[13] ?? 'Inverse Matrix:'} {" "}
-                                      (<a href="https://calculator-logical.com/inverse-matrix-calculator/" target="_blank" rel="noopener noreferrer">
+                                    <p>{data?.payload?.tech_lang_keys[13] ?? 'Inverse Matrix:'} 
+                                      (<a href="https://calculator-logical.com/inverse-matrix-calculator" target="_blank" rel="noopener noreferrer">
                                         {data?.payload?.tech_lang_keys[9] ?? 'Inverse Matrix Calculator'}
                                       </a>)
                                     </p>
@@ -789,8 +789,8 @@ const SystemOfEquationCalculator = () => {
                                     `} />
 
                                     {/* Final solution */}
-                                    <p>{data?.payload?.tech_lang_keys[12] ?? 'Final Solution:'}  {" "}
-                                      (<a href="https://calculator-logical.com/matrix-multiplication-calculator/" target="_blank" rel="noopener noreferrer">
+                                    <p>{data?.payload?.tech_lang_keys[12] ?? 'Final Solution:'} 
+                                      (<a href="https://calculator-logical.com/matrix-multiplication-calculator" target="_blank" rel="noopener noreferrer">
                                         {data?.payload?.tech_lang_keys[9] ?? 'Matrix Multiplication Calculator'}
                                       </a>)
                                     </p>
@@ -911,18 +911,6 @@ const SystemOfEquationCalculator = () => {
                             </div>
                         </div>
                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
                     </div>
                   )}
                 </div>

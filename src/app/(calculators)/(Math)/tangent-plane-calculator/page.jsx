@@ -7,9 +7,10 @@ import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import katex from "katex";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useTangentPlaneCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useTangentPlaneCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -57,7 +58,7 @@ const TangentPlaneCalculator = () => {
 
   const [result, setResult] = useState(null);
   const [formError, setFormError] = useState("");
-
+  const [decoded, setDecoded] = useState("");
   // RTK mutation hook
   const [
     calculateEbitCalculator,
@@ -132,11 +133,11 @@ const TangentPlaneCalculator = () => {
         tech_y: formData.tech_y,
         tech_z: formData.tech_z,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -185,13 +186,30 @@ const TangentPlaneCalculator = () => {
     .replace(/y/g, `(${y})`);
   const s3 = result?.tech_eq?.replace(/x/g, `(${x})`).replace(/y/g, `(${y})`);
 
-  // Client-side only HTML decoding function
-  const decodeHtml = (html) => {
-    if (typeof document === "undefined") return html || "";
+  // HTML decode function
+  function decodeHtml(html) {
+    if (typeof window === "undefined") {
+      // Server-side: return the html as is or use a simple decode
+      return html
+        ? html
+            .replace(/&amp;/g, "&")
+            .replace(/&lt;/g, "<")
+            .replace(/&gt;/g, ">")
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+        : "";
+    }
     const txt = document.createElement("textarea");
-    txt.innerHTML = html || "";
+    txt.innerHTML = html;
     return txt.value;
-  };
+  }
+
+  // REMOVED THE PROBLEMATIC useEffect - it was using undefined 'html' variable
+  // useEffect(() => {
+  //   const txt = document.createElement("textarea");
+  //   txt.innerHTML = html; // 'html' was undefined here
+  //   setDecoded(txt.value);
+  // }, [html]);
 
   const rawDiffa = result?.tech_diffa || "";
   const rawDiffb = result?.tech_diffb || "";
@@ -238,49 +256,161 @@ const TangentPlaneCalculator = () => {
     ?.replace(/y/g, `(${formData?.tech_y})`)
     ?.replace(/z/g, `(${formData?.tech_z})`);
 
-  // Toggle buttons for showing steps
-  const [visibleSteps, setVisibleSteps] = useState({
-    step1: false,
-    step2: false,
-    step3: false,
-    step4: false,
-    step5: false,
-  });
+  // btn 1
+  const containerRef = useRef(null);
+  const [visibleStep, setVisibleStep] = useState(false);
 
-  const containerRefs = {
-    step1: useRef(null),
-    step2: useRef(null),
-    step3: useRef(null),
-    step4: useRef(null),
-    step5: useRef(null),
+  const handleClick = () => {
+    setVisibleStep((prev) => !prev);
   };
 
-  const handleStepToggle = (step) => {
-    setVisibleSteps((prev) => ({ ...prev, [step]: !prev[step] }));
-  };
-
-  // Render KaTeX when steps become visible
   useEffect(() => {
-    Object.entries(visibleSteps).forEach(([step, isVisible]) => {
-      if (isVisible && containerRefs[step].current) {
-        setTimeout(() => {
-          const el = containerRefs[step].current;
-          const scripts = el.querySelectorAll('script[type^="math/tex"]');
-          scripts.forEach((script) => {
-            const isDisplayMode = script.type.includes("mode=display");
-            const tex = script.textContent;
-            const span = document.createElement("span");
-            try {
-              katex.render(tex, span, { displayMode: isDisplayMode });
-              script.replaceWith(span);
-            } catch (err) {
-              console.error("KaTeX render error:", err);
-            }
-          });
-        }, 10);
-      }
-    });
-  }, [visibleSteps]);
+    if (visibleStep && containerRef.current && typeof window !== "undefined") {
+      setTimeout(() => {
+        const el = containerRef.current;
+        const scripts = el.querySelectorAll('script[type^="math/tex"]');
+        scripts.forEach((script) => {
+          const isDisplayMode = script.type.includes("mode=display");
+          const tex = script.textContent;
+          const span = document.createElement("span");
+          try {
+            katex.render(tex, span, { displayMode: isDisplayMode });
+            script.replaceWith(span);
+          } catch (err) {
+            console.error("KaTeX render error:", err);
+          }
+        });
+      }, 10);
+    }
+  }, [visibleStep]);
+
+  // btn 2
+  const containerRef2 = useRef(null);
+  const [visibleStep2, setVisibleStep2] = useState(false);
+
+  const handleClick2 = () => {
+    setVisibleStep2((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (
+      visibleStep2 &&
+      containerRef2.current &&
+      typeof window !== "undefined"
+    ) {
+      setTimeout(() => {
+        const el = containerRef2.current;
+        const scripts = el.querySelectorAll('script[type^="math/tex"]');
+        scripts.forEach((script) => {
+          const isDisplayMode = script.type.includes("mode=display");
+          const tex = script.textContent;
+          const span = document.createElement("span");
+          try {
+            katex.render(tex, span, { displayMode: isDisplayMode });
+            script.replaceWith(span);
+          } catch (err) {
+            console.error("KaTeX render error:", err);
+          }
+        });
+      }, 10);
+    }
+  }, [visibleStep2]);
+
+  // btn 3
+  const containerRef3 = useRef(null);
+  const [visibleStep3, setVisibleStep3] = useState(false);
+
+  const handleClick3 = () => {
+    setVisibleStep3((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (
+      visibleStep3 &&
+      containerRef3.current &&
+      typeof window !== "undefined"
+    ) {
+      setTimeout(() => {
+        const el = containerRef3.current;
+        const scripts = el.querySelectorAll('script[type^="math/tex"]');
+        scripts.forEach((script) => {
+          const isDisplayMode = script.type.includes("mode=display");
+          const tex = script.textContent;
+          const span = document.createElement("span");
+          try {
+            katex.render(tex, span, { displayMode: isDisplayMode });
+            script.replaceWith(span);
+          } catch (err) {
+            console.error("KaTeX render error:", err);
+          }
+        });
+      }, 10);
+    }
+  }, [visibleStep3]);
+
+  // btn 4
+  const containerRef4 = useRef(null);
+  const [visibleStep4, setVisibleStep4] = useState(false);
+
+  const handleClick4 = () => {
+    setVisibleStep4((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (
+      visibleStep4 &&
+      containerRef4.current &&
+      typeof window !== "undefined"
+    ) {
+      setTimeout(() => {
+        const el = containerRef4.current;
+        const scripts = el.querySelectorAll('script[type^="math/tex"]');
+        scripts.forEach((script) => {
+          const isDisplayMode = script.type.includes("mode=display");
+          const tex = script.textContent;
+          const span = document.createElement("span");
+          try {
+            katex.render(tex, span, { displayMode: isDisplayMode });
+            script.replaceWith(span);
+          } catch (err) {
+            console.error("KaTeX render error:", err);
+          }
+        });
+      }, 10);
+    }
+  }, [visibleStep4]);
+
+  // btn 5
+  const containerRef5 = useRef(null);
+  const [visibleStep5, setVisibleStep5] = useState(false);
+
+  const handleClick5 = () => {
+    setVisibleStep5((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (
+      visibleStep5 &&
+      containerRef5.current &&
+      typeof window !== "undefined"
+    ) {
+      setTimeout(() => {
+        const el = containerRef5.current;
+        const scripts = el.querySelectorAll('script[type^="math/tex"]');
+        scripts.forEach((script) => {
+          const isDisplayMode = script.type.includes("mode=display");
+          const tex = script.textContent;
+          const span = document.createElement("span");
+          try {
+            katex.render(tex, span, { displayMode: isDisplayMode });
+            script.replaceWith(span);
+          } catch (err) {
+            console.error("KaTeX render error:", err);
+          }
+        });
+      }, 10);
+    }
+  }, [visibleStep5]);
 
   return (
     <Calculator
@@ -299,7 +429,7 @@ const TangentPlaneCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg shadow-md space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
@@ -313,7 +443,7 @@ const TangentPlaneCalculator = () => {
                 id="calculator_time"
                 value={formData.tech_type}
               />
-              <div className="flex flex-wrap items-center bg-green-100 border border-blue-500 text-center rounded-lg px-1">
+              <div className="flex flex-wrap items-center bg-blue-100 border border-blue-500 text-center rounded-lg px-1">
                 {/* Date Cal Tab */}
                 <div className="lg:w-1/2 w-full px-2 py-1">
                   <div
@@ -453,7 +583,7 @@ const TangentPlaneCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -464,7 +594,7 @@ const TangentPlaneCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -475,161 +605,165 @@ const TangentPlaneCalculator = () => {
                           {formData?.tech_type === "two" ? (
                             <>
                               <div className="mt-3 text-[18px]">
-                                <BlockMath
-                                  math={`z = ${result?.tech_t?.replace(
-                                    /frac/g,
-                                    "dfrac"
-                                  )}`}
-                                />
+                                <div className="method2-results">
+                                  <BlockMath
+                                    math={`z = ${result?.tech_t?.replace(
+                                      /frac/g,
+                                      "dfrac"
+                                    )}`}
+                                  />
+                                  <p className="mt-3">
+                                    <strong>
+                                      {data?.payload?.tech_lang_keys["5"]}:
+                                    </strong>
+                                  </p>
+                                  <p className="mt-3">
+                                    {data?.payload?.tech_lang_keys["6"]}:
+                                  </p>
+                                  <BlockMath
+                                    math={`z = a(x - x_0) + b(y - y_0) + z_0`}
+                                  />
 
-                                <p className="mt-3">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys["5"]}:
-                                  </strong>
-                                </p>
-                                <p className="mt-3">
-                                  {data?.payload?.tech_lang_keys["6"]}:
-                                </p>
-                                <BlockMath
-                                  math={`z = a(x - x_0) + b(y - y_0) + z_0`}
-                                />
-
-                                <p className="mt-3">
-                                  {data?.payload?.tech_lang_keys["7"]} w.r.t
-                                  (x): f'(x)
-                                </p>
-                                <BlockMath math={result?.tech_diffa} />
+                                  <p className="mt-3">
+                                    {data?.payload?.tech_lang_keys["7"]} w.r.t
+                                    (x): f'(x)
+                                  </p>
+                                  <BlockMath math={result?.tech_diffa} />
+                                </div>
 
                                 <div className="w-full my-3">
                                   <button
                                     type="button"
-                                    className="calculate cursor-pointer repeat px-6 py-3 font-semibold text-[#ffffff] bg-[#2845F5] text-[14px] rounded-lg focus:outline-none focus:ring-2"
-                                    onClick={() => handleStepToggle("step1")}
+                                    className="calculate  repeat px-6 py-3 font-semibold bg-[#2845F5] text-[#fff] cursor-pointer text-[14px] rounded-lg focus:outline-none focus:ring-2"
+                                    onClick={handleClick}
                                   >
                                     {data?.payload?.tech_lang_keys["13"]}
                                   </button>
 
-                                  {visibleSteps.step1 && (
+                                  {visibleStep && (
                                     <div
                                       className="w-full res_step block"
-                                      ref={containerRefs.step1}
+                                      ref={containerRef}
                                       dangerouslySetInnerHTML={{
                                         __html: result?.tech_stepsx,
                                       }}
                                     />
                                   )}
                                 </div>
-
-                                <p className="mt-3">
-                                  {data?.payload?.tech_lang_keys["7"]} w.r.t
-                                  (y): f'(y)
-                                </p>
-                                <BlockMath math={result?.tech_diffb} />
-
+                                <div className="method2-results">
+                                  <p className="mt-3">
+                                    {data?.payload?.tech_lang_keys["7"]} w.r.t
+                                    (y): f'(y)
+                                  </p>
+                                  <BlockMath math={result?.tech_diffb} />
+                                </div>
                                 <div className="w-full my-3">
                                   <button
                                     type="button"
-                                    className="calculate cursor-pointer repeat px-6 py-3 font-semibold text-[#ffffff] bg-[#2845F5] text-[14px] rounded-lg focus:outline-none focus:ring-2"
-                                    onClick={() => handleStepToggle("step2")}
+                                    className="calculate repeat px-6 py-3 font-semibold bg-[#2845F5] text-[#fff] cursor-pointer text-[14px] rounded-lg focus:outline-none focus:ring-2"
+                                    onClick={handleClick2}
                                   >
                                     {data?.payload?.tech_lang_keys["13"]}
                                   </button>
 
-                                  {visibleSteps.step2 && (
+                                  {visibleStep2 && (
                                     <div
                                       className="w-full res_step block"
-                                      ref={containerRefs.step2}
+                                      ref={containerRef2}
                                       dangerouslySetInnerHTML={{
                                         __html: result?.tech_stepsy,
                                       }}
                                     />
                                   )}
                                 </div>
+                                <div className="method2-results">
+                                  <p className="mt-3">
+                                    {data?.payload?.tech_lang_keys["8"]} (a):
+                                  </p>
+                                  <BlockMath
+                                    math={`f_x = ${result?.tech_diffa}`}
+                                  />
+                                  <BlockMath math={`f_x(${x}, ${y}) = ${s1}`} />
+                                  <BlockMath
+                                    math={`f_x(${x}, ${y}) = ${result?.tech_a}`}
+                                  />
 
-                                <p className="mt-3">
-                                  {data?.payload?.tech_lang_keys["8"]} (a):
-                                </p>
-                                <BlockMath
-                                  math={`f_x = ${result?.tech_diffa}`}
-                                />
-                                <BlockMath math={`f_x(${x}, ${y}) = ${s1}`} />
-                                <BlockMath
-                                  math={`f_x(${x}, ${y}) = ${result?.tech_a}`}
-                                />
+                                  <p className="mt-3">
+                                    {data?.payload?.tech_lang_keys["8"]} (b):
+                                  </p>
+                                  <BlockMath
+                                    math={`f_y = ${result?.tech_diffb}`}
+                                  />
+                                  <BlockMath math={`f_y(${x}, ${y}) = ${s2}`} />
+                                  <BlockMath
+                                    math={`f_y(${x}, ${y}) = ${result?.tech_b}`}
+                                  />
 
-                                <p className="mt-3">
-                                  {data?.payload?.tech_lang_keys["8"]} (b):
-                                </p>
-                                <BlockMath
-                                  math={`f_y = ${result?.tech_diffb}`}
-                                />
-                                <BlockMath math={`f_y(${x}, ${y}) = ${s2}`} />
-                                <BlockMath
-                                  math={`f_y(${x}, ${y}) = ${result?.tech_b}`}
-                                />
+                                  <p className="mt-3">
+                                    {data?.payload?.tech_lang_keys["8"]} (z₀):
+                                  </p>
+                                  <BlockMath
+                                    math={`f(x, y) = ${result?.tech_eq}`}
+                                  />
+                                  <BlockMath math={`f(${x}, ${y}) = ${s3}`} />
+                                  <BlockMath
+                                    math={`f(${x}, ${y}) = ${result?.tech_c}`}
+                                  />
 
-                                <p className="mt-3">
-                                  {data?.payload?.tech_lang_keys["8"]} (z₀):
-                                </p>
-                                <BlockMath
-                                  math={`f(x, y) = ${result?.tech_eq}`}
-                                />
-                                <BlockMath math={`f(${x}, ${y}) = ${s3}`} />
-                                <BlockMath
-                                  math={`f(${x}, ${y}) = ${result?.tech_c}`}
-                                />
-
-                                <p className="mt-3">
-                                  Finally, {data?.payload?.tech_lang_keys["8"]}{" "}
-                                  (z):
-                                </p>
-                                <BlockMath
-                                  math={`x_0 = ${x}, \\quad y_0 = ${y}, \\quad z_0 = ${result?.tech_c}`}
-                                />
-                                <BlockMath
-                                  math={`z = a(x - x_0) + b(y - y_0) + z_0`}
-                                />
-                                <BlockMath
-                                  math={`z = (${result?.tech_a})(x - (${x})) + (${result?.tech_b})(y - (${y})) + (${result?.tech_c})`}
-                                />
-                                <BlockMath
-                                  math={`z = \\color{#1670a7}{${result?.tech_t}}`}
-                                />
+                                  <p className="mt-3">
+                                    Finally,{" "}
+                                    {data?.payload?.tech_lang_keys["8"]} (z):
+                                  </p>
+                                  <BlockMath
+                                    math={`x_0 = ${x}, \\quad y_0 = ${y}, \\quad z_0 = ${result?.tech_c}`}
+                                  />
+                                  <BlockMath
+                                    math={`z = a(x - x_0) + b(y - y_0) + z_0`}
+                                  />
+                                  <BlockMath
+                                    math={`z = (${result?.tech_a})(x - (${x})) + (${result?.tech_b})(y - (${y})) + (${result?.tech_c})`}
+                                  />
+                                  <BlockMath
+                                    math={`z = \\color{#1670a7}{${result?.tech_t}}`}
+                                  />
+                                </div>
                               </div>
                             </>
                           ) : (
                             <>
-                              <div className="text-[16px] md:text-[18px] mt-3 space-y-4">
-                                <BlockMath math={`z = ${ans}`} />
-                                <p>
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys["5"]}:
-                                  </strong>
-                                </p>
-                                <p>{data?.payload?.tech_lang_keys["6"]}:</p>
-                                <BlockMath
-                                  math={`a(x - x_0) + b(y - y_0) + c(z - z_0) = 0`}
-                                />
+                              <div className="text-[16px] md:text-[18px] mt-3 space-y-4 ">
+                                <div className="method2-results">
+                                  <BlockMath math={`z = ${ans}`} />
+                                  <p>
+                                    <strong>
+                                      {data?.payload?.tech_lang_keys["5"]}:
+                                    </strong>
+                                  </p>
+                                  <p>{data?.payload?.tech_lang_keys["6"]}:</p>
+                                  <BlockMath
+                                    math={`a(x - x_0) + b(y - y_0) + c(z - z_0) = 0`}
+                                  />
 
-                                <p>
-                                  {data?.payload?.tech_lang_keys["7"]} w.r.t
-                                  (x): f'(x)
-                                </p>
-                                <BlockMath math={diffa} />
+                                  <p>
+                                    {data?.payload?.tech_lang_keys["7"]} w.r.t
+                                    (x): f'(x)
+                                  </p>
+                                  <BlockMath math={diffa} />
+                                </div>
 
                                 <div className="w-full my-3">
                                   <button
                                     type="button"
-                                    className="calculate cursor-pointer repeat px-6 py-3 font-semibold text-[#ffffff] bg-[#2845F5] text-[14px] rounded-lg focus:outline-none focus:ring-2"
-                                    onClick={() => handleStepToggle("step3")}
+                                    className="calculate repeat px-6 py-3 font-semibold bg-[#2845F5] text-[#fff] cursor-pointer text-[14px] rounded-lg focus:outline-none focus:ring-2"
+                                    onClick={handleClick3}
                                   >
                                     {data?.payload?.tech_lang_keys["13"]}
                                   </button>
 
-                                  {visibleSteps.step3 && (
+                                  {visibleStep3 && (
                                     <div
                                       className="w-full res_step block"
-                                      ref={containerRefs.step3}
+                                      ref={containerRef3}
                                       dangerouslySetInnerHTML={{
                                         __html: result?.tech_stepsx,
                                       }}
@@ -637,51 +771,53 @@ const TangentPlaneCalculator = () => {
                                   )}
                                 </div>
 
-                                <p>
-                                  {data?.payload?.tech_lang_keys["7"]} w.r.t
-                                  (y): f'(y)
-                                </p>
-                                <BlockMath math={diffb} />
+                                <div className="method2-results">
+                                  <p>
+                                    {data?.payload?.tech_lang_keys["7"]} w.r.t
+                                    (y): f'(y)
+                                  </p>
+                                  <BlockMath math={diffb} />
+                                </div>
 
                                 <div className="w-full my-3">
                                   <button
                                     type="button"
-                                    className="calculate cursor-pointer repeat px-6 py-3 font-semibold text-[#ffffff] bg-[#2845F5] text-[14px] rounded-lg focus:outline-none focus:ring-2"
-                                    onClick={() => handleStepToggle("step4")}
+                                    className="calculate repeat px-6 py-3 font-semibold bg-[#2845F5] text-[#fff] cursor-pointer text-[14px] rounded-lg focus:outline-none focus:ring-2"
+                                    onClick={handleClick4}
                                   >
                                     {data?.payload?.tech_lang_keys["13"]}
                                   </button>
 
-                                  {visibleSteps.step4 && (
+                                  {visibleStep4 && (
                                     <div
                                       className="w-full res_step block"
-                                      ref={containerRefs.step4}
+                                      ref={containerRef4}
                                       dangerouslySetInnerHTML={{
                                         __html: result?.tech_stepsy,
                                       }}
                                     />
                                   )}
                                 </div>
-
-                                <p>
-                                  {data?.payload?.tech_lang_keys["7"]} w.r.t
-                                  (z): f'(z)
-                                </p>
-                                <BlockMath math={diffc} />
-
+                                <div className="method2-results">
+                                  <p>
+                                    {data?.payload?.tech_lang_keys["7"]} w.r.t
+                                    (z): f'(z)
+                                  </p>
+                                  <BlockMath math={diffc} />
+                                </div>
                                 <div className="w-full my-3">
                                   <button
                                     type="button"
-                                    className="calculate cursor-pointer repeat px-6 py-3 font-semibold text-[#ffffff] bg-[#2845F5] text-[14px] rounded-lg focus:outline-none focus:ring-2"
-                                    onClick={() => handleStepToggle("step5")}
+                                    className="calculate repeat px-6 py-3 font-semibold bg-[#2845F5] text-[#fff] cursor-pointer text-[14px] rounded-lg focus:outline-none focus:ring-2"
+                                    onClick={handleClick5}
                                   >
                                     {data?.payload?.tech_lang_keys["13"]}
                                   </button>
 
-                                  {visibleSteps.step5 && (
+                                  {visibleStep5 && (
                                     <div
                                       className="w-full res_step block"
-                                      ref={containerRefs.step5}
+                                      ref={containerRef5}
                                       dangerouslySetInnerHTML={{
                                         __html: result?.tech_stepsz,
                                       }}
@@ -689,53 +825,61 @@ const TangentPlaneCalculator = () => {
                                   )}
                                 </div>
 
-                                <p>{data?.payload?.tech_lang_keys["8"]} (a):</p>
-                                <BlockMath math={`f_x = ${diffa}`} />
-                                <BlockMath
-                                  math={`f_x(${x}, ${y}, ${z}) = ${ss1}`}
-                                />
-                                <BlockMath
-                                  math={`f_x(${x}, ${y}, ${z}) = ${a}`}
-                                />
+                                <div className="w-full my-3 method2-results">
+                                  <p>
+                                    {data?.payload?.tech_lang_keys["8"]} (a):
+                                  </p>
+                                  <BlockMath math={`f_x = ${diffa}`} />
+                                  <BlockMath
+                                    math={`f_x(${x}, ${y}, ${z}) = ${ss1}`}
+                                  />
+                                  <BlockMath
+                                    math={`f_x(${x}, ${y}, ${z}) = ${a}`}
+                                  />
 
-                                <p>{data?.payload?.tech_lang_keys["8"]} (b):</p>
-                                <BlockMath math={`f_y = ${diffb}`} />
-                                <BlockMath
-                                  math={`f_y(${x}, ${y}, ${z}) = ${ss2}`}
-                                />
-                                <BlockMath
-                                  math={`f_y(${x}, ${y}, ${z}) = ${b}`}
-                                />
+                                  <p>
+                                    {data?.payload?.tech_lang_keys["8"]} (b):
+                                  </p>
+                                  <BlockMath math={`f_y = ${diffb}`} />
+                                  <BlockMath
+                                    math={`f_y(${x}, ${y}, ${z}) = ${ss2}`}
+                                  />
+                                  <BlockMath
+                                    math={`f_y(${x}, ${y}, ${z}) = ${b}`}
+                                  />
 
-                                <p>{data?.payload?.tech_lang_keys["8"]} (c):</p>
-                                <BlockMath math={`f_z = ${diffc}`} />
-                                <BlockMath
-                                  math={`f_z(${x}, ${y}, ${z}) = ${ss3}`}
-                                />
-                                <BlockMath
-                                  math={`f_z(${x}, ${y}, ${z}) = ${c}`}
-                                />
+                                  <p>
+                                    {data?.payload?.tech_lang_keys["8"]} (c):
+                                  </p>
+                                  <BlockMath math={`f_z = ${diffc}`} />
+                                  <BlockMath
+                                    math={`f_z(${x}, ${y}, ${z}) = ${ss3}`}
+                                  />
+                                  <BlockMath
+                                    math={`f_z(${x}, ${y}, ${z}) = ${c}`}
+                                  />
 
-                                <p>
-                                  {data?.payload?.tech_lang_keys["9"]},{" "}
-                                  {data?.payload?.tech_lang_keys["8"]}{" "}
-                                  {data?.payload?.tech_lang_keys["4"]}:
-                                </p>
-                                <BlockMath
-                                  math={`x_0 = ${x}, \\quad y_0 = ${y}, \\quad z_0 = ${z}`}
-                                />
-                                <BlockMath
-                                  math={`a(x - x_0) + b(y - y_0) + c(z - z_0) = 0`}
-                                />
-                                <BlockMath
-                                  math={`(${a})(x - (${x})) + (${b})(y - (${y})) + (${c})(z - (${z})) = 0`}
-                                />
-                                <BlockMath math={`${t} = 0`} />
+                                  <p>
+                                    {data?.payload?.tech_lang_keys["9"]},{" "}
+                                    {data?.payload?.tech_lang_keys["8"]}{" "}
+                                    {data?.payload?.tech_lang_keys["4"]}:
+                                  </p>
+                                  <BlockMath
+                                    math={`x_0 = ${x}, \\quad y_0 = ${y}, \\quad z_0 = ${z}`}
+                                  />
+                                  <BlockMath
+                                    math={`a(x - x_0) + b(y - y_0) + c(z - z_0) = 0`}
+                                  />
+                                  <BlockMath
+                                    math={`(${a})(x - (${x})) + (${b})(y - (${y})) + (${c})(z - (${z})) = 0`}
+                                  />
+                                  <BlockMath math={`${t} = 0`} />
 
-                                <p>{data?.payload?.tech_lang_keys["12"]}:</p>
-                                <BlockMath
-                                  math={`z = \\textcolor{orange}{${ans}}`}
-                                />
+                                  <p>{data?.payload?.tech_lang_keys["12"]}:</p>
+                                  <BlockMath
+                                    math={`z = \\textcolor{orange}{${ans}}`}
+                                  />
+                                </div>
                               </div>
                             </>
                           )}

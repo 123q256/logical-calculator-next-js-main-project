@@ -6,9 +6,10 @@ import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useFactoringCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useFactoringCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -85,11 +86,11 @@ const FactoringCalculator = () => {
         tech_num1: formData.tech_num1,
         tech_num2: formData.tech_num2,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -266,7 +267,6 @@ const FactoringCalculator = () => {
                 </div>
               </div>
             </div>
-
             <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
               {formData.tech_type == "factoring" && (
                 <>
@@ -349,18 +349,18 @@ const FactoringCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -372,14 +372,11 @@ const FactoringCalculator = () => {
                             {result?.tech_eq_degree == "2" &&
                             result?.tech_c != "0" ? (
                               <>
-                                <div className="col-lg-6 mt-2 overflow-auto">
-                                  <table className="w-100 text-[18px]">
+                                <div className="col-lg-6 mt-2">
+                                  <table className="w-full text-[16px] md:text-[18px]">
                                     <tbody>
                                       <tr>
-                                        <td
-                                          className="py-2 border-b"
-                                          width="40%"
-                                        >
+                                        <td className="py-2 border-b">
                                           <strong>
                                             {
                                               data?.payload?.tech_lang_keys[
@@ -396,21 +393,21 @@ const FactoringCalculator = () => {
                                   </table>
                                 </div>
 
-                                <div className="w-full text-[16px] overflow-auto">
+                                <div className="w-full text-[16px] method2-results">
                                   {!result?.tech_pair1 &&
                                     !result?.tech_pair2 && (
-                                      <div className="mt-3">
+                                      <p className="mt-3">
                                         This trinomial cannot be factorized into
                                         linear binomials with integer
                                         coefficients.
-                                      </div>
+                                      </p>
                                     )}
 
-                                  <div className="mt-3">
+                                  <p className="mt-3">
                                     <strong>
                                       {data?.payload?.tech_lang_keys["17"]}
                                     </strong>
-                                  </div>
+                                  </p>
 
                                   {result?.tech_pair1 && result?.tech_pair2 && (
                                     <div className="mt-3">
@@ -420,23 +417,23 @@ const FactoringCalculator = () => {
                                     </div>
                                   )}
 
-                                  <div className="mt-3">
+                                  <p className="mt-3">
                                     {data?.payload?.tech_lang_keys[18]}:
-                                  </div>
-                                  <div className="mt-3">
+                                  </p>
+                                  <p className="mt-3">
                                     {data?.payload?.tech_lang_keys[19]} a ={" "}
                                     {result?.tech_a}, b = {result?.tech_b}, c ={" "}
                                     {result?.tech_c}
-                                  </div>
+                                  </p>
 
-                                  <div className="mt-3">
+                                  <p className="mt-3">
                                     {data?.payload?.tech_lang_keys[20]}
-                                  </div>
-                                  <div className="mt-3">
+                                  </p>
+                                  <p className="mt-3">
                                     {data?.payload?.tech_lang_keys[21]}.
-                                  </div>
+                                  </p>
 
-                                  <div className="mt-3">
+                                  <p className="mt-3">
                                     {data?.payload?.tech_lang_keys[22]} |ac| = |
                                     {result?.tech_a} *{" "}
                                     {result?.tech_c < 0
@@ -447,30 +444,30 @@ const FactoringCalculator = () => {
                                     {divisors.length}{" "}
                                     {data?.payload?.tech_lang_keys[24]} {ac}:{" "}
                                     {divisors.join(", ")}
-                                  </div>
+                                  </p>
 
-                                  <div className="mt-3">
+                                  <p className="mt-3">
                                     {data?.payload?.tech_lang_keys[25]}
-                                  </div>
-                                  <div className="mt-3">
+                                  </p>
+                                  <p className="mt-3">
                                     {data?.payload?.tech_lang_keys[26]} {ac}
-                                  </div>
+                                  </p>
 
                                   {step2Array.map((val, i) => (
-                                    <div className="mt-3" key={i}>
+                                    <p className="mt-3" key={i}>
                                       ±{val} * ±{step2Second[i]} = {step2Ans[i]}
-                                    </div>
+                                    </p>
                                   ))}
 
-                                  <div className="mt-3">
+                                  <p className="mt-3">
                                     {data?.payload?.tech_lang_keys[27]}
-                                  </div>
-                                  <div className="mt-3">
+                                  </p>
+                                  <p className="mt-3">
                                     {data?.payload?.tech_lang_keys[28]} *{" "}
                                     {step2Ans.length} = {step2Ans.length * 2}{" "}
                                     {data?.payload?.tech_lang_keys[29]} b ={" "}
                                     {result?.tech_b}
-                                  </div>
+                                  </p>
 
                                   {step3ArrayFirst.map((val, i) => {
                                     const second = step3ArraySecond[i];
@@ -485,18 +482,18 @@ const FactoringCalculator = () => {
                                         ? `${val}${second} = ${step3Ans[i]}`
                                         : `${val} + ${second} = ${step3Ans[i]}`;
                                     return (
-                                      <div className="mt-3" key={i}>
+                                      <p className="mt-3" key={i}>
                                         {expr}
-                                      </div>
+                                      </p>
                                     );
                                   })}
 
                                   {result?.tech_pair1 && result?.tech_pair2 ? (
                                     <>
-                                      <div className="mt-3">
+                                      <p className="mt-3">
                                         {data?.payload?.tech_lang_keys[30]}
-                                      </div>
-                                      <div className="mt-3">
+                                      </p>
+                                      <p className="mt-3">
                                         {result.tech_c < 0
                                           ? result.tech_pair2 < 0
                                             ? `${
@@ -524,14 +521,14 @@ const FactoringCalculator = () => {
                                               result.tech_pair1 +
                                               result.tech_pair2
                                             }`}
-                                      </div>
+                                      </p>
 
-                                      <div className="mt-3">
+                                      <p className="mt-3">
                                         {data?.payload?.tech_lang_keys[31]}
-                                      </div>
-                                      <div className="mt-3">
+                                      </p>
+                                      <p className="mt-3">
                                         {data?.payload?.tech_lang_keys[32]}
-                                      </div>
+                                      </p>
 
                                       <div className="mt-3">
                                         <BlockMath
@@ -541,115 +538,123 @@ const FactoringCalculator = () => {
                                                 ? `${
                                                     result.tech_pair1 -
                                                     result.tech_pair2
-                                                  }${result.variable_ans} = ${
-                                                    result.tech_pair1
                                                   }${
-                                                    result.variable_ans
+                                                    result.tech_variable_ans
+                                                  } = ${result.tech_pair1}${
+                                                    result.tech_variable_ans
                                                   } + ${-result.tech_pair2}${
-                                                    result.variable_ans
+                                                    result.tech_variable_ans
                                                   }`
                                                 : `${
                                                     result.tech_pair1 -
                                                     result.tech_pair2
-                                                  }${result.variable_ans} = ${
-                                                    result.tech_pair1
-                                                  }${result.variable_ans} - ${
-                                                    result.tech_pair2
-                                                  }${result.variable_ans}`
+                                                  }${
+                                                    result.tech_variable_ans
+                                                  } = ${result.tech_pair1}${
+                                                    result.tech_variable_ans
+                                                  } - ${result.tech_pair2}${
+                                                    result.tech_variable_ans
+                                                  }`
                                               : result.tech_pair2 < 0
                                               ? `${
                                                   result.tech_pair1 +
                                                   result.tech_pair2
-                                                }${result.variable_ans} = ${
-                                                  result.tech_pair1
-                                                }${result.variable_ans}${
-                                                  result.tech_pair2
-                                                }${result.variable_ans}`
+                                                }${
+                                                  result.tech_variable_ans
+                                                } = ${result.tech_pair1}${
+                                                  result.tech_variable_ans
+                                                }${result.tech_pair2}${
+                                                  result.tech_variable_ans
+                                                }`
                                               : `${
                                                   result.tech_pair1 +
                                                   result.tech_pair2
-                                                }${result.variable_ans} = ${
-                                                  result.tech_pair1
-                                                }${result.variable_ans} + ${
-                                                  result.tech_pair2
-                                                }${result.variable_ans}`
+                                                }${
+                                                  result.tech_variable_ans
+                                                } = ${result.tech_pair1}${
+                                                  result.tech_variable_ans
+                                                } + ${result.tech_pair2}${
+                                                  result.tech_variable_ans
+                                                }`
                                           }
                                         />
                                       </div>
 
-                                      <div className="mt-3">
+                                      <p className="mt-3">
                                         {data?.payload?.tech_lang_keys[33]}
-                                      </div>
+                                      </p>
                                       <div className="mt-3">
                                         <BlockMath
                                           math={result.tech_eq_enter}
                                         />
                                       </div>
-                                      <div className="mt-3">
+                                      <p className="mt-3">
                                         {data?.payload?.tech_lang_keys[34]}
-                                      </div>
+                                      </p>
                                       <div className="mt-3">
                                         <BlockMath
-                                          math={`${result.variable_ans}^2 + ${
+                                          math={`${
+                                            result.tech_variable_ans
+                                          }^2 + ${
                                             result.tech_pair2 < 0
                                               ? `${result.tech_pair1}${
-                                                  result.variable_ans
+                                                  result.tech_variable_ans
                                                 } + ${-result.tech_pair2}${
-                                                  result.variable_ans
+                                                  result.tech_variable_ans
                                                 }`
-                                              : `${result.tech_pair1}${result.variable_ans} + ${result.tech_pair2}${result.variable_ans}`
+                                              : `${result.tech_pair1}${result.tech_variable_ans} + ${result.tech_pair2}${result.tech_variable_ans}`
                                           } + ${result.tech_c}`}
                                         />
                                       </div>
-                                      <div className="mt-3">
+                                      <p className="mt-3">
                                         {data?.payload?.tech_lang_keys[35]}
-                                      </div>
-                                      <div className="mt-3">
+                                      </p>
+                                      <p className="mt-3">
                                         {data?.payload?.tech_lang_keys[36]}:
-                                      </div>
+                                      </p>
                                       <div className="mt-3">
                                         <BlockMath math={result.tech_factors} />
                                       </div>
                                     </>
                                   ) : (
                                     <>
-                                      <div className="mt-3">
+                                      <p className="mt-3">
                                         {data?.payload?.tech_lang_keys[37]}{" "}
                                         {result?.tech_b}
-                                      </div>
-                                      <div className="mt-3">
+                                      </p>
+                                      <p className="mt-3">
                                         {data?.payload?.tech_lang_keys[38]}
-                                      </div>
-                                      <div className="mt-3">
+                                      </p>
+                                      <p className="mt-3">
                                         {data?.payload?.tech_lang_keys[39]}
-                                      </div>
-                                      <div className="mt-3">
+                                      </p>
+                                      <p className="mt-3">
                                         {data?.payload?.tech_lang_keys[40]}
-                                      </div>
+                                      </p>
                                       <div className="mt-3">
                                         <BlockMath
                                           math={`b^2 - 4ac = ${result?.tech_square}`}
                                         />
                                       </div>
-                                      <div className="mt-3">
+                                      <p className="mt-3">
                                         {data?.payload?.tech_lang_keys[41]}{" "}
                                         {result?.tech_square < 0
                                           ? data?.payload?.tech_lang_keys[42]
                                           : data?.payload?.tech_lang_keys[43]}
                                         , {data?.payload?.tech_lang_keys[44]}.
-                                      </div>
+                                      </p>
                                     </>
                                   )}
                                 </div>
                               </>
                             ) : (
-                              <div className="w-full text-center text-[20px]">
+                              <div className="w-full text-center text-[20px] method2-results">
                                 <p>{data?.payload?.tech_lang_keys[16]}</p>
-                                <p className="my-3">
+                                <div className="my-3">
                                   <strong className="bg-white px-3 py-2 font-s-32 radius-10 text-blue">
                                     <BlockMath math={result?.tech_factors} />
                                   </strong>
-                                </p>
+                                </div>
                               </div>
                             )}
                           </>
@@ -657,8 +662,8 @@ const FactoringCalculator = () => {
                           <>
                             {!isNaN(Number(formData?.tech_num1)) && (
                               <>
-                                <div className="w-full text-[16px]">
-                                  <p className="mt-3 text-[18px] font-bold">
+                                <div className="w-full text-[16px] method2-results">
+                                  <p className="mt-3 text-[16px] md:text-[18px] font-bold">
                                     {data?.payload?.tech_lang_keys["3"]}{" "}
                                     <span className="total_num1">
                                       {factors.length}
@@ -682,45 +687,45 @@ const FactoringCalculator = () => {
 
                                   {num > 0 && (
                                     <>
-                                      <div className="mt-3">
+                                      <p className="mt-3">
                                         {data?.payload?.tech_lang_keys["5"]}{" "}
                                         {data?.payload?.tech_lang_keys["4"]}{" "}
                                         {num}
-                                      </div>
-                                      <div className="mt-3">
+                                      </p>
+                                      <p className="mt-3">
                                         {result?.tech_Factors1}
-                                      </div>
-                                      <div className="mt-3">
+                                      </p>
+                                      <p className="mt-3">
                                         {data?.payload?.tech_lang_keys["6"]}{" "}
                                         {data?.payload?.tech_lang_keys["4"]}{" "}
                                         {num}
-                                      </div>
-                                      <div className="mt-3">
+                                      </p>
+                                      <p className="mt-3">
                                         {renderPrimeFactors()}
-                                      </div>
+                                      </p>
                                     </>
                                   )}
 
-                                  <div className="mt-3">
+                                  <p className="mt-3">
                                     {data?.payload?.tech_lang_keys["7"]} {num}:
-                                  </div>
+                                  </p>
 
-                                  <div className="mt-3">
+                                  <p className="mt-3">
                                     {pairs.map(([a, b], i) => (
                                       <span key={i}>
                                         ({a}, {b}){" "}
                                       </span>
                                     ))}
-                                  </div>
+                                  </p>
                                 </div>
                               </>
                             )}
 
                             {!isNaN(Number(formData?.tech_num2)) && (
                               <>
-                                <div className="w-full text-[16px]">
+                                <div className="w-full text-[16px] method2-results">
                                   {/* Total factors of num2 */}
-                                  <p className="mt-3 text-[18px] font-bold">
+                                  <p className="mt-3 text-[16px] md:text-[18px] font-bold">
                                     {data?.payload?.tech_lang_keys["3"]}{" "}
                                     <span className="total_num2">
                                       {getFactors(num2).length}
@@ -797,7 +802,7 @@ const FactoringCalculator = () => {
                                   {/* Factor Tree Tables */}
                                   <div className="grid grid-cols-12 gap-3">
                                     {num1 > 0 && !isNaN(num1) && (
-                                      <div className="col-span-12 md:col-span-6">
+                                      <div className="col-span-12 md:col-span-6 result_table">
                                         <p className="mt-3 text-center">
                                           {data?.payload?.tech_lang_keys["10"]}{" "}
                                           {num1}
@@ -811,7 +816,7 @@ const FactoringCalculator = () => {
                                       </div>
                                     )}
                                     {num2 > 0 && !isNaN(num2) && (
-                                      <div className="col-span-12 md:col-span-6">
+                                      <div className="col-span-12 md:col-span-6 result_table">
                                         <p className="mt-3 text-center">
                                           {data?.payload?.tech_lang_keys["10"]}{" "}
                                           {num2}

@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useRationalExpressionCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useRationalExpressionCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -107,11 +108,11 @@ const RationalExpressionsCalculator = () => {
         tech_d33: formData.tech_d33,
         tech_expr: formData.tech_expr,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -399,9 +400,9 @@ const RationalExpressionsCalculator = () => {
                                   onChange={handleChange}
                                 />
                               </div>
-                              <div className="col-span-1 flex items-center">
+                              <div className="col-span-1 flex items-center w-[40px]">
                                 <select
-                                  className="input"
+                                  className="input "
                                   aria-label="select"
                                   name="tech_action1"
                                   id="tech_action1"
@@ -542,24 +543,24 @@ const RationalExpressionsCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="row">
+                      <div className="w-full text-[16px] md:text-[18px] overflow-auto method2-results">
                         {formData?.tech_to == 1 ? (
                           <>
                             <div className="col-span-12 text-[16px] ">
@@ -585,8 +586,8 @@ const RationalExpressionsCalculator = () => {
                             {formData?.tech_to_cal == "two" ? (
                               <>
                                 {result?.tech_lcm &&
-                                (result?.tech_action === "+" ||
-                                  result?.tech_action === "-") ? (
+                                (result?.tech_action == "+" ||
+                                  result?.tech_action == "-") ? (
                                   <div className="col-span-12 text-[16px] ">
                                     <BlockMath
                                       math={`= \\dfrac{${result?.tech_top}}{${result?.tech_lcm}}`}
@@ -610,26 +611,26 @@ const RationalExpressionsCalculator = () => {
                                     />
                                   </div>
                                 ) : result?.tech_lcm &&
-                                  (result?.tech_action === "*" ||
-                                    result?.tech_action === "÷") ? (
+                                  (result?.tech_action == "*" ||
+                                    result?.tech_action == "÷") ? (
                                   <div className="col-span-12 text-center my-2">
-                                    <p>
-                                      <strong className="bg-white px-3 py-2 font-s-21 rounded-lg text-blue">
+                                    <div>
+                                      <strong className="bg-white px-3 py-2 font-s-21 rounded-lg text-blue w-full flex justify-center">
                                         <BlockMath
                                           math={`${result?.tech_up} ${result?.tech_action} ${result?.tech_down} = \\dfrac{${result?.tech_top}}{${result?.tech_lcm}}`}
                                         />
                                       </strong>
-                                    </p>
+                                    </div>
                                   </div>
                                 ) : (
                                   <div className="col-span-12 text-center my-2  ">
-                                    <p>
-                                      <strong className="bg-white px-3 py-2 font-s-21 rounded-lg text-blue">
+                                    <div>
+                                      <strong className="bg-white px-3 py-2 font-s-21 rounded-lg text-blue w-full flex justify-center">
                                         <BlockMath
                                           math={`${result?.tech_up} ${result?.tech_action} ${result?.tech_down} = ${result?.tech_ans}`}
                                         />
                                       </strong>
-                                    </p>
+                                    </div>
                                   </div>
                                 )}
                               </>
@@ -639,52 +640,56 @@ const RationalExpressionsCalculator = () => {
                                   {result?.tech_lcm &&
                                   isPlusMinus(result?.tech_action) &&
                                   isPlusMinus(result?.tech_action1) ? (
-                                    <div className="col-span-12 text-[16px]">
-                                      <BlockMath
-                                        math={`= \\dfrac{${result?.tech_top}}{${result?.tech_lcm}}`}
-                                      />
-                                      <p className="mt-2">
-                                        <strong>
-                                          {data?.payload?.tech_lang_keys[11]}
-                                        </strong>
-                                        :
-                                      </p>
-                                      <BlockMath
-                                        math={`${result?.tech_up} ${result?.tech_action} ${result?.tech_down} ${result?.tech_action1} ${result?.tech_thr}`}
-                                      />
-                                      <BlockMath
-                                        math={`= \\dfrac{\\left(${result?.tech_left}\\right) ${result?.tech_action} \\left(${result?.tech_center}\\right) ${result?.tech_action1} \\left(${result?.tech_right}\\right)}{${result?.tech_lcm}}`}
-                                      />
-                                      <BlockMath
-                                        math={`= \\dfrac{${result?.tech_top}}{${result?.tech_lcm}}`}
-                                      />
-                                    </div>
+                                    <>
+                                      <div className="col-span-12 text-[16px]">
+                                        <BlockMath
+                                          math={`= \\dfrac{${result?.tech_top}}{${result?.tech_lcm}}`}
+                                        />
+                                        <p className="mt-2">
+                                          <strong>
+                                            {data?.payload?.tech_lang_keys[11]}
+                                          </strong>
+                                          :
+                                        </p>
+                                        <BlockMath
+                                          math={`${result?.tech_up} ${result?.tech_action} ${result?.tech_down} ${result?.tech_action1} ${result?.tech_thr}`}
+                                        />
+                                        <BlockMath
+                                          math={`= \\dfrac{\\left(${result?.tech_left}\\right) ${result?.tech_action} \\left(${result?.tech_center}\\right) ${result?.tech_action1} \\left(${result?.tech_right}\\right)}{${result?.tech_lcm}}`}
+                                        />
+                                        <BlockMath
+                                          math={`= \\dfrac{${result?.tech_top}}{${result?.tech_lcm}}`}
+                                        />
+                                      </div>
+                                    </>
                                   ) : result?.tech_lcm &&
                                     isPlusMinus(result?.tech_action) &&
                                     isMultiplyDivide(result?.tech_action1) ? (
-                                    <div className="col-span-12 text-[16px]">
-                                      <BlockMath
-                                        math={`= \\dfrac{${result?.tech_top}}{${result?.tech_lcm1}}`}
-                                      />
-                                      <p className="mt-2">
-                                        <strong>
-                                          {data?.payload?.tech_lang_keys[11]}
-                                        </strong>
-                                        :
-                                      </p>
-                                      <BlockMath
-                                        math={`= ${result?.tech_up} ${result?.tech_action} ${result?.tech_down} ${result?.tech_action1} ${result?.tech_thr}`}
-                                      />
-                                      <BlockMath
-                                        math={`= ${result?.tech_up} ${result?.tech_action} \\dfrac{${result?.tech_up1}}{${result?.tech_down1}}`}
-                                      />
-                                      <BlockMath
-                                        math={`= \\dfrac{\\left(${result?.tech_left}\\right) ${result?.tech_action} \\left(${result?.tech_right}\\right)}{${result?.tech_lcm1}}`}
-                                      />
-                                      <BlockMath
-                                        math={`= \\dfrac{${result?.tech_top}}{${result?.tech_lcm1}}`}
-                                      />
-                                    </div>
+                                    <>
+                                      <div className="col-span-12 text-[16px]">
+                                        <BlockMath
+                                          math={`= \\dfrac{${result?.tech_top}}{${result?.tech_lcm}}`}
+                                        />
+                                        <p className="mt-2">
+                                          <strong>
+                                            {data?.payload?.tech_lang_keys[11]}
+                                          </strong>
+                                          :
+                                        </p>
+                                        <BlockMath
+                                          math={`= ${result?.tech_up} ${result?.tech_action} ${result?.tech_down} ${result?.tech_action1} ${result?.tech_thr}`}
+                                        />
+                                        <BlockMath
+                                          math={`= ${result?.tech_up} ${result?.tech_action} \\dfrac{${result?.tech_up1}}{${result?.tech_down1}}`}
+                                        />
+                                        <BlockMath
+                                          math={`= \\dfrac{\\left(${result?.tech_left}\\right) ${result?.tech_action} \\left(${result?.tech_right}\\right)}{${result?.tech_lcm}}`}
+                                        />
+                                        <BlockMath
+                                          math={`= \\dfrac{${result?.tech_top}}{${result?.tech_lcm}}`}
+                                        />
+                                      </div>
+                                    </>
                                   ) : result?.tech_lcm &&
                                     isMultiplyDivide(result?.tech_action) &&
                                     isPlusMinus(result?.tech_action1) ? (
@@ -716,7 +721,7 @@ const RationalExpressionsCalculator = () => {
                                       <BlockMath
                                         math={`= ${result?.tech_up} ${result?.tech_action} ${result?.tech_down} ${result?.tech_action} ${result?.tech_thr}`}
                                       />
-                                      <div className="my-3 bg-sky-100 overflow-auto">
+                                      <div className="my-3 bg-white overflow-auto">
                                         <strong className=" px-3 py-2 text-[16px] rounded-lg text-blue">
                                           <BlockMath
                                             math={`= ${result?.tech_ans}`}
@@ -732,7 +737,7 @@ const RationalExpressionsCalculator = () => {
                         ) : (
                           <>
                             <div className="col-span-12 text-center text-[16px]">
-                              <p className="my-3 bg-sky-100 overflow-auto">
+                              <p className="my-3 bg-white overflow-auto">
                                 <strong className=" px-3 py-4 text-[16px] rounded-lg text-blue">
                                   <BlockMath
                                     math={`${result?.tech_enter} = ${result?.tech_ans}`}

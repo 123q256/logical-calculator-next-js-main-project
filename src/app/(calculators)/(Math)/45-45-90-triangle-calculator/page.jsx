@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useFortyFiveFortyFiveNinetyCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useFortyFiveFortyFiveNinetyCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const FortyFiveFortyFiveNinetyCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -93,11 +93,11 @@ const FortyFiveFortyFiveNinetyCalculator = () => {
         tech_input: formData.tech_input,
         tech_linear_unit: formData.tech_linear_unit,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -178,10 +178,10 @@ const FortyFiveFortyFiveNinetyCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
-              <div className="col-span-7">
-                <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
+          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
+            <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
+              <div className="col-span-12 md:col-span-7">
+                <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
                   <div className="col-span-12">
                     <label htmlFor="tech_sides" className="label">
                       {data?.payload?.tech_lang_keys["2"]}:
@@ -213,7 +213,6 @@ const FortyFiveFortyFiveNinetyCalculator = () => {
                       </select>
                     </div>
                   </div>
-
                   <div className="col-span-12" id="squareUnit">
                     <label htmlFor="tech_input" className="label">
                       {formData?.tech_sides === "perimeter"
@@ -295,7 +294,7 @@ const FortyFiveFortyFiveNinetyCalculator = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-span-5 mt-3 text-center flex justify-center items-center">
+              <div className="col-span-12 md:col-span-5 mt-3 text-center flex justify-center items-center">
                 <img
                   src="/images/new_fourty_five.webp"
                   height="100%"
@@ -322,7 +321,7 @@ const FortyFiveFortyFiveNinetyCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -333,89 +332,87 @@ const FortyFiveFortyFiveNinetyCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="w-full">
-                        <div className="w-full md:w-[60%] lg:w-[60%] overflow-auto mt-2">
-                          <table className="w-full text-[16px]">
-                            <tbody>
-                              <tr>
-                                <td className="py-2 border-b" width="60%">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys[2]}
-                                  </strong>
-                                </td>
-                                <td className="py-2 border-b">
-                                  {Number(result?.tech_a_ans).toFixed(2)} cm
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="py-2 border-b" width="60%">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys[3]}
-                                  </strong>
-                                </td>
-                                <td className="py-2 border-b">
-                                  {Number(result?.tech_b_ans).toFixed(2)} cm
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="py-2 border-b" width="60%">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys[4]}
-                                  </strong>
-                                </td>
-                                <td className="py-2 border-b">
-                                  {Number(result?.tech_c_ans).toFixed(2)} cm
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="py-2 border-b" width="60%">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys[8]}
-                                  </strong>
-                                </td>
-                                <td className="py-2 border-b">
-                                  {Number(result?.tech_height).toFixed(2)} cm
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="py-2 border-b" width="60%">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys[5]}
-                                  </strong>
-                                </td>
-                                <td className="py-2 border-b">
-                                  {Number(result?.tech_area_ans).toFixed(2)} cm²
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="py-2 border-b" width="60%">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys[9]}
-                                  </strong>
-                                </td>
-                                <td className="py-2 border-b">
-                                  {Number(result?.tech_radius).toFixed(2)} cm
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="py-2 border-b" width="60%">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys[10]}
-                                  </strong>
-                                </td>
-                                <td className="py-2 border-b">
-                                  {Number(result?.tech_height).toFixed(2)} cm
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
+                      <div className="w-full md:w-[80%] lg:w-[60%] overflow-auto mt-2">
+                        <table className="w-full text-[16px] md:text-[18px]">
+                          <tbody>
+                            <tr>
+                              <td className="py-2 border-b">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys[2]}
+                                </strong>
+                              </td>
+                              <td className="py-2 border-b">
+                                {Number(result?.tech_a_ans).toFixed(2)} cm
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="py-2 border-b">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys[3]}
+                                </strong>
+                              </td>
+                              <td className="py-2 border-b">
+                                {Number(result?.tech_b_ans).toFixed(2)} cm
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="py-2 border-b">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys[4]}
+                                </strong>
+                              </td>
+                              <td className="py-2 border-b">
+                                {Number(result?.tech_c_ans).toFixed(2)} cm
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="py-2 border-b">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys[8]}
+                                </strong>
+                              </td>
+                              <td className="py-2 border-b">
+                                {Number(result?.tech_height).toFixed(2)} cm
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="py-2 border-b">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys[5]}
+                                </strong>
+                              </td>
+                              <td className="py-2 border-b">
+                                {Number(result?.tech_area_ans).toFixed(2)} cm²
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="py-2 border-b">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys[9]}
+                                </strong>
+                              </td>
+                              <td className="py-2 border-b">
+                                {Number(result?.tech_radius).toFixed(2)} cm
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="py-2 border-b">
+                                <strong>
+                                  {data?.payload?.tech_lang_keys[10]}
+                                </strong>
+                              </td>
+                              <td className="py-2 border-b">
+                                {Number(result?.tech_height).toFixed(2)} cm
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </div>

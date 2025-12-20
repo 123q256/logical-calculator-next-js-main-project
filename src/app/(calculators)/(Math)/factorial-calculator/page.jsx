@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useFactorialCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useFactorialCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -80,11 +81,11 @@ const FactorialCalculator = () => {
         tech_nvalue: formData.tech_nvalue,
         tech_mvalue: formData.tech_mvalue,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -133,14 +134,14 @@ const FactorialCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-l3 space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
-          <div className="lg:w-[40%] md:w-[60%] w-full mx-auto ">
-            <div className="grid grid-cols-1    gap-4">
+          <div className="lg:w-[40%] md:w-[80%] w-full mx-auto ">
+            <div className="grid grid-cols-1  gap-1  md:gap-4">
               <div className="space-y-2">
                 <label htmlFor="tech_to_calculate" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -172,7 +173,7 @@ const FactorialCalculator = () => {
                   </select>
                 </div>
               </div>
-              <p className="w-full mt-3 text-center">
+              <p className="w-full  text-center">
                 <strong id="textChanged">
                   {data?.payload?.tech_lang_keys["7"]}{" "}
                   {formData?.tech_to_calculate === "af"
@@ -246,18 +247,18 @@ const FactorialCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+         <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -268,7 +269,7 @@ const FactorialCalculator = () => {
                         result?.tech_fa != "INF" ? (
                           <>
                             <div className="w-full mt-2">
-                              <table className="w-full  text-[18px]">
+                              <table className="w-full  text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="py-2 border-b">
@@ -303,8 +304,8 @@ const FactorialCalculator = () => {
                         ) : formData?.tech_to_calculate == "af" &&
                           result?.tech_add != "INF" ? (
                           <>
-                            <div className="w-full mt-2 overflow-auto">
-                              <table className="w-full  text-[16px]">
+                            <div className="w-full mt-2">
+                              <table className="w-full  text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="py-2 border-b">
@@ -364,8 +365,8 @@ const FactorialCalculator = () => {
                         ) : formData?.tech_to_calculate == "sf" &&
                           result?.tech_sub != "INF" ? (
                           <>
-                            <div className="w-full mt-2 overflow-auto">
-                              <table className="w-full  text-[16px]">
+                            <div className="w-full mt-2">
+                              <table className="w-full  text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="py-2 border-b">
@@ -424,8 +425,8 @@ const FactorialCalculator = () => {
                         ) : formData?.tech_to_calculate == "mf" &&
                           result?.tech_mul != "INF" ? (
                           <>
-                            <div className="w-full mt-2 overflow-auto">
-                              <table className="w-full  text-[16px]">
+                            <div className="w-full mt-2">
+                              <table className="w-full  text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="py-2 border-b">
@@ -484,8 +485,8 @@ const FactorialCalculator = () => {
                           </>
                         ) : (
                           <>
-                            <div className="w-full mt-2 overflow-auto">
-                              <table className="w-full  text-[16px]">
+                            <div className="w-full mt-2">
+                              <table className="w-full  text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
                                     <td className="py-2 border-b">

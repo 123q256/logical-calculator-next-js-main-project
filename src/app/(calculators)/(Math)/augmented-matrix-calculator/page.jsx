@@ -6,9 +6,10 @@ import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useAugmentedMatrixCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useAugmentedMatrixCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -47,33 +48,34 @@ const AugmentedMatrixCalculator = () => {
   }, [url]);
 
   const [formData, setFormData] = useState({
-    tech_matrix2: "5",
-    tech_matrix22: "5",
-    tech_matrix31_1: "3",
-    tech_matrix31_2: "5",
-    tech_matrix31_3: "1",
-    tech_matrix31_4: "2",
-    tech_matrix31_5: "3",
-    tech_matrix32_1: "7",
-    tech_matrix32_2: "9",
-    tech_matrix32_3: "1",
-    tech_matrix32_4: "1",
-    tech_matrix32_5: "4",
-    tech_matrix33_1: "2",
-    tech_matrix33_2: "4",
-    tech_matrix33_3: "2",
-    tech_matrix33_4: "3",
-    tech_matrix33_5: "6",
-    tech_matrix34_1: "5",
-    tech_matrix34_2: "2",
-    tech_matrix34_3: "3",
-    tech_matrix34_4: "5",
-    tech_matrix34_5: "6",
-    tech_matrix35_1: "7",
-    tech_matrix35_2: "2",
-    tech_matrix35_3: "3",
-    tech_matrix35_4: "5",
-    tech_matrix35_5: "7",
+    matrix2: "5",
+    matrix22: "5",
+    matrix31_1: "3",
+    matrix31_2: "5",
+    matrix31_3: "1",
+    matrix31_4: "2",
+    matrix31_5: "3",
+    matrix32_1: "7",
+    matrix32_2: "9",
+    matrix32_3: "1",
+    matrix32_4: "1",
+    matrix32_5: "4",
+    matrix33_1: "2",
+    matrix33_2: "4",
+    matrix33_3: "2",
+    matrix33_4: "3",
+    matrix33_5: "6",
+    matrix34_1: "5",
+    matrix34_2: "2",
+    matrix34_3: "3",
+    matrix34_4: "5",
+    matrix34_5: "6",
+    matrix35_1: "7",
+    matrix35_2: "2",
+    matrix35_3: "3",
+    matrix35_4: "5",
+    matrix35_5: "7",
+    submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -94,61 +96,61 @@ const AugmentedMatrixCalculator = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const matrix2 = Number(formData.tech_matrix2);
-    const matrix22 = Number(formData.tech_matrix22);
+    const matrix2 = Number(formData.matrix2);
+    const matrix22 = Number(formData.matrix22);
 
     const matrixPayload = {
-      tech_matrix2: matrix2,
-      tech_matrix22: matrix22,
+      matrix2: matrix2,
+      matrix22: matrix22,
     };
 
     for (let i = 1; i <= matrix2; i++) {
       for (let j = 1; j <= matrix22; j++) {
-        const key = `tech_matrix3${i}_${j}`;
+        const key = `matrix3${i}_${j}`;
         matrixPayload[key] = formData[key] || "0";
       }
     }
 
     try {
       const response = await calculateEbitCalculator(matrixPayload).unwrap();
-      setResult(response);
+      setResult(response?.payload);
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err?.data?.error || "Something went wrong");
-      toast.error(err?.data?.error || "Error occurred");
+      setFormError(err?.data?.payload?.error || "Something went wrong");
+      toast.error(err?.data?.payload?.error || "Error occurred");
     }
   };
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_matrix2: "5",
-      tech_matrix22: "5",
-      tech_matrix31_1: "3",
-      tech_matrix31_2: "5",
-      tech_matrix31_3: "1",
-      tech_matrix31_4: "2",
-      tech_matrix31_5: "3",
-      tech_matrix32_1: "7",
-      tech_matrix32_2: "9",
-      tech_matrix32_3: "1",
-      tech_matrix32_4: "1",
-      tech_matrix32_5: "4",
-      tech_matrix33_1: "2",
-      tech_matrix33_2: "4",
-      tech_matrix33_3: "2",
-      tech_matrix33_4: "3",
-      tech_matrix33_5: "6",
-      tech_matrix34_1: "5",
-      tech_matrix34_2: "2",
-      tech_matrix34_3: "3",
-      tech_matrix34_4: "5",
-      tech_matrix34_5: "6",
-      tech_matrix35_1: "7",
-      tech_matrix35_2: "2",
-      tech_matrix35_3: "3",
-      tech_matrix35_4: "5",
-      tech_matrix35_5: "7",
+      matrix2: "5",
+      matrix22: "5",
+      matrix31_1: "3",
+      matrix31_2: "5",
+      matrix31_3: "1",
+      matrix31_4: "2",
+      matrix31_5: "3",
+      matrix32_1: "7",
+      matrix32_2: "9",
+      matrix32_3: "1",
+      matrix32_4: "1",
+      matrix32_5: "4",
+      matrix33_1: "2",
+      matrix33_2: "4",
+      matrix33_3: "2",
+      matrix33_4: "3",
+      matrix33_5: "6",
+      matrix34_1: "5",
+      matrix34_2: "2",
+      matrix34_3: "3",
+      matrix34_4: "5",
+      matrix34_5: "6",
+      matrix35_1: "7",
+      matrix35_2: "2",
+      matrix35_3: "3",
+      matrix35_4: "5",
+      matrix35_5: "7",
     });
     setResult(null);
     setFormError(null);
@@ -203,8 +205,8 @@ const AugmentedMatrixCalculator = () => {
     return [sign + top, den2];
   };
 
-  const matrix2 = Number(formData.tech_matrix2);
-  const matrix22 = Number(formData.tech_matrix22);
+  const matrix2 = Number(formData.matrix2);
+  const matrix22 = Number(formData.matrix22);
 
   const renderMatrix = (matrix, matrix22) => {
     const rows = matrix
@@ -235,7 +237,7 @@ const AugmentedMatrixCalculator = () => {
   const renderInitialMatrix = (formData, matrix2, matrix22) => {
     const rows = Array.from({ length: matrix2 }, (_, i) =>
       Array.from({ length: matrix22 }, (_, j) => {
-        const key = `tech_matrix3${i + 1}_${j + 1}`;
+        const key = `matrix3${i + 1}_${j + 1}`;
         return formData[key] || "0";
       }).join(" & ")
     ).join(" \\\\ ");
@@ -273,11 +275,11 @@ const AugmentedMatrixCalculator = () => {
                 {data?.payload?.tech_lang_keys[1]}
               </p>
 
-              <div className="md:col-span-3 col-span-5">
+              <div className="col-span-5 md:col-span-3">
                 <select
                   className="input"
-                  name="tech_matrix2"
-                  value={formData.tech_matrix2}
+                  name="matrix2"
+                  value={formData.matrix2}
                   onChange={handleChange}
                 >
                   {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
@@ -287,14 +289,12 @@ const AugmentedMatrixCalculator = () => {
                   ))}
                 </select>
               </div>
-
               <p className="col-span-1 text-[16px] font-bold">X</p>
-
-              <div className="md:col-span-3 col-span-5">
+              <div className="col-span-5 md:col-span-3">
                 <select
                   className="input"
-                  name="tech_matrix22"
-                  value={formData.tech_matrix22}
+                  name="matrix22"
+                  value={formData.matrix22}
                   onChange={handleChange}
                 >
                   {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
@@ -305,44 +305,49 @@ const AugmentedMatrixCalculator = () => {
                 </select>
               </div>
             </div>
-            <p className="col-span-12 text-[16px] text-blue px-1 font-bold">
+            <p className="col-span-12 text-[16px] text-blue px-1 mt-3 font-bold">
               {data?.payload?.tech_lang_keys[3]}
             </p>
             <div className="col-span-12 overflow-auto">
-              <table id="matrix2" width={750}>
-                <tbody>
-                  {Array.from({ length: Number(formData.tech_matrix2) }).map(
-                    (_, rowIndex) => (
-                      <tr key={rowIndex}>
-                        {Array.from({
-                          length: Number(formData.tech_matrix22),
-                        }).map((_, colIndex) => {
-                          const name = `tech_matrix3${rowIndex + 1}_${
-                            colIndex + 1
-                          }`;
-                          return (
-                            <td key={colIndex}>
-                              <div className="px-1 pt-2">
-                                <input
-                                  type="number"
-                                  step="any"
-                                  name={name}
-                                  className="input my-2"
-                                  aria-label="input"
-                                  placeholder="00"
-                                  value={formData[name] || ""}
-                                  onChange={handleChange}
-                                  required
-                                />
-                              </div>
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    )
-                  )}
-                </tbody>
-              </table>
+              <div className="flex justify-center">
+                <div className="w-full max-w-[700px] overflow-x-auto ">
+                  <table id="matrix2" className="min-w-max w-full">
+                    <tbody>
+                      {Array.from({ length: Number(formData.matrix2) }).map(
+                        (_, rowIndex) => (
+                          <tr key={rowIndex}>
+                            {Array.from({
+                              length: Number(formData.matrix22),
+                            }).map((_, colIndex) => {
+                              const name = `matrix3${rowIndex + 1}_${
+                                colIndex + 1
+                              }`;
+                              return (
+                                <td key={colIndex}>
+                                  <div className="md:px-1 pt-2">
+                                    <input
+                                      type="number"
+                                      step="any"
+                                      name={name}
+                                      className="text-sm px-2  my-2 input"
+                                      placeholder="00"
+                                      aria-label="input"
+                                      value={formData[name] || ""}
+                                      onChange={handleChange}
+                                      required
+                                      style={{ width: "80px" }}
+                                    />
+                                  </div>
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        )
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -360,7 +365,7 @@ const AugmentedMatrixCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -371,12 +376,12 @@ const AugmentedMatrixCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg flex items-center justify-center">
-                    <div className="w-full overflow-auto text-[16px]">
+                    <div className="w-full overflow-auto text-[16px] method2-results">
                       <p className="mt-2 text-[18px] font-bold">
                         <InlineMath
                           math={`\\text{${

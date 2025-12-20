@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useDistributivePropertyCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useDistributivePropertyCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -75,11 +76,11 @@ const DistributivePropertyCalculator = () => {
       const response = await calculateEbitCalculator({
         tech_EnterEq: formData.tech_EnterEq,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -180,7 +181,7 @@ const DistributivePropertyCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -191,18 +192,18 @@ const DistributivePropertyCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg flex items-center justify-center">
-                    <div className="w-full mt-3 overflow-auto">
+                    <div className="w-full mt-3">
                       <div className="text-center pt-1 pb-2">
                         <p className="bg-gradient-to-r relative inline-block rounded-full p-3">
                           {data?.payload?.tech_lang_keys["4"]}
                         </p>
                         <div className="flex justify-center">
-                          <p className="md:text-[25px] bg-[#2845F5] text-white text-[16px] rounded-lg px-3 py-2  my-3">
+                          <p className="text-[25px] bg-[#2845F5] font-bold text-white rounded-lg px-3 py-2  my-3">
                             {Number(result?.tech_ans).toFixed(3)}
                           </p>
                         </div>

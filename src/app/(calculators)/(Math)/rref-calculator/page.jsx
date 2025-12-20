@@ -4,9 +4,10 @@ import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useRrefCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useRrefCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -45,12 +46,34 @@ const NullSpaceCalculator = () => {
   }, [url]);
 
   const [formData, setFormData] = useState({
-    tech_matrix2: "2",
-    tech_matrix22: "2",
-    tech_matrix31_1: "3",
-    tech_matrix31_2: "5",
-    tech_matrix32_1: "7",
-    tech_matrix32_2: "9",
+    matrix2: "5",
+    matrix22: "5",
+    matrix31_1: "-3",
+    matrix31_2: "5",
+    matrix31_3: "3",
+    matrix31_4: "3",
+    matrix31_5: "4",
+    matrix32_1: "7",
+    matrix32_2: "-9",
+    matrix32_3: "3",
+    matrix32_4: "3",
+    matrix32_5: "4",
+    matrix33_1: "3",
+    matrix33_2: "5",
+    matrix33_3: "55",
+    matrix33_4: "5",
+    matrix33_5: "4",
+    matrix34_1: "6",
+    matrix34_2: "6",
+    matrix34_3: "71",
+    matrix34_4: "1",
+    matrix34_5: "1",
+    matrix35_1: "6",
+    matrix35_2: "7",
+    matrix35_3: "1",
+    matrix35_4: "1",
+    matrix35_5: "1",
+    submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -62,18 +85,11 @@ const NullSpaceCalculator = () => {
     { isLoading: roundToTheNearestLoading, isError, error: calculateLoveError },
   ] = useRrefCalculatorMutation();
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prevData) => ({ ...prevData, [name]: value }));
-  //       setResult(null);
-  //   setFormError(null);
-  // };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     // For matrix dimension inputs
-    if (name === "tech_matrix2" || name === "tech_matrix22") {
+    if (name === "matrix2" || name === "matrix22") {
       let val = Number(value);
       if (val > 10) val = 10;
       if (val < 1) val = 1;
@@ -88,43 +104,65 @@ const NullSpaceCalculator = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const matrix2 = Number(formData.tech_matrix2);
-    const matrix22 = Number(formData.tech_matrix22);
+    const matrix2 = Number(formData.matrix2);
+    const matrix22 = Number(formData.matrix22);
 
     const matrixPayload = {
-      tech_matrix2: matrix2,
-      tech_matrix22: matrix22,
+      matrix2: matrix2,
+      matrix22: matrix22,
     };
 
     for (let i = 1; i <= matrix2; i++) {
       for (let j = 1; j <= matrix22; j++) {
-        const key = `tech_matrix3${i}_${j}`;
+        const key = `matrix3${i}_${j}`;
         matrixPayload[key] = formData[key] || "0";
       }
     }
 
     try {
       const response = await calculateEbitCalculator(matrixPayload).unwrap();
-      setResult(response);
+      setResult(response?.payload);
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err?.data?.error || "Something went wrong");
-      toast.error(err?.data?.error || "Calculation failed");
+      setFormError(err?.data?.payload?.error || "Something went wrong");
+      toast.error(err?.data?.payload?.error || "Calculation failed");
     }
   };
 
-  const matrix2 = Number(formData.tech_matrix2) || 2;
-  const matrix22 = Number(formData.tech_matrix22) || 2;
+  const matrix2 = Number(formData.matrix2) || 2;
+  const matrix22 = Number(formData.matrix22) || 2;
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_matrix2: "2",
-      tech_matrix22: "2",
-      tech_matrix31_1: "3",
-      tech_matrix31_2: "5",
-      tech_matrix32_1: "7",
-      tech_matrix32_2: "9",
+      matrix2: "5",
+      matrix22: "5",
+      matrix31_1: "-3",
+      matrix31_2: "5",
+      matrix31_3: "3",
+      matrix31_4: "3",
+      matrix31_5: "4",
+      matrix32_1: "7",
+      matrix32_2: "-9",
+      matrix32_3: "3",
+      matrix32_4: "3",
+      matrix32_5: "4",
+      matrix33_1: "3",
+      matrix33_2: "5",
+      matrix33_3: "55",
+      matrix33_4: "5",
+      matrix33_5: "4",
+      matrix34_1: "6",
+      matrix34_2: "6",
+      matrix34_3: "71",
+      matrix34_4: "1",
+      matrix34_5: "1",
+      matrix35_1: "6",
+      matrix35_2: "7",
+      matrix35_3: "1",
+      matrix35_4: "1",
+      matrix35_5: "1",
+      submit: "calculate",
     });
     setResult(null);
     setFormError(null);
@@ -176,8 +214,8 @@ const NullSpaceCalculator = () => {
     return `${sign}${whole * den + num}/${den}`;
   };
 
-  const matrix2x = parseInt(formData.tech_matrix2);
-  const matrix22x = parseInt(formData.tech_matrix22);
+  const matrix2x = parseInt(formData.matrix2);
+  const matrix22x = parseInt(formData.matrix22);
 
   const renderMatrix = (matrix) => {
     if (!Array.isArray(matrix) || !Array.isArray(matrix[0])) return "";
@@ -200,7 +238,7 @@ const NullSpaceCalculator = () => {
     for (let i = 1; i <= matrix2x; i++) {
       const row = [];
       for (let j = 1; j <= matrix22x; j++) {
-        const key = `tech_matrix3${i}_${j}`;
+        const key = `matrix3${i}_${j}`;
         const value = parseFloat(formData[key] || "0");
         row.push(convertFraction(+value.toFixed(1))); // round to 1 decimal before convert
       }
@@ -226,7 +264,7 @@ const NullSpaceCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg shadow-md space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
@@ -238,37 +276,36 @@ const NullSpaceCalculator = () => {
               <p className="col-span-12 text-[16px] text-blue px-1">
                 <strong>{data?.payload?.tech_lang_keys[1]}:</strong>
               </p>
-              <div className="col-span-3">
+              <div className="col-span-5 md:col-span-3">
                 <input
                   type="number"
                   step="any"
-                  name="tech_matrix2"
-                  id="tech_matrix2"
+                  name="matrix2"
+                  id="matrix2"
                   className="input my-2"
                   min="1"
                   max="10"
                   placeholder="00"
-                  value={formData.tech_matrix2}
+                  value={formData.matrix2}
                   onChange={handleChange}
                   required
                 />
               </div>
-
               <p className="col-span-1 mt-3 text-[16px] text-center px-1">
                 <strong>X</strong>
               </p>
 
-              <div className="col-span-3">
+              <div className="col-span-5 md:col-span-3">
                 <input
                   type="number"
                   step="any"
-                  name="tech_matrix22"
-                  id="tech_matrix22"
+                  name="matrix22"
+                  id="matrix22"
                   className="input my-2"
                   min="1"
                   max="10"
                   placeholder="00"
-                  value={formData.tech_matrix22}
+                  value={formData.matrix22}
                   onChange={handleChange}
                   required
                 />
@@ -277,36 +314,39 @@ const NullSpaceCalculator = () => {
                 <strong>{data?.payload?.tech_lang_keys[3]}</strong>
               </p>
               <div className="col-span-12 overflow-x-auto">
-                <table className="md:w-full" width={300} id="matrix2">
-                  <tbody>
-                    {Array.from({ length: matrix2 }, (_, rowIdx) => (
-                      <tr key={rowIdx}>
-                        {Array.from({ length: matrix22 }, (_, colIdx) => {
-                          const inputName = `tech_matrix3${rowIdx + 1}_${
-                            colIdx + 1
-                          }`;
-                          return (
-                            <td key={colIdx}>
-                              <div className="px-1 pt-2">
-                                <input
-                                  type="number"
-                                  step="any"
-                                  name={inputName}
-                                  id={inputName}
-                                  className="input my-2"
-                                  placeholder="00"
-                                  value={formData[inputName] || ""}
-                                  onChange={handleChange}
-                                  required
-                                />
-                              </div>
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <div className="w-full max-w-[700px] overflow-x-auto ">
+                  <table className="min-w-max w-full" id="matrix2">
+                    <tbody>
+                      {Array.from({ length: matrix2 }, (_, rowIdx) => (
+                        <tr key={rowIdx}>
+                          {Array.from({ length: matrix22 }, (_, colIdx) => {
+                            const inputName = `matrix3${rowIdx + 1}_${
+                              colIdx + 1
+                            }`;
+                            return (
+                              <td key={colIdx}>
+                                <div className="md:px-1 pt-2">
+                                  <input
+                                    type="number"
+                                    step="any"
+                                    name={inputName}
+                                    id={inputName}
+                                    className="text-sm md:px-2  my-2 input"
+                                    placeholder="00"
+                                    value={formData[inputName] || ""}
+                                    onChange={handleChange}
+                                    required
+                                    style={{ width: "80px" }}
+                                  />
+                                </div>
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -325,7 +365,7 @@ const NullSpaceCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -336,12 +376,12 @@ const NullSpaceCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
-                  <div className="rounded-lg flex items-center justify-center">
-                    <div className="w-full mt-3 text-[16px] overflow-auto">
+                  <div className="rounded-lg flex items-center justify-center overflow-auto">
+                    <div className="w-full mt-3 text-[16px] overflow-auto md:text-[18px] method2-results">
                       <p className="mt-2 text-[18px] font-bold">
                         {data?.payload?.tech_lang_keys[4]}
                       </p>

@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useGcfCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useGcfCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -80,11 +81,11 @@ const GcfCalculator = ({ numbers, langKeys }) => {
         tech_x: formData.tech_x,
         tech_method: formData.tech_method,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -244,7 +245,7 @@ const GcfCalculator = ({ numbers, langKeys }) => {
           )}
 
           <div className="lg:w-[50%] md:w-[70%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
+            <div className="grid grid-cols-12 mt-3   gap-1 md:gap-4 lg:gap-4">
               <div className="col-span-12">
                 <label htmlFor="tech_x" className="label">
                   {data?.payload?.tech_lang_keys["1"]}{" "}
@@ -310,7 +311,7 @@ const GcfCalculator = ({ numbers, langKeys }) => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -321,7 +322,7 @@ const GcfCalculator = ({ numbers, langKeys }) => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -329,13 +330,13 @@ const GcfCalculator = ({ numbers, langKeys }) => {
                     <div className="w-full mt-3">
                       <div className="w-full">
                         {formData?.tech_method === "none" && (
-                          <div className="w-full text-center text-[20px]">
+                          <div className="w-full text-center text-[18px] md:text-[20px]">
                             <p>
                               {data?.payload?.tech_lang_keys["40"]}{" "}
                               {formData?.tech_x}
                             </p>
                             <p className="my-3">
-                              <strong className="bg-[#2845F5] px-3 py-2 md:text-[32px] rounded-lg text-white">
+                              <strong className="bg-[#2845F5] text-[#fff] px-3 py-2 text-[32px] rounded-lg">
                                 {result?.tech_gcf}
                               </strong>
                             </p>
@@ -343,11 +344,11 @@ const GcfCalculator = ({ numbers, langKeys }) => {
                         )}
                         {formData?.tech_method === "lm" && (
                           <>
-                            <div className="col-span-12 md:col-span-6 lg:col-span-6 mt-2 overflow-auto">
-                              <table className="w-full text-[16px]">
+                            <div className="col-span-12 md:col-span-6 lg:col-span-6 mt-2">
+                              <table className="w-full text-[15px] md:text-[18px]">
                                 <tbody>
                                   <tr>
-                                    <td className="py-2 border-b" width="60%">
+                                    <td className="py-2 border-b">
                                       <strong>
                                         {data?.payload?.tech_lang_keys["40"]}{" "}
                                         {formData?.tech_x}
@@ -390,11 +391,11 @@ const GcfCalculator = ({ numbers, langKeys }) => {
                         )}
                         {formData?.tech_method === "Pf" && (
                           <>
-                            <div className="col-span-12 md:col-span-6 lg:col-span-6 mt-2 overflow-auto">
-                              <table className="w-full text-[16px]">
+                            <div className="col-span-12 md:col-span-6 lg:col-span-6 mt-2">
+                              <table className="w-full text-[15px] md:text-[18px]">
                                 <tbody>
                                   <tr>
-                                    <td className="py-2 border-b" width="60%">
+                                    <td className="py-2 border-b">
                                       <strong>
                                         {data?.payload?.tech_lang_keys["40"]}{" "}
                                         {formData?.tech_x}
@@ -444,11 +445,11 @@ const GcfCalculator = ({ numbers, langKeys }) => {
                         )}
                         {formData?.tech_method === "ea" && (
                           <>
-                            <div className="col-span-12 md:col-span-6 lg:col-span-6 mt-2 overflow-auto">
-                              <table className="w-full text-[16px]">
+                            <div className="col-span-12 md:col-span-6 lg:col-span-6 mt-2">
+                              <table className="w-full text-[15px] md:text-[18px]">
                                 <tbody>
                                   <tr>
-                                    <td className="py-2 border-b" width="60%">
+                                    <td className="py-2 border-b">
                                       <strong>
                                         {data?.payload?.tech_lang_keys["40"]}{" "}
                                         {formData?.tech_x}
@@ -511,18 +512,20 @@ const GcfCalculator = ({ numbers, langKeys }) => {
                         {formData?.tech_method === "bs" && (
                           <>
                             <div className="col-span-12 md:col-span-6 lg:col-span-6 mt-2">
-                              <table className="w-full text-[18px]">
-                                <tr>
-                                  <td className="py-2 border-b" width="60%">
-                                    <strong>
-                                      {data?.payload?.tech_lang_keys["40"]}{" "}
-                                      {formData?.tech_x}
-                                    </strong>
-                                  </td>
-                                  <td className="py-2 border-b">
-                                    {result?.tech_gcf}
-                                  </td>
-                                </tr>
+                              <table className="w-full text-[15px] md:text-[18px]">
+                                <tbody>
+                                  <tr>
+                                    <td className="py-2 border-b">
+                                      <strong>
+                                        {data?.payload?.tech_lang_keys["40"]}{" "}
+                                        {formData?.tech_x}
+                                      </strong>
+                                    </td>
+                                    <td className="py-2 border-b">
+                                      {result?.tech_gcf}
+                                    </td>
+                                  </tr>
+                                </tbody>
                               </table>
                             </div>
 

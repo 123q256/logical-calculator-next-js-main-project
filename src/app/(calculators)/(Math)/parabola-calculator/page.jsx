@@ -24,9 +24,10 @@ ChartJS.register(
   Legend
 );
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useParabolaCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useParabolaCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -125,11 +126,11 @@ const ParabolaCalculator = () => {
         tech_y3: formData.tech_y3,
         tech_axis: formData.tech_axis,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -275,7 +276,7 @@ const ParabolaCalculator = () => {
           )}
 
           <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
+            <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
               <div className="col-span-12">
                 <label htmlFor="tech_from" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -308,7 +309,7 @@ const ParabolaCalculator = () => {
                 <>
                   <div className="col-span-12  standardEquation">
                     <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
-                      <p className="col-span-12 text-center text-[14px]">
+                      <p className="col-span-12 text-center my-3 text-[14px]">
                         {formData?.tech_from == "2" ? (
                           <>
                             <strong id="changeText">
@@ -414,7 +415,7 @@ const ParabolaCalculator = () => {
               {formData.tech_from == "3" && (
                 <>
                   <div className="col-span-12  vertexPoints">
-                    <div className="grid grid-cols-12 gap-2 md:gap-4 lg:gap-4">
+                    <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
                       <p className="col-span-12 text-center my-3 text-[14px]">
                         <strong>
                           {data?.payload?.tech_lang_keys["5"]} P(h,k)
@@ -624,7 +625,6 @@ const ParabolaCalculator = () => {
                   </div>
                 </>
               )}
-
               {(formData.tech_from == "3" || formData.tech_from == "7") && (
                 <>
                   <div className="col-span-12  axisInput">
@@ -668,31 +668,31 @@ const ParabolaCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
-              <div className=" w-full h-[30px] bg-gray-200 animate-pulse rounded-[10px] mb-4"></div>
-              <div className="w-[75%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[50%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[25%] h-[20px] bg-gray-200 animate-pulse rounded-[10px]"></div>
+              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
+              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
           </div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="w-full">
+                      <div className="w-full overflow-auto method2-results">
                         {formData?.tech_axis == "y" ? (
                           <>
-                            <div className="w-full md:w-[90%] lg:w-[80%] overflow-auto mt-2">
-                              <table className="w-full text-[16px]">
+                            <div className="w-full md:w-[80%] lg:w-[80%] mt-2">
+                              <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       <strong>
                                         {data?.payload?.tech_lang_keys[4]}
                                       </strong>
@@ -708,7 +708,7 @@ const ParabolaCalculator = () => {
                                     </td>
                                   </tr>
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       <strong>
                                         {data?.payload?.tech_lang_keys[3]}
                                       </strong>
@@ -742,11 +742,11 @@ const ParabolaCalculator = () => {
                                 </tbody>
                               </table>
                             </div>
-                            <div className="w-full md:w-[90%] lg:w-[80%] overflow-auto mt-2">
-                              <table className="w-full text-[16px]">
+                            <div className="w-full md:w-[80%] lg:w-[80%] mt-2">
+                              <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       {data?.payload?.tech_lang_keys["5"]}
                                     </td>
                                     <td className="py-2 border-b">
@@ -765,7 +765,7 @@ const ParabolaCalculator = () => {
                                   </tr>
 
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       {data?.payload?.tech_lang_keys["6"]}
                                     </td>
                                     <td className="py-2 border-b">
@@ -784,7 +784,7 @@ const ParabolaCalculator = () => {
                                   </tr>
 
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       {data?.payload?.tech_lang_keys["7"]}
                                     </td>
                                     <td className="py-2 border-b">
@@ -793,7 +793,7 @@ const ParabolaCalculator = () => {
                                   </tr>
 
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       {data?.payload?.tech_lang_keys["8"]}
                                     </td>
                                     <td className="py-2 border-b">
@@ -808,7 +808,7 @@ const ParabolaCalculator = () => {
                                   </tr>
 
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       {data?.payload?.tech_lang_keys["9"]}
                                     </td>
                                     <td className="py-2 border-b">
@@ -823,7 +823,7 @@ const ParabolaCalculator = () => {
                                   </tr>
 
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       {data?.payload?.tech_lang_keys["10"]}
                                     </td>
                                     <td className="py-2 border-b">
@@ -838,7 +838,7 @@ const ParabolaCalculator = () => {
                                   </tr>
 
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       y-{data?.payload?.tech_lang_keys["11"]}
                                     </td>
                                     <td className="py-2 border-b">
@@ -853,7 +853,7 @@ const ParabolaCalculator = () => {
                                   </tr>
 
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       x-{data?.payload?.tech_lang_keys["11"]}
                                     </td>
                                     <td className="py-2 border-b">
@@ -868,11 +868,11 @@ const ParabolaCalculator = () => {
                           </>
                         ) : (
                           <>
-                            <div className="w-full md:w-[90%] lg:w-[80%] overflow-auto mt-2">
-                              <table className="w-full text-[18px]">
+                            <div className="w-full md:w-[80%] lg:w-[80%] mt-2">
+                              <table className="w-full text-[16px] md:text-[18px]">
                                 <tbody>
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       <strong>
                                         {data?.payload?.tech_lang_keys[4]}
                                       </strong>
@@ -888,7 +888,7 @@ const ParabolaCalculator = () => {
                                     </td>
                                   </tr>
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       <strong>
                                         {data?.payload?.tech_lang_keys[3]}
                                       </strong>
@@ -924,11 +924,11 @@ const ParabolaCalculator = () => {
                                 </tbody>
                               </table>
                             </div>
-                            <div className="w-full md:w-[90%] lg:w-[80%] overflow-auto mt-2">
+                            <div className="w-full md:w-[80%] lg:w-[80%] mt-2">
                               <table className="w-full text-[16px]">
                                 <tbody>
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       {data?.payload?.tech_lang_keys["5"]}
                                     </td>
                                     <td className="py-2 border-b">
@@ -952,7 +952,7 @@ const ParabolaCalculator = () => {
                                     </td>
                                   </tr>
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       {data?.payload?.tech_lang_keys["6"]}
                                     </td>
                                     <td className="py-2 border-b">
@@ -976,7 +976,7 @@ const ParabolaCalculator = () => {
                                     </td>
                                   </tr>
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       {data?.payload?.tech_lang_keys["7"]}
                                     </td>
                                     <td className="py-2 border-b">
@@ -984,7 +984,7 @@ const ParabolaCalculator = () => {
                                     </td>
                                   </tr>
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       {data?.payload?.tech_lang_keys["8"]}
                                     </td>
                                     <td className="py-2 border-b">
@@ -1001,7 +1001,7 @@ const ParabolaCalculator = () => {
                                     </td>
                                   </tr>
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       {data?.payload?.tech_lang_keys["9"]}
                                     </td>
                                     <td className="py-2 border-b">
@@ -1018,7 +1018,7 @@ const ParabolaCalculator = () => {
                                     </td>
                                   </tr>
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       {data?.payload?.tech_lang_keys["10"]}
                                     </td>
                                     <td className="py-2 border-b">
@@ -1035,7 +1035,7 @@ const ParabolaCalculator = () => {
                                     </td>
                                   </tr>
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       x-{data?.payload?.tech_lang_keys["11"]}
                                     </td>
                                     <td className="py-2 border-b">
@@ -1049,7 +1049,7 @@ const ParabolaCalculator = () => {
                                     </td>
                                   </tr>
                                   <tr>
-                                    <td className="py-2 border-b" width="50%">
+                                    <td className="py-2 border-b">
                                       y-{data?.payload?.tech_lang_keys["11"]}
                                     </td>
                                     <td className="py-2 border-b">
@@ -1065,13 +1065,13 @@ const ParabolaCalculator = () => {
                         )}
                         {(result?.tech_from == 3 || result?.tech_from == 7) && (
                           <>
-                            <div className="w-full text-[16px]">
+                            <div className="w-full text-[16px] md:text-[18px]">
                               <p className="mt-2 font-bold">Solution</p>
 
                               {result?.tech_from == 3 &&
                                 result?.tech_axis == "x" && (
                                   <>
-                                    <p className="mt-2">
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["17"]}:{" "}
                                       <BlockMath
                                         math={`P=(${h},${k}), Q=(${val(
@@ -1084,36 +1084,36 @@ const ParabolaCalculator = () => {
                                           result?.tech_fu2
                                         )})`}
                                       />
-                                    </p>
-                                    <p className="mt-2">
+                                    </div>
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["18"]}{" "}
                                       <BlockMath math={`y = a(x-h)^2 + k`} />
-                                    </p>
-                                    <p className="mt-2">
+                                    </div>
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["19"]}{" "}
                                       <BlockMath
                                         math={`y = a(x-${h})^2 + ${k}`}
                                       />
-                                    </p>
-                                    <p className="mt-2">
+                                    </div>
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["20"]}{" "}
                                       <BlockMath
                                         math={`${y11} = a(${x11}-${h})^2 + ${k}`}
                                       />
-                                    </p>
-                                    <p className="mt-2">
+                                    </div>
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["21"]}{" "}
                                       <BlockMath
                                         math={`a = ${result?.tech_a}`}
                                       />
-                                    </p>
+                                    </div>
                                   </>
                                 )}
 
                               {result?.tech_from == 3 &&
                                 result?.tech_axis == "y" && (
                                   <>
-                                    <p className="mt-2">
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["17"]}:{" "}
                                       <BlockMath
                                         math={`P=(${h},${k}), Q=(${val(
@@ -1126,45 +1126,45 @@ const ParabolaCalculator = () => {
                                           result?.tech_h2
                                         )})`}
                                       />
-                                    </p>
-                                    <p className="mt-2">
+                                    </div>
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["18"]}{" "}
                                       <BlockMath math={`x = a(y-k)^2 + h`} />
-                                    </p>
-                                    <p className="mt-2">
+                                    </div>
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["19"]}{" "}
                                       <BlockMath
                                         math={`x = a(y-${h})^2 + ${k}`}
                                       />
-                                    </p>
-                                    <p className="mt-2">
+                                    </div>
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["20"]}{" "}
                                       <BlockMath
                                         math={`${y11} = a(${x11}-${h})^2 + ${k}`}
                                       />
-                                    </p>
-                                    <p className="mt-2">
+                                    </div>
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["21"]}{" "}
                                       <BlockMath
                                         math={`a = ${result?.tech_a}`}
                                       />
-                                    </p>
+                                    </div>
                                   </>
                                 )}
 
                               {result?.tech_from == 7 &&
                                 result?.tech_axis == "x" && (
                                   <>
-                                    <p className="mt-2">
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["17"]}:{" "}
                                       <BlockMath
                                         math={`P_1=(${x1},${y1}), P_2=(${x2},${y2}), P_3=(${x3},${y3})`}
                                       />
-                                    </p>
-                                    <p className="mt-2">
+                                    </div>
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["22"]}{" "}
                                       <BlockMath math={`y = ax^2 + bx + c`} />
-                                    </p>
+                                    </div>
                                     {[x1, x2, x3].map((x, i) => (
                                       <p className="mt-2" key={i}>
                                         {data?.payload?.tech_lang_keys["23"]}{" "}
@@ -1186,28 +1186,28 @@ const ParabolaCalculator = () => {
                                   \\end{cases}`}
                                     />
 
-                                    <p className="mt-2">
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["25"]}{" "}
                                       <BlockMath
                                         math={`a = ${result?.tech_a}, b = ${result?.tech_b}, c = ${result?.tech_c}`}
                                       />
-                                    </p>
+                                    </div>
                                   </>
                                 )}
 
                               {result?.tech_from == 7 &&
                                 result?.tech_axis == "y" && (
                                   <>
-                                    <p className="mt-2">
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["17"]}:{" "}
                                       <BlockMath
                                         math={`P_1=(${x1},${y1}), P_2=(${x2},${y2}), P_3=(${x3},${y3})`}
                                       />
-                                    </p>
-                                    <p className="mt-2">
+                                    </div>
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["22"]}{" "}
                                       <BlockMath math={`x = ay^2 + by + c`} />
-                                    </p>
+                                    </div>
                                     {[y1, y2, y3].map((y, i) => (
                                       <p className="mt-2" key={i}>
                                         {data?.payload?.tech_lang_keys["23"]}{" "}
@@ -1218,18 +1218,18 @@ const ParabolaCalculator = () => {
                                         />
                                       </p>
                                     ))}
-                                    <p className="mt-2">
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["24"]}
                                       <BlockMath
                                         math={`\begin{cases}${a1}a + ${y1}b + c = ${x1} \\ ${a2}a + ${y2}b + c = ${x2} \\ ${a3}a + ${y3}b + c = ${x3}\end{cases}`}
                                       />
-                                    </p>
-                                    <p className="mt-2">
+                                    </div>
+                                    <div className="mt-2">
                                       {data?.payload?.tech_lang_keys["25"]}{" "}
                                       <BlockMath
                                         math={`a = ${result?.tech_a}, b = ${result?.tech_b}, c = ${result?.tech_c}`}
                                       />
-                                    </p>
+                                    </div>
                                   </>
                                 )}
                             </div>

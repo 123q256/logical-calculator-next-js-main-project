@@ -4,9 +4,10 @@ import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { BlockMath } from "react-katex";
 import "katex/dist/katex.min.css";
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useRatioToFractionCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useRatioToFractionCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -83,11 +84,11 @@ const RatioToFractionCalculator = () => {
         tech_first_number: formData.tech_first_number,
         tech_second_number: formData.tech_second_number,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -145,7 +146,7 @@ const RatioToFractionCalculator = () => {
           )}
 
           <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
+            <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
               <div className="col-span-12">
                 <label htmlFor="tech_convert" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -296,7 +297,7 @@ const RatioToFractionCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -307,13 +308,13 @@ const RatioToFractionCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg flex items-center justify-center">
                     <div className="w-full overflow-auto">
-                      <div className="w-full text-[16px] overflow-auto">
+                      <div className="w-full text-[14px] md:text-[16px] overflow-auto">
                         {result.tech_method == "1" && (
                           <>
                             <BlockMath
@@ -375,7 +376,7 @@ const RatioToFractionCalculator = () => {
 
                         {result.tech_method == "2" && (
                           <>
-                            <p className="mt-3 text-[21px]">
+                            <div className="mt-3 text-[21px]">
                               <BlockMath
                                 math={
                                   result.tech_upr2 / result.tech_btm2 == 1
@@ -383,7 +384,7 @@ const RatioToFractionCalculator = () => {
                                     : `\\frac{${result.tech_upr2}}{${result.tech_btm2}}`
                                 }
                               />
-                            </p>
+                            </div>
                             <p className="mt-3 font-bold">
                               {data?.payload?.tech_lang_keys["8"]}:
                             </p>
@@ -419,11 +420,11 @@ const RatioToFractionCalculator = () => {
 
                         {result.tech_method == "3" && (
                           <>
-                            <p className="mt-3 text-[21px]">
+                            <div className="mt-3 text-[21px]">
                               <BlockMath
                                 math={`${result.tech_upr1}:${result.tech_upr2}`}
                               />
-                            </p>
+                            </div>
                             <p className="mt-3 font-bold">
                               {data?.payload?.tech_lang_keys["8"]}:
                             </p>
@@ -458,13 +459,13 @@ const RatioToFractionCalculator = () => {
                         )}
 
                         {result.tech_method == "4" && (
-                          <p className="my-3 text-center">
-                            <strong className="bg-white px-3 py-2 text-[32px] rounded-lg text-blue">
+                          <div className="my-3 text-center flex justify-center">
+                            <strong className="bg-white px-3 py-2 text-[32px] rounded-lg text-blue flex">
                               <BlockMath
                                 math={`\\color{#1670a7}${result.tech_upr1}:\\color{#1670a7}${result.tech_btm1}`}
                               />
                             </strong>
-                          </p>
+                          </div>
                         )}
                       </div>
                     </div>

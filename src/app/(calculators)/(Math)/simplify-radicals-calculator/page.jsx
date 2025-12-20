@@ -549,7 +549,7 @@ const SimplifyRadicalsCalculator = () => {
               {formError}
             </p>
           )}
-          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto">
+          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto">
             <div className="grid grid-cols-12 gap-2 md:gap-4">
               <div className="col-span-12 relative">
                 <label htmlFor="tech_expression_unit" className="label">
@@ -579,7 +579,7 @@ const SimplifyRadicalsCalculator = () => {
                 </select>
               </div>
 
-              <div className="col-span-12 text-center p-0 bg-white rounded-lg text-[#2845F5] text-[25px] font-mono">
+              <div className="col-span-12 text-center p-4 bg-sky rounded-lg bordered font-mono">
                 {formData.tech_expression_unit === "1" && (
                   <BlockMath math={`a\\sqrt[n]{b}`} />
                 )}
@@ -704,17 +704,18 @@ const SimplifyRadicalsCalculator = () => {
         <div className="w-full mx-auto bg-white rounded-lg space-y-6 mb-3">
           <div className="col-span-12">
             {isLoading && (
-              <div className="mt-8 result_calculator rounded-lg p-6">
-                <div className="animate-pulse space-y-4">
-                  <div className="h-6 bg-gray-300 rounded w-3/4"></div>
-                  <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-                  <div className="h-4 bg-gray-300 rounded w-2/3"></div>
+              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+                <div className="animate-pulse">
+                  <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
+                  <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+                  <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+                  <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
                 </div>
               </div>
             )}
 
             {result !== null && !isLoading && (
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 ">
                 <ResultActions lang={data?.payload?.tech_lang_keys} />
                 <div className="rounded-lg flex items-center justify-center">
                   <div className="w-full mt-3">
@@ -723,8 +724,8 @@ const SimplifyRadicalsCalculator = () => {
                         {data?.payload?.tech_lang_keys["7"] || "Result"}
                       </strong>
                     </p>
-                    <div className="w-full overflow-auto">
-                      <div className="all_result text-[16px] md:text-[25px]">
+                    <div className="col-12">
+                      <div className="all_result text-[20px] md:text-[25px]">
                         <RadicalResultDisplay result={result} />
                       </div>
                     </div>

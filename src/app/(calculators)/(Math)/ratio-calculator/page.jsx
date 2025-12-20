@@ -25,9 +25,10 @@ ChartJS.register(
   ArcElement
 );
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useRatioCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useRatioCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -113,11 +114,11 @@ const RatioCalculator = () => {
         tech_f: formData.tech_f,
         tech_i: formData.tech_i,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -352,7 +353,7 @@ const RatioCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[90%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[0%] w-full mx-auto ">
             <div className="grid grid-cols-12  gap-2 md:gap-4 lg:gap-4">
               {formData.tech_ratio_of == "r2" && (
                 <>
@@ -440,26 +441,26 @@ const RatioCalculator = () => {
                 </>
               )}
               <div className="col-span-12 md:col-span-4 lg:col-span-4 text-center flex items-center justify-end">
-                <label className="pe-2" htmlFor="r2">
+                <label className="pe-2 cursor-pointer" htmlFor="r2">
                   <input
                     type="radio"
                     name="tech_ratio_of"
                     value="r2"
                     id="r2"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     onChange={handleChange}
                     checked={formData.tech_ratio_of == "r2"}
                   />
                   <span>A:B </span>
                 </label>
 
-                <label className="pe-2" htmlFor="r3">
+                <label className="pe-2 cursor-pointer" htmlFor="r3">
                   <input
                     type="radio"
                     name="tech_ratio_of"
                     value="r3"
                     id="r3"
-                    className="mr-2 border"
+                    className="mr-2 border cursor-pointer"
                     onChange={handleChange}
                     checked={formData.tech_ratio_of == "r3"}
                   />
@@ -509,7 +510,7 @@ const RatioCalculator = () => {
                     (formData.tech_method1 == "6" &&
                       formData.tech_ratio_of == "r3")) && (
                     <>
-                      <div className="col-span-3 p_set" id="a">
+                      <div className="col-span-2 p_set" id="a">
                         <p className="text-center">
                           <strong>A</strong>
                         </p>
@@ -560,7 +561,7 @@ const RatioCalculator = () => {
                       >
                         <div className="eq_set">:</div>
                       </div>
-                      <div className="col-span-3 p_set" id="b">
+                      <div className="col-span-2 p_set" id="b">
                         <p className="text-center">
                           <strong>B</strong>
                         </p>
@@ -600,7 +601,7 @@ const RatioCalculator = () => {
                       >
                         <div className="eq_set">:</div>
                       </div>
-                      <div className="col-span-3">
+                      <div className="col-span-2">
                         <p className="text-center">
                           <strong>C</strong>
                         </p>
@@ -628,7 +629,7 @@ const RatioCalculator = () => {
                         >
                           <div className="eq_set">=</div>
                         </div>
-                        <div className="col-span-3 p_set" id="c">
+                        <div className="col-span-2 p_set" id="c">
                           <p className="text-center">
                             <strong>C</strong>
                           </p>
@@ -671,7 +672,7 @@ const RatioCalculator = () => {
                         </div>
                       )}
 
-                      <div className="col-span-3 p_set" id="d">
+                      <div className="col-span-2 p_set" id="d">
                         <p className="text-center">
                           <strong>D</strong>
                         </p>
@@ -699,7 +700,7 @@ const RatioCalculator = () => {
                         >
                           <div className="eq_set">:</div>
                         </div>
-                        <div className="col-span-3 p_set" id="e">
+                        <div className="col-span-2 p_set" id="e">
                           <p className="text-center">
                             <strong>E</strong>
                           </p>
@@ -726,7 +727,7 @@ const RatioCalculator = () => {
                         >
                           <div className="eq_set">:</div>
                         </div>
-                        <div className="col-span-3 p_set" id="f">
+                        <div className="col-span-2 p_set" id="f">
                           <p className="text-center">
                             <strong>F</strong>
                           </p>
@@ -810,24 +811,24 @@ const RatioCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg  flex items-center justify-center">
                     <div className="w-full mt-3">
-                      <div className="row my-2 text-[18px] text-center">
+                      <div className="row my-2 text-[16px] md:text-[18px] text-center">
                         {formData?.tech_method == "0" &&
                         formData?.tech_ratio_of == "r2" ? (
                           <>
@@ -837,7 +838,7 @@ const RatioCalculator = () => {
                                   <b>{data?.payload?.tech_lang_keys["15"]}</b>
                                 </p>
                                 <p
-                                  className="text-[25px] text-[#2845F5]"
+                                  className="text-[25px] text-blue-500"
                                   id="res"
                                 >
                                   <b>
@@ -855,7 +856,7 @@ const RatioCalculator = () => {
                                           {data?.payload?.tech_lang_keys["16"]}:
                                         </b>
                                       </p>
-                                      <p className="text-[25px] text-[#2845F5]">
+                                      <p className="text-[25px] text-blue-500">
                                         <b>
                                           {a_val} : {b} = {c} : {d}
                                         </b>
@@ -871,7 +872,7 @@ const RatioCalculator = () => {
                                     <b>{data?.payload?.tech_lang_keys["15"]}</b>
                                   </p>
                                   <p
-                                    className="text-[25px] text-[#2845F5]"
+                                    className="text-[25px] text-blue-500"
                                     id="res"
                                   >
                                     <b>
@@ -895,7 +896,7 @@ const RatioCalculator = () => {
                                             :
                                           </b>
                                         </p>
-                                        <p className="text-[25px] text-[#2845F5]">
+                                        <p className="text-[25px] text-blue-500">
                                           <b>
                                             {a} :{" "}
                                             {b_val ? Math.round(b_val) : ""} ={" "}
@@ -914,7 +915,7 @@ const RatioCalculator = () => {
                                     <b>{data?.payload?.tech_lang_keys["15"]}</b>
                                   </p>
                                   <p
-                                    className="text-[25px] text-[#2845F5]"
+                                    className="text-[25px] text-blue-500"
                                     id="res"
                                   >
                                     <b>
@@ -938,7 +939,7 @@ const RatioCalculator = () => {
                                             :
                                           </b>
                                         </p>
-                                        <p className="text-[25px] text-[#2845F5]">
+                                        <p className="text-[25px] text-blue-500">
                                           <b>
                                             {a} : {b} ={" "}
                                             {c_val ? Math.round(c_val) : ""} :{" "}
@@ -956,7 +957,7 @@ const RatioCalculator = () => {
                                   <b>{data?.payload?.tech_lang_keys["15"]}</b>
                                 </p>
                                 <p
-                                  className="text-[25px] text-[#2845F5]"
+                                  className="text-[25px] text-blue-500"
                                   id="res"
                                 >
                                   <b>
@@ -974,7 +975,7 @@ const RatioCalculator = () => {
                                           {data?.payload?.tech_lang_keys["16"]}:
                                         </b>
                                       </p>
-                                      <p className="text-[25px] text-[#2845F5]">
+                                      <p className="text-[25px] text-blue-500">
                                         <b>
                                           {a} : {b} = {c} :{" "}
                                           {d_val ? Math.round(d_val) : ""}
@@ -992,7 +993,7 @@ const RatioCalculator = () => {
                             <p className="text-[20px]">
                               <b>{data?.payload?.tech_lang_keys["15"]}</b>
                             </p>
-                            <p className="text-[25px] text-[#2845F5]" id="res">
+                            <p className="text-[25px] text-blue-500" id="res">
                               <b>
                                 {a} : {b} ={" "}
                                 <span className="text-accent-4 orange-text">
@@ -1009,7 +1010,7 @@ const RatioCalculator = () => {
                                       {data?.payload?.tech_lang_keys["16"]}:
                                     </b>
                                   </p>
-                                  <p className="text-[25px] text-[#2845F5]">
+                                  <p className="text-[25px] text-blue-500">
                                     <b>
                                       {a} : {b} = {Math.round(a_val1)} :{" "}
                                       {Math.round(b_val1)}
@@ -1025,7 +1026,7 @@ const RatioCalculator = () => {
                             <p className="text-[20px]">
                               <b>{data?.payload?.tech_lang_keys["15"]}</b>
                             </p>
-                            <p className="text-[25px] text-[#2845F5]" id="res">
+                            <p className="text-[25px] text-blue-500" id="res">
                               <b>
                                 {a} : {b} ={" "}
                                 <span className="text-accent-4 orange-text">
@@ -1042,7 +1043,7 @@ const RatioCalculator = () => {
                                       {data?.payload?.tech_lang_keys["16"]}:
                                     </b>
                                   </p>
-                                  <p className="text-[25px] text-[#2845F5]">
+                                  <p className="text-[25px] text-blue-500">
                                     <b>
                                       {a} : {b} = {Math.round(a_val2)} :{" "}
                                       {Math.round(b_val2)}
@@ -1055,7 +1056,7 @@ const RatioCalculator = () => {
                         ) : formData?.tech_method == "3" &&
                           formData?.tech_ratio_of == "r2" ? (
                           <>
-                            <p className="text-[25px] text-[#2845F5]" id="res">
+                            <p className="text-[25px] text-blue-500" id="res">
                               <b>
                                 {a} : {b} ={" "}
                                 <span className="text-accent-4 orange-text">
@@ -1072,7 +1073,7 @@ const RatioCalculator = () => {
                                       {data?.payload?.tech_lang_keys["16"]}:
                                     </b>
                                   </p>
-                                  <p className="text-[25px] text-[#2845F5]">
+                                  <p className="text-[25px] text-blue-500">
                                     <b>
                                       {a} : {b} = {Math.round(a_val3)} :{" "}
                                       {Math.round(b_val3)}
@@ -1125,7 +1126,7 @@ const RatioCalculator = () => {
                               <b>{data?.payload?.tech_lang_keys["15"]}</b>
                             </p>
 
-                            <p className="text-[25px] text-[#2845F5]" id="res">
+                            <p className="text-[25px] text-blue-500" id="res">
                               <b>
                                 {a} : {b} ={" "}
                                 <span className="text-accent-4 orange-text">
@@ -1144,7 +1145,7 @@ const RatioCalculator = () => {
                                       {data?.payload?.tech_lang_keys["16"]}:
                                     </b>
                                   </p>
-                                  <p className="text-[25px] text-[#2845F5]">
+                                  <p className="text-[25px] text-blue-500">
                                     <b>
                                       {a} : {b} = {Math.round(a_val4)} :{" "}
                                       {Math.round(b_val4)}
@@ -1161,7 +1162,7 @@ const RatioCalculator = () => {
                               <b>{data?.payload?.tech_lang_keys["15"]}</b>
                             </p>
 
-                            <p className="text-[25px] text-[#2845F5]" id="res">
+                            <p className="text-[25px] text-blue-500" id="res">
                               <b>
                                 {a} : {b} ={" "}
                                 <span className="text-accent-4 orange-text">
@@ -1180,7 +1181,7 @@ const RatioCalculator = () => {
                                       {data?.payload?.tech_lang_keys["16"]}:
                                     </b>
                                   </p>
-                                  <p className="text-[25px] text-[#2845F5]">
+                                  <p className="text-[25px] text-blue-500">
                                     <b>
                                       {a} : {b} = {Math.round(a_val5)} :{" "}
                                       {Math.round(b_val5)}
@@ -1197,7 +1198,7 @@ const RatioCalculator = () => {
                               <b>{data?.payload?.tech_lang_keys["15"]}</b>
                             </p>
 
-                            <p className="text-[25px] text-[#2845F5]" id="res">
+                            <p className="text-[25px] text-blue-500" id="res">
                               <b>
                                 {a} : {b} : {c1} = {d} :{" "}
                                 <span className="text-accent-4 orange-text">
@@ -1214,7 +1215,7 @@ const RatioCalculator = () => {
                                       {data?.payload?.tech_lang_keys["16"]}:
                                     </b>
                                   </p>
-                                  <p className="text-[25px] text-[#2845F5]">
+                                  <p className="text-[25px] text-blue-500">
                                     <b>
                                       {a} : {b} : {c1} = {d} :{" "}
                                       {Math.round(e_val)} : {Math.round(f_val)}
@@ -1231,7 +1232,7 @@ const RatioCalculator = () => {
                               <b>{data?.payload?.tech_lang_keys["15"]}</b>
                             </p>
 
-                            <p className="text-[25px] text-[#2845F5]" id="res">
+                            <p className="text-[25px] text-blue-500" id="res">
                               <b>
                                 {a} : {b} : {c1} ={" "}
                                 <span className="text-accent-4 orange-text">
@@ -1250,7 +1251,7 @@ const RatioCalculator = () => {
                                     </b>
                                   </p>
                                   <p
-                                    className="text-[25px] text-[#2845F5]"
+                                    className="text-[25px] text-blue-500"
                                     id="res"
                                   >
                                     <b>
@@ -1270,7 +1271,7 @@ const RatioCalculator = () => {
                               <b>{data?.payload?.tech_lang_keys["15"]}</b>
                             </p>
 
-                            <p className="text-[25px] text-[#2845F5]" id="res">
+                            <p className="text-[25px] text-blue-500" id="res">
                               <b>
                                 {a} : {b} : {c1} ={" "}
                                 <span className="text-accent-4 orange-text">
@@ -1289,7 +1290,7 @@ const RatioCalculator = () => {
                                     </b>
                                   </p>
                                   <p
-                                    className="text-[25px] text-[#2845F5]"
+                                    className="text-[25px] text-blue-500"
                                     id="res"
                                   >
                                     <b>
@@ -1309,7 +1310,7 @@ const RatioCalculator = () => {
                               <b>{data?.payload?.tech_lang_keys["15"]}</b>
                             </p>
 
-                            <p className="text-[25px] text-[#2845F5]" id="res">
+                            <p className="text-[25px] text-blue-500" id="res">
                               <b>
                                 {a} : {b} : {c1} ={" "}
                                 <span className="text-accent-4 orange-text">
@@ -1328,7 +1329,7 @@ const RatioCalculator = () => {
                                     </b>
                                   </p>
                                   <p
-                                    className="text-[25px] text-[#2845F5]"
+                                    className="text-[25px] text-blue-500"
                                     id="res"
                                   >
                                     <b>
@@ -1382,7 +1383,7 @@ const RatioCalculator = () => {
                               <b>{data?.payload?.tech_lang_keys["15"]}</b>
                             </p>
 
-                            <p className="text-[25px] text-[#2845F5]" id="res">
+                            <p className="text-[25px] text-blue-500" id="res">
                               <b>
                                 {`${a} : ${b} : ${c1} = `}
                                 <span className="text-accent-4 orange-text">
@@ -1404,7 +1405,7 @@ const RatioCalculator = () => {
                                     </b>
                                   </p>
                                   <p
-                                    className="text-[25px] text-[#2845F5]"
+                                    className="text-[25px] text-blue-500"
                                     id="res"
                                   >
                                     <b>{`${a} : ${b} : ${c1} = ${round(
@@ -1424,7 +1425,7 @@ const RatioCalculator = () => {
                             <p className="text-[20px]">
                               <b>{data?.payload?.tech_lang_keys["15"]}</b>
                             </p>
-                            <p className="text-[25px] text-[#2845F5]" id="res">
+                            <p className="text-[25px] text-blue-500" id="res">
                               <b>
                                 {`${a} : ${b} : ${c1} = `}
                                 <span className="text-accent-4 orange-text">
@@ -1446,7 +1447,7 @@ const RatioCalculator = () => {
                                     </b>
                                   </p>
                                   <p
-                                    className="text-[25px] text-[#2845F5]"
+                                    className="text-[25px] text-blue-500"
                                     id="res"
                                   >
                                     <b>
@@ -1466,7 +1467,7 @@ const RatioCalculator = () => {
                             <p className="text-[20px]">
                               <b>{data?.payload?.tech_lang_keys["15"]}</b>
                             </p>
-                            <p className="text-[25px] text-[#2845F5]" id="res">
+                            <p className="text-[25px] text-blue-500" id="res">
                               <b>
                                 {`${a} : ${b} : ${c1} = `}
                                 <span className="text-accent-4 orange-text">
@@ -1488,7 +1489,7 @@ const RatioCalculator = () => {
                                     </b>
                                   </p>
                                   <p
-                                    className="text-[25px] text-[#2845F5]"
+                                    className="text-[25px] text-blue-500"
                                     id="res"
                                   >
                                     <b>{`${a} : ${b} : ${c1} = ${round(
@@ -1545,7 +1546,7 @@ const RatioCalculator = () => {
                                   <div>
                                     <div
                                       style={{
-                                        backgroundColor: "#FF6F61",
+                                        backgroundColor: "#ff9f00",
                                         width: "150px",
                                         height: "50px",
                                         margin: "0 auto",
@@ -1553,7 +1554,7 @@ const RatioCalculator = () => {
                                     >
                                       <div
                                         style={{
-                                          backgroundColor: "#6B5B95",
+                                          backgroundColor: "#00c2db",
                                           width: `${w}%`,
                                           height: "50px",
                                         }}
@@ -1573,7 +1574,7 @@ const RatioCalculator = () => {
                                   <div>
                                     <div
                                       style={{
-                                        backgroundColor: "#FF6F61",
+                                        backgroundColor: "#ff9f00",
                                         width: "150px",
                                         height: "50px",
                                         margin: "0 auto",
@@ -1581,7 +1582,7 @@ const RatioCalculator = () => {
                                     >
                                       <div
                                         style={{
-                                          backgroundColor: "#6B5B95",
+                                          backgroundColor: "#00c2db",
                                           width: `${w}%`,
                                           height: "50px",
                                         }}
@@ -1600,7 +1601,7 @@ const RatioCalculator = () => {
                                   <div>
                                     <div
                                       style={{
-                                        backgroundColor: "#FF6F61",
+                                        backgroundColor: "#ff9f00",
                                         width: "150px",
                                         height: "50px",
                                         margin: "0 auto",
@@ -1608,7 +1609,7 @@ const RatioCalculator = () => {
                                     >
                                       <div
                                         style={{
-                                          backgroundColor: "#6B5B95",
+                                          backgroundColor: "#00c2db",
                                           width: `${w}%`,
                                           height: "50px",
                                         }}
@@ -1629,7 +1630,7 @@ const RatioCalculator = () => {
                               <div>
                                 <div
                                   style={{
-                                    backgroundColor: "#FF6F61",
+                                    backgroundColor: "#ff9f00",
                                     width: "150px",
                                     height: "50px",
                                     margin: "0 auto",
@@ -1637,7 +1638,7 @@ const RatioCalculator = () => {
                                 >
                                   <div
                                     style={{
-                                      backgroundColor: "#6B5B95",
+                                      backgroundColor: "#00c2db",
                                       width: `${w}%`,
                                       height: "50px",
                                     }}
@@ -1657,7 +1658,7 @@ const RatioCalculator = () => {
                             <div
                               className="padding_0"
                               style={{
-                                backgroundColor: "#6B5B95",
+                                backgroundColor: "#00c2db",
                                 width: "150px",
                                 height: `${h}px`,
                                 maxHeight: "135px",

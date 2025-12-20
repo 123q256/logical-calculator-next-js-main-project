@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useRationalOrIrrationalCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useRationalOrIrrationalCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -80,11 +81,11 @@ const RationalOrIrrationalCalculator = () => {
         tech_num1: formData.tech_num1,
         tech_num2: formData.tech_num2,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -140,8 +141,8 @@ const RationalOrIrrationalCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[50%] md:w-[70%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
+          <div className="lg:w-[50%] md:w-[80%] w-full mx-auto ">
+            <div className="grid grid-cols-12 mt-3   gap-1 md:gap-4 lg:gap-4">
               <div className="col-span-12">
                 <label htmlFor="tech_expression_unit" className="label">
                   {data?.payload?.tech_lang_keys["1"]}:
@@ -164,7 +165,7 @@ const RationalOrIrrationalCalculator = () => {
                   </select>
                 </div>
               </div>
-              <div className="col-span-6">
+              <div className="col-span-12 md:col-span-6">
                 {formData.tech_expression_unit == "2" ? (
                   <>
                     <label htmlFor="tech_num1" className="label">
@@ -192,7 +193,7 @@ const RationalOrIrrationalCalculator = () => {
                   />
                 </div>
               </div>
-              <div className="col-span-6">
+              <div className="col-span-12 md:col-span-6">
                 {formData.tech_expression_unit == "2" ? (
                   <>
                     <label htmlFor="tech_num2" className="label">
@@ -222,6 +223,7 @@ const RationalOrIrrationalCalculator = () => {
               </div>
             </div>
           </div>
+
           <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
@@ -236,18 +238,18 @@ const RationalOrIrrationalCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 rounded-lg result_calculator space-y-6 result">
+           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8  rounded-lg result_calculator space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -258,13 +260,11 @@ const RationalOrIrrationalCalculator = () => {
                           <>
                             <div className="w-full text-center font-s-20">
                               <p>{data?.payload?.tech_lang_keys["6"]}</p>
-                              <div className="flex justify-center">
-                                <p className="md:text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
-                                  <strong className=" px-3 py-2 text-[32px] rounded-lg text-white">
-                                    {result?.tech_final_ans}
-                                  </strong>
-                                </p>
-                              </div>
+                              <p className="my-3">
+                                <strong className="bg-[#2845F5] text-[#fff] px-3 py-2 text-[32px] rounded-lg">
+                                  {result?.tech_final_ans}
+                                </strong>
+                              </p>
                               {result?.tech_exp && (
                                 <>
                                   <p className="my-3">{result?.tech_exp}</p>

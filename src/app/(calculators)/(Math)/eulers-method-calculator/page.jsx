@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useEulersMethodCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useEulersMethodCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -16,7 +17,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const EulersMethodCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -118,11 +118,11 @@ const EulersMethodCalculator = () => {
         tech_con: formData.tech_con,
         tech_find: formData.tech_find,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -226,7 +226,7 @@ const EulersMethodCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
@@ -235,35 +235,38 @@ const EulersMethodCalculator = () => {
 
           <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
             <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
+              <div className="col-span-12 md:col-span-4 lg:col-span-4 flex justify-between">
+                <button
+                  type="button"
+                  className="  flex border rounded-lg p-1  items-center"
+                  id="exampleLoadBtn"
+                  onClick={exampleLoadHandler}
+                  aria-label="Close"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-arrow-up-right size-5 me-1"
+                  >
+                    <path d="M7 7h10v10"></path>
+                    <path d="M7 17 17 7"></path>
+                  </svg>
+                  Load Example
+                </button>
+              </div>
               <div className="col-span-12">
-                <div className="col-span-12 md:col-span-4 lg:col-span-4 md:flex md:justify-between">
-                  <label for="tech_EnterEq" className="label mt-4">
+                <div className="col-span-12 md:col-span-4 lg:col-span-4 flex justify-between">
+                  <label htmlFor="tech_EnterEq" className="label mt-4">
                     {data?.payload?.tech_lang_keys["1"]} y′=f(x,y)` or
                     `y′=f(t,y)=:
                   </label>
-                  <button
-                    type="button"
-                    className="mt-3 flex border rounded-lg p-1  items-center"
-                    id="exampleLoadBtn"
-                    onClick={exampleLoadHandler}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="13"
-                      height="13"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      className="lucide lucide-arrow-up-right size-5 me-1"
-                    >
-                      <path d="M7 7h10v10"></path>
-                      <path d="M7 17 17 7"></path>
-                    </svg>
-                    Load Example
-                  </button>
                 </div>
                 <div className="w-full py-2 relative">
                   <input
@@ -279,7 +282,7 @@ const EulersMethodCalculator = () => {
                   />
                   <img
                     src="/images/keyboard.png"
-                    className="keyboardImg absolute right-2 top-8 cursor-pointer  transform -translate-y-1/2 w-9 h-9"
+                    className="keyboardImg absolute right-2 top-7 transform -translate-y-1/2 w-9 h-9"
                     alt="keyboard"
                     loading="lazy"
                     decoding="async"
@@ -292,7 +295,7 @@ const EulersMethodCalculator = () => {
                 <div className="col-span-12 keyboard grid grid-cols-9 gap-1 mt-2">
                   <button
                     type="button"
-                    className="bg-blue-700 cursor-pointer text-white rounded-sm h-9 px-2 uppercase shadow-md hover:bg-blue-600"
+                    className="bg-green-700 text-white rounded-sm h-9 px-2 uppercase shadow-md hover:bg-green-600"
                     onClick={clearInput}
                   >
                     CLS
@@ -302,7 +305,7 @@ const EulersMethodCalculator = () => {
                       <button
                         key={idx}
                         type="button"
-                        className="keyBtn bg-blue-700 cursor-pointer text-white rounded-sm h-9 px-2 uppercase shadow-md hover:bg-blue-600"
+                        className="keyBtn bg-green-700 text-white rounded-sm h-9 px-2 uppercase shadow-md hover:bg-green-600"
                         onClick={() => handleKeyClick(keyVal)}
                       >
                         {keyVal === "sqrt(" ? "√" : keyVal}
@@ -436,7 +439,7 @@ const EulersMethodCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -447,16 +450,16 @@ const EulersMethodCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="w-full">
-                        <div className="w-full text-center text-[20px]">
+                        <div className="w-full text-center text-[18px] md:text-[20px]">
                           <p className="my-3">
-                            <strong className="bg-[#2845F5] px-3 py-2 text-[23px] rounded-lg text-white">
+                            <strong className="bg-[#2845F5] text-[#fff] px-3 py-2 text-[23px] rounded-lg">
                               <InlineMath
                                 math={`y_{${result?.tech_find}} = ${parseFloat(
                                   result?.tech_ans
@@ -465,8 +468,7 @@ const EulersMethodCalculator = () => {
                             </strong>
                           </p>
                         </div>
-
-                        <div className="w-full text-[16px] rounded-lg px-4 py-2 overflow-auto">
+                        <div className="w-full text-[16px] rounded-lg md:px-4 py-2">
                           <p className="mt-3">
                             {data?.payload?.tech_lang_keys["9"]}{" "}
                             <InlineMath math={`y(${result?.tech_find})`} />{" "}
@@ -563,15 +565,10 @@ const EulersMethodCalculator = () => {
                             </strong>
                           </p>
 
-                          <div className="w-full mt-3 overflow-auto">
-                            <table className="w-full text-center border-collapse border border-black">
-                              <thead
-                                style={{
-                                  backgroundImage:
-                                    "linear-gradient(90deg,rgb(97, 114, 219), #2845F5)",
-                                }}
-                              >
-                                <tr className="text-white">
+                          <div className="w-full mt-3 overflow-auto result_table">
+                            <table className="w-full text-center border-collapse px-2 rounded-lg bordered">
+                              <thead>
+                                <tr className="bordered">
                                   <td className="bordered">
                                     <strong>
                                       {data?.payload?.tech_lang_keys["17"]}
@@ -599,20 +596,12 @@ const EulersMethodCalculator = () => {
                               </thead>
                               <tbody>
                                 {tableRows.map((row, idx) => (
-                                  <tr key={idx}>
+                                  <tr className="bordered" key={idx}>
                                     <td className="bordered p-2">{row.i}</td>
-                                    <td className="bordered p-2">
-                                      {row.xPrev}
-                                    </td>
-                                    <td className="bordered p-2">
-                                      {row.yPrev}
-                                    </td>
-                                    <td className="bordered p-2">
-                                      {row.slope}
-                                    </td>
-                                    <td className="bordered p-2">
-                                      {row.yNext}
-                                    </td>
+                                    <td className="bordered p-2">{row.xPrev}</td>
+                                    <td className="bordered p-2">{row.yPrev}</td>
+                                    <td className="bordered p-2">{row.slope}</td>
+                                    <td className="bordered p-2">{row.yNext}</td>
                                   </tr>
                                 ))}
                               </tbody>

@@ -2,8 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { usePathname } from "next/navigation";
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-import { useSubstitutionMethodCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import { useGetSingleCalculatorDetailsMutation,useSubstitutionMethodCalculatorMutation } from "../../../../redux/services/calculator/calculatorApi";
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
 import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeedback";
@@ -15,16 +14,16 @@ import Button from "../../../../components/Calculator/Button";
 const SubstitutionCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
-
-  let url = "";
-
-  if (parts.length === 1) {
-    // sirf ek part
-    url = parts[0]; // "age-calculator"
-  } else {
-    // do ya zyada parts
-    url = parts[0] + "/" + parts[1]; // "de/age-calculator"
-  }
+  
+    let url = "";
+  
+    if (parts.length === 1) {
+      // sirf ek part
+      url = parts[0];  // "age-calculator"
+    } else {
+      // do ya zyada parts
+      url = parts[0] + "/" + parts[1];  // "de/age-calculator"
+    }
   const [getSingleCalculatorDetails, { data, error, isLoading }] =
     useGetSingleCalculatorDetailsMutation();
   const handleFetchDetails = async () => {
@@ -109,12 +108,12 @@ const SubstitutionCalculator = () => {
         tech_c3_s: formData.tech_c3_s,
         tech_k3_s: formData.tech_k3_s,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
-      toast.success("Successfully Calculated");
-    } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
-    }
+  setResult(response?.payload); // Assuming the response has 'lovePercentage'
+          toast.success("Successfully Calculated");
+        } catch (err) {
+          setFormError(err.data.payload.error);
+          toast.error(err.data.payload.error);
+        }
   };
 
   // Handle reset form
@@ -178,569 +177,498 @@ const SubstitutionCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
-          {formError && (
-            <p className="text-red-500 text-lg font-semibold w-full">
-              {formError}
-            </p>
-          )}
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
+            {formError && (
+              <p className="text-red-500 text-lg font-semibold w-full">
+                {formError}
+              </p>
+            )}
 
-          <div className="lg:w-[80%] md:w-[90%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
-              <div className="md:col-span-8 col-span-12 ">
-                <div className="grid grid-cols-12 gap-2 md:gap-4 lg:gap-4">
-                  <div className="col-span-12 ">
-                    <label htmlFor="tech_operations" className="label">
-                      {data?.payload?.tech_lang_keys["1"]}:
-                    </label>
-                    <div className="mt-2">
-                      <select
-                        className="input"
-                        aria-label="select"
-                        name="tech_operations"
-                        id="tech_operations"
-                        value={formData.tech_operations}
-                        onChange={handleChange}
-                      >
-                        <option value="1">
-                          {data?.payload?.tech_lang_keys["2"]}{" "}
-                        </option>
-                        <option value="2">
-                          {data?.payload?.tech_lang_keys["3"]}{" "}
-                        </option>
-                      </select>
+            <div className="lg:w-[80%] md:w-[80%] w-full mx-auto ">
+              <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
+                <div className="col-span-8 ">
+                    <div className="grid grid-cols-12  gap-2 md:gap-4 lg:gap-4">
+                    <div className="col-span-12 ">
+                       <label htmlFor="tech_operations" className="label">
+                        {data?.payload?.tech_lang_keys["1"]}:
+                      </label>
+                      <div className="mt-2">
+                        <select
+                          className="input"
+                          aria-label="select"
+                          name="tech_operations"
+                          id="tech_operations"
+                          value={formData.tech_operations}
+                          onChange={handleChange}
+                        >
+                          <option value="1">{data?.payload?.tech_lang_keys["2"]} </option>
+                          <option value="2">{data?.payload?.tech_lang_keys["3"]} </option>
+                        </select>
+                      </div>
                     </div>
-                  </div>
-                  {formData.tech_operations == "1" && (
-                    <>
+                    {formData.tech_operations == "1" && (
+                      <>
                       <div className="col-span-12  math_1">
-                        <div className="grid grid-cols-12  gap-2 md:gap-4 lg:gap-4">
-                          <div className="col-span-4">
-                            <label for="a1_f" className="font-s-14 text-blue">
-                              a<sub className="font-s-14 text-blue">1</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_a1_f"
-                                id="tech_a1_f"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_a1_f}
-                                onChange={handleChange}
-                              />
-                            </div>
+                          <div className="grid grid-cols-12  gap-2 md:gap-4 lg:gap-4">
+                              <div className="col-span-4">
+                                  <label htmlFor="a1_f" className="font-s-14 text-blue">a<sub className="font-s-14 text-blue">1</sub></label>
+                                  <div className="w-full py-2">
+                                      <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_a1_f"
+                                          id="tech_a1_f"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_a1_f}
+                                          onChange={handleChange}
+                                        />
+                                  </div>
+                              </div>
+                              <div className="col-span-4">
+                                  <label htmlFor="b1_f" className="font-s-14 text-blue">b<sub className="font-s-14 text-blue">1</sub></label>
+                                  <div className="w-full py-2">
+                                    <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_b1_f"
+                                          id="tech_b1_f"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_b1_f}
+                                          onChange={handleChange}
+                                        />
+                                  </div>
+                              </div>
+                              <div className="col-span-4">
+                                  <label htmlFor="k1_f" className="font-s-14 text-blue">k<sub className="font-s-14 text-blue">1</sub></label>
+                                  <div className="w-full py-2">
+                                      <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_k1_f"
+                                          id="tech_k1_f"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_k1_f}
+                                          onChange={handleChange}
+                                        />
+                                  </div>
+                              </div>
+                              <div className="col-span-4">
+                                  <label htmlFor="a2_f" className="font-s-14 text-blue">a<sub className="font-s-14 text-blue">2</sub></label>
+                                  <div className="w-full py-2">
+                                      <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_a2_f"
+                                          id="tech_a2_f"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_a2_f}
+                                          onChange={handleChange}
+                                        />
+                                  </div>
+                              </div>
+                              <div className="col-span-4">
+                                  <label htmlFor="b2_f" className="font-s-14 text-blue">b<sub className="font-s-14 text-blue">2</sub></label>
+                                  <div className="w-full py-2">
+                                    <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_b2_f"
+                                          id="tech_b2_f"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_b2_f}
+                                          onChange={handleChange}
+                                        />
+                                  </div>
+                              </div>
+                              <div className="col-span-4">
+                                  <label htmlFor="k2_f" className="font-s-14 text-blue">k<sub className="font-s-14 text-blue">2</sub></label>
+                                  <div className="w-full py-2">
+                                      <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_k2_f"
+                                          id="tech_k2_f"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_k2_f}
+                                          onChange={handleChange}
+                                        />
+                                  </div>
+                              </div>
                           </div>
-                          <div className="col-span-4">
-                            <label for="b1_f" className="font-s-14 text-blue">
-                              b<sub className="font-s-14 text-blue">1</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_b1_f"
-                                id="tech_b1_f"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_b1_f}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-4">
-                            <label for="k1_f" className="font-s-14 text-blue">
-                              k<sub className="font-s-14 text-blue">1</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_k1_f"
-                                id="tech_k1_f"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_k1_f}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-4">
-                            <label for="a2_f" className="font-s-14 text-blue">
-                              a<sub className="font-s-14 text-blue">2</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_a2_f"
-                                id="tech_a2_f"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_a2_f}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-4">
-                            <label for="b2_f" className="font-s-14 text-blue">
-                              b<sub className="font-s-14 text-blue">2</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_b2_f"
-                                id="tech_b2_f"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_b2_f}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-4">
-                            <label for="k2_f" className="font-s-14 text-blue">
-                              k<sub className="font-s-14 text-blue">2</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_k2_f"
-                                id="tech_k2_f"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_k2_f}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                        </div>
                       </div>
-                    </>
-                  )}
-                  {formData.tech_operations == "2" && (
-                    <>
+                      
+                      </>
+                    )}
+                       {formData.tech_operations == "2" && (
+                      <>
                       <div className="col-span-12  math_2">
-                        <div className="grid grid-cols-12  gap-2 md:gap-4 lg:gap-4">
-                          <div className="col-span-3">
-                            <label for="a1_s" className="font-s-14 text-blue">
-                              a<sub className="font-s-14 text-blue">1</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_a1_s"
-                                id="tech_a1_s"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_a1_s}
-                                onChange={handleChange}
-                              />
-                            </div>
+                          <div className="grid grid-cols-12  gap-2 md:gap-4 lg:gap-4">
+                              <div className="col-span-3">
+                                  <label htmlFor="a1_s" className="font-s-14 text-blue">a<sub className="font-s-14 text-blue">1</sub></label>
+                                  <div className="w-full py-2">
+                                    <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_a1_s"
+                                          id="tech_a1_s"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_a1_s}
+                                          onChange={handleChange}
+                                        />
+                                  </div>
+                              </div>
+                              <div className="col-span-3">
+                                  <label htmlFor="b1_s" className="font-s-14 text-blue">b<sub className="font-s-14 text-blue">1</sub></label>
+                                  <div className="w-full py-2">
+                                      <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_b1_s"
+                                          id="tech_b1_s"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_b1_s}
+                                          onChange={handleChange}
+                                        />
+                                  </div>
+                              </div>
+                              <div className="col-span-3">
+                                  <label htmlFor="c1_s" className="font-s-14 text-blue">c<sub className="font-s-14 text-blue">1</sub></label>
+                                  <div className="w-full py-2">
+                                    <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_c1_s"
+                                          id="tech_c1_s"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_c1_s}
+                                          onChange={handleChange}
+                                        />
+                                  </div>
+                              </div>
+                              <div className="col-span-3">
+                                  <label htmlFor="k1_s" className="font-s-14 text-blue">k<sub className="font-s-14 text-blue">1</sub></label>
+                                  <div className="w-full py-2">
+                                      <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_k1_s"
+                                          id="tech_k1_s"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_k1_s}
+                                          onChange={handleChange}
+                                        />
+                            
+                                  </div>
+                              </div>
+                              <div className="col-span-3">
+                                  <label htmlFor="a2_s" className="font-s-14 text-blue">a<sub className="font-s-14 text-blue">2</sub></label>
+                                  <div className="w-full py-2">
+                                    <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_a2_s"
+                                          id="tech_a2_s"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_a2_s}
+                                          onChange={handleChange}
+                                        />
+                                
+                                  </div>
+                              </div>
+                              <div className="col-span-3">
+                                  <label htmlFor="b2_s" className="font-s-14 text-blue">b<sub className="font-s-14 text-blue">2</sub></label>
+                                  <div className="w-full py-2">
+                                      <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_b2_s"
+                                          id="tech_b2_s"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_b2_s}
+                                          onChange={handleChange}
+                                        />
+                                  </div>
+                              </div>
+                              <div className="col-span-3">
+                                  <label htmlFor="c2_s" className="font-s-14 text-blue">c<sub className="font-s-14 text-blue">2</sub></label>
+                                  <div className="w-full py-2">
+                                      <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_c2_s"
+                                          id="tech_c2_s"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_c2_s}
+                                          onChange={handleChange}
+                                        />
+                                  </div>
+                              </div>
+                              <div className="col-span-3">
+                                  <label htmlFor="k2_s" className="font-s-14 text-blue">k<sub className="font-s-14 text-blue">2</sub></label>
+                                  <div className="w-full py-2">
+                                      <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_k2_s"
+                                          id="tech_k2_s"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_k2_s}
+                                          onChange={handleChange}
+                                        />
+                                  </div>
+                              </div>
+                              <div className="col-span-3">
+                                  <label htmlFor="a3_s" className="font-s-14 text-blue">a<sub className="font-s-14 text-blue">3</sub></label>
+                                  <div className="w-full py-2">
+                                    <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_a3_s"
+                                          id="tech_a3_s"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_a3_s}
+                                          onChange={handleChange}
+                                        />
+                                  </div>
+                              </div>
+                              <div className="col-span-3">
+                                  <label htmlFor="b3_s" className="font-s-14 text-blue">b<sub className="font-s-14 text-blue">3</sub></label>
+                                  <div className="w-full py-2">
+                                      <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_b3_s"
+                                          id="tech_b3_s"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_b3_s}
+                                          onChange={handleChange}
+                                        />
+                                  </div>
+                              </div>
+                              <div className="col-span-3">
+                                  <label htmlFor="c3_s" className="font-s-14 text-blue">c<sub className="font-s-14 text-blue">3</sub></label>
+                                  <div className="w-full py-2">
+                                      <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_c3_s"
+                                          id="tech_c3_s"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_c3_s}
+                                          onChange={handleChange}
+                                        />
+                                  </div>
+                              </div>
+                              <div className="col-span-3">
+                                  <label htmlFor="k3_s" className="font-s-14 text-blue">k<sub className="font-s-14 text-blue">3</sub></label>
+                                  <div className="w-full py-2">
+                                      <input
+                                          type="number"
+                                          step="any"
+                                          name="tech_k3_s"
+                                          id="tech_k3_s"
+                                          className="input my-2"
+                                          aria-label="input"
+                                          placeholder="00"
+                                          value={formData.tech_k3_s}
+                                          onChange={handleChange}
+                                        />
+                                  </div>
+                              </div>
                           </div>
-                          <div className="col-span-3">
-                            <label for="b1_s" className="font-s-14 text-blue">
-                              b<sub className="font-s-14 text-blue">1</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_b1_s"
-                                id="tech_b1_s"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_b1_s}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-3">
-                            <label for="c1_s" className="font-s-14 text-blue">
-                              c<sub className="font-s-14 text-blue">1</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_c1_s"
-                                id="tech_c1_s"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_c1_s}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-3">
-                            <label for="k1_s" className="font-s-14 text-blue">
-                              k<sub className="font-s-14 text-blue">1</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_k1_s"
-                                id="tech_k1_s"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_k1_s}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-3">
-                            <label for="a2_s" className="font-s-14 text-blue">
-                              a<sub className="font-s-14 text-blue">2</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_a2_s"
-                                id="tech_a2_s"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_a2_s}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-3">
-                            <label for="b2_s" className="font-s-14 text-blue">
-                              b<sub className="font-s-14 text-blue">2</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_b2_s"
-                                id="tech_b2_s"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_b2_s}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-3">
-                            <label for="c2_s" className="font-s-14 text-blue">
-                              c<sub className="font-s-14 text-blue">2</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_c2_s"
-                                id="tech_c2_s"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_c2_s}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-3">
-                            <label for="k2_s" className="font-s-14 text-blue">
-                              k<sub className="font-s-14 text-blue">2</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_k2_s"
-                                id="tech_k2_s"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_k2_s}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-3">
-                            <label for="a3_s" className="font-s-14 text-blue">
-                              a<sub className="font-s-14 text-blue">3</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_a3_s"
-                                id="tech_a3_s"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_a3_s}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-3">
-                            <label for="b3_s" className="font-s-14 text-blue">
-                              b<sub className="font-s-14 text-blue">3</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_b3_s"
-                                id="tech_b3_s"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_b3_s}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-3">
-                            <label for="c3_s" className="font-s-14 text-blue">
-                              c<sub className="font-s-14 text-blue">3</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_c3_s"
-                                id="tech_c3_s"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_c3_s}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-3">
-                            <label for="k3_s" className="font-s-14 text-blue">
-                              k<sub className="font-s-14 text-blue">3</sub>
-                            </label>
-                            <div className="w-full py-2">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_k3_s"
-                                id="tech_k3_s"
-                                className="input my-2"
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_k3_s}
-                                onChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                        </div>
                       </div>
-                    </>
-                  )}
-                </div>
-              </div>
-              <div className="md:col-span-4 col-span-12  text-[20px] flex items-center justify-center">
-                {formData.tech_operations == "1" && (
-                  <>
-                    <div className="col-12  math_1">
-                      <p>
-                        <strong>
-                          a<sub className="font-s-16">1</sub> x + b
-                          <sub className="font-s-16">1</sub>y = k
-                          <sub className="font-s-16">1</sub>
-                        </strong>
-                      </p>
-                      <p className="mt-1">
-                        <strong>
-                          a<sub className="font-s-16">2</sub> x + b
-                          <sub className="font-s-16">2</sub>y = k
-                          <sub className="font-s-16">2</sub>
-                        </strong>
-                      </p>
-                    </div>
-                  </>
-                )}
+                      </>
+                    )}
 
-                {formData.tech_operations == "2" && (
-                  <>
-                    <div className="col-12  math_2">
-                      <p>
-                        <strong>
-                          a<sub className="font-s-16">1</sub> x + b
-                          <sub className="font-s-16">1</sub>y + c
-                          <sub className="font-s-16">1</sub>z = k
-                          <sub className="font-s-16">1</sub>
-                        </strong>
-                      </p>
-                      <p className="mt-1">
-                        <strong>
-                          a<sub className="font-s-16">2</sub> x + b
-                          <sub className="font-s-16">2</sub>y + c
-                          <sub className="font-s-16">2</sub>z = k
-                          <sub className="font-s-16">2</sub>
-                        </strong>
-                      </p>
-                      <p className="mt-1">
-                        <strong>
-                          a<sub className="font-s-16">3</sub> x + b
-                          <sub className="font-s-16">3</sub>y + c
-                          <sub className="font-s-16">3</sub>z = k
-                          <sub className="font-s-16">3</sub>
-                        </strong>
-                      </p>
                     </div>
-                  </>
-                )}
-              </div>
+                </div>
+                <div className="col-span-4  text-[20px] flex items-center">
+                         {formData.tech_operations == "1" && (
+                      <>
+                      <div className="col-12  math_1">
+                          <p>
+                              <strong>
+                                  a<sub className="font-s-16">1</sub> x + b<sub className="font-s-16">1</sub>y = k<sub className="font-s-16">1</sub>
+                              </strong>
+                          </p>
+                          <p className="mt-1">
+                              <strong>
+                                  a<sub className="font-s-16">2</sub> x + b<sub className="font-s-16">2</sub>y = k<sub className="font-s-16">2</sub>
+                              </strong>
+                          </p>
+                      </div>
+                      </>
+                    )}
+
+                       {formData.tech_operations == "2" && (
+                      <>
+                      <div className="col-12  math_2">
+                          <p>
+                              <strong>
+                                  a<sub className="font-s-16">1</sub> x + b<sub className="font-s-16">1</sub>y + c<sub className="font-s-16">1</sub>z = k<sub className="font-s-16">1</sub>
+                              </strong>
+                          </p>
+                          <p className="mt-1">
+                              <strong>
+                                  a<sub className="font-s-16">2</sub> x + b<sub className="font-s-16">2</sub>y + c<sub className="font-s-16">2</sub>z = k<sub className="font-s-16">2</sub>
+                              </strong>
+                          </p>
+                          <p className="mt-1">
+                              <strong>
+                                  a<sub className="font-s-16">3</sub> x + b<sub className="font-s-16">3</sub>y + c<sub className="font-s-16">3</sub>z = k<sub className="font-s-16">3</sub>
+                              </strong>
+                          </p>
+                      </div>
+                      </>
+                    )}
+
+                </div>
+               </div>
             </div>
-          </div>
+           
 
           <div className="mb-6 mt-10 text-center space-x-2">
-            <Button type="submit" isLoading={roundToTheNearestLoading}>
-              {data?.payload?.tech_lang_keys["calculate"]}
-            </Button>
-            {result && (
-              <ResetButton type="button" onClick={handleReset}>
-                {data?.payload?.tech_lang_keys["locale"] === "en"
-                  ? "RESET"
-                  : data?.payload?.tech_lang_keys["reset"] || "RESET"}
-              </ResetButton>
-            )}
+                <Button type="submit" isLoading={roundToTheNearestLoading}>
+                  {data?.payload?.tech_lang_keys["calculate"]}
+                </Button>
+                {result && (
+                  <ResetButton type="button" onClick={handleReset}>
+                    {data?.payload?.tech_lang_keys["locale"] === "en"
+                      ? "RESET"
+                      : data?.payload?.tech_lang_keys["reset"] || "RESET"}
+                  </ResetButton>
+                  )}
+            </div>
           </div>
-        </div>
-        {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          {roundToTheNearestLoading ? (
+           <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
-        ) : (
-          result && (
-            <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
-                <div>
-                  <ResultActions lang={data?.payload?.tech_lang_keys} />
-
-                  <div className="rounded-lg  flex items-center justify-center">
-                    <div className="w-full mt-3">
-                      <div className="w-full">
-                        {formData?.tech_operations === "1" ? (
-                          <>
-                            <div className="w-full md:w-[80%] lg:w-[60%] overflow-auto mt-2">
-                              <table className="w-full text-[16px]">
-                                <tbody>
-                                  <tr>
-                                    <td className="py-2 border-b" width="35%">
-                                      <strong>
-                                        {data?.payload?.tech_lang_keys[4]}
-                                      </strong>
-                                    </td>
-                                    <td className="py-2 border-b">
-                                      <strong>{result?.tech_main_ans}</strong>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                            <div className="w-full text-[16px]">
-                              <p className="mt-2">
-                                <strong>
-                                  {data?.payload?.tech_lang_keys[5]}
-                                </strong>
-                              </p>
-                              <p className="mt-2">
-                                {data?.payload?.tech_lang_keys[6]}:
-                              </p>
-                              <p className="mt-2">{result?.tech_f1_equation}</p>
-                              <p className="mt-2">{result?.tech_f2_equation}</p>
-                              <p className="mt-2">{result?.tech_first}</p>
-                              <p className="mt-2">{result?.tech_second}</p>
-                              <p className="mt-2">{result?.tech_third}</p>
-                              <p className="mt-2">{result?.tech_four}</p>
-                              <p className="mt-2">{result?.tech_five}</p>
-                              <p className="mt-2">{result?.tech_six}</p>
-                              {result?.tech_seven && (
+         </div>
+          ) : (
+            result && (
+              <>
+                <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
+                  <div>
+                    <ResultActions lang={data?.payload?.tech_lang_keys} />
+                 
+                    <div className="rounded-lg  flex items-center justify-center">
+                      <div className="w-full mt-3">
+                          <div className="w-full overflow-auto">
+                              {(formData?.tech_operations === "1") ? (
                                 <>
-                                  <p className="mt-2">{result?.tech_seven}</p>
+                                  <div className="w-full md:w-[60%] lg:w-[60%]  mt-2">
+                                      <table className="w-full font-s-18"> 
+                                            <tbody>
+                                      
+                                          <tr>
+                                              <td className="py-2 border-b" width="35%"><strong>{data?.payload?.tech_lang_keys[4]}</strong></td>
+                                              <td className="py-2 border-b"><strong>{result?.tech_main_ans}</strong></td>
+                                          </tr>
+                                    </tbody>
+                                      </table>
+                                  </div>
+                                  <div className="w-full text-[16px]">
+                                      <p className="mt-2"><strong>{data?.payload?.tech_lang_keys[5]}</strong></p>
+                                      <p className="mt-2">{data?.payload?.tech_lang_keys[6]}:</p>
+                                      <p className="mt-2">{result?.tech_f1_equation}</p>
+                                      <p className="mt-2">{result?.tech_f2_equation}</p>
+                                      <p className="mt-2">{result?.tech_first}</p>
+                                      <p className="mt-2">{result?.tech_second}</p>
+                                      <p className="mt-2">{result?.tech_third}</p>
+                                      <p className="mt-2">{result?.tech_four}</p>
+                                      <p className="mt-2">{result?.tech_five}</p>
+                                      <p className="mt-2">{result?.tech_six}</p>
+                                      {result?.tech_seven && (
+                                        <>
+                                        <p className="mt-2">{result?.tech_seven}</p>
+                                        </>
+                                      )}
+                                      <p className="mt-2">{result?.tech_answer1}</p>
+                                          <p className="mt-2" dangerouslySetInnerHTML={{ __html: result?.tech_answer2 }} />
+                                      <p className="mt-2">{result?.tech_answer3}</p>
+                                      <p className="mt-2">{result?.tech_answer4}</p>
+                                      <p className="mt-2">{result?.tech_answer5}</p>
+                                      <p className="mt-2" dangerouslySetInnerHTML={{ __html: result?.tech_answer6 }} />
+                                      <p className="mt-2">{result?.tech_answer7}</p>
+                                      <p className="mt-2">{result?.tech_answer8}</p>
+                                  </div>
                                 </>
-                              )}
-                              <p className="mt-2">{result?.tech_answer1}</p>
-                              <p
-                                className="mt-2"
-                                dangerouslySetInnerHTML={{
-                                  __html: result?.tech_answer2,
-                                }}
-                              />
-                              <p className="mt-2">{result?.tech_answer3}</p>
-                              <p className="mt-2">{result?.tech_answer4}</p>
-                              <p className="mt-2">{result?.tech_answer5}</p>
-                              <p
-                                className="mt-2"
-                                dangerouslySetInnerHTML={{
-                                  __html: result?.tech_answer6,
-                                }}
-                              />
-                              <p className="mt-2">{result?.tech_answer7}</p>
-                              <p className="mt-2">{result?.tech_answer8}</p>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <div className="w-full text-center text-[20px] overflow-auto">
-                              <p>{data?.payload?.tech_lang_keys[4]}</p>
-                              <p className="font-s-16">{result?.tech_s_fans}</p>
-                              {result?.tech_s_fans2 && (
+                              ):(
                                 <>
-                                  <div className="flex justify-center">
-                                    <p className="bg-[#2845F5] px-3 py-2 rounded-lg text-white">
-                                      {result?.tech_s_fans2}
-                                    </p>
+                                  <div className="w-full text-center text-[16px] md:text-[20px]">
+                                      <p>{data?.payload?.tech_lang_keys[4]}</p>
+                                      <p className="font-s-16">{result?.tech_s_fans}</p>
+                                      {(result?.tech_s_fans2) && (
+                                        <>
+                                          <p className="my-3">
+                                              <strong className="bg-white px-3 py-2 radius-10 text-blue">
+                                                  {result?.tech_s_fans2}
+                                              </strong>
+                                          </p>
+                                        </>
+                                      )}
+                                      {(result?.tech_s_fans3) && (
+                                        <>
+                                        <p className="my-3 font-s-16">{result?.tech_s_fans3}</p>
+                                        </>
+                                      )}
+                                      {(result?.tech_s_fans4) && (
+                                        <>
+                                        <p className="my-3 font-s-16">{result?.tech_s_fans4}</p>
+                                        </>
+                                      )}
                                   </div>
                                 </>
                               )}
-                              {result?.tech_s_fans3 && (
-                                <>
-                                  <p className="my-3 font-s-16">
-                                    {result?.tech_s_fans3}
-                                  </p>
-                                </>
-                              )}
-                              {result?.tech_s_fans4 && (
-                                <>
-                                  <p className="my-3 font-s-16">
-                                    {result?.tech_s_fans4}
-                                  </p>
-                                </>
-                              )}
-                            </div>
-                          </>
-                        )}
+                          </div>
                       </div>
-                    </div>
+                   </div>
+                    
                   </div>
                 </div>
-              </div>
-            </>
-          )
-        )}
-      </form>
+              </>
+            )
+          )}
+        </form>
       {result && (
         <CalculatorFeedback calName={data?.payload?.tech_calculator_title} />
       )}

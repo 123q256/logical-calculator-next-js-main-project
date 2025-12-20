@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useAverageRateOfChangeCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useAverageRateOfChangeCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -82,11 +83,11 @@ const AverageRateOfChangeCalculator = () => {
         tech_x1: formData.tech_x1,
         tech_x2: formData.tech_x2,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -146,15 +147,15 @@ const AverageRateOfChangeCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg shadow-md space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
 
-          <div className="lg:w-[50%] md:w-[70%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
+          <div className="lg:w-[50%] md:w-[80%] w-full mx-auto ">
+            <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
               <div className="col-span-12">
                 <label htmlFor="tech_x" className="label">
                   {data?.payload?.tech_lang_keys["1"]}{" "}
@@ -228,7 +229,7 @@ const AverageRateOfChangeCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -239,15 +240,15 @@ const AverageRateOfChangeCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg flex items-center justify-center">
                     <div className="w-full mt-3">
                       <div className="w-full">
-                        <div className="w-full md:w-[80%] lg:w-[60%] overflow-auto mt-2">
-                          <table className="w-full text-[16px]">
+                        <div className="w-full md:w-[60%] lg:w-[60%] mt-2 overflow-auto">
+                          <table className="w-full text-[18px]">
                             <tbody>
                               <tr>
                                 <td className="py-2 border-b" width="60%">
@@ -262,85 +263,84 @@ const AverageRateOfChangeCalculator = () => {
                             </tbody>
                           </table>
                         </div>
-
                         <div className="w-full text-[16px] overflow-auto">
-                          <div className="mt-3">
+                          <p className="mt-3">
                             <strong>
                               {data?.payload?.tech_lang_keys["6"]}:
                             </strong>
-                          </div>
+                          </p>
 
-                          <div className="mt-3">
+                          <p className="mt-3">
                             {data?.payload?.tech_lang_keys["3"]}:
-                          </div>
+                          </p>
 
-                          <div className="mt-3">
+                          <p className="mt-3">
                             <InlineMath math={`f(x) = ${equation}`} />{" "}
                             {data?.payload?.tech_lang_keys["4"]} ={" "}
                             <InlineMath math={`[${x1}, ${x2}]`} />
-                          </div>
+                          </p>
 
-                          <div className="mt-3">
+                          <p className="mt-3">
                             {data?.payload?.tech_lang_keys["7"]}
-                          </div>
+                          </p>
 
-                          <div className="mt-3">
+                          <p className="mt-3">
                             <InlineMath math={`\\frac{f(b) - f(a)}{b - a}`} />
-                          </div>
+                          </p>
 
-                          <div className="mt-3">
+                          <p className="mt-3">
                             {data?.payload?.tech_lang_keys["8"]}
-                          </div>
+                          </p>
 
-                          <div className="mt-3">
+                          <p className="mt-3">
                             <InlineMath
                               math={`a = ${x2},\\ b = ${x1},\\ f(x) = ${equation}`}
                             />
-                          </div>
+                          </p>
 
-                          <div className="mt-3">
+                          <p className="mt-3">
                             Step 1: Evaluate the Function for a and b
-                          </div>
+                          </p>
 
-                          <div className="mt-3">
+                          <p className="mt-3">
                             <InlineMath
                               math={`f(a) = f(${x1}) = (${fOfX1}) = ${fx1}`}
                             />
-                          </div>
+                          </p>
 
-                          <div className="mt-3">
+                          <p className="mt-3">
                             <InlineMath
                               math={`f(b) = f(${x2}) = (${fOfX2}) = ${fx2}`}
                             />
-                          </div>
+                          </p>
 
                           <p className="mt-3">
                             Step 2: Use the Average Rate of Change Formula
                           </p>
 
-                          <div className="mt-3">
+                          <p className="mt-3">
                             <InlineMath
                               math={`\\frac{f(b) - f(a)}{b - a} = \\frac{(${fx2}) - (${fx1})}{${x2} - ${x1}}`}
                             />
-                          </div>
+                          </p>
 
-                          <div className="mt-3">
+                          <p className="mt-3">
                             <InlineMath
                               math={`\\frac{f(b) - f(a)}{b - a} = \\frac{${
                                 fx2 - fx1
                               }}{${x2 - x1}}`}
                             />
-                          </div>
+                          </p>
 
-                          <div className="mt-3">
+                          <p className="mt-3">
                             <InlineMath
                               math={`\\frac{f(b) - f(a)}{b - a} = ${result?.tech_ans}`}
                             />
-                          </div>
+                          </p>
 
-                          <div className="mt-3">
+                          <p className="mt-3">
                             The average rate of change is = {result?.tech_ans}
-                          </div>
+                          </p>
                         </div>
                       </div>
                     </div>

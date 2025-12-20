@@ -4,10 +4,7 @@ import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
-import {
-  useGetSingleCalculatorDetailsMutation,
-  useGaussSeidelCalculatorMutation,
-} from "../../../../redux/services/calculator/calculatorApi";
+import { useGetSingleCalculatorDetailsMutation, useGaussSeidelCalculatorMutation } from "../../../../redux/services/calculator/calculatorApi";
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
 import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeedback";
@@ -23,17 +20,17 @@ function formatNumber(num) {
 // Helper: Convert 2D array to LaTeX matrix string
 function arrayToLatexMatrix(matrix) {
   if (!matrix || !matrix.length) return "";
-
+  
   // Check if it's a 1D array
   if (!Array.isArray(matrix[0])) {
-    return matrix.map((val) => formatNumber(val)).join(" \\\\ ");
+    return matrix.map(val => formatNumber(val)).join(" \\\\ ");
   }
-
+  
   // It's a 2D array
   return matrix
-    .map((row) => {
+    .map(row => {
       if (Array.isArray(row)) {
-        return row.map((val) => formatNumber(val)).join(" & ");
+        return row.map(val => formatNumber(val)).join(" & ");
       }
       return formatNumber(row);
     })
@@ -43,38 +40,35 @@ function arrayToLatexMatrix(matrix) {
 // Helper: Convert 1D array or array of arrays to LaTeX column vector
 function arrayToLatexVector(vector) {
   if (!vector || !vector.length) return "";
-
+  
   // If it's array of arrays like [[7], [-5.44]]
   if (Array.isArray(vector[0])) {
-    return vector
-      .map((row) => {
-        if (Array.isArray(row)) {
-          return formatNumber(row[0]);
-        }
-        return formatNumber(row);
-      })
-      .join(" \\\\ ");
+    return vector.map(row => {
+      if (Array.isArray(row)) {
+        return formatNumber(row[0]);
+      }
+      return formatNumber(row);
+    }).join(" \\\\ ");
   }
-
+  
   // If it's flat array
-  return vector.map((val) => formatNumber(val)).join(" \\\\ ");
+  return vector.map(val => formatNumber(val)).join(" \\\\ ");
 }
 
 const GaussSeidelMethodCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean);
-
+  
   let url = "";
-
+  
   if (parts.length === 1) {
     url = parts[0];
   } else {
     url = parts[0] + "/" + parts[1];
   }
-
-  const [getSingleCalculatorDetails, { data, error, isLoading }] =
-    useGetSingleCalculatorDetailsMutation();
-
+  
+  const [getSingleCalculatorDetails, { data, error, isLoading }] = useGetSingleCalculatorDetailsMutation();
+  
   const handleFetchDetails = async () => {
     try {
       await getSingleCalculatorDetails({ tech_calculator_link: url });
@@ -203,33 +197,19 @@ const GaussSeidelMethodCalculator = () => {
     if (!result) return null;
 
     // Convert arrays to LaTeX strings
-    const upperLatex = `\\begin{bmatrix} ${arrayToLatexMatrix(
-      result?.tech_upper
-    )} \\end{bmatrix}`;
-    const lowerLatex = `\\begin{bmatrix} ${arrayToLatexMatrix(
-      result?.tech_lower
-    )} \\end{bmatrix}`;
-    const inverseLatex = `\\begin{bmatrix} ${arrayToLatexMatrix(
-      result?.tech_inverse
-    )} \\end{bmatrix}`;
-    const resultLatex = `\\begin{bmatrix} ${arrayToLatexMatrix(
-      result?.tech_result
-    )} \\end{bmatrix}`;
-
+    const upperLatex = `\\begin{bmatrix} ${arrayToLatexMatrix(result?.tech_upper)} \\end{bmatrix}`;
+    const lowerLatex = `\\begin{bmatrix} ${arrayToLatexMatrix(result?.tech_lower)} \\end{bmatrix}`;
+    const inverseLatex = `\\begin{bmatrix} ${arrayToLatexMatrix(result?.tech_inverse)} \\end{bmatrix}`;
+    const resultLatex = `\\begin{bmatrix} ${arrayToLatexMatrix(result?.tech_result)} \\end{bmatrix}`;
+    
     // For tech_result2 which is array of arrays like [[7], [-5.44]]
-    const result2Latex = `\\begin{bmatrix} ${arrayToLatexVector(
-      result?.tech_result2
-    )} \\end{bmatrix}`;
-
+    const result2Latex = `\\begin{bmatrix} ${arrayToLatexVector(result?.tech_result2)} \\end{bmatrix}`;
+    
     // For tech_value which is flat array [7, 7, 7]
-    const techValueLatex = `\\begin{bmatrix} ${arrayToLatexVector(
-      result?.tech_value
-    )} \\end{bmatrix}`;
-
+    const techValueLatex = `\\begin{bmatrix} ${arrayToLatexVector(result?.tech_value)} \\end{bmatrix}`;
+    
     // For main result
-    const mainResultLatex = `\\begin{bmatrix} ${arrayToLatexMatrix(
-      result?.tech_main_result
-    )} \\end{bmatrix}`;
+    const mainResultLatex = `\\begin{bmatrix} ${arrayToLatexMatrix(result?.tech_main_result)} \\end{bmatrix}`;
 
     // Matrix multiplications
     const multInverseUpperLatex = `- ${inverseLatex} \\times ${upperLatex} = ${resultLatex}`;
@@ -238,15 +218,15 @@ const GaussSeidelMethodCalculator = () => {
     // Iterative powers
     const iterativePowersLatex = (() => {
       if (!result?.tech_result || !result?.tech_result2) return "";
-
+      
       let latexStr = `\\times^{(0)} = ${result2Latex} \\\\ `;
       latexStr += `\\times^{(1)} = ${resultLatex} \\times ${result2Latex} + ${result2Latex} \\\\ `;
-
+      
       for (let i = 2; i <= 3; i++) {
         latexStr += `\\times^{(${i})} = ${resultLatex} \\times ${resultLatex} + ${result2Latex}`;
         if (i < 3) latexStr += " \\\\ ";
       }
-
+      
       return latexStr;
     })();
 
@@ -347,7 +327,7 @@ const GaussSeidelMethodCalculator = () => {
                     />
                   </div>
                 </div>
-
+                
                 {formData.tech_number === "2" && (
                   <>
                     <p className="px-2 text-[14px] text-blue">
@@ -375,14 +355,14 @@ const GaussSeidelMethodCalculator = () => {
                     </p>
                   </>
                 )}
-
+                
                 {formData.tech_number === "1" && (
                   <p className="px-2 text-[14px] text-blue">
                     x<sub className="text-[12px] text-blue">2</sub>{" "}
                     <span className="text-[18px] text-blue">=</span>
                   </p>
                 )}
-
+                
                 <div>
                   <div className="w-full py-2">
                     <input
@@ -433,7 +413,7 @@ const GaussSeidelMethodCalculator = () => {
                     />
                   </div>
                 </div>
-
+                
                 {formData.tech_number === "2" && (
                   <>
                     <p className="px-2 text-[14px] text-blue">
@@ -461,14 +441,14 @@ const GaussSeidelMethodCalculator = () => {
                     </p>
                   </>
                 )}
-
+                
                 {formData.tech_number === "1" && (
                   <p className="px-2 text-[14px] text-blue">
                     x<sub className="text-[12px] text-blue">2</sub>{" "}
                     <span className="text-[18px] text-blue">=</span>
                   </p>
                 )}
-
+                
                 <div>
                   <input
                     type="number"
@@ -549,9 +529,7 @@ const GaussSeidelMethodCalculator = () => {
                         className="input my-2"
                         placeholder="00"
                         value={techValues[2]}
-                        onChange={(e) =>
-                          handleTechValueChange(2, e.target.value)
-                        }
+                        onChange={(e) => handleTechValueChange(2, e.target.value)}
                       />
                     </div>
                   </div>
@@ -575,17 +553,16 @@ const GaussSeidelMethodCalculator = () => {
         </div>
 
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
-              <div className="w-full h-[30px] bg-gray-200 animate-pulse rounded-[10px] mb-4"></div>
-              <div className="w-[75%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[50%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[25%] h-[20px] bg-gray-200 animate-pulse rounded-[10px]"></div>
+              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
+              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+</div>
         ) : (
-          result &&
-          latexStrings && (
+          result && latexStrings && (
             <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
               <div>
                 <ResultActions lang={data?.payload?.tech_lang_keys} />
@@ -598,11 +575,13 @@ const GaussSeidelMethodCalculator = () => {
                     </p>
 
                     {/* Main result matrix */}
+                    <div className="method2-results">
                     <BlockMath math={latexStrings.mainResultLatex} />
+                    </div>
 
                     {/* Table view of main result */}
                     <div className="col-lg-4 mt-3 overflow-auto">
-                      <table className="w-full font-s-16">
+                      <table className="w-full  md:text-[18px] text-[16px]">
                         <tbody>
                           {result?.tech_main_result?.map((row, i) => (
                             <tr key={i}>
@@ -612,9 +591,7 @@ const GaussSeidelMethodCalculator = () => {
                                 </strong>
                               </td>
                               <td className="py-2 border-b">
-                                {formatNumber(
-                                  Array.isArray(row) ? row[0] : row
-                                )}
+                                {formatNumber(Array.isArray(row) ? row[0] : row)}
                               </td>
                             </tr>
                           ))}
@@ -622,7 +599,7 @@ const GaussSeidelMethodCalculator = () => {
                       </table>
                     </div>
 
-                    <div className="w-full overflow-auto">
+                    <div className="w-full overflow-auto method2-results">
                       {/* Upper matrix */}
                       <p className="mt-3 text-[18px] font-bold">
                         {data?.payload?.tech_lang_keys[3]} L

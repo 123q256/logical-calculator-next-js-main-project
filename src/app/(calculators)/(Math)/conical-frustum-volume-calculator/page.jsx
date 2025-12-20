@@ -3,9 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
+import { useGetSingleCalculatorDetailsMutation ,useConicalFrustumVolumeCalculatorMutation} from "../../../../redux/services/calculator/calculatorApi";
 
-import { useConicalFrustumVolumeCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,20 +13,19 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const ConicalFrustumVolumeCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
-
-  let url = "";
-
-  if (parts.length === 1) {
-    // sirf ek part
-    url = parts[0]; // "age-calculator"
-  } else {
-    // do ya zyada parts
-    url = parts[0] + "/" + parts[1]; // "de/age-calculator"
-  }
+  
+    let url = "";
+  
+    if (parts.length === 1) {
+      // sirf ek part
+      url = parts[0];  // "age-calculator"
+    } else {
+      // do ya zyada parts
+      url = parts[0] + "/" + parts[1];  // "de/age-calculator"
+    }
   const [getSingleCalculatorDetails, { data, error, isLoading }] =
     useGetSingleCalculatorDetailsMutation();
   const handleFetchDetails = async () => {
@@ -92,12 +90,12 @@ const ConicalFrustumVolumeCalculator = () => {
         tech_pi_val: formData.tech_pi_val,
         tech_units: formData.tech_units,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
-      toast.success("Successfully Calculated");
-    } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
-    }
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
+           toast.success("Successfully Calculated");
+         } catch (err) {
+           setFormError(err.data.payload.error);
+           toast.error(err.data.payload.error);
+         }
   };
 
   // Handle reset form
@@ -187,417 +185,338 @@ const ConicalFrustumVolumeCalculator = () => {
         },
       ]}
     >
-      <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
-          {formError && (
-            <p className="text-red-500 text-lg font-semibold w-full">
-              {formError}
-            </p>
-          )}
+         <form className="row" onSubmit={handleSubmit}>
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
+            {formError && (
+              <p className="text-red-500 text-lg font-semibold w-full">
+                {formError}
+              </p>
+            )}
 
-          <div className="lg:w-[70%] md:w-[90%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3 gap-5">
-              <div className="md:col-span-6 col-span-12">
-                <div className="grid grid-cols-12 mt-3 gap-2">
-                  <div className="col-span-12">
-                    <label htmlFor="tech_choose" className="label">
-                      {data?.payload?.tech_lang_keys["1"]}:
-                    </label>
-                    <div className="mt-2">
-                      <select
-                        className="input"
-                        aria-label="select"
-                        name="tech_choose"
-                        id="tech_choose"
-                        value={formData.tech_choose}
-                        onChange={handleChange}
-                      >
-                        <option value="r_h">
-                          {data?.payload?.tech_lang_keys["2"]} s, V, L, A |{" "}
-                          {data?.payload?.tech_lang_keys["3"]} r1, r2, s{" "}
-                        </option>
-                        <option value="r_sh">
-                          {data?.payload?.tech_lang_keys["2"]} h, V, L, A |{" "}
-                          {data?.payload?.tech_lang_keys["3"]} r1, r2, V{" "}
-                        </option>
-                        <option value="r_v">
-                          {data?.payload?.tech_lang_keys["2"]} h, s, L, A |{" "}
-                          {data?.payload?.tech_lang_keys["3"]} V, l, w{" "}
-                        </option>
-                        <option value="r_l">
-                          {data?.payload?.tech_lang_keys["2"]} h, s, V, A |{" "}
-                          {data?.payload?.tech_lang_keys["3"]} r1, r2, L{" "}
-                        </option>
-                        <option value="r_a">
-                          {data?.payload?.tech_lang_keys["2"]} h, s, V, L |{" "}
-                          {data?.payload?.tech_lang_keys["3"]} r1, r2, A{" "}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-span-12">
-                    <label htmlFor="tech_first" className="label">
-                      {data?.payload?.tech_lang_keys["4"]} (r
-                      <sub className="font-s-14">1</sub>)
-                    </label>
-                    <div className="relative w-full ">
-                      <input
-                        type="number"
-                        name="tech_first"
-                        step="any"
-                        className="mt-1 input"
-                        value={formData.tech_first}
-                        placeholder="00"
-                        onChange={handleChange}
-                      />
-                      <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-4"
-                        onClick={toggleDropdown}
-                      >
-                        {formData.tech_first_unit} ▾
-                      </label>
-                      {dropdownVisible && (
-                        <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
-                          {[
-                            { label: "millimeters (mm)", value: "mm" },
-                            { label: "centimeters (cm)", value: "cm" },
-                            { label: "meters (m)", value: "m" },
-                            { label: "kilometers (km)", value: "km" },
-                            { label: "inches (in)", value: "in" },
-                            { label: "feets (ft)", value: "ft" },
-                            { label: "yards (yd)", value: "yd" },
-                            { label: "miles (mi)", value: "mi" },
-                          ].map((unit, index) => (
-                            <p
-                              key={index}
-                              className="p-2 hover:bg-gray-100 cursor-pointer"
-                              onClick={() => setUnitHandler(unit.value)}
-                            >
-                              {unit.label}
-                            </p>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="col-span-12">
-                    <label htmlFor="tech_second" className="label">
-                      {data?.payload?.tech_lang_keys["4"]} (r
-                      <sub className="font-s-14">2</sub>)
-                    </label>
-                    <div className="relative w-full ">
-                      <input
-                        type="number"
-                        name="tech_second"
-                        step="any"
-                        className="mt-1 input"
-                        value={formData.tech_second}
-                        placeholder="00"
-                        onChange={handleChange}
-                      />
-                      <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-4"
-                        onClick={toggleDropdown1}
-                      >
-                        {formData.tech_second_unit} ▾
-                      </label>
-                      {dropdownVisible1 && (
-                        <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
-                          {[
-                            { label: "millimeters (mm)", value: "mm" },
-                            { label: "centimeters (cm)", value: "cm" },
-                            { label: "meters (m)", value: "m" },
-                            { label: "kilometers (km)", value: "km" },
-                            { label: "inches (in)", value: "in" },
-                            { label: "feets (ft)", value: "ft" },
-                            { label: "yards (yd)", value: "yd" },
-                            { label: "miles (mi)", value: "mi" },
-                          ].map((unit, index) => (
-                            <p
-                              key={index}
-                              className="p-2 hover:bg-gray-100 cursor-pointer"
-                              onClick={() => setUnitHandler1(unit.value)}
-                            >
-                              {unit.label}
-                            </p>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="col-span-12">
-                    {formData?.tech_choose === "r_sh" ? (
-                      <label htmlFor="tech_third" className="label">
-                        {data?.payload?.tech_lang_keys[8]} (s)
-                      </label>
-                    ) : formData?.tech_choose === "r_v" ? (
-                      <label htmlFor="tech_third" className="label">
-                        {data?.payload?.tech_lang_keys[9]} (V)
-                      </label>
-                    ) : formData?.tech_choose === "r_l" ? (
-                      <label htmlFor="tech_third" className="label">
-                        {data?.payload?.tech_lang_keys[14]} (L)
-                      </label>
-                    ) : formData?.tech_choose === "r_a" ? (
-                      <label htmlFor="tech_third" className="label">
-                        {data?.payload?.tech_lang_keys[15]} (A)
-                      </label>
-                    ) : (
-                      <label htmlFor="tech_third" className="label">
-                        {data?.payload?.tech_lang_keys[5]} (h)
-                      </label>
-                    )}
+            <div className="lg:w-[70%] md:w-[70%] w-full mx-auto ">
+              <div className="grid grid-cols-12 mt-3   gap-2">
+                  <div className="col-span-12 md:col-span-6">
+                      <div className="grid grid-cols-12 mt-3   gap-2">
+                          <div className="col-span-12">
+                            <label htmlFor="tech_choose" className="label">
+                              {data?.payload?.tech_lang_keys["1"]}:
+                            </label>
+                            <div className="mt-2">
+                              <select
+                                className="input"
+                                aria-label="select"
+                                name="tech_choose"
+                                id="tech_choose"
+                                value={formData.tech_choose}
+                                onChange={handleChange}
+                              >
+                                <option value="r_h">{data?.payload?.tech_lang_keys["2"]}  s, V, L, A |  {data?.payload?.tech_lang_keys["3"]}  r1, r2, s </option>
+                                <option value="r_sh">{data?.payload?.tech_lang_keys["2"]}  h, V, L, A |  {data?.payload?.tech_lang_keys["3"]} r1, r2, V </option>
+                                <option value="r_v">{data?.payload?.tech_lang_keys["2"]}  h, s, L, A |  {data?.payload?.tech_lang_keys["3"]}  V, l, w </option>
+                                <option value="r_l">{data?.payload?.tech_lang_keys["2"]}  h, s, V, A |  {data?.payload?.tech_lang_keys["3"]}  r1, r2, L </option>
+                                <option value="r_a">{data?.payload?.tech_lang_keys["2"]} h, s, V, L |  {data?.payload?.tech_lang_keys["3"]}  r1, r2, A </option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="col-span-12">
+                              <label htmlFor="tech_first" className="label" >
+                            { data?.payload?.tech_lang_keys["4"]} (r<sub className="font-s-14">1</sub>)
+                              </label>
+                              <div className="relative w-full ">
+                                <input
+                                  type="number"
+                                  name="tech_first"
+                                  step="any"
+                                  className="mt-1 input"
+                                  value={formData.tech_first}
+                                  placeholder="00"
+                                  onChange={handleChange}
+                                />
+                                <label
+                                  className="absolute cursor-pointer text-sm underline right-6 top-4"
+                                  onClick={toggleDropdown}
+                                >
+                                  {formData.tech_first_unit} ▾
+                                </label>
+                                {dropdownVisible && (
+                                  <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
+                                    {[
+                                          { label: "millimeters (mm)", value: "mm" },
+                                            { label: "centimeters (cm)", value: "cm" },
+                                            { label: "meters (m)", value: "m" },
+                                          { label: "kilometers (km)", value: "km" },
+                                          { label: "inches (in)", value: "in" },
+                                          { label: "feets (ft)", value: "ft" },
+                                          { label: "yards (yd)", value: "yd" },
+                                          { label: "miles (mi)", value: "mi" },
+                                    
+                                    ].map((unit, index) => (
+                                      <p
+                                        key={index}
+                                        className="p-2 hover:bg-gray-100 cursor-pointer"
+                                        onClick={() => setUnitHandler(unit.value)}
+                                      >
+                                        {unit.label}
+                                      </p>
+                                    ))}
+                                  </div>
+                                  )}
+                              </div>
+                          </div>
+                          <div className="col-span-12">
+                              <label htmlFor="tech_second" className="label" >
+                            { data?.payload?.tech_lang_keys["4"]}  (r<sub className="font-s-14">2</sub>)
+                              </label>
+                              <div className="relative w-full ">
+                                <input
+                                  type="number"
+                                  name="tech_second"
+                                  step="any"
+                                  className="mt-1 input"
+                                  value={formData.tech_second}
+                                  placeholder="00"
+                                  onChange={handleChange}
+                                />
+                                <label
+                                  className="absolute cursor-pointer text-sm underline right-6 top-4"
+                                  onClick={toggleDropdown1}
+                                >
+                                  {formData.tech_second_unit} ▾
+                                </label>
+                                {dropdownVisible1 && (
+                                  <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
+                                    {[
+                                          { label: "millimeters (mm)", value: "mm" },
+                                            { label: "centimeters (cm)", value: "cm" },
+                                            { label: "meters (m)", value: "m" },
+                                          { label: "kilometers (km)", value: "km" },
+                                          { label: "inches (in)", value: "in" },
+                                          { label: "feets (ft)", value: "ft" },
+                                          { label: "yards (yd)", value: "yd" },
+                                          { label: "miles (mi)", value: "mi" },
 
-                    <div className="relative w-full ">
-                      <input
-                        type="number"
-                        name="tech_third"
-                        step="any"
-                        className="mt-1 input"
-                        value={formData.tech_third}
-                        placeholder="00"
-                        onChange={handleChange}
-                      />
-                      <label
-                        className="absolute cursor-pointer text-sm underline right-6 top-4"
-                        onClick={toggleDropdown2}
-                      >
-                        {formData.tech_third_unit} ▾
-                      </label>
-                      {dropdownVisible2 && (
-                        <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
-                          {[
-                            { label: "millimeters (mm)", value: "mm" },
-                            { label: "centimeters (cm)", value: "cm" },
-                            { label: "meters (m)", value: "m" },
-                            { label: "kilometers (km)", value: "km" },
-                            { label: "inches (in)", value: "in" },
-                            { label: "feets (ft)", value: "ft" },
-                            { label: "yards (yd)", value: "yd" },
-                            { label: "miles (mi)", value: "mi" },
-                          ].map((unit, index) => (
-                            <p
-                              key={index}
-                              className="p-2 hover:bg-gray-100 cursor-pointer"
-                              onClick={() => setUnitHandler2(unit.value)}
-                            >
-                              {unit.label}
-                            </p>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                                    
+                                    ].map((unit, index) => (
+                                      <p
+                                        key={index}
+                                        className="p-2 hover:bg-gray-100 cursor-pointer"
+                                        onClick={() => setUnitHandler1(unit.value)}
+                                      >
+                                        {unit.label}
+                                      </p>
+                                    ))}
+                                  </div>
+                                  )}
+                              </div>
+                          </div>
+                          <div className="col-span-12">
+                            {formData?.tech_choose === 'r_sh' ? (
+                                <label htmlFor="tech_third" className="label">
+                                  {data?.payload?.tech_lang_keys[8]} (s)
+                                </label>
+                              ) : formData?.tech_choose === 'r_v' ? (
+                                <label htmlFor="tech_third" className="label">
+                                  {data?.payload?.tech_lang_keys[9]} (V)
+                                </label>
+                              ) : formData?.tech_choose === 'r_l' ? (
+                                <label htmlFor="tech_third" className="label">
+                                  {data?.payload?.tech_lang_keys[14]} (L)
+                                </label>
+                              ) : formData?.tech_choose === 'r_a' ? (
+                                <label htmlFor="tech_third" className="label">
+                                  {data?.payload?.tech_lang_keys[15]} (A)
+                                </label>
+                              ) : (
+                                <label htmlFor="tech_third" className="label">
+                                  {data?.payload?.tech_lang_keys[5]} (h)
+                                </label>
+                              )}
+
+                              <div className="relative w-full ">
+                                <input
+                                  type="number"
+                                  name="tech_third"
+                                  step="any"
+                                  className="mt-1 input"
+                                  value={formData.tech_third}
+                                  placeholder="00"
+                                  onChange={handleChange}
+                                />
+                                <label
+                                  className="absolute cursor-pointer text-sm underline right-6 top-4"
+                                  onClick={toggleDropdown2}
+                                >
+                                  {formData.tech_third_unit} ▾
+                                </label>
+                                {dropdownVisible2 && (
+                                  <div className="absolute z-10 bg-white border border-gray-300 rounded-md w-auto mt-1 right-0">
+                                    {[
+                                          { label: "millimeters (mm)", value: "mm" },
+                                            { label: "centimeters (cm)", value: "cm" },
+                                            { label: "meters (m)", value: "m" },
+                                          { label: "kilometers (km)", value: "km" },
+                                          { label: "inches (in)", value: "in" },
+                                          { label: "feets (ft)", value: "ft" },
+                                          { label: "yards (yd)", value: "yd" },
+                                          { label: "miles (mi)", value: "mi" },
+                                    
+                                    ].map((unit, index) => (
+                                      <p
+                                        key={index}
+                                        className="p-2 hover:bg-gray-100 cursor-pointer"
+                                        onClick={() => setUnitHandler2(unit.value)}
+                                      >
+                                        {unit.label}
+                                      </p>
+                                    ))}
+                                  </div>
+                                  )}
+                              </div>
+                          </div>
+                            <div className="col-span-12">
+                              <label htmlFor="tech_pi_val" className="label">
+                                  {data?.payload?.tech_lang_keys["6"]} π
+                                    </label>
+                                    <div className=" relative">
+                                    <input
+                                      type="number"
+                                      step="any"
+                                      name="tech_pi_val"
+                                      id="tech_pi_val"
+                                      className="input my-2"
+                                      aria-label="input"
+                                      placeholder="00"
+                                      value={formData.tech_pi_val}
+                                      onChange={handleChange}
+                                    />
+                                    </div>
+                            </div>
+                            
+                      </div>
+
                   </div>
-                  <div className="col-span-12">
-                    <label htmlFor="tech_pi_val" className="label">
-                      {data?.payload?.tech_lang_keys["6"]} π
-                    </label>
-                    <div className=" relative">
-                      <input
-                        type="number"
-                        step="any"
-                        name="tech_pi_val"
-                        id="tech_pi_val"
-                        className="input my-2"
-                        aria-label="input"
-                        placeholder="00"
-                        value={formData.tech_pi_val}
-                        onChange={handleChange}
-                      />
-                    </div>
+                  <div className="col-span-12 md:col-span-6">
+                      <div className="grid grid-cols-12 mt-3   gap-2 ">
+                          <div className=" col-span-12 text-center mt-3 flex items-center justify-center hidden md:block">
+                              <img src="/images/new_volume_rec.webp" height="100%" width="80%" alt="Volume of a Rectangular Prism Image" loading="lazy" decoding="async"/>
+                          </div>
+                          <div className="col-span-12">
+                              <label htmlFor="tech_units" className="label">
+                                {data?.payload?.tech_lang_keys["7"]}:
+                              </label>
+                              <div className="mt-2">
+                                <select
+                                  className="input"
+                                  aria-label="select"
+                                  name="tech_units"
+                                  id="tech_units"
+                                  value={formData.tech_units}
+                                  onChange={handleChange}
+                                >
+                                  <option value="mm">mm </option>
+                                  <option value="m">m </option>
+                                  <option value="km">km </option>
+                                  <option value="in">in </option>
+                                  <option value="ft">ft </option>
+                                  <option value="yd">yd </option>
+                                  <option value="mi">mi </option>
+                                </select>
+                              </div>
+                          </div>
+                          <div className="col-span-12 text-center mt-3 flex items-center justify-center md:hidden">
+                              <img   src="/images/new_volume_rec.webp"  height="100%" width="50%" alt="Volume of a Rectangular Prism Image" loading="lazy" decoding="async"/>
+                          </div>
+                      </div>
                   </div>
-                </div>
-              </div>
-              <div className="md:col-span-6 col-span-12">
-                <div className="grid grid-cols-12 mt-3   gap-2 ">
-                  <div className=" col-span-12 text-center mt-3 items-center justify-center hidden md:block">
-                    <img
-                      src="/images/new_volume_rec.webp"
-                      height="100%"
-                      width="80%"
-                      alt="Volume of a Rectangular Prism Image"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                  <div className="col-span-12">
-                    <label htmlFor="tech_units" className="label">
-                      {data?.payload?.tech_lang_keys["7"]}:
-                    </label>
-                    <div className="mt-2">
-                      <select
-                        className="input"
-                        aria-label="select"
-                        name="tech_units"
-                        id="tech_units"
-                        value={formData.tech_units}
-                        onChange={handleChange}
-                      >
-                        <option value="mm">mm </option>
-                        <option value="m">m </option>
-                        <option value="km">km </option>
-                        <option value="in">in </option>
-                        <option value="ft">ft </option>
-                        <option value="yd">yd </option>
-                        <option value="mi">mi </option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-span-12 text-center mt-3 flex items-center justify-center md:hidden">
-                    <img
-                      src="/images/new_volume_rec.webp"
-                      height="100%"
-                      width="50%"
-                      alt="Volume of a Rectangular Prism Image"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                </div>
               </div>
             </div>
-          </div>
 
           <div className="mb-6 mt-10 text-center space-x-2">
-            <Button type="submit" isLoading={roundToTheNearestLoading}>
-              {data?.payload?.tech_lang_keys["calculate"]}
-            </Button>
-            {result && (
-              <ResetButton type="button" onClick={handleReset}>
-                {data?.payload?.tech_lang_keys["locale"] === "en"
-                  ? "RESET"
-                  : data?.payload?.tech_lang_keys["reset"] || "RESET"}
-              </ResetButton>
-            )}
+                <Button type="submit" isLoading={roundToTheNearestLoading}>
+                  {data?.payload?.tech_lang_keys["calculate"]}
+                </Button>
+                {result && (
+                  <ResetButton type="button" onClick={handleReset}>
+                    {data?.payload?.tech_lang_keys["locale"] === "en"
+                      ? "RESET"
+                      : data?.payload?.tech_lang_keys["reset"] || "RESET"}
+                  </ResetButton>
+                  )}
+            </div>
           </div>
-        </div>
-        {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          {roundToTheNearestLoading ? (
+            <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
               <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
-        ) : (
-          result && (
-            <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
-                <div>
-                  <ResultActions lang={data?.payload?.tech_lang_keys} />
+           </div>
+          ) : (
+            result && (
+              <>
+                <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6">
+                  <div>
+                    <ResultActions lang={data?.payload?.tech_lang_keys} />
 
-                  <div className="rounded-lg  flex items-center justify-center">
-                    <div className="w-full mt-3">
-                      <div className="w-full">
-                        <div className="w-full md:w-[80%] lg:w-[60%] overflow-auto mt-2">
-                          <table className="w-full text-[16px]">
-                            <tbody>
-                              <tr>
-                                <td className="py-2 border-b" width="60%">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys["4"]} (r
-                                    <sub className="font-s-14">1</sub>)
-                                  </strong>
-                                </td>
-                                <td className="py-2 border-b">
-                                  {result?.tech_radius_1} {formData?.tech_units}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="py-2 border-b" width="60%">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys["4"]} (r
-                                    <sub className="font-s-14">2</sub>)
-                                  </strong>
-                                </td>
-                                <td className="py-2 border-b">
-                                  {result?.tech_radius_2} {formData?.tech_units}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="py-2 border-b" width="60%">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys["5"]}
-                                  </strong>
-                                </td>
-                                <td className="py-2 border-b">
-                                  {result?.tech_height} {formData?.tech_units}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="py-2 border-b" width="60%">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys["8"]}
-                                  </strong>
-                                </td>
-                                <td className="py-2 border-b">
-                                  {result?.tech_slant_height}{" "}
-                                  {formData?.tech_units}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="py-2 border-b" width="60%">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys["9"]}
-                                  </strong>
-                                </td>
-                                <td className="py-2 border-b">
-                                  {result?.tech_volume} {formData?.tech_units}³
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="py-2 border-b" width="60%">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys["10"]}
-                                  </strong>
-                                </td>
-                                <td className="py-2 border-b">
-                                  {result?.tech_lsa} {formData?.tech_units}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="py-2 border-b" width="60%">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys["11"]}
-                                  </strong>
-                                </td>
-                                <td className="py-2 border-b">
-                                  {result?.tech_tsa} {formData?.tech_units}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="py-2 border-b" width="60%">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys["12"]}
-                                  </strong>
-                                </td>
-                                <td className="py-2 border-b">
-                                  {result?.tech_bsa} {formData?.tech_units}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="py-2 border-b" width="60%">
-                                  <strong>
-                                    {data?.payload?.tech_lang_keys["13"]}
-                                  </strong>
-                                </td>
-                                <td className="py-2 border-b">
-                                  {result?.tech_ttsa} {formData?.tech_units}
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                      <div className="rounded-lg  flex items-center justify-center">
+                        <div className="w-full mt-3">
+                            <div className="w-full">
+                                <div className="w-full md:w-[80%] lg:w-[60%] mt-2 overflow-auto">
+                                    <table className="w-full text-[16px] md:text-[18px]">
+                                      <tbody>
+                
+                                        <tr>
+                                            <td className="py-2 border-b" ><strong>{data?.payload?.tech_lang_keys['4']} (r<sub className="font-s-14">1</sub>)</strong></td>
+                                            <td className="py-2 border-b">{result?.tech_radius_1} {formData?.tech_units}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 border-b" ><strong>{data?.payload?.tech_lang_keys['4']} (r<sub className="font-s-14">2</sub>)</strong></td>
+                                            <td className="py-2 border-b">{result?.tech_radius_2} {formData?.tech_units}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 border-b" ><strong>{data?.payload?.tech_lang_keys['5']}</strong></td>
+                                            <td className="py-2 border-b">{result?.tech_height} {formData?.tech_units}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 border-b" ><strong>{data?.payload?.tech_lang_keys['8']}</strong></td>
+                                            <td className="py-2 border-b">{result?.tech_slant_height} {formData?.tech_units}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 border-b" ><strong>{data?.payload?.tech_lang_keys['9']}</strong></td>
+                                            <td className="py-2 border-b">{result?.tech_volume} {formData?.tech_units}³</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 border-b" ><strong>{data?.payload?.tech_lang_keys['10']}</strong></td>
+                                            <td className="py-2 border-b">{result?.tech_lsa} {formData?.tech_units}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 border-b" ><strong>{data?.payload?.tech_lang_keys['11']}</strong></td>
+                                            <td className="py-2 border-b">{result?.tech_tsa} {formData?.tech_units}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 border-b" ><strong>{data?.payload?.tech_lang_keys['12']}</strong></td>
+                                            <td className="py-2 border-b">{result?.tech_bsa} {formData?.tech_units}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 border-b" ><strong>{data?.payload?.tech_lang_keys['13']}</strong></td>
+                                            <td className="py-2 border-b">{result?.tech_ttsa} {formData?.tech_units}</td>
+                                        </tr>
+                                     </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                      </div>
                     </div>
+                    
+                    
                   </div>
                 </div>
-              </div>
-            </>
-          )
-        )}
-      </form>
+              </>
+            )
+          )}
+        </form>
       {result && (
         <CalculatorFeedback calName={data?.payload?.tech_calculator_title} />
       )}

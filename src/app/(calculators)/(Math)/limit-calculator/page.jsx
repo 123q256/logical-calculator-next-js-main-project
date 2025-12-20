@@ -313,13 +313,13 @@ const LimitCalculator = () => {
                   <div className="rounded-lg p-4 flex items-center justify-center">
                     <div className="w-full rounded-lg mt-3">
                       <div className="flex flex-wrap">
-                        <div className="w-full text-base overflow-auto">
+                        <div className="w-full text-base overflow-auto method2-results">
                           {/* Main limit expression */}
-                          <p className="mt-3 text-lg">
+                          <div className="mt-3 text-lg">
                             <BlockMath
                               math={`\\lim_{ ${formData?.tech_with} \\to ${result?.tech_inf}^{${result?.tech_dir}} } (${result?.tech_enter}) = ${result?.tech_ans}`}
                             />
-                          </p>
+                          </div>
 
                           {/* Language key 8 */}
                           <p className="mt-3 font-bold">
@@ -327,11 +327,11 @@ const LimitCalculator = () => {
                           </p>
 
                           {/* Limit again */}
-                          <p className="mt-3">
+                          <div className="mt-3">
                             <BlockMath
                               math={`\\lim_{ ${formData?.tech_with} \\to ${result?.tech_inf}^{${result?.tech_dir}} } (${result?.tech_enter})`}
                             />
-                          </p>
+                          </div>
 
                           {/* Language key 9 */}
                           <p className="mt-3">
@@ -339,14 +339,14 @@ const LimitCalculator = () => {
                           </p>
 
                           {/* Put value */}
-                          <p className="mt-3">
+                          <div className="mt-3">
                             <BlockMath math={`= ${result?.tech_put}`} />
-                          </p>
+                          </div>
 
                           {/* Conditional fraction */}
                           {result?.tech_upr !== undefined &&
                             result?.tech_btm !== undefined && (
-                              <p className="mt-3">
+                              <div className="mt-3">
                                 <BlockMath
                                   math={
                                     result.tech_upr < 0 &&
@@ -365,14 +365,14 @@ const LimitCalculator = () => {
                                       : `= \\dfrac{${result.tech_upr}}{${result.tech_btm}}`
                                   }
                                 />
-                              </p>
+                              </div>
                             )}
 
                           {/* Final answer */}
-                          <p className="mt-3">
+                          <div className="mt-3">
                             {data?.payload?.tech_lang_keys[7]}{" "}
                             <BlockMath math={`= ${result?.tech_ans}`} />
-                          </p>
+                          </div>
 
                           {/* With value */}
                           <p className="mt-3">
@@ -381,13 +381,13 @@ const LimitCalculator = () => {
                           </p>
 
                           {/* Series result */}
-                          <p className="mt-3">
+                          <div className="mt-3">
                             <BlockMath math={result?.tech_ser} />
                             <br />
                             <span className="text-base">
                               {data?.payload?.tech_lang_keys[11]}
                             </span>
-                          </p>
+                          </div>
                         </div>
                       </div>
                     </div>

@@ -6,9 +6,10 @@ import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useDirectionalDerivativeCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useDirectionalDerivativeCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -93,11 +94,11 @@ const DirectionalDerivativeCalculator = () => {
         tech_y: formData.tech_y,
         tech_z: formData.tech_z,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -151,14 +152,14 @@ const DirectionalDerivativeCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg shadow-md space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
             <div className="col-12 col-lg-9 mx-auto mt-2 lg:w-[100%] w-full">
               <input
                 type="hidden"
@@ -201,7 +202,6 @@ const DirectionalDerivativeCalculator = () => {
                 </div>
               </div>
             </div>
-
             <div className="grid grid-cols-12  gap-2 md:gap-4 lg:gap-4 mt-4">
               <div className="col-span-12">
                 {formData.tech_type == "three" ? (
@@ -386,18 +386,18 @@ const DirectionalDerivativeCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
-              <div className=" w-full h-[30px] bg-gray-200 animate-pulse rounded-[10px] mb-4"></div>
-              <div className="w-[75%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[50%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[25%] h-[20px] bg-gray-200 animate-pulse rounded-[10px]"></div>
+              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
+              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
           </div>
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -406,7 +406,7 @@ const DirectionalDerivativeCalculator = () => {
                       <div className="w-full text-[16px] overflow-auto">
                         {formData?.tech_type == "two" ? (
                           <>
-                            <div className="mt-3 text-[18px]">
+                            <div className="mt-3 text-[16px] md:text-[18px]">
                               <BlockMath
                                 math={`D(${result?.tech_enter})_{\\vec u}(${formData?.tech_x},${formData?.tech_y}) \\approx ${result?.tech_ans}`}
                               />
@@ -418,7 +418,7 @@ const DirectionalDerivativeCalculator = () => {
                               </strong>
                             </p>
 
-                            <div className="mt-3">
+                            <p className="mt-3">
                               {data?.payload?.tech_lang_keys["5"]}{" "}
                               {result?.tech_enter}{" "}
                               {data?.payload?.tech_lang_keys["6"]} (x, y) =
@@ -429,7 +429,7 @@ const DirectionalDerivativeCalculator = () => {
                               <InlineMath
                                 math={`\\vec u = (${formData?.tech_u1}, ${formData?.tech_u2})`}
                               />
-                            </div>
+                            </p>
 
                             <p className="mt-3">
                               {data?.payload?.tech_lang_keys["8"]}.
@@ -513,7 +513,7 @@ const DirectionalDerivativeCalculator = () => {
                           </>
                         ) : (
                           <>
-                            <div className="mt-3 text-[18px]">
+                            <div className="mt-3 text-[16px] md:text-[18px]">
                               <BlockMath
                                 math={`D(${result?.tech_enter})_{\\vec u}(${formData?.tech_x},${formData?.tech_y},${formData?.tech_z}) \\approx ${result?.tech_ans}`}
                               />
@@ -525,7 +525,7 @@ const DirectionalDerivativeCalculator = () => {
                               </strong>
                             </p>
 
-                            <div className="mt-3">
+                            <p className="mt-3">
                               {data?.payload?.tech_lang_keys["5"]}{" "}
                               {result?.tech_enter}{" "}
                               {data?.payload?.tech_lang_keys["6"]} (x, y, z) =
@@ -536,7 +536,7 @@ const DirectionalDerivativeCalculator = () => {
                               <InlineMath
                                 math={`\\vec u = (${formData?.tech_u1}, ${formData?.tech_u2}, ${formData?.tech_u3})`}
                               />
-                            </div>
+                            </p>
 
                             <p className="mt-3">
                               {data?.payload?.tech_lang_keys["8"]}.

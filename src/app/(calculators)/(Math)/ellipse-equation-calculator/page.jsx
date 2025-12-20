@@ -169,7 +169,7 @@ const EllipseCalculator = () => {
       //   toast.error(errorMsg);
       // }
 
-      setResult(response.payload); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
       setFormError(err.data.payload.error);
@@ -622,7 +622,6 @@ const EllipseCalculator = () => {
       }
     }
   }, [result]);
-
   // majax
   useEffect(() => {
     const script = document.createElement("script");
@@ -742,7 +741,7 @@ const EllipseCalculator = () => {
                     className={`${
                       formData.tech_selection === "2"
                         ? "col-span-6"
-                        : "col-span-4"
+                        : "col-span-6"
                     } bValue`}
                   >
                     {formData.tech_selection == "1" ? (
@@ -850,24 +849,24 @@ const EllipseCalculator = () => {
         </div>
 
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
-              <div className="w-full h-[30px] bg-gray-200 animate-pulse rounded-[10px] mb-4"></div>
-              <div className="w-[75%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[50%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[25%] h-[20px] bg-gray-200 animate-pulse rounded-[10px]"></div>
+              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
+              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
           </div>
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg flex items-center justify-center">
                     <div className="w-full overflow-auto">
-                      {result?.tech_method == "1" && method1Results ? (
+                      {result?.tech_method === "1" && method1Results ? (
                         <div className="w-full text-[16px]">
                           {/* Our Ellipse is in the form of */}
                           <p className="mt-3 text-[16px] md:text-[18px]">
@@ -877,11 +876,11 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
 
-                          <div className="mt-3">
+                          <p className="mt-3">
                             <InlineMath
                               math={`\\dfrac{(x-0)^2}{\\dfrac{${method1Results.tech_upr}}{${method1Results.tech_btm}}} + \\dfrac{(y-0)^2}{\\dfrac{${method1Results.tech_upr1}}{${method1Results.tech_btm1}}} = 1`}
                             />
-                          </div>
+                          </p>
 
                           {/* After simplify the value of a and b */}
                           <div className="print">
@@ -891,13 +890,13 @@ const EllipseCalculator = () => {
                                   "After simplify the value of a and b"}
                               </strong>
                             </p>
-                            <div>
+                            <p>
                               <InlineMath
                                 math={`a = ${method1Results.value_a.toFixed(
                                   4
                                 )}, b = ${method1Results.value_b.toFixed(4)}`}
                               />
-                            </div>
+                            </p>
                           </div>
 
                           {/* Standard Form */}
@@ -909,7 +908,7 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 standard_form">
-                            <div>
+                            <p>
                               <InlineMath
                                 math={`\\dfrac{x^2}{${method1Results.value_a.toFixed(
                                   4
@@ -917,7 +916,7 @@ const EllipseCalculator = () => {
                                   4
                                 )}^2} = 1`}
                               />
-                            </div>
+                            </p>
                           </div>
 
                           {/* Vertex form */}
@@ -928,11 +927,11 @@ const EllipseCalculator = () => {
                               :
                             </strong>
                           </p>
-                          <div className="mt-3">
+                          <p className="mt-3">
                             <InlineMath
                               math={`\\dfrac{${method1Results.tech_btm} x^{2}}{${method1Results.tech_upr}} + \\dfrac{${method1Results.tech_btm1} y^{2}}{${method1Results.tech_upr1}} = 1`}
                             />
-                          </div>
+                          </p>
 
                           {/* General Form */}
                           <p className="mt-3 text-[16px] md:text-[18px]">
@@ -942,7 +941,7 @@ const EllipseCalculator = () => {
                               :
                             </strong>
                           </p>
-                          <div className="mt-3">
+                          <p className="mt-3">
                             <InlineMath
                               math={`${
                                 method1Results.calculate_lcm1 *
@@ -952,7 +951,7 @@ const EllipseCalculator = () => {
                                 method1Results.tech_btm1
                               } y^{2} - ${method1Results._lcm} = 0`}
                             />
-                          </div>
+                          </p>
 
                           {/* Linear Eccentricity */}
                           <p className="mt-3 text-[16px] md:text-[18px]">
@@ -962,7 +961,7 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 linear_eccentricity">
-                            <div>
+                            <p>
                               <InlineMath
                                 math={`c = \\sqrt{a^2 - b^2} = \\sqrt{${method1Results.value_a.toFixed(
                                   4
@@ -972,7 +971,7 @@ const EllipseCalculator = () => {
                                   4
                                 )}`}
                               />
-                            </div>
+                            </p>
                           </div>
 
                           {/* Eccentricity */}
@@ -983,7 +982,7 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 eccentricity">
-                            <div>
+                            <p>
                               <InlineMath
                                 math={`e = \\frac{c}{a} = \\frac{${method1Results.linearEccentricity.toFixed(
                                   4
@@ -993,7 +992,7 @@ const EllipseCalculator = () => {
                                   4
                                 )}`}
                               />
-                            </div>
+                            </p>
                           </div>
 
                           {/* First Vertex */}
@@ -1005,9 +1004,9 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 first_vertex">
-                            <div>
+                            <p>
                               <InlineMath math={method1Results.first_vertex} />
-                            </div>
+                            </p>
                           </div>
 
                           {/* Second Vertex */}
@@ -1019,9 +1018,9 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 second_vertex">
-                            <div>
+                            <p>
                               <InlineMath math={method1Results.second_vertex} />
-                            </div>
+                            </p>
                           </div>
 
                           {/* First Co-Vertex */}
@@ -1033,11 +1032,11 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 first_co_vertex">
-                            <div>
+                            <p>
                               <InlineMath
                                 math={method1Results.first_co_vertex}
                               />
-                            </div>
+                            </p>
                           </div>
 
                           {/* Second Co-Vertex */}
@@ -1049,11 +1048,11 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 second_co_vertex">
-                            <div>
+                            <p>
                               <InlineMath
                                 math={method1Results.second_co_vertex}
                               />
-                            </div>
+                            </p>
                           </div>
 
                           {/* First Focus */}
@@ -1065,9 +1064,9 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 first_focus">
-                            <div>
+                            <p>
                               <InlineMath math={method1Results.first_focus} />
-                            </div>
+                            </p>
                           </div>
 
                           {/* Second Focus */}
@@ -1079,9 +1078,9 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 second_focus">
-                            <div>
+                            <p>
                               <InlineMath math={method1Results.second_focus} />
-                            </div>
+                            </p>
                           </div>
 
                           {/* Area */}
@@ -1091,7 +1090,7 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 area">
-                            <div>
+                            <p>
                               <InlineMath
                                 math={`A = \\pi ab = \\pi \\times ${method1Results.value_a.toFixed(
                                   4
@@ -1099,7 +1098,7 @@ const EllipseCalculator = () => {
                                   4
                                 )} \\approx ${method1Results.area.toFixed(4)}`}
                               />
-                            </div>
+                            </p>
                           </div>
 
                           {/* Domain */}
@@ -1109,9 +1108,9 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 domain">
-                            <div>
+                            <p>
                               <InlineMath math={method1Results.domain} />
-                            </div>
+                            </p>
                           </div>
 
                           {/* Range */}
@@ -1121,9 +1120,9 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 range">
-                            <div>
+                            <p>
                               <InlineMath math={method1Results.range} />
-                            </div>
+                            </p>
                           </div>
 
                           {/* Center */}
@@ -1142,11 +1141,11 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 major_axis">
-                            <div>
+                            <p>
                               <InlineMath
                                 math={`2a = ${method1Results.major_axis_length}`}
                               />
-                            </div>
+                            </p>
                           </div>
 
                           {/* Semi-major axis length */}
@@ -1157,11 +1156,11 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 semi_major_axis">
-                            <div>
+                            <p>
                               <InlineMath
                                 math={`a = ${method1Results.semi_major_axis_length}`}
                               />
-                            </div>
+                            </p>
                           </div>
 
                           {/* Minor axis length */}
@@ -1172,11 +1171,11 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 minor_axis">
-                            <div>
+                            <p>
                               <InlineMath
                                 math={`2b = ${method1Results.minor_axis_length}`}
                               />
-                            </div>
+                            </p>
                           </div>
 
                           {/* Semi-minor axis length */}
@@ -1187,11 +1186,11 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 semi_minor_axis">
-                            <div>
+                            <p>
                               <InlineMath
                                 math={`b = ${method1Results.semi_minor_axis_length}`}
                               />
-                            </div>
+                            </p>
                           </div>
 
                           {/* First latus rectum */}
@@ -1203,11 +1202,11 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 first_latus_rectum">
-                            <div>
+                            <p>
                               <InlineMath
                                 math={method1Results.first_latus_rectum}
                               />
-                            </div>
+                            </p>
                           </div>
 
                           {/* Second latus rectum */}
@@ -1219,11 +1218,11 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 second_latus_rectum">
-                            <div>
+                            <p>
                               <InlineMath
                                 math={method1Results.second_latus_rectum}
                               />
-                            </div>
+                            </p>
                           </div>
 
                           {/* x-intercepts */}
@@ -1236,9 +1235,9 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 x-intercepts">
-                            <div>
+                            <p>
                               <InlineMath math={method1Results.x_intercepts} />
-                            </div>
+                            </p>
                           </div>
 
                           {/* y-intercepts */}
@@ -1251,12 +1250,12 @@ const EllipseCalculator = () => {
                             </strong>
                           </p>
                           <div className="col-12 mt-3 y-intercepts">
-                            <div>
+                            <p>
                               <InlineMath math={method1Results.y_intercepts} />
-                            </div>
+                            </p>
                           </div>
                         </div>
-                      ) : result?.tech_method == "2" && method2Results ? (
+                      ) : result?.tech_method === "2" && method2Results ? (
                         // Method 2 results
                         <div
                           className="w-full text-[16px] method2-results"

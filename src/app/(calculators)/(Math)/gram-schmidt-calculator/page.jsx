@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useGramSchmidtCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useGramSchmidtCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -210,12 +211,11 @@ const GramSchmidtCalculator = () => {
 
     try {
       const response = await calculateEbitCalculator(matrixPayload).unwrap();
-      setResult(response); // Set the result from the response
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      const errorMessage = err?.data?.error || "An unexpected error occurred.";
-      setFormError(errorMessage);
-      toast.error(errorMessage);
+      setFormError(err.data.payload.error);
+      toast.error(err.data.payload.error);
     }
   };
 
@@ -391,13 +391,13 @@ const GramSchmidtCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[100%] md:w-[90%] w-full mx-auto ">
+          <div className="lg:w-[90%] md:w-[90%] w-full mx-auto ">
             <div className="grid grid-cols-12 gap-3">
               <p className="col-span-12 text-[16px] font-bold">
                 {data?.payload?.tech_lang_keys[1]}
               </p>
 
-              <div className="md:col-span-3 col-span-5">
+              <div className="col-span-5 md:col-span-3">
                 <select
                   className="input"
                   name="tech_matrix2"
@@ -414,7 +414,7 @@ const GramSchmidtCalculator = () => {
 
               <p className="col-span-1 text-[16px] font-bold">X</p>
 
-              <div className="md:col-span-3 col-span-5">
+              <div className="col-span-5 md:col-span-3">
                 <select
                   className="input"
                   name="tech_matrix22"
@@ -432,38 +432,44 @@ const GramSchmidtCalculator = () => {
             <p className="col-span-12 text-[16px]">
               <strong>{data?.payload?.tech_lang_keys[3]}</strong>
             </p>
-            <div className="col-span-12 overflow-auto">
-              <table className=" mt-3 " width={900}>
-                <tbody>
-                  {Array.from({
-                    length: parseInt(formData.tech_matrix2 || "1"),
-                  }).map((_, rowIndex) => (
-                    <tr key={rowIndex}>
-                      {Array.from({
-                        length: parseInt(formData.tech_matrix22 || "1"),
-                      }).map((_, colIndex) => {
-                        const key = `tech_matrix3${rowIndex + 1}_${
-                          colIndex + 1
-                        }`;
-                        return (
-                          <td key={colIndex} className="px-2 py-1">
-                            <input
-                              type="number"
-                              step="any"
-                              className="input"
-                              name={key}
-                              value={formData[key] || ""}
-                              onChange={handleChange}
-                              placeholder="0"
-                              required
-                            />
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="col-span-12 flex justify-center">
+              <div className="w-full overflow-x-auto mt-3">
+                <table className="w-full table-fixed border-collapse">
+                  <tbody>
+                    {Array.from({
+                      length: parseInt(formData.tech_matrix2 || "1"),
+                    }).map((_, rowIndex) => (
+                      <tr key={`row-${rowIndex}`}>
+                        {Array.from({
+                          length: parseInt(formData.tech_matrix22 || "1"),
+                        }).map((_, colIndex) => {
+                          const key = `tech_matrix3${rowIndex + 1}_${
+                            colIndex + 1
+                          }`;
+
+                          return (
+                            <td
+                              key={`col-${rowIndex}-${colIndex}`}
+                              className="px-1 py-1 w-[90px]"
+                            >
+                              <input
+                                type="number"
+                                step="any"
+                                name={key}
+                                value={formData[key] || ""}
+                                onChange={handleChange}
+                                placeholder="0"
+                                required
+                                className="w-full text-sm px-2 py-1"
+                              />
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
 
@@ -492,31 +498,31 @@ const GramSchmidtCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
                   <div className="rounded-lg flex items-center justify-center">
                     <div className="w-full mt-3 text-[16px] overflow-auto">
-                      <p className="mt-2 text-[18px] font-bold">
+                      <p className="mt-2 text-[16px] md:text-[18px] font-bold">
                         {data?.payload?.tech_lang_keys[5]}
                       </p>
 
                       <BlockMath>
                         {`
-                          \\begin{bmatrix}
-                            ${renderMatrix(result?.tech_first_unit)}
-                          \\end{bmatrix}
-                          ${result?.tech_all_vecunit
-                            ?.map(
-                              (vec) => `
-                              \\quad
-                              \\begin{bmatrix}
-                                ${renderMatrix(vec)}
-                              \\end{bmatrix}`
-                            )
-                            .join("")}
-                        `}
+                            \\begin{bmatrix}
+                              ${renderMatrix(result?.tech_first_unit)}
+                            \\end{bmatrix}
+                            ${result?.tech_all_vecunit
+                              ?.map(
+                                (vec) => `
+                                \\quad
+                                \\begin{bmatrix}
+                                  ${renderMatrix(vec)}
+                                \\end{bmatrix}`
+                              )
+                              .join("")}
+                          `}
                       </BlockMath>
 
                       <p className="mt-4">{data?.payload?.tech_lang_keys[6]}</p>
@@ -533,26 +539,26 @@ const GramSchmidtCalculator = () => {
                           .join(",\\quad ")}
                       </BlockMath>
 
-                      <p className="mt-4 text-[18px] font-bold">
+                      <p className="mt-4 text-[16px] md:text-[18px] font-bold">
                         Step by Step {data?.payload?.tech_lang_keys[8]}
                       </p>
 
-                      <div className=" rounded-lg px-3 py-2 mt-2 ">
+                      <div className="rounded-lg px-3 py-2 mt-2 overflow-auto method2-results">
                         <BlockMath>
                           {`
-                            \\text{${data?.payload?.tech_lang_keys[9]}},\\quad
-                            \\vec{u_k} = \\vec{v_k} - \\sum_{j=1}^{k-1} \\text{proj}_{\\vec{u_j}}(\\vec{v_k})\\quad
-                            \\text{${data?.payload?.tech_lang_keys[10]}}\\quad
-                            \\text{proj}_{\\vec{u_j}}(\\vec{v_k}) = \\frac{\\vec{u_j} \\cdot \\vec{v_k}}{|\\vec{u_j}|^2} \\vec{u_j}\\quad
-                            \\text{${data?.payload?.tech_lang_keys[11]}}.
-                          `}
+                              \\text{${data?.payload?.tech_lang_keys[9]}},\\quad
+                              \\vec{u_k} = \\vec{v_k} - \\sum_{j=1}^{k-1} \\text{proj}_{\\vec{u_j}}(\\vec{v_k})\\quad
+                              \\text{${data?.payload?.tech_lang_keys[10]}}\\quad
+                              \\text{proj}_{\\vec{u_j}}(\\vec{v_k}) = \\frac{\\vec{u_j} \\cdot \\vec{v_k}}{|\\vec{u_j}|^2} \\vec{u_j}\\quad
+                              \\text{${data?.payload?.tech_lang_keys[11]}}.
+                            `}
                         </BlockMath>
 
                         <BlockMath>
                           {`
-                            \\text{${data?.payload?.tech_lang_keys[12]}}\\quad
-                            \\vec{e_k} = \\frac{\\vec{u_k}}{|\\vec{u_k}|}
-                          `}
+                              \\text{${data?.payload?.tech_lang_keys[12]}}\\quad
+                              \\vec{e_k} = \\frac{\\vec{u_k}}{|\\vec{u_k}|}
+                            `}
                         </BlockMath>
 
                         {/* First step */}
@@ -561,16 +567,16 @@ const GramSchmidtCalculator = () => {
                         </p>
                         <BlockMath>
                           {`
-                            \\vec{u_1} = \\vec{v_1} = \\begin{bmatrix}
-                              ${renderMatrix(result?.tech_all_vec?.[0])}
-                            \\end{bmatrix}
-                          `}
+                              \\vec{u_1} = \\vec{v_1} = \\begin{bmatrix}
+                                ${renderMatrix(result?.tech_all_vec?.[0])}
+                              \\end{bmatrix}
+                            `}
                         </BlockMath>
 
                         <p className="mt-2">
                           {data?.payload?.tech_lang_keys[14]}{" "}
                           <a
-                            href="https://calculator-logical.com/unit-vector-calculator/"
+                            href="calculator-logical.com/unit-vector-calculator"
                             className="text-blue-500 underline"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -581,10 +587,10 @@ const GramSchmidtCalculator = () => {
 
                         <BlockMath>
                           {`
-                            \\vec{e_1} = \\frac{\\vec{u_1}}{|\\vec{u_1}|} = \\begin{bmatrix}
-                              ${renderMatrix(result?.tech_first_unit)}
-                            \\end{bmatrix}
-                          `}
+                              \\vec{e_1} = \\frac{\\vec{u_1}}{|\\vec{u_1}|} = \\begin{bmatrix}
+                                ${renderMatrix(result?.tech_first_unit)}
+                              \\end{bmatrix}
+                            `}
                         </BlockMath>
 
                         {/* Loop for remaining steps */}
@@ -597,7 +603,7 @@ const GramSchmidtCalculator = () => {
                             <p className="mt-2">
                               {data?.payload?.tech_lang_keys[15]}{" "}
                               <a
-                                href="https://calculator-logical.com/vector-projection-calculator/"
+                                href="calculator-logical.com/vector-projection-calculator"
                                 className="text-blue-500 underline"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -608,16 +614,18 @@ const GramSchmidtCalculator = () => {
 
                             <BlockMath>
                               {`
-                                \\text{proj}_{\\vec{u_1}}(\\vec{v_${n + 2}}) ${
+                                  \\text{proj}_{\\vec{u_1}}(\\vec{v_${
+                                    n + 2
+                                  }}) ${
                                 n !== 0
                                   ? ` - \\text{proj}_{\\vec{u_2}}(\\vec{v_${
                                       n + 2
                                     }})`
                                   : ""
                               } = \\begin{bmatrix}
-                                ${renderMatrix(proj)}
-                              \\end{bmatrix}
-                              `}
+                                  ${renderMatrix(proj)}
+                                \\end{bmatrix}
+                                `}
                             </BlockMath>
 
                             <p className="mt-2">
@@ -626,7 +634,7 @@ const GramSchmidtCalculator = () => {
 
                             <BlockMath>
                               {`
-                                \\vec{u_${n + 2}} = \\vec{v_${
+                                  \\vec{u_${n + 2}} = \\vec{v_${
                                 n + 2
                               }} - \\text{proj}_{\\vec{u_1}}(\\vec{v_${
                                 n + 2
@@ -637,9 +645,9 @@ const GramSchmidtCalculator = () => {
                                     }})`
                                   : ""
                               } = \\begin{bmatrix}
-                                ${renderMatrix(result?.tech_subtract?.[n])}
-                              \\end{bmatrix}
-                              `}
+                                  ${renderMatrix(result?.tech_subtract?.[n])}
+                                \\end{bmatrix}
+                                `}
                             </BlockMath>
 
                             <p className="mt-2">
@@ -648,12 +656,14 @@ const GramSchmidtCalculator = () => {
 
                             <BlockMath>
                               {`
-                                \\vec{e_${n + 2}} = \\frac{\\vec{u_${
+                                  \\vec{e_${n + 2}} = \\frac{\\vec{u_${
                                 n + 2
                               }}}{|\\vec{u_${n + 2}}|} = \\begin{bmatrix}
-                                  ${renderMatrix(result?.tech_all_vecunit?.[n])}
-                                \\end{bmatrix}
-                              `}
+                                    ${renderMatrix(
+                                      result?.tech_all_vecunit?.[n]
+                                    )}
+                                  \\end{bmatrix}
+                                `}
                             </BlockMath>
                           </div>
                         ))}

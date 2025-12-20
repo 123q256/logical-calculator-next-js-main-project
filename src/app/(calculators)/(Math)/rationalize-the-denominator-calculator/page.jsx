@@ -5,8 +5,7 @@ import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-import { useRationalizeTheDenominatorCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import { useGetSingleCalculatorDetailsMutation ,useRationalizeTheDenominatorCalculatorMutation } from "../../../../redux/services/calculator/calculatorApi";
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
 import CalculatorFeedback from "../../../../components/Calculator/CalculatorFeedback";
@@ -504,12 +503,12 @@ const toPower = (primeFactors) => {
         tech_n1: formData.tech_n1,
         tech_d1: formData.tech_d1,
       }).unwrap();
-      setResult(response);
-      toast.success("Successfully Calculated");
-    } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
-    }
+           setResult(response?.payload); // Assuming the response has 'lovePercentage'
+            toast.success("Successfully Calculated");
+          } catch (err) {
+            setFormError(err.data.payload.error);
+            toast.error(err.data.payload.error);
+          }
   };
 
   const handleReset = () => {
@@ -577,7 +576,7 @@ const toPower = (primeFactors) => {
           <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
             <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
               <div className="col-span-12 flex items-center justify-evenly">
-                <p className="text-blue"><strong>{data?.payload?.tech_lang_keys[1]}:</strong></p>
+                <p className="font-s-14 text-blue"><strong>{data?.payload?.tech_lang_keys[1]}:</strong></p>
                 <p id="fInput">
                   <label className="pe-2 cursor-pointer" htmlFor="first">
                     <input
@@ -901,18 +900,18 @@ const toPower = (primeFactors) => {
         </div>
 
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
-              <div className="w-full h-[30px] bg-gray-200 animate-pulse rounded-[10px] mb-4"></div>
-              <div className="w-[75%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[50%] h-[20px] bg-gray-200 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[25%] h-[20px] bg-gray-200 animate-pulse rounded-[10px]"></div>
+              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
+              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
             </div>
-          </div>
+         </div>
         ) : (
           result && (
             <>
-              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
                   
@@ -921,43 +920,43 @@ const toPower = (primeFactors) => {
                       <div className="w-full text-[16px]">
                         {formData?.tech_type === "first" ? (
                           <>
-                            <p className="mt-3 text-[16px] md:text-[18px] font-bold">
+                            <div className="mt-3 text-[16px] md:text-[18px] font-bold">
                               <InlineMath math={calculationResult.finalAnswer || ""} />
-                            </p>
+                            </div>
                             <p className="mt-3">
                               <strong>{data?.payload?.tech_lang_keys[12]}:</strong>
                             </p>
-                            <div className="w-full all_result text-[16px] md:text-[18px] lg:text-[22px]">
+                            <div className="w-full all_result text-[16px] md:text-[18px] ">
                               {calculationResult.steps.map((step, index) => (
-                                <p key={index} className="mt-3">
+                                <div key={index} className="mt-3">
                                   <InlineMath math={step} />
-                                </p>
+                                </div>
                               ))}
                             </div>
-                            <p className="mt-3">
+                            <div className="mt-3">
                               = &nbsp;&nbsp;&nbsp;&nbsp;
                               <InlineMath math={calculationResult.finalAnswer || ""} />
-                            </p>
+                            </div>
                           </>
                         ) : (
                           <>
-                            <p className="mt-3 text-[16px] md:text-[18px] lg:text-[22px] font-bold">
+                            <div className="mt-3 text-[16px] md:text-[18px] font-bold">
                               <InlineMath math={result?.tech_main_ans || ""} />
-                            </p>
-                            <p className="mt-3 text-[16px] md:text-[18px] lg:text-[22px]">
+                            </div>
+                            <div className="mt-3 text-[16px] md:text-[18px]">
                               <strong>{data?.payload?.tech_lang_keys[12]}:</strong>
-                            </p>
-                            <p className="mt-3 text-[16px] md:text-[18px] lg:text-[22px]">
+                            </div>
+                            <div className="mt-3 text-[16px] md:text-[18px]">
                               <InlineMath math={`= ${result?.tech_enter || ""}`} />
-                            </p>
-                            <p className="mt-3 text-[16px] md:text-[18px] lg:text-[22px]">
+                            </div>
+                            <div className="mt-3 text-[16px] md:text-[18px]">
                               <InlineMath
                                 math={`= \\dfrac{${result?.tech_up || ""}}{${result?.tech_down || ""}}`}
                               />
-                            </p>
-                            <p className="mt-3 text-[16px] md:text-[18px] lg:text-[22px]">
+                            </div>
+                            <div className="mt-3 text-[16px] md:text-[18px]">
                               <InlineMath math={`= ${result?.tech_main_ans || ""}`} />
-                            </p>
+                            </div>
                           </>
                         )}
                       </div>

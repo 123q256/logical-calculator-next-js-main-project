@@ -1099,7 +1099,7 @@ const GradeCalculator = () => {
                 <>
                   <div className="col-span-12 tabs mt-2">
                     <div className="col-12 col-lg-9 mx-auto mt-2 w-full">
-                      <div className="flex flex-wrap items-center bg-green-100 border border-green-500 text-center rounded-lg px-1">
+                      <div className="flex flex-wrap items-center bg-blue-100 border border-blue-500 text-center rounded-lg px-1">
                         <div className="lg:w-1/2 w-full px-2 py-1">
                           <div
                             className={`bg-white px-3 py-2 cursor-pointer rounded-md transition-colors duration-300 hover_tags hover:text-white pacetab ${
