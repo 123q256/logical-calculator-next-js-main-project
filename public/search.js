@@ -41,8 +41,8 @@ export const searchallcalculators = {
   37: ["Days Since Date Calculator", "days-since-date-calculator", "TimeDate"],
   38: ["Days Ago Calculator", "days-ago-calculator", "TimeDate"],
   39: ["Days left in the year", "days-left-in-the-year", "TimeDate"],
-  40: ["How Many Weeks Left In 2024?", "weeks-left-in-the-year", "TimeDate"],
-  41: ["How Many Months Left In 2024?", "months-left-in-the-year", "TimeDate"],
+  40: ["How Many Weeks Left In 2026?", "weeks-left-in-the-year", "TimeDate"],
+  41: ["How Many Months Left In 2026?", "months-left-in-the-year", "TimeDate"],
   42: ["How Many Days Till My Birthday?", "how-many-days-until-my-birthday", "TimeDate"],
     // Construction
   43: ["Square Footage Calculator", "square-footage-calculator", "Construction"],

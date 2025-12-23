@@ -659,7 +659,7 @@ const OvulationCalculator = () => {
                                   <img
                                     src="/images/fertile.png"
                                     alt="Fertile Period"
-                                    className=" h-10  mt-3 object-cover mx-auto"
+                                  className="w-15 h-14  mt-3 object-cover mx-auto"
                                   />
                                   <p className="text-blue-500 mt-2">
                                     <strong>
@@ -680,7 +680,7 @@ const OvulationCalculator = () => {
                                   <img
                                     src="/images/next_period.png"
                                     alt="Next Period"
-                                    className=" h-15 mx-auto"
+                                   className="h-13 w-15 mx-auto"
                                   />
                                   <p className="text-blue-500">
                                     <strong>
@@ -698,7 +698,7 @@ const OvulationCalculator = () => {
                                   <img
                                     src="/images/window.png"
                                     alt="Intercourse Window for Pregnancy"
-                                    className=" h-13 mx-auto"
+                                    className="w-10 h-13 mx-auto"
                                   />
                                   <p className="text-blue-500 mt-2">
                                     <strong>
@@ -719,7 +719,7 @@ const OvulationCalculator = () => {
                                   <img
                                     src="/images/safe.png"
                                     alt="Safe Period"
-                                    className=" h-10 mx-auto"
+                                      className="w-10 h-10 mx-auto"
                                   />
                                   <p className="text-blue-500">
                                     <strong>
@@ -737,7 +737,7 @@ const OvulationCalculator = () => {
                                   <img
                                     src="/images/expected_date.png"
                                     alt="Due Date"
-                                    className=" h-13 mx-auto"
+                                   className="w-10 h-13 mx-auto"
                                   />
                                   <p className="text-blue-500">
                                     <strong>
@@ -755,7 +755,7 @@ const OvulationCalculator = () => {
                                   <img
                                     src="/images/test.png"
                                     alt="Pregnancy Test"
-                                    className=" h-10 mx-auto"
+                                     className="w-10 h-10 mx-auto"
                                   />
                                   <p className="text-blue-500 mt-4">
                                     <strong>

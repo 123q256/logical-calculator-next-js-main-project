@@ -224,7 +224,7 @@ const TankVolumeCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[80%] md:w-[80%] w-full mx-auto ">
+             <div className="lg:w-[80%] md:w-[80%] w-full mx-auto ">
             <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2  gap-4">
               <div className="col-lg-6">
                 <div className="space-y-2 ">
@@ -296,7 +296,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "4" && (
                     <>
                       <img
-                        src="/images/tank/Vertical Cylinder.png"
+                        src="/images/tank/Vertical-Cylinder.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -308,7 +308,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "5" && (
                     <>
                       <img
-                        src="/images/tank/rectangle.png"
+                        src="/images/tank/Rectangle.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -320,7 +320,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "6" && (
                     <>
                       <img
-                        src="/images/tank/horizontal oval.png"
+                        src="/images/tank/Horizontal-Oval.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -332,7 +332,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "7" && (
                     <>
                       <img
-                        src="/images/tank/vertical oval.png"
+                        src="/images/tank/Vertical-Oval.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -344,7 +344,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "8" && (
                     <>
                       <img
-                        src="/images/tank/horizontal capsule.png"
+                        src="/images/tank/Horizontal-Capsule.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -356,7 +356,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "9" && (
                     <>
                       <img
-                        src="/images/tank/vertical capsule.png"
+                        src="/images/tank/Vertical-Capsule.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -368,7 +368,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "12" && (
                     <>
                       <img
-                        src="/images/tank/horizontal elliptical.png"
+                        src="/images/tank/Horizontal-Elliptical.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -380,7 +380,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "13" && (
                     <>
                       <img
-                        src="/images/tank/cone bottom.png"
+                        src="/images/tank/Cone-Bottom.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -392,7 +392,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "14" && (
                     <>
                       <img
-                        src="/images/tank/cone top.png"
+                        src="/images/tank/Cone-Top.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -404,7 +404,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "15" && (
                     <>
                       <img
-                        src="/images/tank/frustum (truncated cone, funnel).png"
+                        src="/images/tank/Frustum.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -416,7 +416,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "16" && (
                     <>
                       <img
-                        src="/images/tank/sphere.png"
+                        src="/images/tank/Sphere.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -819,7 +819,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "3" && (
                     <>
                       <img
-                        src="/images/tank/horizantal-cylinder.png"
+                        src="images/tank/Horizantal-cylinder.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -831,7 +831,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "4" && (
                     <>
                       <img
-                        src="/images/tank/Vertical Cylinder.png"
+                        src="/images/tank/Vertical-Cylinder.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -843,7 +843,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "5" && (
                     <>
                       <img
-                        src="/images/tank/rectangle.png"
+                        src="/images/tank/Rectangle.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -855,7 +855,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "6" && (
                     <>
                       <img
-                        src="/images/tank/horizontal oval.png"
+                        src="/images/tank/Horizontal-Oval.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -867,7 +867,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "7" && (
                     <>
                       <img
-                        src="/images/tank/vertical oval.png"
+                        src="/images/tank/Vertical-Oval.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -879,7 +879,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "8" && (
                     <>
                       <img
-                        src="/images/tank/horizontal capsule.png"
+                        src="/images/tank/Horizontal-Capsule.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -891,7 +891,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "9" && (
                     <>
                       <img
-                        src="/images/tank/vertical capsule.png"
+                        src="/images/tank/Vertical-Capsule.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -903,7 +903,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "12" && (
                     <>
                       <img
-                        src="/images/tank/horizontal elliptical.png"
+                        src="/images/tank/Horizontal-Elliptical.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -915,7 +915,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "13" && (
                     <>
                       <img
-                        src="/images/tank/cone bottom.png"
+                        src="/images/tank/Cone-Bottom.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -927,7 +927,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "14" && (
                     <>
                       <img
-                        src="/images/tank/cone top.png"
+                        src="/images/tank/Cone-Top.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -939,7 +939,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "15" && (
                     <>
                       <img
-                        src="/images/tank/frustum (truncated cone, funnel).png"
+                        src="/images/tank/Frustum.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"
@@ -951,7 +951,7 @@ const TankVolumeCalculator = () => {
                   {formData.tech_operations == "16" && (
                     <>
                       <img
-                        src="/images/tank/sphere.png"
+                        src="/images/tank/Sphere.webp"
                         alt="Tank First"
                         className="max-width"
                         id="im"

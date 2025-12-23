@@ -2,11 +2,6 @@
 
 import React, { useEffect, useState, useMemo } from "react";
 import { usePathname } from "next/navigation";
-const sonImg = "/images/son.svg";
-const daughterImg = "/images/daughter.svg";
-const fatherImg = "/images/father.svg";
-const motherImg = "/images/mother.svg";
-
 import {
   useGetSingleCalculatorDetailsMutation,
   useHeightCalculatorMutation,
