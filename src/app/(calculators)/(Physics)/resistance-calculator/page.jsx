@@ -1747,11 +1747,13 @@ const ResistanceCalculator = () => {
                                   {data?.payload?.tech_lang_keys["23"]}
                                 </strong>
                               </p>
-                              <p className="text-[25px] bg-w-auto bg-sky-100 px-3 py-2 d-inline-block my-3">
-                                <strong className="text-blue">
-                                  {result?.tech_answer}
-                                </strong>
-                              </p>
+                              <div className="flex justify-center">
+                                <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
+                                  <strong className="text-blue">
+                                    {result?.tech_answer}
+                                  </strong>
+                                </p>
+                              </div>
                             </div>
                           </>
                         ) : formData?.tech_operations === "3" ? (
@@ -1762,11 +1764,13 @@ const ResistanceCalculator = () => {
                                   {data?.payload?.tech_lang_keys["24"]}
                                 </strong>
                               </p>
-                              <p className="text-[25px] bg-w-auto bg-sky-100 px-3 py-2 d-inline-block my-3">
-                                <strong className="text-blue">
-                                  {result?.tech_answer} ohm (Ω)
-                                </strong>
-                              </p>
+                              <div className="flex justify-center">
+                                <p className="text-[25px] bg-[#2845F5] text-white rounded-lg px-3 py-2  my-3">
+                                  <strong className="text-blue">
+                                    {result?.tech_answer} ohm (Ω)
+                                  </strong>
+                                </p>
+                              </div>
                             </div>
                           </>
                         ) : null}

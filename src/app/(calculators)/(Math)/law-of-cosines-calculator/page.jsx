@@ -47,7 +47,7 @@ const LawOfCosinesCalculator = () => {
   }, [url]);
 
   const [formData, setFormData] = useState({
-    tech_cal: "aa", // aa  ab ac sa sb  sc
+    tech_cal: "sa", // aa  ab ac sa sb  sc
     tech_side_a: "12",
     tech_side_a_unit: "m",
     tech_side_b: "12",
@@ -113,7 +113,7 @@ const LawOfCosinesCalculator = () => {
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_cal: "aa", // aa  ab ac sa sb  sc
+      tech_cal: "sa", // aa  ab ac sa sb  sc
       tech_side_a: "12",
       tech_side_a_unit: "m",
       tech_side_b: "12",

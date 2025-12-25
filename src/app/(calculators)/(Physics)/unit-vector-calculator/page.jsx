@@ -27,7 +27,7 @@ const UnitVectorCalculator = () => {
     } else {
       // do ya zyada parts
       url = parts[0] + "/" + parts[1];  // "de/age-calculator"
-    }
+}
   const [getSingleCalculatorDetails, { data, error, isLoading }] =
     useGetSingleCalculatorDetailsMutation();
   const handleFetchDetails = async () => {
