@@ -426,7 +426,7 @@ const PooledVarianceCalculator = () => {
                                 {formData?.tech_option == "sum" && (
                                   <>
                                     <div className="text-center">
-                                      <p className="text-[21px] bg-[#2845F5] text-[#fff] rounded-lg px-3 py-2 rounded-[10px] inline-block my-3">
+                                      <p className="text-[21px] bg-[#2845F5] text-[#fff] rounded-lg px-3 py-2  inline-block my-3">
                                         <strong>
                                           {result?.sp2}
                                         </strong>
@@ -833,7 +833,7 @@ const PooledVarianceCalculator = () => {
                                 {formData?.tech_option == "sum" && (
                                   <>
                                     <div className="text-center">
-                                      <p className="text-[18px] bg-[#2845F5] text-[#fff] rounded-lg px-3 py-2 rounded-[10px] inline-block my-3">
+                                      <p className="text-[18px] bg-[#2845F5] text-[#fff] rounded-lg px-3 py-2 inline-block my-3">
                                         <strong >
                                           {data?.payload?.tech_lang_keys["23"]}
                                         </strong>

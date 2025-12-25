@@ -861,7 +861,7 @@ const SpecificHeatCalculator = () => {
                                     {data?.payload?.tech_lang_keys[2]}
                                   </strong>
                                 </p>
-                                <p className="text-[21px] bg-sky bordered rounded-lg px-3 py-2 rounded d-inline-block my-3">
+                                <p className="text-[21px] bg-sky bordered rounded-lg px-3 py-2 d-inline-block my-3">
                                   <strong className="text-blue">
                                     {result?.tech_q} J
                                   </strong>
