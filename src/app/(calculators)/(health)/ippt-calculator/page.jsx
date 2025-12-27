@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useIpptCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useIpptCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -14,7 +15,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const IPPTCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -96,11 +96,11 @@ const IPPTCalculator = () => {
         tech_time: formData.tech_time,
         tech_time_fe: formData.tech_time_fe,
       }).unwrap();
-      setResult(response); // Assuming the response has 'lovePercentage'
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError("Error in calculating.");
-      toast.error("Error in calculating.");
+      setFormError(err?.data?.payload?.error);
+      toast.error(err?.data?.payload?.error);
     }
   };
 
@@ -146,7 +146,7 @@ const IPPTCalculator = () => {
         { name: "Home", path: "/" },
         {
           name: data?.payload?.tech_cal_cat,
-          path: "/" + data?.payload?.tech_cal_cat,
+          path: "/category/" + data?.payload?.tech_cal_cat,
         },
         {
           name: data?.payload?.tech_calculator_title,
@@ -278,7 +278,7 @@ const IPPTCalculator = () => {
               </div>
               <input type="hidden" name="time_value" id="time_value" />
               {formData.tech_gender == "Male" && (
-                <div className="col-span-6 male_run">
+                <div className="col-span-12 md:col-span-6 male_run">
                   <label htmlFor="tech_time" className="label">
                     {data?.payload?.tech_lang_keys["run"]} (MM:SS):
                   </label>
@@ -362,7 +362,7 @@ const IPPTCalculator = () => {
                 </div>
               )}
               {formData.tech_gender == "Female" && (
-                <div className="col-span-6 female_run">
+                <div className="col-span-12 md:col-span-6 female_run">
                   <label htmlFor="tech_time_fe" className="label">
                     {data?.payload?.tech_lang_keys["run"]} (MM:SS):
                   </label>
@@ -462,7 +462,7 @@ const IPPTCalculator = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mb-6 mt-10">
+          <div className="mb-6 mt-10 text-center space-x-2">
             <Button type="submit" isLoading={roundToTheNearestLoading}>
               {data?.payload?.tech_lang_keys["calculate"]}
             </Button>
@@ -487,7 +487,7 @@ const IPPTCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full  mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -497,7 +497,7 @@ const IPPTCalculator = () => {
                         {result?.tech_status === "Fail" && (
                           <>
                             <p className="text-[20px]">
-                              <strong className="text-[#119154]">
+                              <strong className="text-green-700">
                                 {data?.payload?.tech_lang_keys["fail"]}
                               </strong>{" "}
                               {data?.payload?.tech_lang_keys["with"]}{" "}
@@ -517,15 +517,15 @@ const IPPTCalculator = () => {
                         {result?.tech_status === "Pass" && (
                           <>
                             <p className="text-[20px]">
-                              <strong className="text-[#119154]">
+                              <strong className="text-green-700">
                                 {data?.payload?.tech_lang_keys["pass"]}
                               </strong>{" "}
                               {data?.payload?.tech_lang_keys["with"]}{" "}
                               {result?.tech_score}{" "}
                               {data?.payload?.tech_lang_keys["point"]}.
                             </p>
-                            <p className="text-[30px]">
-                              <strong className="text-[#119154]">
+                            <p className="text-[25px] md:text-[30px]">
+                              <strong className="text-green-700">
                                 ($0 {data?.payload?.tech_lang_keys["awa"]})
                               </strong>
                             </p>
@@ -542,15 +542,15 @@ const IPPTCalculator = () => {
                         {result?.tech_status === "incentive" && (
                           <>
                             <p className="text-[20px]">
-                              <strong className="text-[#119154]">
+                              <strong className="text-green-700">
                                 {data?.payload?.tech_lang_keys["ipass"]}
                               </strong>{" "}
                               {data?.payload?.tech_lang_keys["with"]}{" "}
                               {result?.tech_score}{" "}
                               {data?.payload?.tech_lang_keys["point"]}.
                             </p>
-                            <p className="text-[30px]">
-                              <strong className="text-[#119154]">
+                            <p className="text-[25px] md:text-[30px]">
+                              <strong className="text-green-700">
                                 ($200 {data?.payload?.tech_lang_keys["awa"]})
                               </strong>
                             </p>
@@ -566,20 +566,20 @@ const IPPTCalculator = () => {
 
                         {result?.tech_status === "Silver" && (
                           <>
-                            <p className="text-[20px]">
-                              <strong className="text-[#119154]">
+                            <p className="text-[16px] md:text-[20px]">
+                              <strong className="text-green-700">
                                 {data?.payload?.tech_lang_keys["spass"]}
                               </strong>{" "}
                               {data?.payload?.tech_lang_keys["with"]}{" "}
                               {result?.tech_score}{" "}
                               {data?.payload?.tech_lang_keys["point"]}.
                             </p>
-                            <p className="text-[30px]">
-                              <strong className="text-[#119154]">
+                            <p className="text-[25px] md:text-[30px]">
+                              <strong className="text-green-700">
                                 ($300 {data?.payload?.tech_lang_keys["awa"]})
                               </strong>
                             </p>
-                            <p className="text-[18px]">
+                            <p className="text-[14px] md:text-[18px]">
                               {data?.payload?.tech_lang_keys["get_"]}{" "}
                               {result?.tech_to_next}{" "}
                               {data?.payload?.tech_lang_keys["p4"]}{" "}
@@ -591,20 +591,20 @@ const IPPTCalculator = () => {
 
                         {result?.tech_status === "Gold" && (
                           <>
-                            <p className="text-[20px]">
-                              <strong className="text-[#119154]">
+                            <p className="text-[16px] md:text-[20px]">
+                              <strong className="text-green-700">
                                 {data?.payload?.tech_lang_keys["gpass"]}
                               </strong>{" "}
                               {data?.payload?.tech_lang_keys["with"]}{" "}
                               {result?.tech_score}{" "}
                               {data?.payload?.tech_lang_keys["point"]}.
                             </p>
-                            <p className="text-[30px]">
-                              <strong className="text-[#119154]">
+                            <p className="text-[25px] md:text-[30px]">
+                              <strong className="text-green-700">
                                 ($500 {data?.payload?.tech_lang_keys["awa"]})
                               </strong>
                             </p>
-                            <p className="text-[18px]">
+                            <p className="text-[14px] md:text-[18px]">
                               {data?.payload?.tech_lang_keys["cong"]}!
                             </p>
                           </>
@@ -612,28 +612,28 @@ const IPPTCalculator = () => {
 
                         {result?.tech_status === "Gold1" && (
                           <>
-                            <p className="text-[20px]">
-                              <strong className="text-[#119154]">
+                            <p className="text-[16px] md:text-[20px]">
+                              <strong className="text-green-700">
                                 {data?.payload?.tech_lang_keys["p5"]}
                               </strong>{" "}
                               {data?.payload?.tech_lang_keys["with"]}{" "}
                               {result?.tech_score}{" "}
                               {data?.payload?.tech_lang_keys["point"]}.
                             </p>
-                            <p className="text-[30px]">
-                              <strong className="text-[#119154]">
+                            <p className="text-[25px] md:text-[30px]">
+                              <strong className="text-green-700">
                                 ($500 {data?.payload?.tech_lang_keys["awa"]})
                               </strong>
                             </p>
-                            <p className="text-[18px]">
+                            <p className="text-[14px] md:text-[18px]">
                               {data?.payload?.tech_lang_keys["cong"]}!
                             </p>
                           </>
                         )}
 
-                        <div className="w-full overflow-auto mt-2">
-                          <table className="w-full" cellspacing="0">
-                            <thead>
+                        <div className="w-full overflow-auto mt-2 text-[14px] md:text-[18px]">
+                          <table className="w-full" cellSpacing="0">
+                            <tbody>
                               <tr>
                                 <th className="text-blue text-start py-3">
                                   Activity
@@ -645,8 +645,6 @@ const IPPTCalculator = () => {
                                   {data?.payload?.tech_lang_keys["score"]}
                                 </th>
                               </tr>
-                            </thead>
-                            <tbody>
                               <tr>
                                 <td className="border-b py-3">
                                   {data?.payload?.tech_lang_keys["push"]}
@@ -680,7 +678,7 @@ const IPPTCalculator = () => {
                                   {result?.tech_run_s}
                                 </td>
                               </tr>
-                              <tr className="bg_blue_g text-white">
+                              <tr className=" white-text">
                                 <td className="py-3" colSpan="2">
                                   <strong>
                                     {data?.payload?.tech_lang_keys["ts"]}

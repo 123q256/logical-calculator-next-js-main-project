@@ -245,6 +245,25 @@ const AugmentedMatrixCalculator = () => {
     return <BlockMath>{`\\begin{bmatrix} ${rows} \\end{bmatrix}`}</BlockMath>;
   };
 
+  // majax
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src =
+      "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML";
+    script.async = true;
+    script.type = "text/javascript";
+    script.onload = () => {
+      window.MathJax &&
+        window.MathJax.Hub.Queue(["Typeset", window.MathJax.Hub]);
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, [result]);
+  // majax
+
   return (
     <Calculator
       isLoading={isLoading}

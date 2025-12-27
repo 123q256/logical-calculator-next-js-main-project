@@ -282,14 +282,14 @@ const AgeDifferenceCalculator = () => {
               {formData.tech_selection == "2" && (
                 <>
                   <div className="space-y-2">
-                    <label htmlFor="year_1" className="font-s-14 text-blue">
+                    <label htmlFor="tech_year_1" className="font-s-14 text-blue">
                       Birth Year 1:
                     </label>
                     <select
-                      name="year_1"
-                      id="year_1"
+                      name="tech_year_1"
+                      id="tech_year_1"
                       className="input mb-4"
-                      value={formData.year_1}
+                      value={formData.tech_year_1}
                       onChange={handleChange}
                     >
                       {years.map((year) => (
@@ -300,14 +300,14 @@ const AgeDifferenceCalculator = () => {
                     </select>
                   </div>
                   <div className="space-y-2">
-                    <label htmlFor="year_2" className="font-s-14 text-blue">
+                    <label htmlFor="tech_year_2" className="font-s-14 text-blue">
                       Birth Year 2:
                     </label>
                     <select
-                      name="year_2"
-                      id="year_2"
+                      name="tech_year_2"
+                      id="tech_year_2"
                       className="input"
-                      value={formData.year_2}
+                      value={formData.tech_year_2}
                       onChange={handleChange}
                     >
                       {years.map((year) => (
