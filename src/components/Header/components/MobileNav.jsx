@@ -39,19 +39,17 @@ const MobileNav = ({ onClose, isOpen, dropdownRef }) => {
       ? currentPath === "/"
       : currentPath.startsWith(path);
 
-    return `${
-      isActive
+    return `${isActive
         ? "text-[#2845F5] bg-[#eef1ff]"
         : "hover:bg-[#eef1ff] hover:text-[#2845F5]"
-    } flex gap-x-2 items-center w-full rounded-lg px-3 py-2 transition-colors duration-300 group`;
+      } flex gap-x-2 items-center w-full rounded-lg px-3 py-2 transition-colors duration-300 group`;
   };
 
   return (
     <div
       style={{ zIndex: 99999 }}
-      className={`fixed top-0 left-0 h-screen p-4 overflow-y-auto transition-transform duration-1000 bg-white w-80 z-50 ${
-        isOpen ? "translate-x-0" : "-translate-x-full"
-      }`}
+      className={`fixed top-0 left-0 h-screen p-4 overflow-y-auto transition-transform duration-1000 bg-white w-80 z-50 ${isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
       ref={dropdownRef}
       tabIndex={-1}
     >
@@ -60,12 +58,13 @@ const MobileNav = ({ onClose, isOpen, dropdownRef }) => {
         onClick={onClose}
         className="flex items-center space-x-3 rtl:space-x-reverse mr-auto pl-2"
       >
-        <img
+        <Image
           src="/logo.png"
-          className="h-8"
+          className="h-8 w-auto"
           alt="Header-Logo"
           title="Header-Logo"
-          loading="lazy"
+          width={32} // Approximate width for h-8 (32px)
+          height={32}
         />
         <div className="pl-1">
           <span className="self-center text-[19px] font-semibold whitespace-nowrap">

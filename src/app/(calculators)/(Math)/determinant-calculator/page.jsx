@@ -6,8 +6,8 @@ import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
 import {
-  useGetSingleCalculatorDetailsMutation,
-  useDeterminantCalculatorMutation,
+    useGetSingleCalculatorDetailsMutation,
+    useDeterminantCalculatorMutation,
 } from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
@@ -19,887 +19,889 @@ import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
 
 const DeterminantCalculator = () => {
-  const pathname = usePathname();
-  const parts = pathname.split("/").filter(Boolean); // remove empty strings
+    const pathname = usePathname();
+    const parts = pathname.split("/").filter(Boolean); // remove empty strings
 
-  let url = "";
+    let url = "";
 
-  if (parts.length === 1) {
-    // sirf ek part
-    url = parts[0]; // "age-calculator"
-  } else {
-    // do ya zyada parts
-    url = parts[0] + "/" + parts[1]; // "de/age-calculator"
-  }
-  const [getSingleCalculatorDetails, { data, error, isLoading }] =
-    useGetSingleCalculatorDetailsMutation();
-  const handleFetchDetails = async () => {
-    try {
-      // Call the mutation with the `tech_calculator_link`
-      await getSingleCalculatorDetails({ tech_calculator_link: url });
-    } catch (err) {
-      console.error("Error fetching calculator details:", err);
+    const getImgUrl = (path) => path;
+
+    if (parts.length === 1) {
+        // sirf ek part
+        url = parts[0]; // "age-calculator"
+    } else {
+        // do ya zyada parts
+        url = parts[0] + "/" + parts[1]; // "de/age-calculator"
     }
-  };
-
-  useEffect(() => {
-    handleFetchDetails();
-  }, [url]);
-
-  const [formData, setFormData] = useState({
-    tech_dtrmn_slct_method: "5",
-    tech_dtrmn_0_0: "4",
-    tech_dtrmn_0_1: "1",
-    tech_dtrmn_0_2: "1",
-    tech_dtrmn_0_3: "2",
-    tech_dtrmn_0_4: "2",
-    tech_dtrmn_1_0: "2",
-    tech_dtrmn_1_1: "1",
-    tech_dtrmn_1_2: "1",
-    tech_dtrmn_1_3: "8",
-    tech_dtrmn_1_4: "1",
-    tech_dtrmn_2_0: "0",
-    tech_dtrmn_2_1: "5",
-    tech_dtrmn_2_2: "6",
-    tech_dtrmn_2_3: "1",
-    tech_dtrmn_2_4: "1",
-    tech_dtrmn_3_0: "2",
-    tech_dtrmn_3_1: "7",
-    tech_dtrmn_3_2: "2",
-    tech_dtrmn_3_3: "1",
-    tech_dtrmn_3_4: "1",
-    tech_dtrmn_4_0: "3",
-    tech_dtrmn_4_1: "2",
-    tech_dtrmn_4_2: "1",
-    tech_dtrmn_4_3: "9",
-    tech_dtrmn_4_4: "1",
-    tech_dtrmn_opts_method: "exp_row",
-    tech_dtrmn_opts: "1",
-  });
-
-  const [result, setResult] = useState(null);
-  const [formError, setFormError] = useState("");
-
-  // RTK mutation hook
-  const [
-    calculateEbitCalculator,
-    { isLoading: roundToTheNearestLoading, isError, error: calculateLoveError },
-  ] = useDeterminantCalculatorMutation();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-    setResult(null);
-    setFormError(null);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!formData.tech_dtrmn_slct_method) {
-      setFormError("Please fill in input.");
-      return;
-    }
-
-    setFormError("");
-    try {
-      const response = await calculateEbitCalculator({
-        tech_dtrmn_slct_method: formData.tech_dtrmn_slct_method,
-        tech_dtrmn_0_0: formData.tech_dtrmn_0_0,
-        tech_dtrmn_0_1: formData.tech_dtrmn_0_1,
-        tech_dtrmn_0_2: formData.tech_dtrmn_0_2,
-        tech_dtrmn_0_3: formData.tech_dtrmn_0_3,
-        tech_dtrmn_0_4: formData.tech_dtrmn_0_4,
-        tech_dtrmn_1_0: formData.tech_dtrmn_1_0,
-        tech_dtrmn_1_1: formData.tech_dtrmn_1_1,
-        tech_dtrmn_1_2: formData.tech_dtrmn_1_2,
-        tech_dtrmn_1_3: formData.tech_dtrmn_1_3,
-        tech_dtrmn_1_4: formData.tech_dtrmn_1_4,
-        tech_dtrmn_2_0: formData.tech_dtrmn_2_0,
-        tech_dtrmn_2_1: formData.tech_dtrmn_2_1,
-        tech_dtrmn_2_2: formData.tech_dtrmn_2_2,
-        tech_dtrmn_2_3: formData.tech_dtrmn_2_3,
-        tech_dtrmn_2_4: formData.tech_dtrmn_2_4,
-        tech_dtrmn_3_0: formData.tech_dtrmn_3_0,
-        tech_dtrmn_3_1: formData.tech_dtrmn_3_1,
-        tech_dtrmn_3_2: formData.tech_dtrmn_3_2,
-        tech_dtrmn_3_3: formData.tech_dtrmn_3_3,
-        tech_dtrmn_3_4: formData.tech_dtrmn_3_4,
-        tech_dtrmn_4_0: formData.tech_dtrmn_4_0,
-        tech_dtrmn_4_1: formData.tech_dtrmn_4_1,
-        tech_dtrmn_4_2: formData.tech_dtrmn_4_2,
-        tech_dtrmn_4_3: formData.tech_dtrmn_4_3,
-        tech_dtrmn_4_4: formData.tech_dtrmn_4_4,
-        tech_dtrmn_opts_method: formData.tech_dtrmn_opts_method,
-        tech_dtrmn_opts: formData.tech_dtrmn_opts,
-      }).unwrap();
-      setResult(response?.payload); // Assuming the response has 'lovePercentage'
-      toast.success("Successfully Calculated");
-    } catch (err) {
-      setFormError(err.data.payload.error);
-      toast.error(err.data.payload.error);
-    }
-  };
-
-  // Handle reset form
-  const handleReset = () => {
-    setFormData({
-      tech_dtrmn_slct_method: "5",
-      tech_dtrmn_0_0: "4",
-      tech_dtrmn_0_1: "1",
-      tech_dtrmn_0_2: "1",
-      tech_dtrmn_0_3: "2",
-      tech_dtrmn_0_4: "2",
-      tech_dtrmn_1_0: "2",
-      tech_dtrmn_1_1: "1",
-      tech_dtrmn_1_2: "1",
-      tech_dtrmn_1_3: "8",
-      tech_dtrmn_1_4: "1",
-      tech_dtrmn_2_0: "0",
-      tech_dtrmn_2_1: "5",
-      tech_dtrmn_2_2: "6",
-      tech_dtrmn_2_3: "1",
-      tech_dtrmn_2_4: "1",
-      tech_dtrmn_3_0: "2",
-      tech_dtrmn_3_1: "7",
-      tech_dtrmn_3_2: "2",
-      tech_dtrmn_3_3: "1",
-      tech_dtrmn_3_4: "1",
-      tech_dtrmn_4_0: "3",
-      tech_dtrmn_4_1: "2",
-      tech_dtrmn_4_2: "1",
-      tech_dtrmn_4_3: "9",
-      tech_dtrmn_4_4: "1",
-      tech_dtrmn_opts_method: "exp_row",
-      tech_dtrmn_opts: "1",
-    });
-    setResult(null);
-    setFormError(null);
-  };
-  // currency code
-  const [currency, setCurrency] = useState({
-    code: "USD",
-    symbol: "$",
-    name: "US Dollar",
-  });
-
-  useEffect(() => {
-    const fetchCurrency = async () => {
-      const result = await getUserCurrency();
-      if (result) {
-        setCurrency(result);
-      }
+    const [getSingleCalculatorDetails, { data, error, isLoading }] =
+        useGetSingleCalculatorDetailsMutation();
+    const handleFetchDetails = async () => {
+        try {
+            // Call the mutation with the `tech_calculator_link`
+            await getSingleCalculatorDetails({ tech_calculator_link: url });
+        } catch (err) {
+            console.error("Error fetching calculator details:", err);
+        }
     };
 
-    fetchCurrency();
-  }, []);
-  // currency code
+    useEffect(() => {
+        handleFetchDetails();
+    }, [url]);
 
-  const handleGenerateRandom = () => {
-    const newFormData = { ...formData };
+    const [formData, setFormData] = useState({
+        tech_dtrmn_slct_method: "5",
+        tech_dtrmn_0_0: "4",
+        tech_dtrmn_0_1: "1",
+        tech_dtrmn_0_2: "1",
+        tech_dtrmn_0_3: "2",
+        tech_dtrmn_0_4: "2",
+        tech_dtrmn_1_0: "2",
+        tech_dtrmn_1_1: "1",
+        tech_dtrmn_1_2: "1",
+        tech_dtrmn_1_3: "8",
+        tech_dtrmn_1_4: "1",
+        tech_dtrmn_2_0: "0",
+        tech_dtrmn_2_1: "5",
+        tech_dtrmn_2_2: "6",
+        tech_dtrmn_2_3: "1",
+        tech_dtrmn_2_4: "1",
+        tech_dtrmn_3_0: "2",
+        tech_dtrmn_3_1: "7",
+        tech_dtrmn_3_2: "2",
+        tech_dtrmn_3_3: "1",
+        tech_dtrmn_3_4: "1",
+        tech_dtrmn_4_0: "3",
+        tech_dtrmn_4_1: "2",
+        tech_dtrmn_4_2: "1",
+        tech_dtrmn_4_3: "9",
+        tech_dtrmn_4_4: "1",
+        tech_dtrmn_opts_method: "exp_row",
+        tech_dtrmn_opts: "1",
+    });
 
-    for (let i = 0; i < 5; i++) {
-      for (let j = 0; j < 5; j++) {
-        const key = `tech_dtrmn_${i}_${j}`;
-        newFormData[key] = Math.floor(Math.random() * 11).toString(); // 0–10 random
-      }
-    }
+    const [result, setResult] = useState(null);
+    const [formError, setFormError] = useState("");
 
-    setFormData(newFormData);
-  };
+    // RTK mutation hook
+    const [
+        calculateEbitCalculator,
+        { isLoading: roundToTheNearestLoading, isError, error: calculateLoveError },
+    ] = useDeterminantCalculatorMutation();
 
-  const handleClearInputs = () => {
-    const newFormData = { ...formData };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+        setResult(null);
+        setFormError(null);
+    };
 
-    for (let i = 0; i < 5; i++) {
-      for (let j = 0; j < 5; j++) {
-        const key = `tech_dtrmn_${i}_${j}`;
-        newFormData[key] = "";
-      }
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    setFormData(newFormData);
-  };
+        if (!formData.tech_dtrmn_slct_method) {
+            setFormError("Please fill in input.");
+            return;
+        }
 
-  // dspVl gets the matrix value from formData by key like '0_0', '1_2' etc
-  const dspVl = (formData, key) => formData[`tech_dtrmn_${key}`] || "0";
+        setFormError("");
+        try {
+            const response = await calculateEbitCalculator({
+                tech_dtrmn_slct_method: formData.tech_dtrmn_slct_method,
+                tech_dtrmn_0_0: formData.tech_dtrmn_0_0,
+                tech_dtrmn_0_1: formData.tech_dtrmn_0_1,
+                tech_dtrmn_0_2: formData.tech_dtrmn_0_2,
+                tech_dtrmn_0_3: formData.tech_dtrmn_0_3,
+                tech_dtrmn_0_4: formData.tech_dtrmn_0_4,
+                tech_dtrmn_1_0: formData.tech_dtrmn_1_0,
+                tech_dtrmn_1_1: formData.tech_dtrmn_1_1,
+                tech_dtrmn_1_2: formData.tech_dtrmn_1_2,
+                tech_dtrmn_1_3: formData.tech_dtrmn_1_3,
+                tech_dtrmn_1_4: formData.tech_dtrmn_1_4,
+                tech_dtrmn_2_0: formData.tech_dtrmn_2_0,
+                tech_dtrmn_2_1: formData.tech_dtrmn_2_1,
+                tech_dtrmn_2_2: formData.tech_dtrmn_2_2,
+                tech_dtrmn_2_3: formData.tech_dtrmn_2_3,
+                tech_dtrmn_2_4: formData.tech_dtrmn_2_4,
+                tech_dtrmn_3_0: formData.tech_dtrmn_3_0,
+                tech_dtrmn_3_1: formData.tech_dtrmn_3_1,
+                tech_dtrmn_3_2: formData.tech_dtrmn_3_2,
+                tech_dtrmn_3_3: formData.tech_dtrmn_3_3,
+                tech_dtrmn_3_4: formData.tech_dtrmn_3_4,
+                tech_dtrmn_4_0: formData.tech_dtrmn_4_0,
+                tech_dtrmn_4_1: formData.tech_dtrmn_4_1,
+                tech_dtrmn_4_2: formData.tech_dtrmn_4_2,
+                tech_dtrmn_4_3: formData.tech_dtrmn_4_3,
+                tech_dtrmn_4_4: formData.tech_dtrmn_4_4,
+                tech_dtrmn_opts_method: formData.tech_dtrmn_opts_method,
+                tech_dtrmn_opts: formData.tech_dtrmn_opts,
+            }).unwrap();
+            setResult(response?.payload); // Assuming the response has 'lovePercentage'
+            toast.success("Successfully Calculated");
+        } catch (err) {
+            setFormError(err.data.payload.error);
+            toast.error(err.data.payload.error);
+        }
+    };
 
-  // gtVl multiplies two values in formData
-  const gtVl = (formData, [a, b]) =>
-    Number(formData[`tech_dtrmn_${a}`] || 0) *
-    Number(formData[`tech_dtrmn_${b}`] || 0);
+    // Handle reset form
+    const handleReset = () => {
+        setFormData({
+            tech_dtrmn_slct_method: "5",
+            tech_dtrmn_0_0: "4",
+            tech_dtrmn_0_1: "1",
+            tech_dtrmn_0_2: "1",
+            tech_dtrmn_0_3: "2",
+            tech_dtrmn_0_4: "2",
+            tech_dtrmn_1_0: "2",
+            tech_dtrmn_1_1: "1",
+            tech_dtrmn_1_2: "1",
+            tech_dtrmn_1_3: "8",
+            tech_dtrmn_1_4: "1",
+            tech_dtrmn_2_0: "0",
+            tech_dtrmn_2_1: "5",
+            tech_dtrmn_2_2: "6",
+            tech_dtrmn_2_3: "1",
+            tech_dtrmn_2_4: "1",
+            tech_dtrmn_3_0: "2",
+            tech_dtrmn_3_1: "7",
+            tech_dtrmn_3_2: "2",
+            tech_dtrmn_3_3: "1",
+            tech_dtrmn_3_4: "1",
+            tech_dtrmn_4_0: "3",
+            tech_dtrmn_4_1: "2",
+            tech_dtrmn_4_2: "1",
+            tech_dtrmn_4_3: "9",
+            tech_dtrmn_4_4: "1",
+            tech_dtrmn_opts_method: "exp_row",
+            tech_dtrmn_opts: "1",
+        });
+        setResult(null);
+        setFormError(null);
+    };
+    // currency code
+    const [currency, setCurrency] = useState({
+        code: "USD",
+        symbol: "$",
+        name: "US Dollar",
+    });
 
-  return (
-    <Calculator
-      isLoading={isLoading}
-      data={data}
-      links={[
-        { name: "Home", path: "/" },
-        {
-          name: data?.payload?.tech_cal_cat,
-          path: "/" + data?.payload?.tech_cal_cat,
-        },
-        {
-          name: data?.payload?.tech_calculator_title,
-          path: pathname, // This will use the current path dynamically
-        },
-      ]}
-    >
-      <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
-          {formError && (
-            <p className="text-red-500 text-lg font-semibold w-full">
-              {formError}
-            </p>
-          )}
+    useEffect(() => {
+        const fetchCurrency = async () => {
+            const result = await getUserCurrency();
+            if (result) {
+                setCurrency(result);
+            }
+        };
 
-          <div className="lg:w-[80%] md:w-[80%] w-full mx-auto ">
-            <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
-              <div className="col-span-12 ">
-                <label htmlFor="tech_dtrmn_slct_method" className="label">
-                  {data?.payload?.tech_lang_keys["1"]}:
-                </label>
-                <div className="mt-2">
-                  <select
-                    className="input"
-                    aria-label="select"
-                    name="tech_dtrmn_slct_method"
-                    id="tech_dtrmn_slct_method"
-                    value={formData.tech_dtrmn_slct_method}
-                    onChange={handleChange}
-                  >
-                    <option value="2">2 </option>
-                    <option value="3">3 </option>
-                    <option value="4">4 </option>
-                    <option value="5">5 </option>
-                  </select>
-                </div>
-              </div>
-              <div className="col-span-12">
-                <table className="w-full dtrmn_mtrx_tbl">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div className="px-1 ">
-                          <input
-                            type="number"
-                            step="any"
-                            name="tech_dtrmn_0_0"
-                            id="tech_dtrmn_0_0"
-                            className="input "
-                            aria-label="input"
-                            placeholder="00"
-                            value={formData.tech_dtrmn_0_0}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                      </td>
-                      <td>
-                        <div className="px-1 ">
-                          <input
-                            type="number"
-                            step="any"
-                            name="tech_dtrmn_0_1"
-                            id="tech_dtrmn_0_1"
-                            className="input "
-                            aria-label="input"
-                            placeholder="00"
-                            value={formData.tech_dtrmn_0_1}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                      </td>
-                      {(formData.tech_dtrmn_slct_method == "3" ||
-                        formData.tech_dtrmn_slct_method == "4" ||
-                        formData.tech_dtrmn_slct_method == "5") && (
-                        <>
-                          <td className="">
-                            <div className="px-1 ">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_dtrmn_0_2"
-                                id="tech_dtrmn_0_2"
-                                className="input "
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_dtrmn_0_2}
-                                onChange={handleChange}
-                                required
-                              />
-                            </div>
-                          </td>
-                        </>
-                      )}
-                      {(formData.tech_dtrmn_slct_method == "4" ||
-                        formData.tech_dtrmn_slct_method == "5") && (
-                        <>
-                          <td className="">
-                            <div className="px-1 ">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_dtrmn_0_3"
-                                id="tech_dtrmn_0_3"
-                                className="input "
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_dtrmn_0_3}
-                                onChange={handleChange}
-                                required
-                              />
-                            </div>
-                          </td>
-                        </>
-                      )}
-                      {formData.tech_dtrmn_slct_method == "5" && (
-                        <>
-                          <td className="">
-                            <div className="px-1 ">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_dtrmn_0_4"
-                                id="tech_dtrmn_0_4"
-                                className="input "
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_dtrmn_0_4}
-                                onChange={handleChange}
-                                required
-                              />
-                            </div>
-                          </td>
-                        </>
-                      )}
-                    </tr>
-                    <tr>
-                      <td>
-                        <div className="px-1 ">
-                          <input
-                            type="number"
-                            step="any"
-                            name="tech_dtrmn_1_0"
-                            id="tech_dtrmn_1_0"
-                            className="input "
-                            aria-label="input"
-                            placeholder="00"
-                            value={formData.tech_dtrmn_1_0}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                      </td>
-                      <td>
-                        <div className="px-1 ">
-                          <input
-                            type="number"
-                            step="any"
-                            name="tech_dtrmn_1_1"
-                            id="tech_dtrmn_1_1"
-                            className="input "
-                            aria-label="input"
-                            placeholder="00"
-                            value={formData.tech_dtrmn_1_1}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                      </td>
-                      {(formData.tech_dtrmn_slct_method == "3" ||
-                        formData.tech_dtrmn_slct_method == "4" ||
-                        formData.tech_dtrmn_slct_method == "5") && (
-                        <>
-                          <td className="">
-                            <div className="px-1 ">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_dtrmn_1_2"
-                                id="tech_dtrmn_1_2"
-                                className="input "
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_dtrmn_1_2}
-                                onChange={handleChange}
-                                required
-                              />
-                            </div>
-                          </td>
-                        </>
-                      )}
-                      {(formData.tech_dtrmn_slct_method == "4" ||
-                        formData.tech_dtrmn_slct_method == "5") && (
-                        <>
-                          <td className="">
-                            <div className="px-1 ">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_dtrmn_1_3"
-                                id="tech_dtrmn_1_3"
-                                className="input "
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_dtrmn_1_3}
-                                onChange={handleChange}
-                                required
-                              />
-                            </div>
-                          </td>
-                        </>
-                      )}
-                      {formData.tech_dtrmn_slct_method == "5" && (
-                        <>
-                          <td className="">
-                            <div className="px-1 ">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_dtrmn_1_4"
-                                id="tech_dtrmn_1_4"
-                                className="input "
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_dtrmn_1_4}
-                                onChange={handleChange}
-                                required
-                              />
-                            </div>
-                          </td>
-                        </>
-                      )}
-                    </tr>
+        fetchCurrency();
+    }, []);
+    // currency code
 
-                    {(formData.tech_dtrmn_slct_method == "3" ||
-                      formData.tech_dtrmn_slct_method == "4" ||
-                      formData.tech_dtrmn_slct_method == "5") && (
-                      <>
-                        <tr className="">
-                          <td>
-                            <div className="px-1 ">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_dtrmn_2_0"
-                                id="tech_dtrmn_2_0"
-                                className="input "
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_dtrmn_2_0}
-                                onChange={handleChange}
-                                required
-                              />
-                            </div>
-                          </td>
-                          <td>
-                            <div className="px-1 ">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_dtrmn_2_1"
-                                id="tech_dtrmn_2_1"
-                                className="input "
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_dtrmn_2_1}
-                                onChange={handleChange}
-                                required
-                              />
-                            </div>
-                          </td>
-                          {(formData.tech_dtrmn_slct_method == "3" ||
-                            formData.tech_dtrmn_slct_method == "4" ||
-                            formData.tech_dtrmn_slct_method == "5") && (
-                            <>
-                              <td>
-                                <div className="px-1 ">
-                                  <input
-                                    type="number"
-                                    step="any"
-                                    name="tech_dtrmn_2_2"
-                                    id="tech_dtrmn_2_2"
-                                    className="input "
-                                    aria-label="input"
-                                    placeholder="00"
-                                    value={formData.tech_dtrmn_2_2}
-                                    onChange={handleChange}
-                                    required
-                                  />
-                                </div>
-                              </td>
-                            </>
-                          )}
-                          {(formData.tech_dtrmn_slct_method == "4" ||
-                            formData.tech_dtrmn_slct_method == "5") && (
-                            <>
-                              <td>
-                                <div className="px-1 ">
-                                  <input
-                                    type="number"
-                                    step="any"
-                                    name="tech_dtrmn_2_3"
-                                    id="tech_dtrmn_2_3"
-                                    className="input "
-                                    aria-label="input"
-                                    placeholder="00"
-                                    value={formData.tech_dtrmn_2_3}
-                                    onChange={handleChange}
-                                    required
-                                  />
-                                </div>
-                              </td>
-                            </>
-                          )}
-                          {formData.tech_dtrmn_slct_method == "5" && (
-                            <>
-                              <td>
-                                <div className="px-1 ">
-                                  <input
-                                    type="number"
-                                    step="any"
-                                    name="tech_dtrmn_2_4"
-                                    id="tech_dtrmn_2_4"
-                                    className="input "
-                                    aria-label="input"
-                                    placeholder="00"
-                                    value={formData.tech_dtrmn_2_4}
-                                    onChange={handleChange}
-                                    required
-                                  />
-                                </div>
-                              </td>
-                            </>
-                          )}
-                        </tr>
-                      </>
+    const handleGenerateRandom = () => {
+        const newFormData = { ...formData };
+
+        for (let i = 0; i < 5; i++) {
+            for (let j = 0; j < 5; j++) {
+                const key = `tech_dtrmn_${i}_${j}`;
+                newFormData[key] = Math.floor(Math.random() * 11).toString(); // 0–10 random
+            }
+        }
+
+        setFormData(newFormData);
+    };
+
+    const handleClearInputs = () => {
+        const newFormData = { ...formData };
+
+        for (let i = 0; i < 5; i++) {
+            for (let j = 0; j < 5; j++) {
+                const key = `tech_dtrmn_${i}_${j}`;
+                newFormData[key] = "";
+            }
+        }
+
+        setFormData(newFormData);
+    };
+
+    // dspVl gets the matrix value from formData by key like '0_0', '1_2' etc
+    const dspVl = (formData, key) => formData[`tech_dtrmn_${key}`] || "0";
+
+    // gtVl multiplies two values in formData
+    const gtVl = (formData, [a, b]) =>
+        Number(formData[`tech_dtrmn_${a}`] || 0) *
+        Number(formData[`tech_dtrmn_${b}`] || 0);
+
+    return (
+        <Calculator
+            isLoading={isLoading}
+            data={data}
+            links={[
+                { name: "Home", path: "/" },
+                {
+                    name: data?.payload?.tech_cal_cat,
+                    path: "/" + data?.payload?.tech_cal_cat,
+                },
+                {
+                    name: data?.payload?.tech_calculator_title,
+                    path: pathname, // This will use the current path dynamically
+                },
+            ]}
+        >
+            <form className="row" onSubmit={handleSubmit}>
+                <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
+                    {formError && (
+                        <p className="text-red-500 text-lg font-semibold w-full">
+                            {formError}
+                        </p>
                     )}
-                    {(formData.tech_dtrmn_slct_method == "4" ||
-                      formData.tech_dtrmn_slct_method == "5") && (
-                      <>
-                        <tr className="">
-                          <td>
-                            <div className="px-1 ">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_dtrmn_3_0"
-                                id="tech_dtrmn_3_0"
-                                className="input "
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_dtrmn_3_0}
-                                onChange={handleChange}
-                                required
-                              />
-                            </div>
-                          </td>
-                          <td>
-                            <div className="px-1 ">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_dtrmn_3_1"
-                                id="tech_dtrmn_3_1"
-                                className="input "
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_dtrmn_3_1}
-                                onChange={handleChange}
-                                required
-                              />
-                            </div>
-                          </td>
-                          {(formData.tech_dtrmn_slct_method == "3" ||
-                            formData.tech_dtrmn_slct_method == "4" ||
-                            formData.tech_dtrmn_slct_method == "5") && (
-                            <>
-                              <td>
-                                <div className="px-1 ">
-                                  <input
-                                    type="number"
-                                    step="any"
-                                    name="tech_dtrmn_3_2"
-                                    id="tech_dtrmn_3_2"
-                                    className="input "
-                                    aria-label="input"
-                                    placeholder="00"
-                                    value={formData.tech_dtrmn_3_2}
-                                    onChange={handleChange}
-                                    required
-                                  />
-                                </div>
-                              </td>
-                            </>
-                          )}
-                          {(formData.tech_dtrmn_slct_method == "4" ||
-                            formData.tech_dtrmn_slct_method == "5") && (
-                            <>
-                              <td>
-                                <div className="px-1 ">
-                                  <input
-                                    type="number"
-                                    step="any"
-                                    name="tech_dtrmn_3_3"
-                                    id="tech_dtrmn_3_3"
-                                    className="input "
-                                    aria-label="input"
-                                    placeholder="00"
-                                    value={formData.tech_dtrmn_3_3}
-                                    onChange={handleChange}
-                                    required
-                                  />
-                                </div>
-                              </td>
-                            </>
-                          )}
-                          {formData.tech_dtrmn_slct_method == "5" && (
-                            <>
-                              <td>
-                                <div className="px-1 ">
-                                  <input
-                                    type="number"
-                                    step="any"
-                                    name="tech_dtrmn_3_4"
-                                    id="tech_dtrmn_3_4"
-                                    className="input "
-                                    aria-label="input"
-                                    placeholder="00"
-                                    value={formData.tech_dtrmn_3_4}
-                                    onChange={handleChange}
-                                    required
-                                  />
-                                </div>
-                              </td>
-                            </>
-                          )}
-                        </tr>
-                      </>
-                    )}
-                    {formData.tech_dtrmn_slct_method == "5" && (
-                      <>
-                        <tr className="">
-                          <td>
-                            <div className="px-1 ">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_dtrmn_4_0"
-                                id="tech_dtrmn_4_0"
-                                className="input "
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_dtrmn_4_0}
-                                onChange={handleChange}
-                                required
-                              />
-                            </div>
-                          </td>
-                          <td>
-                            <div className="px-1 ">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_dtrmn_4_1"
-                                id="tech_dtrmn_4_1"
-                                className="input "
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_dtrmn_4_1}
-                                onChange={handleChange}
-                                required
-                              />
-                            </div>
-                          </td>
-                          <td>
-                            <div className="px-1 ">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_dtrmn_4_2"
-                                id="tech_dtrmn_4_2"
-                                className="input "
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_dtrmn_4_2}
-                                onChange={handleChange}
-                                required
-                              />
-                            </div>
-                          </td>
-                          <td>
-                            <div className="px-1 ">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_dtrmn_4_3"
-                                id="tech_dtrmn_4_3"
-                                className="input "
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_dtrmn_4_3}
-                                onChange={handleChange}
-                                required
-                              />
-                            </div>
-                          </td>
-                          <td>
-                            <div className="px-1 ">
-                              <input
-                                type="number"
-                                step="any"
-                                name="tech_dtrmn_4_4"
-                                id="tech_dtrmn_4_4"
-                                className="input "
-                                aria-label="input"
-                                placeholder="00"
-                                value={formData.tech_dtrmn_4_4}
-                                onChange={handleChange}
-                                required
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      </>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-              <div className="col-span-12 ">
-                <div className="col-span-12">
-                  <button
-                    type="button"
-                    id="dtrmn_gen_btn"
-                    onClick={handleGenerateRandom}
-                    className="px-3 py-2 mt-1 mx-1 addmore cursor-pointer bg-[#2845F5] text-white rounded-lg"
-                  >
-                    {data?.payload?.tech_lang_keys["2"]}
-                  </button>
 
-                  <button
-                    type="button"
-                    id="dtrmn_clr_btn"
-                    onClick={handleClearInputs}
-                    className="px-3 py-2 mt-1 mx-1 addmore cursor-pointer bg-[#2845F5] text-white rounded-lg"
-                  >
-                    {data?.payload?.tech_lang_keys["3"]}
-                  </button>
-                </div>
-              </div>
-              <div className="col-span-12 md:col-span-6 lg:col-span-6">
-                <label htmlFor="tech_dtrmn_opts_method" className="label">
-                  {data?.payload?.tech_lang_keys["4"]}:
-                </label>
-                <div className="mt-2">
-                  <select
-                    className="input"
-                    aria-label="select"
-                    name="tech_dtrmn_opts_method"
-                    id="tech_dtrmn_opts_method"
-                    value={formData.tech_dtrmn_opts_method}
-                    onChange={handleChange}
-                  >
-                    <option value="exp_col">
-                      {data?.payload?.tech_lang_keys["5"]}{" "}
-                    </option>
-                    <option value="exp_row">
-                      {data?.payload?.tech_lang_keys["6"]}{" "}
-                    </option>
-                    <option value="leibniz">
-                      {data?.payload?.tech_lang_keys["7"]}{" "}
-                    </option>
-                    <option value="triangle">
-                      {data?.payload?.tech_lang_keys["8"]}{" "}
-                    </option>
-                    <option value="sarrus">
-                      {data?.payload?.tech_lang_keys["9"]}{" "}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              {(formData.tech_dtrmn_opts_method == "exp_col" ||
-                formData.tech_dtrmn_opts_method == "exp_row") && (
-                <>
-                  <div
-                    className="col-span-12 md:col-span-6 lg:col-span-6 "
-                    id="dtrmn_opts_Input"
-                  >
-                    <label htmlFor="tech_dtrmn_opts" className="label">
-                      {data?.payload?.tech_lang_keys["10"]}:
-                    </label>
-                    <div className=" relative">
-                      <input
-                        type="number"
-                        step="any"
-                        max="3"
-                        min="1"
-                        name="tech_dtrmn_opts"
-                        id="tech_dtrmn_opts"
-                        className="input "
-                        aria-label="input"
-                        placeholder="00"
-                        value={formData.tech_dtrmn_opts}
-                        onChange={handleChange}
-                      />
+                    <div className="lg:w-[80%] md:w-[80%] w-full mx-auto ">
+                        <div className="grid grid-cols-12 mt-3   gap-2 md:gap-4 lg:gap-4">
+                            <div className="col-span-12 ">
+                                <label htmlFor="tech_dtrmn_slct_method" className="label">
+                                    {data?.payload?.tech_lang_keys["1"]}:
+                                </label>
+                                <div className="mt-2">
+                                    <select
+                                        className="input"
+                                        aria-label="select"
+                                        name="tech_dtrmn_slct_method"
+                                        id="tech_dtrmn_slct_method"
+                                        value={formData.tech_dtrmn_slct_method}
+                                        onChange={handleChange}
+                                    >
+                                        <option value="2">2 </option>
+                                        <option value="3">3 </option>
+                                        <option value="4">4 </option>
+                                        <option value="5">5 </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="col-span-12">
+                                <table className="w-full dtrmn_mtrx_tbl">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div className="px-1 ">
+                                                    <input
+                                                        type="number"
+                                                        step="any"
+                                                        name="tech_dtrmn_0_0"
+                                                        id="tech_dtrmn_0_0"
+                                                        className="input "
+                                                        aria-label="input"
+                                                        placeholder="00"
+                                                        value={formData.tech_dtrmn_0_0}
+                                                        onChange={handleChange}
+                                                        required
+                                                    />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="px-1 ">
+                                                    <input
+                                                        type="number"
+                                                        step="any"
+                                                        name="tech_dtrmn_0_1"
+                                                        id="tech_dtrmn_0_1"
+                                                        className="input "
+                                                        aria-label="input"
+                                                        placeholder="00"
+                                                        value={formData.tech_dtrmn_0_1}
+                                                        onChange={handleChange}
+                                                        required
+                                                    />
+                                                </div>
+                                            </td>
+                                            {(formData.tech_dtrmn_slct_method == "3" ||
+                                                formData.tech_dtrmn_slct_method == "4" ||
+                                                formData.tech_dtrmn_slct_method == "5") && (
+                                                    <>
+                                                        <td className="">
+                                                            <div className="px-1 ">
+                                                                <input
+                                                                    type="number"
+                                                                    step="any"
+                                                                    name="tech_dtrmn_0_2"
+                                                                    id="tech_dtrmn_0_2"
+                                                                    className="input "
+                                                                    aria-label="input"
+                                                                    placeholder="00"
+                                                                    value={formData.tech_dtrmn_0_2}
+                                                                    onChange={handleChange}
+                                                                    required
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                    </>
+                                                )}
+                                            {(formData.tech_dtrmn_slct_method == "4" ||
+                                                formData.tech_dtrmn_slct_method == "5") && (
+                                                    <>
+                                                        <td className="">
+                                                            <div className="px-1 ">
+                                                                <input
+                                                                    type="number"
+                                                                    step="any"
+                                                                    name="tech_dtrmn_0_3"
+                                                                    id="tech_dtrmn_0_3"
+                                                                    className="input "
+                                                                    aria-label="input"
+                                                                    placeholder="00"
+                                                                    value={formData.tech_dtrmn_0_3}
+                                                                    onChange={handleChange}
+                                                                    required
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                    </>
+                                                )}
+                                            {formData.tech_dtrmn_slct_method == "5" && (
+                                                <>
+                                                    <td className="">
+                                                        <div className="px-1 ">
+                                                            <input
+                                                                type="number"
+                                                                step="any"
+                                                                name="tech_dtrmn_0_4"
+                                                                id="tech_dtrmn_0_4"
+                                                                className="input "
+                                                                aria-label="input"
+                                                                placeholder="00"
+                                                                value={formData.tech_dtrmn_0_4}
+                                                                onChange={handleChange}
+                                                                required
+                                                            />
+                                                        </div>
+                                                    </td>
+                                                </>
+                                            )}
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div className="px-1 ">
+                                                    <input
+                                                        type="number"
+                                                        step="any"
+                                                        name="tech_dtrmn_1_0"
+                                                        id="tech_dtrmn_1_0"
+                                                        className="input "
+                                                        aria-label="input"
+                                                        placeholder="00"
+                                                        value={formData.tech_dtrmn_1_0}
+                                                        onChange={handleChange}
+                                                        required
+                                                    />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="px-1 ">
+                                                    <input
+                                                        type="number"
+                                                        step="any"
+                                                        name="tech_dtrmn_1_1"
+                                                        id="tech_dtrmn_1_1"
+                                                        className="input "
+                                                        aria-label="input"
+                                                        placeholder="00"
+                                                        value={formData.tech_dtrmn_1_1}
+                                                        onChange={handleChange}
+                                                        required
+                                                    />
+                                                </div>
+                                            </td>
+                                            {(formData.tech_dtrmn_slct_method == "3" ||
+                                                formData.tech_dtrmn_slct_method == "4" ||
+                                                formData.tech_dtrmn_slct_method == "5") && (
+                                                    <>
+                                                        <td className="">
+                                                            <div className="px-1 ">
+                                                                <input
+                                                                    type="number"
+                                                                    step="any"
+                                                                    name="tech_dtrmn_1_2"
+                                                                    id="tech_dtrmn_1_2"
+                                                                    className="input "
+                                                                    aria-label="input"
+                                                                    placeholder="00"
+                                                                    value={formData.tech_dtrmn_1_2}
+                                                                    onChange={handleChange}
+                                                                    required
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                    </>
+                                                )}
+                                            {(formData.tech_dtrmn_slct_method == "4" ||
+                                                formData.tech_dtrmn_slct_method == "5") && (
+                                                    <>
+                                                        <td className="">
+                                                            <div className="px-1 ">
+                                                                <input
+                                                                    type="number"
+                                                                    step="any"
+                                                                    name="tech_dtrmn_1_3"
+                                                                    id="tech_dtrmn_1_3"
+                                                                    className="input "
+                                                                    aria-label="input"
+                                                                    placeholder="00"
+                                                                    value={formData.tech_dtrmn_1_3}
+                                                                    onChange={handleChange}
+                                                                    required
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                    </>
+                                                )}
+                                            {formData.tech_dtrmn_slct_method == "5" && (
+                                                <>
+                                                    <td className="">
+                                                        <div className="px-1 ">
+                                                            <input
+                                                                type="number"
+                                                                step="any"
+                                                                name="tech_dtrmn_1_4"
+                                                                id="tech_dtrmn_1_4"
+                                                                className="input "
+                                                                aria-label="input"
+                                                                placeholder="00"
+                                                                value={formData.tech_dtrmn_1_4}
+                                                                onChange={handleChange}
+                                                                required
+                                                            />
+                                                        </div>
+                                                    </td>
+                                                </>
+                                            )}
+                                        </tr>
+
+                                        {(formData.tech_dtrmn_slct_method == "3" ||
+                                            formData.tech_dtrmn_slct_method == "4" ||
+                                            formData.tech_dtrmn_slct_method == "5") && (
+                                                <>
+                                                    <tr className="">
+                                                        <td>
+                                                            <div className="px-1 ">
+                                                                <input
+                                                                    type="number"
+                                                                    step="any"
+                                                                    name="tech_dtrmn_2_0"
+                                                                    id="tech_dtrmn_2_0"
+                                                                    className="input "
+                                                                    aria-label="input"
+                                                                    placeholder="00"
+                                                                    value={formData.tech_dtrmn_2_0}
+                                                                    onChange={handleChange}
+                                                                    required
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="px-1 ">
+                                                                <input
+                                                                    type="number"
+                                                                    step="any"
+                                                                    name="tech_dtrmn_2_1"
+                                                                    id="tech_dtrmn_2_1"
+                                                                    className="input "
+                                                                    aria-label="input"
+                                                                    placeholder="00"
+                                                                    value={formData.tech_dtrmn_2_1}
+                                                                    onChange={handleChange}
+                                                                    required
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                        {(formData.tech_dtrmn_slct_method == "3" ||
+                                                            formData.tech_dtrmn_slct_method == "4" ||
+                                                            formData.tech_dtrmn_slct_method == "5") && (
+                                                                <>
+                                                                    <td>
+                                                                        <div className="px-1 ">
+                                                                            <input
+                                                                                type="number"
+                                                                                step="any"
+                                                                                name="tech_dtrmn_2_2"
+                                                                                id="tech_dtrmn_2_2"
+                                                                                className="input "
+                                                                                aria-label="input"
+                                                                                placeholder="00"
+                                                                                value={formData.tech_dtrmn_2_2}
+                                                                                onChange={handleChange}
+                                                                                required
+                                                                            />
+                                                                        </div>
+                                                                    </td>
+                                                                </>
+                                                            )}
+                                                        {(formData.tech_dtrmn_slct_method == "4" ||
+                                                            formData.tech_dtrmn_slct_method == "5") && (
+                                                                <>
+                                                                    <td>
+                                                                        <div className="px-1 ">
+                                                                            <input
+                                                                                type="number"
+                                                                                step="any"
+                                                                                name="tech_dtrmn_2_3"
+                                                                                id="tech_dtrmn_2_3"
+                                                                                className="input "
+                                                                                aria-label="input"
+                                                                                placeholder="00"
+                                                                                value={formData.tech_dtrmn_2_3}
+                                                                                onChange={handleChange}
+                                                                                required
+                                                                            />
+                                                                        </div>
+                                                                    </td>
+                                                                </>
+                                                            )}
+                                                        {formData.tech_dtrmn_slct_method == "5" && (
+                                                            <>
+                                                                <td>
+                                                                    <div className="px-1 ">
+                                                                        <input
+                                                                            type="number"
+                                                                            step="any"
+                                                                            name="tech_dtrmn_2_4"
+                                                                            id="tech_dtrmn_2_4"
+                                                                            className="input "
+                                                                            aria-label="input"
+                                                                            placeholder="00"
+                                                                            value={formData.tech_dtrmn_2_4}
+                                                                            onChange={handleChange}
+                                                                            required
+                                                                        />
+                                                                    </div>
+                                                                </td>
+                                                            </>
+                                                        )}
+                                                    </tr>
+                                                </>
+                                            )}
+                                        {(formData.tech_dtrmn_slct_method == "4" ||
+                                            formData.tech_dtrmn_slct_method == "5") && (
+                                                <>
+                                                    <tr className="">
+                                                        <td>
+                                                            <div className="px-1 ">
+                                                                <input
+                                                                    type="number"
+                                                                    step="any"
+                                                                    name="tech_dtrmn_3_0"
+                                                                    id="tech_dtrmn_3_0"
+                                                                    className="input "
+                                                                    aria-label="input"
+                                                                    placeholder="00"
+                                                                    value={formData.tech_dtrmn_3_0}
+                                                                    onChange={handleChange}
+                                                                    required
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="px-1 ">
+                                                                <input
+                                                                    type="number"
+                                                                    step="any"
+                                                                    name="tech_dtrmn_3_1"
+                                                                    id="tech_dtrmn_3_1"
+                                                                    className="input "
+                                                                    aria-label="input"
+                                                                    placeholder="00"
+                                                                    value={formData.tech_dtrmn_3_1}
+                                                                    onChange={handleChange}
+                                                                    required
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                        {(formData.tech_dtrmn_slct_method == "3" ||
+                                                            formData.tech_dtrmn_slct_method == "4" ||
+                                                            formData.tech_dtrmn_slct_method == "5") && (
+                                                                <>
+                                                                    <td>
+                                                                        <div className="px-1 ">
+                                                                            <input
+                                                                                type="number"
+                                                                                step="any"
+                                                                                name="tech_dtrmn_3_2"
+                                                                                id="tech_dtrmn_3_2"
+                                                                                className="input "
+                                                                                aria-label="input"
+                                                                                placeholder="00"
+                                                                                value={formData.tech_dtrmn_3_2}
+                                                                                onChange={handleChange}
+                                                                                required
+                                                                            />
+                                                                        </div>
+                                                                    </td>
+                                                                </>
+                                                            )}
+                                                        {(formData.tech_dtrmn_slct_method == "4" ||
+                                                            formData.tech_dtrmn_slct_method == "5") && (
+                                                                <>
+                                                                    <td>
+                                                                        <div className="px-1 ">
+                                                                            <input
+                                                                                type="number"
+                                                                                step="any"
+                                                                                name="tech_dtrmn_3_3"
+                                                                                id="tech_dtrmn_3_3"
+                                                                                className="input "
+                                                                                aria-label="input"
+                                                                                placeholder="00"
+                                                                                value={formData.tech_dtrmn_3_3}
+                                                                                onChange={handleChange}
+                                                                                required
+                                                                            />
+                                                                        </div>
+                                                                    </td>
+                                                                </>
+                                                            )}
+                                                        {formData.tech_dtrmn_slct_method == "5" && (
+                                                            <>
+                                                                <td>
+                                                                    <div className="px-1 ">
+                                                                        <input
+                                                                            type="number"
+                                                                            step="any"
+                                                                            name="tech_dtrmn_3_4"
+                                                                            id="tech_dtrmn_3_4"
+                                                                            className="input "
+                                                                            aria-label="input"
+                                                                            placeholder="00"
+                                                                            value={formData.tech_dtrmn_3_4}
+                                                                            onChange={handleChange}
+                                                                            required
+                                                                        />
+                                                                    </div>
+                                                                </td>
+                                                            </>
+                                                        )}
+                                                    </tr>
+                                                </>
+                                            )}
+                                        {formData.tech_dtrmn_slct_method == "5" && (
+                                            <>
+                                                <tr className="">
+                                                    <td>
+                                                        <div className="px-1 ">
+                                                            <input
+                                                                type="number"
+                                                                step="any"
+                                                                name="tech_dtrmn_4_0"
+                                                                id="tech_dtrmn_4_0"
+                                                                className="input "
+                                                                aria-label="input"
+                                                                placeholder="00"
+                                                                value={formData.tech_dtrmn_4_0}
+                                                                onChange={handleChange}
+                                                                required
+                                                            />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="px-1 ">
+                                                            <input
+                                                                type="number"
+                                                                step="any"
+                                                                name="tech_dtrmn_4_1"
+                                                                id="tech_dtrmn_4_1"
+                                                                className="input "
+                                                                aria-label="input"
+                                                                placeholder="00"
+                                                                value={formData.tech_dtrmn_4_1}
+                                                                onChange={handleChange}
+                                                                required
+                                                            />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="px-1 ">
+                                                            <input
+                                                                type="number"
+                                                                step="any"
+                                                                name="tech_dtrmn_4_2"
+                                                                id="tech_dtrmn_4_2"
+                                                                className="input "
+                                                                aria-label="input"
+                                                                placeholder="00"
+                                                                value={formData.tech_dtrmn_4_2}
+                                                                onChange={handleChange}
+                                                                required
+                                                            />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="px-1 ">
+                                                            <input
+                                                                type="number"
+                                                                step="any"
+                                                                name="tech_dtrmn_4_3"
+                                                                id="tech_dtrmn_4_3"
+                                                                className="input "
+                                                                aria-label="input"
+                                                                placeholder="00"
+                                                                value={formData.tech_dtrmn_4_3}
+                                                                onChange={handleChange}
+                                                                required
+                                                            />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div className="px-1 ">
+                                                            <input
+                                                                type="number"
+                                                                step="any"
+                                                                name="tech_dtrmn_4_4"
+                                                                id="tech_dtrmn_4_4"
+                                                                className="input "
+                                                                aria-label="input"
+                                                                placeholder="00"
+                                                                value={formData.tech_dtrmn_4_4}
+                                                                onChange={handleChange}
+                                                                required
+                                                            />
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div className="col-span-12 ">
+                                <div className="col-span-12">
+                                    <button
+                                        type="button"
+                                        id="dtrmn_gen_btn"
+                                        onClick={handleGenerateRandom}
+                                        className="px-3 py-2 mt-1 mx-1 addmore cursor-pointer bg-[#2845F5] text-white rounded-lg"
+                                    >
+                                        {data?.payload?.tech_lang_keys["2"]}
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        id="dtrmn_clr_btn"
+                                        onClick={handleClearInputs}
+                                        className="px-3 py-2 mt-1 mx-1 addmore cursor-pointer bg-[#2845F5] text-white rounded-lg"
+                                    >
+                                        {data?.payload?.tech_lang_keys["3"]}
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="col-span-12 md:col-span-6 lg:col-span-6">
+                                <label htmlFor="tech_dtrmn_opts_method" className="label">
+                                    {data?.payload?.tech_lang_keys["4"]}:
+                                </label>
+                                <div className="mt-2">
+                                    <select
+                                        className="input"
+                                        aria-label="select"
+                                        name="tech_dtrmn_opts_method"
+                                        id="tech_dtrmn_opts_method"
+                                        value={formData.tech_dtrmn_opts_method}
+                                        onChange={handleChange}
+                                    >
+                                        <option value="exp_col">
+                                            {data?.payload?.tech_lang_keys["5"]}{" "}
+                                        </option>
+                                        <option value="exp_row">
+                                            {data?.payload?.tech_lang_keys["6"]}{" "}
+                                        </option>
+                                        <option value="leibniz">
+                                            {data?.payload?.tech_lang_keys["7"]}{" "}
+                                        </option>
+                                        <option value="triangle">
+                                            {data?.payload?.tech_lang_keys["8"]}{" "}
+                                        </option>
+                                        <option value="sarrus">
+                                            {data?.payload?.tech_lang_keys["9"]}{" "}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            {(formData.tech_dtrmn_opts_method == "exp_col" ||
+                                formData.tech_dtrmn_opts_method == "exp_row") && (
+                                    <>
+                                        <div
+                                            className="col-span-12 md:col-span-6 lg:col-span-6 "
+                                            id="dtrmn_opts_Input"
+                                        >
+                                            <label htmlFor="tech_dtrmn_opts" className="label">
+                                                {data?.payload?.tech_lang_keys["10"]}:
+                                            </label>
+                                            <div className=" relative">
+                                                <input
+                                                    type="number"
+                                                    step="any"
+                                                    max="3"
+                                                    min="1"
+                                                    name="tech_dtrmn_opts"
+                                                    id="tech_dtrmn_opts"
+                                                    className="input "
+                                                    aria-label="input"
+                                                    placeholder="00"
+                                                    value={formData.tech_dtrmn_opts}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                        </div>
                     </div>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
 
-          <div className="mb-6 mt-10 text-center space-x-2">
-            <Button type="submit" isLoading={roundToTheNearestLoading}>
-              {data?.payload?.tech_lang_keys["calculate"]}
-            </Button>
-            {result && (
-              <ResetButton type="button" onClick={handleReset}>
-                {data?.payload?.tech_lang_keys["locale"] === "en"
-                  ? "RESET"
-                  : data?.payload?.tech_lang_keys["reset"] || "RESET"}
-              </ResetButton>
-            )}
-          </div>
-        </div>
-        {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
-            <div className="animate-pulse">
-              <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
-              <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
-              <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
-            </div>
-          </div>
-        ) : (
-          result && (
-            <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
-                <div>
-                  <ResultActions lang={data?.payload?.tech_lang_keys} />
+                    <div className="mb-6 mt-10 text-center space-x-2">
+                        <Button type="submit" isLoading={roundToTheNearestLoading}>
+                            {data?.payload?.tech_lang_keys["calculate"]}
+                        </Button>
+                        {result && (
+                            <ResetButton type="button" onClick={handleReset}>
+                                {data?.payload?.tech_lang_keys["locale"] === "en"
+                                    ? "RESET"
+                                    : data?.payload?.tech_lang_keys["reset"] || "RESET"}
+                            </ResetButton>
+                        )}
+                    </div>
+                </div>
+                {roundToTheNearestLoading ? (
+                    <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+                        <div className="animate-pulse">
+                            <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
+                            <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+                            <div className="w-[50%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
+                            <div className="w-[25%] h-[20px] bg-gray-300 animate-pulse rounded-[10px]"></div>
+                        </div>
+                    </div>
+                ) : (
+                    result && (
+                        <>
+                            <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+                                <div>
+                                    <ResultActions lang={data?.payload?.tech_lang_keys} />
 
-                  <div className="rounded-lg  flex items-center justify-center">
-                    <div className="w-full mt-3">
-                      <div className="w-full md:w-[60%] lg:w-[60%] mt-2">
-                        <table className="w-full text-[18px]">
-                          <tbody>
-                            <tr>
-                              <td className="py-2 border-b" width="60%">
-                                <strong>
-                                  {data?.payload?.tech_lang_keys["11"]}
-                                </strong>
-                              </td>
-                              <td className="py-2 border-b">
-                                {result?.tech_ans}
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
+                                    <div className="rounded-lg  flex items-center justify-center">
+                                        <div className="w-full mt-3">
+                                            <div className="w-full md:w-[60%] lg:w-[60%] mt-2">
+                                                <table className="w-full text-[18px]">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td className="py-2 border-b" width="60%">
+                                                                <strong>
+                                                                    {data?.payload?.tech_lang_keys["11"]}
+                                                                </strong>
+                                                            </td>
+                                                            <td className="py-2 border-b">
+                                                                {result?.tech_ans}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
 
-                      <div className="w-full">
-                        {/*                           
+                                            <div className="w-full">
+                                                {/*                           
                         <div className="w-full text-[16px]">
                             <p className="mt-2">{data?.payload?.tech_lang_keys['13']}:</p>
 
@@ -972,7 +974,7 @@ const DeterminantCalculator = () => {
                             />
                             </div> */}
 
-                        {/* <p className="col s12 font_size16">
+                                                {/* <p className="col s12 font_size16">
                                   <p className="color_blue left-align font_size20" >
                                       { $stepKey } : 5
                                   </p>
@@ -11394,7 +11396,7 @@ const DeterminantCalculator = () => {
                                   </p>
                                   </p> */}
 
-                        {/* <p className="col s12 font_size20">
+                                                {/* <p className="col s12 font_size20">
                                   <p className="color_blue left-align font_size20" style="font-weight:600;margin:30px 0;">
                                       { data?.payload?.tech_lang_keys['14'] } : 4</p>
                                   \(
@@ -11542,7 +11544,7 @@ const DeterminantCalculator = () => {
                                   </p>
                                   </p> */}
 
-                        {/* <p className="col s12 font_size20">
+                                                {/* <p className="col s12 font_size20">
                                   <p className="color_blue left-align font_size20" style="font-weight:600;margin:30px 0;">
                                       { data?.payload?.tech_lang_keys['14'] } : 3</p>
 
@@ -11780,7 +11782,7 @@ const DeterminantCalculator = () => {
                                       \)
                                   </p>
                                   </p> */}
-                        {/* <p className="col s12 font_size16">
+                                                {/* <p className="col s12 font_size16">
                                   <p className="dtrmn_cols">
                                       \(
                                       -\;
@@ -11810,7 +11812,7 @@ const DeterminantCalculator = () => {
                                       \)
                                   </p>
                                   </p> */}
-                        {/* <?php
+                                                {/* <?php
                                           } elseif (formData?.tech_dtrmn_opts_method=='exp_col') { //Using Expand along the columns method
 
                                               if (formData?.tech_dtrmn_opts=='1') { //Column 1
@@ -11880,7 +11882,7 @@ const DeterminantCalculator = () => {
                                   <p className="color_blue left-align font_size20" style="font-weight:600;margin:25px 0;">
                                       { data?.payload?.tech_lang_keys['15'] } = { result?.tech_ans }</p>
                                   </p> */}
-                        {/* <?php
+                                                {/* <?php
                                               }
 
                                           }
@@ -12025,7 +12027,7 @@ const DeterminantCalculator = () => {
                                       \)
                                   </p>
                                   </p> */}
-                        {/* <p className="col s12 font_size16">
+                                                {/* <p className="col s12 font_size16">
                                   <p className="dtrmn_cols">
                                       \(
                                       +\;
@@ -12209,7 +12211,7 @@ const DeterminantCalculator = () => {
                                       \)
                                   </p>
                                   </p> */}
-                        {/* <p className="col s12 font_size16">
+                                                {/* <p className="col s12 font_size16">
                                   <p className="dtrmn_cols">
                                       \(
                                       -\;
@@ -12348,7 +12350,7 @@ const DeterminantCalculator = () => {
                                       \)
                                   </p>
                                   </p> */}
-                        {/* <p className="col s12 font_size16">
+                                                {/* <p className="col s12 font_size16">
                                   <p className="dtrmn_cols">
                                       \(
                                       -\;
@@ -12488,7 +12490,7 @@ const DeterminantCalculator = () => {
                                       \)
                                   </p>
                                   </p> */}
-                        {/* <p className="col s12 font_size16">
+                                                {/* <p className="col s12 font_size16">
                                   <p className="dtrmn_cols">
                                       \(
                                       -\;
@@ -12652,7 +12654,7 @@ const DeterminantCalculator = () => {
                                       \)
                                   </p>
                                   </p> */}
-                        {/* <p className="col s12 font_size16">
+                                                {/* <p className="col s12 font_size16">
                                   <p className="dtrmn_cols">
                                       \(
                                       +\;
@@ -12814,7 +12816,7 @@ const DeterminantCalculator = () => {
                                       \)
                                   </p>
                                   </p> */}
-                        {/* <p className="col s12 font_size16">
+                                                {/* <p className="col s12 font_size16">
                                   <p className="dtrmn_cols">
                                       \(
                                       -\;
@@ -12844,7 +12846,7 @@ const DeterminantCalculator = () => {
                                       \)
                                   </p>
                                   </p> */}
-                        {/* <?php
+                                                {/* <?php
 
                                           } elseif (formData?.tech_dtrmn_opts_method=='exp_col') { //Using Expand along the columns method
 
@@ -12937,20 +12939,20 @@ const DeterminantCalculator = () => {
                                       }
                                       }
                                   </p> */}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-          )
-        )}
-      </form>
-      {result && (
-        <CalculatorFeedback calName={data?.payload?.tech_calculator_title} />
-      )}
-    </Calculator>
-  );
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </>
+                    )
+                )}
+            </form>
+            {result && (
+                <CalculatorFeedback calName={data?.payload?.tech_calculator_title} />
+            )}
+        </Calculator>
+    );
 };
 
 export default DeterminantCalculator;

@@ -1,11 +1,12 @@
-// app/page.jsx
+
+import Image from "next/image";
 
 import SearchBar from "@/components/pages/Home/SearchBar/SearchBar";
 import Calculator from "@/components/pages/Home/Calculator/Calculator";
 import CategorySection from "@/components/pages/Home/category/CategorySection";
 import AboutCalculator from "@/components/pages/Home/AboutCalculator/AboutCalculator";
 import CalculatorCategory from "@/components/pages/Home/CalculatorCategory/CalculatorCategory";
-import Celebration from "@/components/common/Celebration";
+
 // Metadata for static home page
 export const metadata = {
   title:
@@ -53,15 +54,16 @@ export const metadata = {
 export default function HomePage() {
   return (
     <>
-      <Celebration /> {/* 🎉 Show only on homepage */}
+
       <div className="pt-5 text-center font-[700]">
         <h1 className="flex justify-center items-center gap-2 lg:text-[35px] md:text-[35px] text-[30px]">
-          <img
+          <Image
             src="/logo.png"
-            className="h-8"
+            className="h-8 w-auto"
             alt="Header Logo"
-            title="Header Logo"
-            loading="lazy"
+            width={32}
+            height={32}
+            priority
           />
           <span className="text-[#2845F5]">
             Calculator <span className="text-[#1A1A1A]">Logical</span>

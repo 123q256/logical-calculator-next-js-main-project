@@ -4,11 +4,12 @@ import React, { useState, useEffect } from "react";
 import { evaluate } from "mathjs";
 
 const Calculator = () => {
-  const [calculatorType, setCalculatorType] = useState("scientific");
+  const [calculatorType, setCalculatorType] = useState("scientific"); // 'scientific' or 'simple'
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [memory, setMemory] = useState(0);
   const [degreeRad, setDegreeRad] = useState("degree");
+  const [history, setHistory] = useState([]); // Calculation history
 
   const toggleCalculator = () => {
     setCalculatorType(
@@ -20,7 +21,6 @@ const Calculator = () => {
     setDegreeRad(type);
   };
 
-  // Fix: Add proper factorial function
   const factorial = (n) => {
     if (n < 0) return NaN;
     if (n === 0 || n === 1) return 1;
@@ -32,34 +32,43 @@ const Calculator = () => {
   };
 
   const calculator = (value) => {
+    // Clear
     if (value === "C") {
       setInput("");
       setOutput("");
       return;
     }
 
+    // Backspace
     if (value === "bk") {
-      setInput(input.slice(0, -1));
+      setInput((prev) => prev.slice(0, -1));
       return;
     }
 
+    // Calculate
     if (value === "=") {
+      if (!input.trim()) {
+        setOutput("0");
+        return;
+      }
+
       try {
         let expression = input;
 
-        // Fix: Handle empty input
-        if (!expression.trim()) {
-          setOutput("0");
-          return;
+        // Auto-close parentheses
+        const openParens = (expression.match(/\(/g) || []).length;
+        const closeParens = (expression.match(/\)/g) || []).length;
+        if (openParens > closeParens) {
+          expression += ")".repeat(openParens - closeParens);
         }
 
-        // Fix: Replace operators first
+        // Replace visual operators with math operators
         expression = expression
           .replace(/×/g, "*")
           .replace(/÷/g, "/")
           .replace(/±/g, "-");
 
-        // Fix: Handle constants & functions with proper order
+        // Constants & Functions
         expression = expression
           .replace(/π/g, "pi")
           .replace(/e\^/g, "exp(")
@@ -68,52 +77,53 @@ const Calculator = () => {
           .replace(/Math\.cbrt\(/g, "cbrt(")
           .replace(/sqrt\(/g, "sqrt(")
           .replace(/ln\(/g, "log(")
-          .replace(/log\(/g, "log10(");
+          .replace(/log\(/g, "log10("); // log(x) in UI usually means base 10
 
-        // Fix: Handle trigonometric functions with proper parentheses
-        if (degreeRad === "degree") {
-          expression = expression
-            .replace(/sin\(/g, "sin(")
-            .replace(/cos\(/g, "cos(")
-            .replace(/tan\(/g, "tan(")
-            .replace(/asin\(/g, "asin(")
-            .replace(/acos\(/g, "acos(")
-            .replace(/atan\(/g, "atan(");
-        } else {
-          expression = expression
-            .replace(/sin\(/g, "sin(")
-            .replace(/cos\(/g, "cos(")
-            .replace(/tan\(/g, "tan(")
-            .replace(/asin\(/g, "asin(")
-            .replace(/acos\(/g, "acos(")
-            .replace(/atan\(/g, "atan(");
-        }
+        // Trigonometry function names are same in mathjs, but need consistent parens
+        // We already add '(' in the UI button click, so regular expressions just ensure mapping
+        const trigFuncs = ["sin", "cos", "tan", "asin", "acos", "atan"];
+        trigFuncs.forEach((func) => {
+          // Ensure we don't double replace if already clean
+          // But user input comes as "sin(" usually
+        });
 
-        // Fix: Handle factorial with regex
+        // Factorial handling (simple regex for number!)
         expression = expression.replace(/(\d+(?:\.\d+)?)!/g, (match, num) => {
           const n = parseFloat(num);
-          if (n % 1 !== 0) return "NaN";
+          // Factorial only defines for integers usually, but Gamma function exists for floats.
+          // keeping it simple for now: regex match
           return factorial(n).toString();
         });
 
-        // Fix: Handle percentage
+        // Percentage
         expression = expression.replace(/(\d+(?:\.\d+)?)%/g, "($1/100)");
 
-        // Fix: Handle power operations
+        // Power replacement
         expression = expression.replace(/\^2/g, "^2");
         expression = expression.replace(/\^3/g, "^3");
-        expression = expression.replace(/\^y/g, "^");
 
-        // Fix: Handle ans replacement
-        if (output && output !== "Error") {
-          expression = expression.replace(/ans/g, output);
+        // Handle "ans"
+        if (expression.includes("ans")) {
+          if (output && output !== "Error") {
+            expression = expression.replace(/ans/g, `(${output})`);
+          } else {
+            expression = expression.replace(/ans/g, "0");
+          }
         }
 
+        // Scope for mathjs
+        const scope = {
+          sqrt: Math.sqrt,
+          cbrt: Math.cbrt,
+          log: Math.log,       // ln
+          log10: Math.log10,   // log base 10
+          exp: Math.exp,
+          pi: Math.PI,
+          e: Math.E
+        };
 
-        // Use mathjs evaluate with scope for degree conversion
-        const scope = {};
         if (degreeRad === "degree") {
-          // Convert degrees to radians for trigonometric functions
+          // Wrap trig functions to handle degree conversion
           scope.sin = (x) => Math.sin((x * Math.PI) / 180);
           scope.cos = (x) => Math.cos((x * Math.PI) / 180);
           scope.tan = (x) => Math.tan((x * Math.PI) / 180);
@@ -121,6 +131,7 @@ const Calculator = () => {
           scope.acos = (x) => (Math.acos(x) * 180) / Math.PI;
           scope.atan = (x) => (Math.atan(x) * 180) / Math.PI;
         } else {
+          // Default radian
           scope.sin = Math.sin;
           scope.cos = Math.cos;
           scope.tan = Math.tan;
@@ -129,381 +140,243 @@ const Calculator = () => {
           scope.atan = Math.atan;
         }
 
-        // Add other math functions to scope
-        scope.sqrt = Math.sqrt;
-        scope.cbrt = Math.cbrt;
-        scope.log = Math.log;
-        scope.log10 = Math.log10;
-        scope.exp = Math.exp;
-        scope.pi = Math.PI;
-
         const result = evaluate(expression, scope);
-        
-        // Fix: Better result formatting
+
         if (isNaN(result) || !isFinite(result)) {
           setOutput("Error");
         } else {
-          // Format the result to avoid long decimals
-          const formattedResult = parseFloat(result.toFixed(10));
-          setOutput(formattedResult.toString());
+          // precision handling
+          // round to 10 decimals to avoid floating point artifacts like 3.00000000004
+          const formatted = parseFloat(result.toFixed(10));
+          setOutput(formatted.toString());
+
+          // Add to history (optional feature, but good for "complete")
+          setHistory(prev => [{ input, output: formatted.toString() }, ...prev].slice(0, 5));
         }
-      } catch (error) {
-        console.error("Calculation error:", error);
+
+      } catch (err) {
+        // console.error(err); // Prevent dev overlay
         setOutput("Error");
       }
       return;
     }
 
-    // Fix: Memory functions implementation
+    // Memory
     if (value === "M+") {
-      const currentValue = output ? parseFloat(output) : 0;
-      if (!isNaN(currentValue)) {
-        setMemory(memory + currentValue);
-      }
+      const val = parseFloat(output || input || "0"); // try output first, then input
+      if (!isNaN(val)) setMemory((m) => m + val);
       return;
     }
-
     if (value === "M-") {
-      const currentValue = output ? parseFloat(output) : 0;
-      if (!isNaN(currentValue)) {
-        setMemory(memory - currentValue);
-      }
+      const val = parseFloat(output || input || "0");
+      if (!isNaN(val)) setMemory((m) => m - val);
       return;
     }
-
     if (value === "MR") {
-      setInput(input + memory.toString());
+      setInput((prev) => prev + memory.toString());
       return;
     }
 
+    // Special Buttons
     if (value === "ans") {
-      if (output && output !== "Error") {
-        setInput(input + output);
-      }
+      setInput((prev) => prev + "ans");
       return;
     }
-
     if (value === "+/-") {
-      if (input) {
-        setInput(input.startsWith("-") ? input.slice(1) : "-" + input);
-      } else if (output && output !== "Error") {
-        setOutput(output.startsWith("-") ? output.slice(1) : "-" + output);
+      // Toggle sign of last number in input? Or just wrap whole thing?
+      // Simple approach: if output exists and input empty, set input to -output
+      if (!input && output) {
+        setInput(output.startsWith("-") ? output.slice(1) : "-" + output);
+      } else {
+        // Just modify input string? It's complex to parse.
+        // Simplest: append * -1 or just let user type -
+        // Let's toggle start of string for simple cases
+        if (input.startsWith("-")) setInput(input.slice(1));
+        else setInput("-" + input);
       }
       return;
     }
-
     if (value === "RND") {
-      setInput(input + Math.random().toFixed(6));
+      setInput((prev) => prev + Math.random().toFixed(4));
       return;
     }
-
     if (value === "EXP") {
-      setInput(input + "e");
+      setInput((prev) => prev + "e"); // e notation usually, or *10^
       return;
     }
 
-    // Fix: Handle number inputs properly (they were coming as numbers, not strings)
-    if (typeof value === "number") {
-      setInput(input + value.toString());
-      return;
-    }
-
-    setInput(input + value);
+    // Default: Append
+    setInput((prev) => prev + value.toString());
   };
-
-  // Fix: Update display elements
-  useEffect(() => {
-    const showInput = document.getElementById("showInput");
-    const showOutput = document.getElementById("showOutput");
-    
-    if (showInput) {
-      showInput.innerHTML = input || "&nbsp;";
-    }
-    
-    if (showOutput) {
-      showOutput.innerHTML = output || "&nbsp;";
-    }
-  }, [input, output]);
 
   return (
     <div className="max-w-[830px] mx-auto lg:py-5 md:py-5 lg:mt-auto md:mt-auto mt-6 relative px-5">
-      <div className="bordercalculator xl:p-4 lg:p-4 p-3 bg-white xl:rounded-[25px] lg:rounded-[20px] rounded-[16px] w-full">
+      <div className="bordercalculator xl:p-4 lg:p-4 p-3 bg-white xl:rounded-[25px] lg:rounded-[20px] rounded-[16px] w-full shadow-sm">
         <div className="flex lg:flex-row flex-col gap-x-5 lg:gap-y-[22px] md:gap-y-[22px] w-full">
+
+          {/* Input Screen */}
           <div className="lg:w-[50%] w-full">
-            <p className="text-[16px] leading-[20.85px] font-[700] px-3">
+            <p className="text-[16px] leading-[20.85px] font-[700] px-3 mb-2">
               Input
             </p>
             <div
-              id="showInput"
-              className="bg-[#FAFAFA] min-h-[40px] max-h-[100px] border border-[#E3E3E3] rounded-[12px] px-3 pt-2 my-3 overflow-auto"
+              className={`bg-[#FAFAFA] min-h-[50px] max-h-[100px] border border-[#E3E3E3] rounded-[12px] px-4 py-3 my-1 overflow-auto text-lg font-medium whitespace-pre-wrap break-all ${!input ? 'text-gray-400' : 'text-black'}`}
             >
-              &nbsp;
+              {input || "0"}
             </div>
           </div>
+
+          {/* Answer Screen */}
           <div className="lg:w-[50%] w-full">
-            <p className="text-[16px] leading-[20.85px] font-[700] px-3">
+            <p className="text-[16px] leading-[20.85px] font-[700] px-3 mb-2">
               Answer
             </p>
-            <div className="bg-[#FAFAFA] flex items-center justify-end min-h-[40px] max-h-[100px] border border-[#E3E3E3] rounded-[12px] px-3 pt-2 my-3 overflow-auto">
-              <p
-                id="showOutput"
-                className={`text-right text-[28px] leading-[36.46px] font-[500] ${
-                  output === "Error" ? "text-red-500" : "text-[#818181]"
-                }`}
-              >
-                &nbsp;
+            <div className="bg-[#FAFAFA] min-h-[50px] max-h-[100px] border border-[#E3E3E3] rounded-[12px] px-4 py-3 my-1 overflow-auto flex items-center justify-end">
+              <p className={`text-right text-[28px] leading-[36.46px] font-[600] ${output === "Error" ? "text-red-500" : "text-[#818181]"}`}>
+                {output || "0"}
               </p>
             </div>
           </div>
-          <div className="w-full text-center lg:hidden md:hidden block">
-            {calculatorType === "scientific" ? (
-              <button
-                onClick={toggleCalculator}
-                className="bg-[#2845F5] w-full mb-3 mt-1 lg:hidden text-[#fff] hover:bg-[#1A1A1A] hover:text-white duration-200 font-[600] text-[14px] rounded-[25px] px-4 py-3"
-              >
-                Simple Calculator
-              </button>
-            ) : (
-              <button
-                onClick={toggleCalculator}
-                className="bg-[#2845F5] w-full mb-3 mt-1 lg:hidden text-[#fff] hover:bg-[#1A1A1A] hover:text-white duration-200 font-[600] text-[14px] rounded-[25px] px-4 py-3"
-              >
-                Scientific Calculator
-              </button>
-            )}
-          </div>
+
+          {/* Mobile Toggle */}
+          {/* <div className="w-full text-center lg:hidden md:hidden block mt-2">
+            <button
+              onClick={toggleCalculator}
+              className="bg-[#2845F5] w-full text-[#fff] hover:bg-[#1A1A1A] duration-200 font-[600] text-[14px] rounded-[25px] px-4 py-3"
+            >
+              {calculatorType === "scientific" ? "Simple Calculator" : "Scientific Calculator"}
+            </button>
+          </div> */}
         </div>
 
-        {/* Memory Display */}
-        <div className="mb-3 px-3">
-          <p className="text-sm text-gray-600">
-            Memory: {memory}
-          </p>
+        {/* Memory Indicator */}
+        <div className="mt-4 mb-2 px-3 text-sm text-gray-500 font-medium">
+          Memory: <span className="text-black">{memory}</span>
         </div>
 
-        <div className="grid lg:grid-cols-10 gap-x-2 gap-y-2">
-          <div
-            className={`col-span-5 ${
-              calculatorType === "simple" ? "block" : "lg:block md:block hidden"
-            }`}
-          >
-            <div className="grid grid-cols-5 gap-x-2 gap-y-2">
-              {/* Scientific buttons remain the same but with fixed handlers */}
-              <div
-                onClick={() => calculator("sin(")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[18px] font-[500]">sin</p>
-              </div>
-              <div
-                onClick={() => calculator("cos(")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[18px] font-[500]">cos</p>
-              </div>
-              <div
-                onClick={() => calculator("tan(")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[18px] font-[500]">tan</p>
-              </div>
-              <div className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]">
-                <label htmlFor="scirdsettingd" className="cursor-pointer">
-                  <p className="flex items-center gap-x-1 text-[12px] font-[500] hover:text-white">
-                    <input
-                      id="scirdsettingd"
-                      className="with-gap"
-                      type="radio"
-                      name="scirdsetting"
-                      onChange={() => setDegorRad("degree")}
-                      checked={degreeRad === "degree"}
-                    />
-                    Deg
-                  </p>
+        {/* Keypad Grid */}
+        <div className="grid lg:grid-cols-10 md:grid-cols-10 grid-cols-5 gap-2 mt-2">
+
+          {/* Left Side: Scientific Functions */}
+          <div className={`col-span-10 lg:col-span-5 md:col-span-5 grid grid-cols-5 gap-2 ${calculatorType === 'simple' ? 'hidden lg:grid md:grid' : ''}`}>
+            {/* Row 1 */}
+            <Btn label="sin" onClick={() => calculator("sin(")} />
+            <Btn label="cos" onClick={() => calculator("cos(")} />
+            <Btn label="tan" onClick={() => calculator("tan(")} />
+
+            {/* Deg/Rad Toggle */}
+            <div className="bg-[#F4F4F4] rounded-[7px] flex items-center justify-center col-span-2 px-1">
+              <div className="flex items-center gap-x-2 text-[12px] font-[600]">
+                <label className="flex items-center cursor-pointer gap-1">
+                  <input
+                    type="radio"
+                    name="drmode"
+                    checked={degreeRad === "degree"}
+                    onChange={() => setDegorRad("degree")}
+                    className="accent-blue-600 w-3 h-3"
+                  /> Deg
+                </label>
+                <label className="flex items-center cursor-pointer gap-1">
+                  <input
+                    type="radio"
+                    name="drmode"
+                    checked={degreeRad === "radians"}
+                    onChange={() => setDegorRad("radians")}
+                    className="accent-blue-600 w-3 h-3"
+                  /> Rad
                 </label>
               </div>
-              <div className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]">
-                <label htmlFor="scirdsettingr" className="cursor-pointer">
-                  <p className="flex items-center gap-x-1 text-[12px] font-[500] hover:text-white">
-                    <input
-                      id="scirdsettingr"
-                      className="with-gap"
-                      type="radio"
-                      name="scirdsetting"
-                      onChange={() => setDegorRad("radians")}
-                      checked={degreeRad === "radians"}
-                    />
-                    Rad
-                  </p>
-                </label>
-              </div>
-
-              {/* Rest of scientific buttons... */}
-              <div
-                onClick={() => calculator("asin(")}
-                className="bg-[#F4F4F4] hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[16px] font-[500] cursor-pointer">
-                  sin⁻¹
-                </p>
-              </div>
-              <div
-                onClick={() => calculator("acos(")}
-                className="bg-[#F4F4F4] hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[16px] font-[500] cursor-pointer">
-                  cos⁻¹
-                </p>
-              </div>
-              <div
-                onClick={() => calculator("atan(")}
-                className="bg-[#F4F4F4] hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[16px] font-[500] cursor-pointer">
-                  tan⁻¹
-                </p>
-              </div>
-              <div
-                onClick={() => calculator("π")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[18px] font-[500]">π</p>
-              </div>
-              <div
-                onClick={() => calculator("e")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[18px] font-[500]">e</p>
-              </div>
-
-              <div
-                onClick={() => calculator("^")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[16px] font-[500]">xʸ</p>
-              </div>
-              <div
-                onClick={() => calculator("^2")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[16px] font-[500]">x²</p>
-              </div>
-              <div
-                onClick={() => calculator("^3")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[16px] font-[500]">x³</p>
-              </div>
-              <div
-                onClick={() => calculator("e^")}
-                className="bg-[#F4F4F4] hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[16px] font-[500] cursor-pointer">eˣ</p>
-              </div>
-              <div
-                onClick={() => calculator("10^")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[16px] font-[500] cursor-pointer">10ˣ</p>
-              </div>
-
-              <div
-                onClick={() => calculator("**(1/")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[16px] font-[500]">ʸ√x</p>
-              </div>
-              <div
-                onClick={() => calculator("Math.cbrt(")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[16px] font-[500]">³√x</p>
-              </div>
-              <div
-                onClick={() => calculator("sqrt(")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[18px] font-[500]">√x</p>
-              </div>
-              <div
-                onClick={() => calculator("ln(")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[18px] font-[500]">ln</p>
-              </div>
-              <div
-                onClick={() => calculator("log(")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[18px] font-[500]">log</p>
-              </div>
-
-              <div
-                onClick={() => calculator("(")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[18px] font-[500]">(</p>
-              </div>
-              <div
-                onClick={() => calculator(")")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[18px] font-[500]">)</p>
-              </div>
-              <div
-                onClick={() => calculator("1/")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[18px] font-[500]">1/x</p>
-              </div>
-              <div
-                onClick={() => calculator("!")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[18px] font-[500]">n!</p>
-              </div>
-              <div
-                onClick={() => calculator("%")}
-                className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
-              >
-                <p className="text-[18px] font-[500]">%</p>
-              </div>
             </div>
+
+            {/* Row 2 */}
+            <Btn label="sin⁻¹" onClick={() => calculator("asin(")} size="text-[14px]" />
+            <Btn label="cos⁻¹" onClick={() => calculator("acos(")} size="text-[14px]" />
+            <Btn label="tan⁻¹" onClick={() => calculator("atan(")} size="text-[14px]" />
+            <Btn label="π" onClick={() => calculator("π")} />
+            <Btn label="e" onClick={() => calculator("e")} />
+
+            {/* Row 3 */}
+            <Btn label="xʸ" onClick={() => calculator("^")} />
+            <Btn label="x²" onClick={() => calculator("^2")} />
+            <Btn label="x³" onClick={() => calculator("^3")} />
+            <Btn label="eˣ" onClick={() => calculator("e^")} />
+            <Btn label="10ˣ" onClick={() => calculator("10^")} />
+
+            {/* Row 4 */}
+            <Btn label="ʸ√x" onClick={() => calculator("**(1/")} size="text-[14px]" />
+            <Btn label="³√x" onClick={() => calculator("Math.cbrt(")} size="text-[14px]" />
+            <Btn label="√x" onClick={() => calculator("sqrt(")} size="text-[16px]" />
+            <Btn label="ln" onClick={() => calculator("ln(")} />
+            <Btn label="log" onClick={() => calculator("log(")} />
+
+            {/* Row 5 */}
+            <Btn label="(" onClick={() => calculator("(")} />
+            <Btn label=")" onClick={() => calculator(")")} />
+            <Btn label="1/x" onClick={() => calculator("1/")} size="text-[14px]" />
+            <Btn label="n!" onClick={() => calculator("!")} />
+            <Btn label="%" onClick={() => calculator("%")} />
           </div>
 
-          {/* Basic Calculator Section - Fixed number inputs */}
-          <div className="col-span-5">
-            <div className="grid grid-cols-5 gap-x-2 gap-y-2">
-              {[
-                "1", "2", "3", "-", "bk",
-                "4", "5", "6", "+", "ans", 
-                "7", "8", "9", "/", "M+",
-                "0", ".", "=", "*", "M-",
-                "+/-", "RND", "C", "EXP", "MR"
-              ].map((btn, index) => (
-                <div
-                  key={index}
-                  onClick={() => calculator(btn)}
-                  className={`${
-                    ["bk", "ans", "=", "C", "EXP"].includes(btn) 
-                      ? "bg-[#2845F5] hover:bg-black text-white" 
-                      : "bg-[#F4F4F4] hover:bg-black text-black hover:text-white"
-                  } cursor-pointer duration rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]`}
-                >
-                  <p className="text-[18px] font-[500]">
-                    {btn === "bk" ? (
-                      <svg width={34} height={22} viewBox="0 0 34 22" fill="none">
-                        <path d="M16.75 15.428L19.972 10.964L16.75 6.5H19.072L21.376 9.758L23.68 6.5H26.002L22.78 10.964L26.002 15.428H23.68L21.376 12.17L19.072 15.428H16.75Z" fill="white"/>
-                        <path d="M10.7855 2.37868C11.3481 1.81607 12.1112 1.5 12.9069 1.5H29.25C30.9069 1.5 32.25 2.84315 32.25 4.5V17.5C32.25 19.1569 30.9069 20.5 29.25 20.5H12.9069C12.1112 20.5 11.3481 20.1839 10.7855 19.6213L4.28553 13.1213C3.11396 11.9497 3.11396 10.0503 4.28553 8.87868L10.7855 2.37868Z" stroke="white" strokeWidth={2}/>
-                      </svg>
-                    ) : btn}
-                  </p>
-                </div>
-              ))}
-            </div>
+          {/* Right Side: Numpad & Operations */}
+          <div className="col-span-10 lg:col-span-5 md:col-span-5 grid grid-cols-5 gap-2">
+
+            <Btn label="1" onClick={() => calculator("1")} />
+            <Btn label="2" onClick={() => calculator("2")} />
+            <Btn label="3" onClick={() => calculator("3")} />
+            <Btn label="-" onClick={() => calculator("-")} />
+            <Btn label="⌫" onClick={() => calculator("bk")} blue icon />
+
+            <Btn label="4" onClick={() => calculator("4")} />
+            <Btn label="5" onClick={() => calculator("5")} />
+            <Btn label="6" onClick={() => calculator("6")} />
+            <Btn label="+" onClick={() => calculator("+")} />
+            <Btn label="ans" onClick={() => calculator("ans")} blue />
+
+            <Btn label="7" onClick={() => calculator("7")} />
+            <Btn label="8" onClick={() => calculator("8")} />
+            <Btn label="9" onClick={() => calculator("9")} />
+            <Btn label="/" onClick={() => calculator("/")} />
+            <Btn label="M+" onClick={() => calculator("M+")} />
+
+            <Btn label="0" onClick={() => calculator("0")} />
+            <Btn label="." onClick={() => calculator(".")} />
+            <Btn label="=" onClick={() => calculator("=")} blue />
+            <Btn label="*" onClick={() => calculator("*")} />
+            <Btn label="M-" onClick={() => calculator("M-")} />
+
+            <Btn label="+/-" onClick={() => calculator("+/-")} size="text-[14px]" />
+            <Btn label="RND" onClick={() => calculator("RND")} size="text-[12px]" />
+            <Btn label="C" onClick={() => calculator("C")} blue />
+            <Btn label="EXP" onClick={() => calculator("EXP")} blue size="text-[12px]" />
+            <Btn label="MR" onClick={() => calculator("MR")} />
+
           </div>
         </div>
+
       </div>
+    </div>
+  );
+};
+
+// Reusable Button Component for cleaner JSX
+const Btn = ({ label, onClick, blue = false, size = "text-[18px]", icon = false }) => {
+  return (
+    <div
+      onClick={onClick}
+      className={`${blue
+        ? "bg-[#2845F5] hover:bg-black text-white"
+        : "bg-[#F4F4F4] hover:bg-black text-black hover:text-white"
+        } cursor-pointer duration-200 rounded-[8px] flex justify-center items-center h-[45px] select-none active:scale-95 transition-all`}
+    >
+      {icon ? (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 5H9L3 12L9 19H21C21.5304 19 22.0391 18.7893 22.4142 18.4142C22.7893 18.0391 23 17.5304 23 17V7C23 6.46957 22.7893 5.96086 22.4142 5.58579C22.0391 5.21071 21.5304 5 21 5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M18 9L12 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M12 9L18 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      ) : (
+        <p className={`${size} font-[600]`}>{label}</p>
+      )}
     </div>
   );
 };

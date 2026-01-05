@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation"; // replaces window.location
+import Image from "next/image";
 import { searchallcalculators } from "../../../../public/search";
 
 export default function SearchBar({ isOpen, onClose }) {
@@ -102,9 +103,8 @@ export default function SearchBar({ isOpen, onClose }) {
       id="crypto-modal"
       tabIndex={-1}
       aria-hidden={!isOpen}
-      className={`${
-        isOpen ? "flex" : "hidden"
-      } fixed top-0 right-0 left-0 serachbarzindex justify-center w-full md:inset-0 md:h-auto h-[100vh] max-h-full bg-black/50`}
+      className={`${isOpen ? "flex" : "hidden"
+        } fixed top-0 right-0 left-0 serachbarzindex justify-center w-full md:inset-0 md:h-auto h-[100vh] max-h-full bg-black/50`}
       onClick={onClose}
     >
       <div
@@ -147,11 +147,13 @@ export default function SearchBar({ isOpen, onClose }) {
               placeholder="Search Calculators..."
               style={{ height: 55 }}
             />
-            <img
+            <Image
               src="/logo/search.svg"
               className="absolute top-5 right-3 cursor-pointer searchsvg"
               alt="search"
               title="search"
+              width={20}
+              height={20}
             />
           </div>
 
@@ -167,9 +169,8 @@ export default function SearchBar({ isOpen, onClose }) {
                   <a
                     href={`/${item.link}`}
                     key={index}
-                    className={`flex justify-between items-center p-2 bordered rounded hover:shadow-sm hover:bg-gray-50 ${
-                      selectedIndex === index ? "bg-gray-200" : ""
-                    }`}
+                    className={`flex justify-between items-center p-2 bordered rounded hover:shadow-sm hover:bg-gray-50 ${selectedIndex === index ? "bg-gray-200" : ""
+                      }`}
                   >
                     {/* Left side: Calculator name */}
                     <li

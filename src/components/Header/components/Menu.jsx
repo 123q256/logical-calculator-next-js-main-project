@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const Menu = ({ setShowTools, showTools, toggleTools }) => {
   const currentPath = usePathname();
@@ -68,11 +69,10 @@ const Menu = ({ setShowTools, showTools, toggleTools }) => {
       <li>
         <a
           href="/"
-          className={`group flex items-center gap-2 px-4 py-2 rounded-md transition-colors duration-200 ${
-            currentPath === "/"
+          className={`group flex items-center gap-2 px-4 py-2 rounded-md transition-colors duration-200 ${currentPath === "/"
               ? "text-[#2845F5] bg-[#eef1ff]"
               : "text-gray-800 hover:text-[#2845F5]"
-          }`}
+            }`}
         >
           <svg
             width="18"
@@ -131,20 +131,21 @@ const Menu = ({ setShowTools, showTools, toggleTools }) => {
         <button
           ref={buttonRef}
           onClick={handleCategoryDropdown}
-          className={`group flex items-center gap-2 px-4 py-2 rounded-md transition-colors duration-200 cursor-pointer ${
-            categories.some((cat) => currentPath.startsWith(cat.path))
+          className={`group flex items-center gap-2 px-4 py-2 rounded-md transition-colors duration-200 cursor-pointer ${categories.some((cat) => currentPath.startsWith(cat.path))
               ? "text-[#2845F5] bg-[#eef1ff]"
               : "text-gray-800 hover:text-[#2845F5]"
-          }`}
+            }`}
         >
-          <img
+          <Image
             src={
               categories.some((cat) => currentPath.startsWith(cat.path))
                 ? "/icons/bluecategory.svg"
                 : "/icons/category.svg"
             }
             alt="category"
-            className="w-5"
+            className="w-5 h-auto"
+            width={20}
+            height={20}
           />
           <span>Categories</span>
           <svg
@@ -173,11 +174,10 @@ const Menu = ({ setShowTools, showTools, toggleTools }) => {
                 key={path}
                 href={path}
                 onClick={handleCategoryDropdown}
-                className={`flex items-center gap-3 px-3 py-2 rounded-md transition hover:bg-[#eef1ff] ${
-                  currentPath === path ? "bg-[#eef1ff]" : ""
-                }`}
+                className={`flex items-center gap-3 px-3 py-2 rounded-md transition hover:bg-[#eef1ff] ${currentPath === path ? "bg-[#eef1ff]" : ""
+                  }`}
               >
-                <img src={img} alt={label} width="20" />
+                <Image src={img} alt={label} width={20} height={20} className="w-5 h-auto" />
                 <span>{label}</span>
               </a>
             ))}
@@ -189,20 +189,21 @@ const Menu = ({ setShowTools, showTools, toggleTools }) => {
       <li>
         <a
           href="/blog"
-          className={`group flex items-center gap-2 px-4 py-2 rounded-md transition-colors duration-200 ${
-            currentPath.startsWith("/blog")
+          className={`group flex items-center gap-2 px-4 py-2 rounded-md transition-colors duration-200 ${currentPath.startsWith("/blog")
               ? "text-[#2845F5] bg-[#eef1ff]"
               : "text-gray-800 hover:text-[#2845F5]"
-          }`}
+            }`}
         >
-          <img
+          <Image
             src={
               currentPath.startsWith("/blog")
                 ? "/icons/blueblog.svg"
                 : "/icons/blog.svg"
             }
-            className="w-5"
+            className="w-5 h-auto"
             alt="blog"
+            width={20}
+            height={20}
           />
           Blogs
         </a>
@@ -212,20 +213,21 @@ const Menu = ({ setShowTools, showTools, toggleTools }) => {
       <li>
         <a
           href="/contact"
-          className={`group flex items-center gap-2 px-4 py-2 rounded-md transition-colors duration-200 ${
-            currentPath === "/contact"
+          className={`group flex items-center gap-2 px-4 py-2 rounded-md transition-colors duration-200 ${currentPath === "/contact"
               ? "text-[#2845F5] bg-[#eef1ff]"
               : "text-gray-800 hover:text-[#2845F5]"
-          }`}
+            }`}
         >
-          <img
+          <Image
             src={
               currentPath === "/contact"
                 ? "/icons/bluecontact.svg"
                 : "/icons/contact.svg"
             }
-            className="w-5"
+            className="w-5 h-auto"
             alt="contact"
+            width={20}
+            height={20}
           />
           Contact Us
         </a>

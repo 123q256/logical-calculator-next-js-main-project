@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const Footer = () => {
   const categories = [
@@ -33,12 +34,13 @@ const Footer = () => {
               href="/"
               className="flex items-center space-x-4 rtl:space-x-reverse w-[40%]"
             >
-              <img
+              <Image
                 src="/logo/logo-dark.png"
-                className="h-10"
+                className="h-10 w-auto"
                 title="Footer-Logo"
                 alt="Footer-Logo"
-                loading="lazy"
+                width={40}
+                height={40}
               />
               <div>
                 <span className="font-[500] text-[24px] leading-[36.46px] tracking-wide text-white">
@@ -60,19 +62,19 @@ const Footer = () => {
             </div>
 
             <div className="flex gap-x-6 items-center mt-12">
-              <div className="w-[30px] h-[30px] flex justify-center items-center">
-                <img src="/logo/linkedin.svg" title="linkedin" alt="linkedin" />
+              <div className="w-[30px] h-[30px] flex justify-center items-center relative">
+                <Image src="/logo/linkedin.svg" title="linkedin" alt="linkedin" width={30} height={30} />
               </div>
-              <div className="w-[30px] h-[30px] flex justify-center items-center">
-                <img src="/logo/pointer.svg" title="pointer" alt="pointer" />
+              <div className="w-[30px] h-[30px] flex justify-center items-center relative">
+                <Image src="/logo/pointer.svg" title="pointer" alt="pointer" width={30} height={30} />
               </div>
-              <div className="w-[30px] h-[30px] flex justify-center items-center">
+              <div className="w-[30px] h-[30px] flex justify-center items-center relative">
                 <a
                   href="https://www.facebook.com/profile.php?id=61577205635903"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <img src="/logo/facebook.svg" title="facebook" alt="facebook" />
+                  <Image src="/logo/facebook.svg" title="facebook" alt="facebook" width={30} height={30} />
                 </a>
               </div>
             </div>
@@ -168,9 +170,9 @@ const Footer = () => {
         <hr className="my-6 w-full border-white lg:my-8" />
         <div className="sm:flex sm:items-center sm:justify-center">
           <span className="text-[16px] text-[#AEAEAE] sm:text-center">
-             © {new Date().getFullYear()}{" "}
+            © {new Date().getFullYear()}{" "}
             <a href="/" className="hover:underline">
-               Calculator Logical
+              Calculator Logical
             </a>
             . All Rights Reserved.
           </span>

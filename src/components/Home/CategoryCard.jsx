@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 const CategoryCard = ({ href, imageSrc, altText, title1, title2 }) => {
   return (
@@ -12,7 +13,7 @@ const CategoryCard = ({ href, imageSrc, altText, title1, title2 }) => {
         }}
       >
         <div className="flex justify-center items-center rounded-full">
-          <img src={imageSrc} alt={altText} width="50px" />
+          <Image src={imageSrc} alt={altText} width={50} height={50} />
         </div>
         <p className="text-[16px] mt-3 tracking-wide text-white text-opacity-90 font-[600] leading-[33.85px]">
           {title1}

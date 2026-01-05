@@ -7,6 +7,7 @@ import MobileNav from "./components/MobileNav";
 import { useGetSingleCalculatorLanguageQuery } from "../../redux/services/calculator/calculatorApi";
 import { countryMapping, svgs } from "../../data/CountryLanguage.jsx";
 import SearchBar from "./components/SearchBar.jsx";
+import Image from "next/image";
 
 const Header = () => {
   const pathname = usePathname();
@@ -68,7 +69,9 @@ const Header = () => {
   const lastSlug = segments[segments.length - 1];
   const cleanUrl = url.startsWith("/") ? url.slice(1) : url;
   const { data: getSingleCalculatorLanguage } =
-    useGetSingleCalculatorLanguageQuery(lastSlug);
+    useGetSingleCalculatorLanguageQuery(lastSlug, {
+      skip: !lastSlug || lastSlug === "calculator-logical.com", // Skip if slug is empty or root
+    });
 
   const [showButton, setShowButton] = useState(false);
 
@@ -325,12 +328,14 @@ const Header = () => {
             href="/"
             className="flex items-center space-x-2 rtl:space-x-reverse mr-auto"
           >
-            <img
+            <Image
               src="/logo.png"
-              className="h-8"
+              className="h-8 w-auto"
               alt="Header-Logo"
               title="Header-Logo"
-              loading="lazy"
+              width={32}
+              height={32}
+              priority
             />
             <div className="lg:pl-1 md:pl-1">
               <span className="self-center lg:text-[19px] text-[14px] font-bold whitespace-nowrap">
@@ -408,9 +413,8 @@ const Header = () => {
                 <button
                   onClick={showPrev}
                   disabled={startIndex === 0}
-                  className={`p-1 mr-2 bg-[#2845F5] rounded-full hidden lg:block ${
-                    startIndex === 0 ? "opacity-40 cursor-not-allowed" : ""
-                  }`}
+                  className={`p-1 mr-2 bg-[#2845F5] rounded-full hidden lg:block ${startIndex === 0 ? "opacity-40 cursor-not-allowed" : ""
+                    }`}
                 >
                   <svg
                     className="w-5 h-5 text-white"
@@ -430,9 +434,8 @@ const Header = () => {
                   <div
                     className="flex transition-transform duration-500 ease-in-out"
                     style={{
-                      transform: `translateX(-${
-                        startIndex * (100 / visible)
-                      }%)`,
+                      transform: `translateX(-${startIndex * (100 / visible)
+                        }%)`,
                     }}
                   >
                     {categories.map((cat, index) => (
@@ -442,10 +445,12 @@ const Header = () => {
                         style={{ minWidth: `${100 / visible}%` }}
                       >
                         <div className="flex items-center mb-3">
-                          <img
+                          <Image
                             src={cat.imageSrc}
                             alt={cat.altText}
                             className="w-6 h-6 object-contain mr-2"
+                            width={24}
+                            height={24}
                           />
                           <p className="font-bold text-lg">{cat.title}</p>
                         </div>
@@ -454,11 +459,10 @@ const Header = () => {
                             <li key={path}>
                               <a
                                 href={`/${path}`}
-                                className={`hover:underline ${
-                                  index === 8
-                                    ? "text-[#2845F5] font-bold text-[14px]"
-                                    : "text-[#000000]"
-                                }`}
+                                className={`hover:underline ${index === 8
+                                  ? "text-[#2845F5] font-bold text-[14px]"
+                                  : "text-[#000000]"
+                                  }`}
                               >
                                 {label}
                               </a>
@@ -472,11 +476,10 @@ const Header = () => {
                 <button
                   onClick={showNext}
                   disabled={startIndex + visible >= categories.length}
-                  className={`p-1 ml-2 bg-[#2845F5] rounded-full hidden lg:block  ${
-                    startIndex + visible >= categories.length
-                      ? "opacity-40 cursor-not-allowed"
-                      : ""
-                  }`}
+                  className={`p-1 ml-2 bg-[#2845F5] rounded-full hidden lg:block  ${startIndex + visible >= categories.length
+                    ? "opacity-40 cursor-not-allowed"
+                    : ""
+                    }`}
                 >
                   <svg
                     className="w-5 h-5 text-white"
@@ -505,11 +508,10 @@ const Header = () => {
               className={`open-modal premium-btn11 cursor-pointer
           bg-[#1A1A1A] text-[#fff] hover:bg-[#2845F5] hover:text-white duration-200 
           font-[600] text-[14px] rounded-[25px] px-4 py-3
-          ${
-            isFixed
-              ? "fixed top-[15px] right-[15px] bottom-auto z-50"
-              : "relative"
-          }`}
+          ${isFixed
+                  ? "fixed top-[15px] right-[15px] bottom-auto z-50"
+                  : "relative"
+                }`}
             >
               Search
             </button>

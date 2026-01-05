@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import {
   allbasicbg,
   allcalcalutor,
@@ -42,7 +43,9 @@ const AboutCalculation = () => {
             All Basic, Advance, Scientific and <br />
             Business Level Calculation
           </h3>
-          <img src={allcalcalutor} alt="Group graphic" loading="lazy"/>
+          <div className="flex justify-center">
+            <Image src={allcalcalutor} alt="Group graphic" />
+          </div>
         </div>
 
         <div className="lg:w-[40%] md:w-[50%] w-full gap-y-4 flex flex-col">
@@ -63,18 +66,17 @@ const AboutCalculation = () => {
               Health Maintenance
             </h3>
             <div className="w-full relative mt-3">
-              <img
+              <Image
                 className="w-full"
                 src={healthmaintance}
                 alt="health-maintance"
                 title="health-maintance"
-                loading="lazy"
               />
               <div
                 className="flex justify-center absolute bottom-5 left-[59%] transform -translate-x-1/2 items-center bg-white p-4 rounded-[8px]"
                 style={{ boxShadow: "0px 30px 60px -12px #32325d1a" }}
               >
-                <img src={heart} alt="heart" title="heart" loading="lazy" />
+                <Image src={heart} alt="heart" title="heart" />
               </div>
             </div>
           </div>
@@ -135,7 +137,7 @@ const AboutCalculation = () => {
           ].map((item, i) => (
             <div className="p-4" key={i}>
               <div className="flex justify-center">
-                <img src={item.img} alt={item.title} title={item.title} loading="lazy" />
+                <Image src={item.img} alt={item.title} title={item.title} />
               </div>
               <h3 className="text-[20px] leading-[26.04px] text-center font-[600] my-5">
                 {item.title}
@@ -148,8 +150,7 @@ const AboutCalculation = () => {
         </div>
       </div>
     </div>
-    
-);
+  );
 };
 
 export default AboutCalculation;

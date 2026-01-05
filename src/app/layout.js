@@ -6,6 +6,8 @@ import Footer from "@/components/Footer";
 import Script from "next/script";
 import Image from "next/image";
 import GlobalMathRenderer from "../components/GlobalMathRenderer";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import LogViewer from "@/components/LogViewer";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -23,8 +25,8 @@ const geistMono = Geist_Mono({
 
 // app/layout.js or wherever you define metadata
 export const metadata = {
-  // title: "Calculator Logical",
-  // description: "Free Online Calculators for Accurate Results",
+  title: "Calculator Logical",
+  description: "Free Online Calculators for Accurate Results",
   robots: {
     index: process.env.NEXT_PUBLIC_ROBOTS === "index" ? true : false,
     follow: process.env.NEXT_PUBLIC_ROBOTS === "index" ? true : false,
@@ -40,10 +42,12 @@ export default function RootLayout({ children }) {
       />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning={true}
       >
         <button
           id="scrollToTopmove"
           className="scroll-to-tops cursor-pointer fixed right-6 bottom-[12px] hidden z-50"
+          aria-label="Scroll to top"
         >
           <Image
             src="/top_btn.svg"
@@ -52,11 +56,16 @@ export default function RootLayout({ children }) {
             height={40}
           />
         </button>
-        <GlobalMathRenderer />
+        <GlobalMathRenderer />
         <Providers>
-          <Header />
-          {children}
-          <Footer />
+          <ErrorBoundary>
+            <Header />
+            <main className="min-h-screen">
+              {children}
+            </main>
+            <Footer />
+          </ErrorBoundary>
+          <LogViewer />
         </Providers>
 
         <Script id="scroll-to-top" strategy="afterInteractive">

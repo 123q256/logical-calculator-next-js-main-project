@@ -1,6 +1,5 @@
-import React from "react";
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import Image from "next/image";
 import { footerbgimg, unlock_img } from "../../../assets/images";
 
 const FreeCalculators = () => {
@@ -56,7 +55,7 @@ const FreeCalculators = () => {
             </div>
           </div>
           <div className="lg:w-[50%] lg:flex hidden justify-end">
-            <img src={unlock_img} alt="unlock_img" title="unlock_img" loading="lazy" />
+            <Image src={unlock_img} alt="unlock_img" title="unlock_img" />
           </div>
         </div>
       </div>
