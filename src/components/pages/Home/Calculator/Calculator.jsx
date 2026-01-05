@@ -115,11 +115,11 @@ const Calculator = () => {
         const scope = {
           sqrt: Math.sqrt,
           cbrt: Math.cbrt,
-          log: Math.log,       // ln
-          log10: Math.log10,   // log base 10
+          log: Math.log, // ln
+          log10: Math.log10, // log base 10
           exp: Math.exp,
           pi: Math.PI,
-          e: Math.E
+          e: Math.E,
         };
 
         if (degreeRad === "degree") {
@@ -151,9 +151,10 @@ const Calculator = () => {
           setOutput(formatted.toString());
 
           // Add to history (optional feature, but good for "complete")
-          setHistory(prev => [{ input, output: formatted.toString() }, ...prev].slice(0, 5));
+          setHistory((prev) =>
+            [{ input, output: formatted.toString() }, ...prev].slice(0, 5)
+          );
         }
-
       } catch (err) {
         // console.error(err); // Prevent dev overlay
         setOutput("Error");
@@ -213,14 +214,15 @@ const Calculator = () => {
     <div className="max-w-[830px] mx-auto lg:py-5 md:py-5 lg:mt-auto md:mt-auto mt-6 relative px-5">
       <div className="bordercalculator xl:p-4 lg:p-4 p-3 bg-white xl:rounded-[25px] lg:rounded-[20px] rounded-[16px] w-full shadow-sm">
         <div className="flex lg:flex-row flex-col gap-x-5 lg:gap-y-[22px] md:gap-y-[22px] w-full">
-
           {/* Input Screen */}
           <div className="lg:w-[50%] w-full">
             <p className="text-[16px] leading-[20.85px] font-[700] px-3 mb-2">
               Input
             </p>
             <div
-              className={`bg-[#FAFAFA] min-h-[50px] max-h-[100px] border border-[#E3E3E3] rounded-[12px] px-4 py-3 my-1 overflow-auto text-lg font-medium whitespace-pre-wrap break-all ${!input ? 'text-gray-400' : 'text-black'}`}
+              className={`bg-[#FAFAFA] min-h-[50px] max-h-[100px] border border-[#E3E3E3] rounded-[12px] px-4 py-3 overflow-auto text-lg font-medium whitespace-pre-wrap break-all ${
+                !input ? "text-gray-400" : "text-black"
+              }`}
             >
               {input || "0"}
             </div>
@@ -231,8 +233,12 @@ const Calculator = () => {
             <p className="text-[16px] leading-[20.85px] font-[700] px-3 mb-2">
               Answer
             </p>
-            <div className="bg-[#FAFAFA] min-h-[50px] max-h-[100px] border border-[#E3E3E3] rounded-[12px] px-4 py-3 my-1 overflow-auto flex items-center justify-end">
-              <p className={`text-right text-[28px] leading-[36.46px] font-[600] ${output === "Error" ? "text-red-500" : "text-[#818181]"}`}>
+            <div className="bg-[#FAFAFA] min-h-[50px] max-h-[100px] border border-[#E3E3E3] rounded-[12px] px-4 py-2 overflow-auto text-lg font-medium whitespace-pre-wrap break-all text-gray-400">
+              <p
+                className={`text-right text-[22px] leading-[36.46px] font-[600] ${
+                  output === "Error" ? "text-red-500" : "text-[#818181]"
+                }`}
+              >
                 {output || "0"}
               </p>
             </div>
@@ -250,15 +256,18 @@ const Calculator = () => {
         </div>
 
         {/* Memory Indicator */}
-        <div className="mt-4 mb-2 px-3 text-sm text-gray-500 font-medium">
+        {/* <div className="mt-4 mb-2 px-3 text-sm text-gray-500 font-medium">
           Memory: <span className="text-black">{memory}</span>
-        </div>
+        </div> */}
 
         {/* Keypad Grid */}
-        <div className="grid lg:grid-cols-10 md:grid-cols-10 grid-cols-5 gap-2 mt-2">
-
+        <div className="grid lg:grid-cols-10 md:grid-cols-10 grid-cols-5 gap-2 mt-4">
           {/* Left Side: Scientific Functions */}
-          <div className={`col-span-10 lg:col-span-5 md:col-span-5 grid grid-cols-5 gap-2 ${calculatorType === 'simple' ? 'hidden lg:grid md:grid' : ''}`}>
+          <div
+            className={`col-span-10 lg:col-span-5 md:col-span-5 grid grid-cols-5 gap-2 ${
+              calculatorType === "simple" ? "hidden lg:grid md:grid" : ""
+            }`}
+          >
             {/* Row 1 */}
             <Btn label="sin" onClick={() => calculator("sin(")} />
             <Btn label="cos" onClick={() => calculator("cos(")} />
@@ -266,7 +275,7 @@ const Calculator = () => {
 
             {/* Deg/Rad Toggle */}
             <div className="bg-[#F4F4F4] rounded-[7px] flex items-center justify-center col-span-2 px-1">
-              <div className="flex items-center gap-x-2 text-[12px] font-[600]">
+              <div className="flex items-center gap-x-2 text-[12px] ">
                 <label className="flex items-center cursor-pointer gap-1">
                   <input
                     type="radio"
@@ -274,7 +283,8 @@ const Calculator = () => {
                     checked={degreeRad === "degree"}
                     onChange={() => setDegorRad("degree")}
                     className="accent-blue-600 w-3 h-3"
-                  /> Deg
+                  />{" "}
+                  Deg
                 </label>
                 <label className="flex items-center cursor-pointer gap-1">
                   <input
@@ -283,15 +293,28 @@ const Calculator = () => {
                     checked={degreeRad === "radians"}
                     onChange={() => setDegorRad("radians")}
                     className="accent-blue-600 w-3 h-3"
-                  /> Rad
+                  />{" "}
+                  Rad
                 </label>
               </div>
             </div>
 
             {/* Row 2 */}
-            <Btn label="sin⁻¹" onClick={() => calculator("asin(")} size="text-[14px]" />
-            <Btn label="cos⁻¹" onClick={() => calculator("acos(")} size="text-[14px]" />
-            <Btn label="tan⁻¹" onClick={() => calculator("atan(")} size="text-[14px]" />
+            <Btn
+              label="sin⁻¹"
+              onClick={() => calculator("asin(")}
+              size="text-[14px]"
+            />
+            <Btn
+              label="cos⁻¹"
+              onClick={() => calculator("acos(")}
+              size="text-[14px]"
+            />
+            <Btn
+              label="tan⁻¹"
+              onClick={() => calculator("atan(")}
+              size="text-[14px]"
+            />
             <Btn label="π" onClick={() => calculator("π")} />
             <Btn label="e" onClick={() => calculator("e")} />
 
@@ -303,23 +326,38 @@ const Calculator = () => {
             <Btn label="10ˣ" onClick={() => calculator("10^")} />
 
             {/* Row 4 */}
-            <Btn label="ʸ√x" onClick={() => calculator("**(1/")} size="text-[14px]" />
-            <Btn label="³√x" onClick={() => calculator("Math.cbrt(")} size="text-[14px]" />
-            <Btn label="√x" onClick={() => calculator("sqrt(")} size="text-[16px]" />
+            <Btn
+              label="ʸ√x"
+              onClick={() => calculator("**(1/")}
+              size="text-[14px]"
+            />
+            <Btn
+              label="³√x"
+              onClick={() => calculator("Math.cbrt(")}
+              size="text-[14px]"
+            />
+            <Btn
+              label="√x"
+              onClick={() => calculator("sqrt(")}
+              size="text-[16px]"
+            />
             <Btn label="ln" onClick={() => calculator("ln(")} />
             <Btn label="log" onClick={() => calculator("log(")} />
 
             {/* Row 5 */}
             <Btn label="(" onClick={() => calculator("(")} />
             <Btn label=")" onClick={() => calculator(")")} />
-            <Btn label="1/x" onClick={() => calculator("1/")} size="text-[14px]" />
+            <Btn
+              label="1/x"
+              onClick={() => calculator("1/")}
+              size="text-[14px]"
+            />
             <Btn label="n!" onClick={() => calculator("!")} />
             <Btn label="%" onClick={() => calculator("%")} />
           </div>
 
           {/* Right Side: Numpad & Operations */}
           <div className="col-span-10 lg:col-span-5 md:col-span-5 grid grid-cols-5 gap-2">
-
             <Btn label="1" onClick={() => calculator("1")} />
             <Btn label="2" onClick={() => calculator("2")} />
             <Btn label="3" onClick={() => calculator("3")} />
@@ -344,35 +382,77 @@ const Calculator = () => {
             <Btn label="*" onClick={() => calculator("*")} />
             <Btn label="M-" onClick={() => calculator("M-")} />
 
-            <Btn label="+/-" onClick={() => calculator("+/-")} size="text-[14px]" />
-            <Btn label="RND" onClick={() => calculator("RND")} size="text-[12px]" />
+            <Btn
+              label="+/-"
+              onClick={() => calculator("+/-")}
+              size="text-[14px]"
+            />
+            <Btn
+              label="RND"
+              onClick={() => calculator("RND")}
+              size="text-[12px]"
+            />
             <Btn label="C" onClick={() => calculator("C")} blue />
-            <Btn label="EXP" onClick={() => calculator("EXP")} blue size="text-[12px]" />
+            <Btn
+              label="EXP"
+              onClick={() => calculator("EXP")}
+              blue
+              size="text-[12px]"
+            />
             <Btn label="MR" onClick={() => calculator("MR")} />
-
           </div>
         </div>
-
       </div>
     </div>
   );
 };
 
 // Reusable Button Component for cleaner JSX
-const Btn = ({ label, onClick, blue = false, size = "text-[18px]", icon = false }) => {
+const Btn = ({
+  label,
+  onClick,
+  blue = false,
+  size = "text-[18px]",
+  icon = false,
+}) => {
   return (
     <div
       onClick={onClick}
-      className={`${blue
-        ? "bg-[#2845F5] hover:bg-black text-white"
-        : "bg-[#F4F4F4] hover:bg-black text-black hover:text-white"
-        } cursor-pointer duration-200 rounded-[8px] flex justify-center items-center h-[45px] select-none active:scale-95 transition-all`}
+      className={`${
+        blue
+          ? "bg-[#2845F5] hover:bg-black text-white"
+          : "bg-[#F4F4F4] hover:bg-black text-black hover:text-white"
+      } cursor-pointer duration-200 rounded-[8px] flex justify-center items-center h-[45px] select-none active:scale-95 transition-all`}
     >
       {icon ? (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M21 5H9L3 12L9 19H21C21.5304 19 22.0391 18.7893 22.4142 18.4142C22.7893 18.0391 23 17.5304 23 17V7C23 6.46957 22.7893 5.96086 22.4142 5.58579C22.0391 5.21071 21.5304 5 21 5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M18 9L12 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M12 9L18 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21 5H9L3 12L9 19H21C21.5304 19 22.0391 18.7893 22.4142 18.4142C22.7893 18.0391 23 17.5304 23 17V7C23 6.46957 22.7893 5.96086 22.4142 5.58579C22.0391 5.21071 21.5304 5 21 5Z"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M18 9L12 15"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M12 9L18 15"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       ) : (
         <p className={`${size} font-[600]`}>{label}</p>

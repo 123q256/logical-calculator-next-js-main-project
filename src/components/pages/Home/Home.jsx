@@ -44,7 +44,7 @@ const Home = () => {
         />
       </Helmet>
 
-      <div className="lg:text-[35px] md:text-[35px] text-[30px] pt-5 font-[700]  text-center">
+      <div className="lg:text-[35px] md:text-[35px] text-[30px] pt-5  text-center">
         <h1 className="text-[#2845F5]">
           Calculator <span className="text-[#1A1A1A]">Logical</span>{" "}
         </h1>
