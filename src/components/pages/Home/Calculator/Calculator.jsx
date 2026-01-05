@@ -247,7 +247,7 @@ const Calculator = () => {
             <div className="bg-[#FAFAFA] flex items-center justify-end min-h-[40px] max-h-[100px] border border-[#E3E3E3] rounded-[12px] px-3 pt-2 my-3 overflow-auto">
               <p
                 id="showOutput"
-                className={`text-right text-[28px] leading-[36.46px] font-[500] ${
+                className={`text-right text-[28px] leading-[36.46px] font-medium ${
                   output === "Error" ? "text-red-500" : "text-[#818181]"
                 }`}
               >
@@ -293,23 +293,23 @@ const Calculator = () => {
                 onClick={() => calculator("sin(")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[18px] font-[500]">sin</p>
+                <p className="text-[18px] font-medium">sin</p>
               </div>
               <div
                 onClick={() => calculator("cos(")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[18px] font-[500]">cos</p>
+                <p className="text-[18px] font-medium">cos</p>
               </div>
               <div
                 onClick={() => calculator("tan(")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[18px] font-[500]">tan</p>
+                <p className="text-[18px] font-medium">tan</p>
               </div>
               <div className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]">
                 <label htmlFor="scirdsettingd" className="cursor-pointer">
-                  <p className="flex items-center gap-x-1 text-[12px] font-[500] hover:text-white">
+                  <p className="flex items-center gap-x-1 text-[12px] font-medium hover:text-white">
                     <input
                       id="scirdsettingd"
                       className="with-gap"
@@ -324,7 +324,7 @@ const Calculator = () => {
               </div>
               <div className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]">
                 <label htmlFor="scirdsettingr" className="cursor-pointer">
-                  <p className="flex items-center gap-x-1 text-[12px] font-[500] hover:text-white">
+                  <p className="flex items-center gap-x-1 text-[12px] font-medium hover:text-white">
                     <input
                       id="scirdsettingr"
                       className="with-gap"
@@ -343,7 +343,7 @@ const Calculator = () => {
                 onClick={() => calculator("asin(")}
                 className="bg-[#F4F4F4] hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[16px] font-[500] cursor-pointer">
+                <p className="text-[16px] font-medium cursor-pointer">
                   sin⁻¹
                 </p>
               </div>
@@ -351,7 +351,7 @@ const Calculator = () => {
                 onClick={() => calculator("acos(")}
                 className="bg-[#F4F4F4] hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[16px] font-[500] cursor-pointer">
+                <p className="text-[16px] font-medium cursor-pointer">
                   cos⁻¹
                 </p>
               </div>
@@ -359,7 +359,7 @@ const Calculator = () => {
                 onClick={() => calculator("atan(")}
                 className="bg-[#F4F4F4] hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[16px] font-[500] cursor-pointer">
+                <p className="text-[16px] font-medium cursor-pointer">
                   tan⁻¹
                 </p>
               </div>
@@ -367,106 +367,106 @@ const Calculator = () => {
                 onClick={() => calculator("π")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[18px] font-[500]">π</p>
+                <p className="text-[18px] font-medium">π</p>
               </div>
               <div
                 onClick={() => calculator("e")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[18px] font-[500]">e</p>
+                <p className="text-[18px] font-medium">e</p>
               </div>
 
               <div
                 onClick={() => calculator("^")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[16px] font-[500]">xʸ</p>
+                <p className="text-[16px] font-medium">xʸ</p>
               </div>
               <div
                 onClick={() => calculator("^2")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[16px] font-[500]">x²</p>
+                <p className="text-[16px] font-medium">x²</p>
               </div>
               <div
                 onClick={() => calculator("^3")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[16px] font-[500]">x³</p>
+                <p className="text-[16px] font-medium">x³</p>
               </div>
               <div
                 onClick={() => calculator("e^")}
                 className="bg-[#F4F4F4] hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[16px] font-[500] cursor-pointer">eˣ</p>
+                <p className="text-[16px] font-medium cursor-pointer">eˣ</p>
               </div>
               <div
                 onClick={() => calculator("10^")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[16px] font-[500] cursor-pointer">10ˣ</p>
+                <p className="text-[16px] font-medium cursor-pointer">10ˣ</p>
               </div>
 
               <div
                 onClick={() => calculator("**(1/")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[16px] font-[500]">ʸ√x</p>
+                <p className="text-[16px] font-medium">ʸ√x</p>
               </div>
               <div
                 onClick={() => calculator("Math.cbrt(")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[16px] font-[500]">³√x</p>
+                <p className="text-[16px] font-medium">³√x</p>
               </div>
               <div
                 onClick={() => calculator("sqrt(")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[18px] font-[500]">√x</p>
+                <p className="text-[18px] font-medium">√x</p>
               </div>
               <div
                 onClick={() => calculator("ln(")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[18px] font-[500]">ln</p>
+                <p className="text-[18px] font-medium">ln</p>
               </div>
               <div
                 onClick={() => calculator("log(")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[18px] font-[500]">log</p>
+                <p className="text-[18px] font-medium">log</p>
               </div>
 
               <div
                 onClick={() => calculator("(")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[18px] font-[500]">(</p>
+                <p className="text-[18px] font-medium">(</p>
               </div>
               <div
                 onClick={() => calculator(")")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[18px] font-[500]">)</p>
+                <p className="text-[18px] font-medium">)</p>
               </div>
               <div
                 onClick={() => calculator("1/")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[18px] font-[500]">1/x</p>
+                <p className="text-[18px] font-medium">1/x</p>
               </div>
               <div
                 onClick={() => calculator("!")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[18px] font-[500]">n!</p>
+                <p className="text-[18px] font-medium">n!</p>
               </div>
               <div
                 onClick={() => calculator("%")}
                 className="bg-[#F4F4F4] cursor-pointer hover:bg-black duration text-black hover:text-white rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]"
               >
-                <p className="text-[18px] font-[500]">%</p>
+                <p className="text-[18px] font-medium">%</p>
               </div>
             </div>
           </div>
@@ -490,7 +490,7 @@ const Calculator = () => {
                       : "bg-[#F4F4F4] hover:bg-black text-black hover:text-white"
                   } cursor-pointer duration rounded-[7px] flex justify-center items-center lg:w-[55px] w-auto md:h-[43px] h-[37px]`}
                 >
-                  <p className="text-[18px] font-[500]">
+                  <p className="text-[18px] font-medium">
                     {btn === "bk" ? (
                       <svg width={34} height={22} viewBox="0 0 34 22" fill="none">
                         <path d="M16.75 15.428L19.972 10.964L16.75 6.5H19.072L21.376 9.758L23.68 6.5H26.002L22.78 10.964L26.002 15.428H23.68L21.376 12.17L19.072 15.428H16.75Z" fill="white"/>
