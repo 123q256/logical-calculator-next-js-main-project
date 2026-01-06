@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useInverseMatrixCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useInverseMatrixCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -46,33 +47,18 @@ const InverseMatrixCalculator = () => {
   }, [url]);
 
   const [formData, setFormData] = useState({
-    tech_dtrmn_slct_method: "5",
-    tech_dtrmn_0_0: "2",
-    tech_dtrmn_0_1: "0",
-    tech_dtrmn_0_2: "1",
-    tech_dtrmn_0_3: "1",
-    tech_dtrmn_0_4: "2",
-    tech_dtrmn_1_0: "9",
-    tech_dtrmn_1_1: "4",
+    tech_dtrmn_slct_method: "3",
+    tech_dtrmn_0_0: "1",
+    tech_dtrmn_0_1: "1",
+    tech_dtrmn_0_2: "9",
+    tech_dtrmn_1_0: "2",
+    tech_dtrmn_1_1: "5",
     tech_dtrmn_1_2: "1",
-    tech_dtrmn_1_3: "1",
-    tech_dtrmn_1_4: "5",
     tech_dtrmn_2_0: "1",
-    tech_dtrmn_2_1: "1",
-    tech_dtrmn_2_2: "2",
-    tech_dtrmn_2_3: "7",
-    tech_dtrmn_2_4: "2",
-    tech_dtrmn_3_0: "1",
-    tech_dtrmn_3_1: "2",
-    tech_dtrmn_3_2: "6",
-    tech_dtrmn_3_3: "1",
-    tech_dtrmn_3_4: "1",
-    tech_dtrmn_4_0: "8",
-    tech_dtrmn_4_1: "3",
-    tech_dtrmn_4_2: "1",
-    tech_dtrmn_4_3: "1",
-    tech_dtrmn_4_4: "2",
-    tech_dtrmn_opts_method: "exp_row", // exp_col exp_row
+    tech_dtrmn_2_1: "2",
+    tech_dtrmn_2_2: "7",
+    tech_dtrmn_opts_method: "exp_col", //exp_col  exp_row
+    tech_submit: "calculate",
   });
 
   const [result, setResult] = useState(null);
@@ -127,10 +113,12 @@ const InverseMatrixCalculator = () => {
 
     try {
       const matrixSize = Number(formData.tech_dtrmn_slct_method);
+      const tech_submit = formData.tech_submit;
 
       const matrixPayload = {
         tech_dtrmn_slct_method: String(matrixSize),
         tech_dtrmn_opts_method: formData.tech_dtrmn_opts_method || "exp_col",
+        tech_submit: formData.tech_submit,
       };
 
       for (let i = 0; i < matrixSize; i++) {
@@ -141,45 +129,29 @@ const InverseMatrixCalculator = () => {
       }
 
       const response = await calculateEbitCalculator(matrixPayload).unwrap();
-      setResult(response);
+      setResult(response?.payload); // Assuming the response has 'lovePercentage'
       toast.success("Successfully Calculated");
     } catch (err) {
-      const errorMsg = err?.data?.error || "An error occurred";
-      setFormError(errorMsg);
-      toast.error(errorMsg);
+      setFormError(err?.data?.payload?.error);
+      toast.error(err?.data?.payload?.error);
     }
   };
 
   // Handle reset form
   const handleReset = () => {
     setFormData({
-      tech_dtrmn_slct_method: "5",
-      tech_dtrmn_0_0: "2",
-      tech_dtrmn_0_1: "0",
-      tech_dtrmn_0_2: "1",
-      tech_dtrmn_0_3: "1",
-      tech_dtrmn_0_4: "2",
-      tech_dtrmn_1_0: "9",
-      tech_dtrmn_1_1: "4",
+      tech_dtrmn_slct_method: "3",
+      tech_dtrmn_0_0: "1",
+      tech_dtrmn_0_1: "1",
+      tech_dtrmn_0_2: "9",
+      tech_dtrmn_1_0: "2",
+      tech_dtrmn_1_1: "5",
       tech_dtrmn_1_2: "1",
-      tech_dtrmn_1_3: "1",
-      tech_dtrmn_1_4: "5",
       tech_dtrmn_2_0: "1",
-      tech_dtrmn_2_1: "1",
-      tech_dtrmn_2_2: "2",
-      tech_dtrmn_2_3: "7",
-      tech_dtrmn_2_4: "2",
-      tech_dtrmn_3_0: "1",
-      tech_dtrmn_3_1: "2",
-      tech_dtrmn_3_2: "6",
-      tech_dtrmn_3_3: "1",
-      tech_dtrmn_3_4: "1",
-      tech_dtrmn_4_0: "8",
-      tech_dtrmn_4_1: "3",
-      tech_dtrmn_4_2: "1",
-      tech_dtrmn_4_3: "1",
-      tech_dtrmn_4_4: "2",
-      tech_dtrmn_opts_method: "exp_row", // exp_col exp_row
+      tech_dtrmn_2_1: "2",
+      tech_dtrmn_2_2: "7",
+      tech_dtrmn_opts_method: "exp_col", //exp_col  exp_row
+      tech_submit: "calculate",
     });
     setResult(null);
     setFormError(null);
@@ -205,31 +177,57 @@ const InverseMatrixCalculator = () => {
   // currency code
 
   const renderMatrix = (matrix) => {
-    return matrix.map((row) => row.join(" & ")).join(" \\\\ ");
+    if (!matrix || !Array.isArray(matrix)) return "";
+    return matrix
+      .map((row) => {
+        if (!Array.isArray(row)) return "";
+        return row.join(" & ");
+      })
+      .join(" \\\\ ");
   };
 
   const renderMatrixDet = (matrix) => {
-    return matrix.map((row) => row.join(" & ")).join(" \\\\ ");
+    if (!matrix || !Array.isArray(matrix)) return "";
+    return matrix
+      .map((row) => {
+        if (!Array.isArray(row)) return "";
+        return row.join(" & ");
+      })
+      .join(" \\\\ ");
   };
 
   const renderSteps = () => {
-    return result?.tech_swap_line?.map((line, i) => {
-      const matrixStr = result?.tech_swap[i]
-        .map((row) =>
-          row
+    if (!result?.tech_swap_line || !Array.isArray(result.tech_swap_line)) {
+      return null;
+    }
+
+    if (!result?.tech_swap || !Array.isArray(result.tech_swap)) {
+      return null;
+    }
+
+    return result.tech_swap_line.map((line, i) => {
+      const swapRow = result.tech_swap[i];
+      if (!swapRow || !Array.isArray(swapRow)) {
+        return null;
+      }
+
+      const matrixStr = swapRow
+        .map((row) => {
+          if (!Array.isArray(row)) return "";
+          return row
             .map((val) => {
               const parts = val.toString().split(".");
               return parts.length === 2 ? Number(val).toFixed(3) : val;
             })
-            .join(" & ")
-        )
+            .join(" & ");
+        })
         .join(" \\\\ ");
 
       const columnCount = formData?.tech_dtrmn_slct_method;
 
       return (
         <div key={i} className="mt-3">
-          <p>{line}</p>
+          <p dangerouslySetInnerHTML={{ __html: line }} />
           <BlockMath
             math={`\\left[\\begin{array}{${"c".repeat(
               columnCount
@@ -240,6 +238,19 @@ const InverseMatrixCalculator = () => {
     });
   };
 
+  // Helper function to safely render the fraction matrix
+  const renderFractionMatrix = (matrix, determinant) => {
+    if (!matrix || !Array.isArray(matrix)) return "";
+    return matrix
+      .map((row) => {
+        if (!Array.isArray(row)) return "";
+        return row
+          .map((val) => `\\dfrac{${val}}{${determinant}}`)
+          .join(" & ");
+      })
+      .join(" \\\\ ");
+  };
+
   return (
     <Calculator
       isLoading={isLoading}
@@ -248,7 +259,7 @@ const InverseMatrixCalculator = () => {
         { name: "Home", path: "/" },
         {
           name: data?.payload?.tech_cal_cat,
-          path: "/" + data?.payload?.tech_cal_cat,
+          path: "/category/" + data?.payload?.tech_cal_cat,
         },
         {
           name: data?.payload?.tech_calculator_title,
@@ -264,8 +275,8 @@ const InverseMatrixCalculator = () => {
             </p>
           )}
 
-          <div className="lg:w-[80%] md:w-[100%] w-full mx-auto">
-            <div className="grid grid-cols-12 mt-3 gap-2 md:gap-4 lg:gap-4">
+          <div className="lg:w-[80%] md:w-[80%] w-full mx-auto">
+            <div className="grid grid-cols-12 mt-3 gap-1 md:gap-4 lg:gap-4">
               {/* Matrix Size Selection */}
               <div className="col-span-12">
                 <label htmlFor="tech_dtrmn_slct_method" className="label">
@@ -290,7 +301,7 @@ const InverseMatrixCalculator = () => {
 
               {/* Matrix Input Table */}
               <div className="col-span-12 overflow-auto">
-                <table className="md:w-full" width={400}>
+                <table className="w-full">
                   <tbody>
                     {Array.from({ length: matrixSize }, (_, i) => (
                       <tr key={i}>
@@ -298,7 +309,7 @@ const InverseMatrixCalculator = () => {
                           const key = `tech_dtrmn_${i}_${j}`;
                           return (
                             <td key={j}>
-                              <div className="px-1 pt-2">
+                              <div className="md:px-1 pt-2">
                                 <input
                                   type="number"
                                   step="any"
@@ -324,14 +335,14 @@ const InverseMatrixCalculator = () => {
                 <button
                   type="button"
                   onClick={generateRandomMatrix}
-                  className="px-3 py-2 mt-1 mx-1 bg-[#2845F5] cursor-pointer text-white rounded-lg"
+                  className="px-1 md:px-3 py-1 md:py-2 mt-1 mx-1 bg-[#2845F5] text-white rounded-lg"
                 >
                   {data?.payload?.tech_lang_keys["2"]}
                 </button>
                 <button
                   type="button"
                   onClick={clearMatrix}
-                  className="px-3 py-2 mt-1 mx-1 bg-[#2845F5] cursor-pointer text-white rounded-lg"
+                  className="px-1 md:px-3 py-1 md:py-2 mt-1 mx-1 bg-[#2845F5] text-white rounded-lg"
                 >
                   {data?.payload?.tech_lang_keys["3"]}
                 </button>
@@ -376,7 +387,7 @@ const InverseMatrixCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -387,7 +398,7 @@ const InverseMatrixCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg shadow-md space-y-6 ">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -405,7 +416,9 @@ const InverseMatrixCalculator = () => {
                         />
                       )}
 
-                      <p className="mt-3">{data?.payload?.tech_lang_keys[8]}</p>
+                      <div className="mt-3">
+                        {data?.payload?.tech_lang_keys[8]}
+                      </div>
 
                       {formData?.tech_dtrmn_opts_method === "exp_col" ? (
                         <>
@@ -418,36 +431,36 @@ const InverseMatrixCalculator = () => {
                               data?.payload?.tech_lang_keys[10]
                             }}`}
                           />
-                          <p className="mt-3">
+                          <div className="mt-3">
                             <strong>
                               {data?.payload?.tech_lang_keys[14]}:
                             </strong>
-                          </p>
-                          <p className="mt-3">
+                          </div>
+                          <div className="mt-3">
                             {data?.payload?.tech_lang_keys[11]}{" "}
                             <a
-                              href="https://calculator-logical.com/determinant-calculator"
+                              href="/determinant-calculator"
                               className="text-blue-900"
                               target="_blank"
                               rel="noopener noreferrer"
                             >
                               Determinant Calculator
                             </a>
-                          </p>
+                          </div>
                           <BlockMath
                             math={`D = \\begin{vmatrix} ${renderMatrixDet(
                               result?.tech_zain
                             )} \\end{vmatrix} = ${result?.tech_det}`}
                           />
                           {result?.tech_det === 0 ? (
-                            <p className="mt-3">
+                            <div className="mt-3">
                               {data?.payload?.tech_lang_keys[12]}
-                            </p>
+                            </div>
                           ) : (
                             <>
-                              <p className="mt-3">
+                              <div className="mt-3">
                                 {data?.payload?.tech_lang_keys[13]}
-                              </p>
+                              </div>
                               {renderSteps()}
                             </>
                           )}
@@ -461,13 +474,13 @@ const InverseMatrixCalculator = () => {
                               data?.payload?.tech_lang_keys[9]
                             } adjugate method.}`}
                           />
-                          <p className="mt-3">
+                          <div className="mt-3">
                             {data?.payload?.tech_lang_keys[14]}:
-                          </p>
+                          </div>
                           <div className="mt-3">
                             {data?.payload?.tech_lang_keys[11]}{" "}
                             <a
-                              href="https://calculator-logical.com/determinant-calculator"
+                              href="/determinant-calculator"
                               className="text-blue-900"
                               target="_blank"
                               rel="noopener noreferrer"
@@ -482,84 +495,86 @@ const InverseMatrixCalculator = () => {
                           />
 
                           {result?.tech_det === 0 ? (
-                            <p className="mt-3">
+                            <div className="mt-3">
                               {data?.payload?.tech_lang_keys[12]}
-                            </p>
+                            </div>
                           ) : (
                             <>
-                              <p className="mt-3">
+                              <div className="mt-3">
                                 {data?.payload?.tech_lang_keys[15]}:
-                              </p>
-                              {result?.tech_c_down?.map((val, index) => (
-                                <div className="mt-3" key={index}>
-                                  <BlockMath
-                                    math={`C_{${val}} = (-1)^{${
-                                      result?.tech_minus_pow[index]
-                                    }} \\begin{vmatrix} ${renderMatrix(
-                                      result?.tech_all_cofy[index]
-                                    )} \\end{vmatrix} = ${
-                                      result?.tech_allcofy_det[index]
-                                    }`}
-                                  />
-                                  ({data?.payload?.tech_lang_keys[21]}{" "}
-                                  <a
-                                    href="https://calculator-logical.com/determinant-calculator"
-                                    className="text-blue-900"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    Determinant Calculator
-                                  </a>
-                                  )
-                                </div>
-                              ))}
+                              </div>
+                              {/* FIXED: Added safe check for tech_c_down */}
+                              {result?.tech_c_down && Array.isArray(result.tech_c_down) && result.tech_c_down.map((val, index) => {
+                                const allCofy = result?.tech_all_cofy?.[index];
+                                const allCofyDet = result?.tech_allcofy_det?.[index];
+                                const minusPow = result?.tech_minus_pow?.[index];
+                                
+                                return (
+                                  <div className="mt-3" key={index}>
+                                    <BlockMath
+                                      math={`C_{${val}} = (-1)^{${
+                                        minusPow || 0
+                                      }} \\begin{vmatrix} ${renderMatrix(
+                                        allCofy
+                                      )} \\end{vmatrix} = ${
+                                        allCofyDet || 0
+                                      }`}
+                                    />
+                                    ({data?.payload?.tech_lang_keys[21]}{" "}
+                                    <a
+                                      href="/determinant-calculator"
+                                      className="text-blue-900"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      Determinant Calculator
+                                    </a>
+                                    )
+                                  </div>
+                                );
+                              })}
 
-                              <p className="mt-3">
+                              <div className="mt-3">
                                 {data?.payload?.tech_lang_keys[16]}:
-                              </p>
+                              </div>
                               <BlockMath
                                 math={`\\begin{bmatrix} ${renderMatrix(
                                   result?.tech_final_cofa
                                 )} \\end{bmatrix}`}
                               />
 
-                              <p className="mt-3">
+                              <div className="mt-3">
                                 {data?.payload?.tech_lang_keys[17]}:
-                              </p>
+                              </div>
                               <BlockMath
                                 math={`\\begin{bmatrix} ${renderMatrix(
                                   result?.tech_ans_tran
                                 )} \\end{bmatrix}`}
                               />
 
-                              <p className="mt-3">
+                              <div className="mt-3">
                                 {data?.payload?.tech_lang_keys[18]}:
-                              </p>
+                              </div>
                               <BlockMath
                                 math={`\\begin{bmatrix} ${renderMatrix(
                                   result?.tech_ans_tran
                                 )} \\end{bmatrix}`}
                               />
 
-                              <p className="mt-3">
+                              <div className="mt-3">
                                 {data?.payload?.tech_lang_keys[19]}:
-                              </p>
+                              </div>
+                              {/* FIXED: Using the helper function */}
                               <BlockMath
-                                math={`\\begin{bmatrix} ${result?.tech_ans_tran
-                                  .map((row) =>
-                                    row
-                                      .map(
-                                        (val) =>
-                                          `\\dfrac{${val}}{${result?.tech_det}}`
-                                      )
-                                      .join(" & ")
-                                  )
-                                  .join(" \\\\ ")} \\end{bmatrix}`}
+                                math={`\\begin{bmatrix} ${renderFractionMatrix(
+                                  result?.tech_ans_tran,
+                                  result?.tech_det
+                                )} \\end{bmatrix}`}
                               />
 
-                              <p className="mt-3">
+                              <div className="mt-3">
                                 {data?.payload?.tech_lang_keys[20]}:
-                              </p>
+                              </div>
                               <BlockMath
                                 math={`\\begin{bmatrix} ${renderMatrix(
                                   result?.tech_inverse

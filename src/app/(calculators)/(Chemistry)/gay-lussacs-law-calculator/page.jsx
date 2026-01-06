@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useGetSingleCalculatorDetailsMutation } from "../../../../redux/services/calculator/calculatorApi";
-
-import { useGayLussacsLawCalculatorMutation } from "../../../../redux/services/datecalculator/dateCalculatorApi";
+import {
+  useGetSingleCalculatorDetailsMutation,
+  useGayLussacsLawCalculatorMutation,
+} from "../../../../redux/services/calculator/calculatorApi";
 
 import { toast } from "react-toastify";
 import ResultActions from "../../../../components/Calculator/ResultActions";
@@ -13,7 +14,6 @@ import Calculator from "../../Calculator";
 import { getUserCurrency } from "../../../../components/Calculator/GetCurrency"; //currency import class
 import ResetButton from "../../../../components/Calculator/ResetButton";
 import Button from "../../../../components/Calculator/Button";
-
 const GayLussacsLawCalculator = () => {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean); // remove empty strings
@@ -99,11 +99,11 @@ const GayLussacsLawCalculator = () => {
         tech_amount: formData.tech_amount,
         tech_R: formData.tech_R,
       }).unwrap();
-      setResult(response); // Assuming the response'
+      setResult(response?.payload); // Assuming the response'
       toast.success("Successfully Calculated");
     } catch (err) {
-      setFormError(err.data.error);
-      toast.error(err.data.error);
+      setFormError(err.data?.payload?.error);
+      toast.error(err.data?.payload?.error);
     }
   };
 
@@ -145,7 +145,7 @@ const GayLussacsLawCalculator = () => {
     fetchCurrency();
   }, []);
   {
-    /* <span className="text-blue input_unit">{currency.symbol}</span> */
+    /* <span className="input_unit">{currency.symbol}</span> */
   }
   // currency code
 
@@ -259,7 +259,7 @@ const GayLussacsLawCalculator = () => {
         { name: "Home", path: "/" },
         {
           name: data?.payload?.tech_cal_cat,
-          path: "/" + data?.payload?.tech_cal_cat,
+          path: "/category/" + data?.payload?.tech_cal_cat,
         },
         {
           name: data?.payload?.tech_calculator_title,
@@ -268,14 +268,14 @@ const GayLussacsLawCalculator = () => {
       ]}
     >
       <form className="row" onSubmit={handleSubmit}>
-        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg  space-y-6 mb-3">
+        <div className="w-full mx-auto p-4 lg:p-8 md:p-8 input_form rounded-lg space-y-6 mb-3">
           {formError && (
             <p className="text-red-500 text-lg font-semibold w-full">
               {formError}
             </p>
           )}
 
-          <div className="lg:w-[60%] md:w-[80%] w-full mx-auto ">
+          <div className="lg:w-[60%] md:w-[60%] w-full mx-auto ">
             <div className="grid grid-cols-1  lg:grid-cols-2 md:grid-cols-2 gap-1  md:gap-2">
               <div className="relative">
                 <label htmlFor="tech_selection" className="label">
@@ -627,7 +627,7 @@ const GayLussacsLawCalculator = () => {
           </div>
         </div>
         {roundToTheNearestLoading ? (
-          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+          <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg  space-y-6 result">
             <div className="animate-pulse">
               <div className=" w-full h-[30px] bg-gray-300 animate-pulse rounded-[10px] mb-4"></div>
               <div className="w-[75%] h-[20px] bg-gray-300 animate-pulse rounded-[10px] mb-3"></div>
@@ -638,7 +638,7 @@ const GayLussacsLawCalculator = () => {
         ) : (
           result && (
             <>
-              <div className="w-full mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6 result">
+              <div className="w-full result mx-auto p-4 lg:p-8 md:p-8 result_calculator rounded-lg space-y-6">
                 <div>
                   <ResultActions lang={data?.payload?.tech_lang_keys} />
 
@@ -648,11 +648,11 @@ const GayLussacsLawCalculator = () => {
                         {(result?.tech_method == "1" ||
                           result?.tech_method == "4") && (
                           <>
-                            <div className="bg-sky my-2 bordered rounded-lg px-3 py-2">
+                            <div className="bg-sky  my-2 bordered rounded-lg px-3 py-2">
                               <strong>{assign} =</strong>
-                              <strong className="text-[#119154] text-[21px]">
+                              <strong className="text-green-500 text-[21px]">
                                 {result?.tech_temp}{" "}
-                                <span className="text-[#119154] text-[18px]">
+                                <span className="text-green-500 text-[18px]">
                                   (K)
                                 </span>
                               </strong>
@@ -662,11 +662,11 @@ const GayLussacsLawCalculator = () => {
                         {(result?.tech_method == "2" ||
                           result?.tech_method == "3") && (
                           <>
-                            <div className="bg-sky my-2 bordered rounded-lg px-3 py-2">
+                            <div className="bg-sky  my-2 bordered rounded-lg px-3 py-2">
                               <strong>{assign} =</strong>
-                              <strong className="text-[#119154] text-[21px]">
+                              <strong className="text-green-500 text-[21px]">
                                 {result?.tech_temp}{" "}
-                                <span className="text-[#119154] text-[18px]">
+                                <span className="text-green-500 text-[18px]">
                                   (Pa)
                                 </span>
                               </strong>
@@ -675,11 +675,11 @@ const GayLussacsLawCalculator = () => {
                         )}
                         {result?.tech_method == "5" && (
                           <>
-                            <div className="bg-sky my-2 bordered rounded-lg px-3 py-2">
+                            <div className="bg-sky  my-2 bordered rounded-lg px-3 py-2">
                               <strong>{assign} =</strong>
-                              <strong className="text-[#119154] text-[21px]">
+                              <strong className="text-green-500 text-[21px]">
                                 {result?.tech_calculate_volume}{" "}
-                                <span className="text-[#119154] text-[18px]">
+                                <span className="text-green-500 text-[18px]">
                                   (m³)
                                 </span>
                               </strong>
@@ -687,7 +687,7 @@ const GayLussacsLawCalculator = () => {
                             <p className="mt-3 mb-2">
                               <strong>Results in other units:</strong>
                             </p>
-                            <div className="w-full overflow-auto">
+                            <div className="w-full overflow-auto text-[14px] md:text-[14px]">
                               <table
                                 className="w-full md:w-[80%] lg:w-[80%]"
                                 cellSpacing="0"
@@ -776,11 +776,11 @@ const GayLussacsLawCalculator = () => {
                         )}
                         {result?.tech_method == "6" && (
                           <>
-                            <div className="bg-sky my-2 bordered rounded-lg px-3 py-2">
+                            <div className="bg-sky  my-2 bordered rounded-lg px-3 py-2">
                               <strong>{assign} =</strong>
-                              <strong className="text-[#119154] text-[21px]">
+                              <strong className="text-green-500 text-[21px]">
                                 {result?.tech_n}{" "}
-                                <span className="text-[#119154] text-[18px]">
+                                <span className="text-green-500 text-[18px]">
                                   (mol)
                                 </span>
                               </strong>
@@ -794,17 +794,17 @@ const GayLussacsLawCalculator = () => {
                           <>
                             <div className="grid grid-cols-12  gap-2 md:gap-4 lg:gap-4">
                               <div className="col-span-12 md:col-span-6 lg:col-span-6">
-                                <div className="bg-sky my-2 bordered rounded-lg px-3 py-2">
+                                <div className="bg-sky  my-2 bordered rounded-lg px-3 py-2">
                                   <strong>Volume (V) =</strong>
-                                  <strong className="text-[#119154] text-[21px]">
+                                  <strong className="text-green-500 text-[21px]">
                                     {Number(result?.tech_volume).toFixed(4)} m³
                                   </strong>
                                 </div>
                               </div>
                               <div className="col-span-12 md:col-span-6 lg:col-span-6">
-                                <div className="bg-sky my-2 bordered rounded-lg px-3 py-2">
+                                <div className="bg-sky  my-2 bordered rounded-lg px-3 py-2">
                                   <strong>Amount of gas (n) =</strong>
-                                  <strong className="text-[#119154] text-[21px]">
+                                  <strong className="text-green-500 text-[21px]">
                                     {result?.tech_amount_of_gas} mol
                                   </strong>
                                 </div>
